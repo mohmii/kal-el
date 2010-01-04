@@ -1,9 +1,0 @@
-D:\project\feature recognition\source code\tes\tes\bin\Debug\tes.dll
-D:\project\feature recognition\source code\tes\tes\bin\Debug\tes.pdb
-D:\project\feature recognition\source code\tes\tes\bin\Debug\tes.xml
-D:\project\feature recognition\source code\tes\tes\obj\Debug\ResolveAssemblyReference.cache
-D:\project\feature recognition\source code\tes\tes\obj\Debug\tes.Resources.resources
-D:\project\feature recognition\source code\tes\tes\obj\Debug\tes.vbproj.GenerateResource.Cache
-D:\project\feature recognition\source code\tes\tes\obj\Debug\tes.dll
-D:\project\feature recognition\source code\tes\tes\obj\Debug\tes.xml
-D:\project\feature recognition\source code\tes\tes\obj\Debug\tes.pdb
