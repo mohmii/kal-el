@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="tes">
+</Property><Property Name="Solution File" Value="D:\Projects\feature recognition\source code\tes\tes.sln">
+</Property><Property Name="Date" Value="Tuesday, January 05, 2010">
+</Property><Property Name="Time" Value="4:10 AM">
+</Property></Properties><Event ErrorLevel="0" Project="tes" Source="tes\tes.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="tes" Source="tes\tes.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="tes.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="tes.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="tes" Source="tes\tes.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
