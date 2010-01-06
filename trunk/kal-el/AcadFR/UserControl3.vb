@@ -289,7 +289,6 @@ Public Class UserControl3
     Private counter As Integer
 
     Private Sub Clear2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Delete2.Click
-        Me.UnidentifiedFeature.SelectAll()
         StartDeleting(Me.UnidentifiedFeature)
     End Sub
 
