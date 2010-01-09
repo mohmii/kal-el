@@ -56,17 +56,19 @@ Partial Class UserControl3
         Me.ButtonSpecHeaderGroup2 = New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.NumericUpDown10 = New System.Windows.Forms.NumericUpDown
-        Me.NumericUpDown11 = New System.Windows.Forms.NumericUpDown
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.Label9 = New System.Windows.Forms.Label
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.Update1 = New System.Windows.Forms.Button
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.Label12 = New System.Windows.Forms.Label
         Me.ComboBox1 = New System.Windows.Forms.ComboBox
         Me.ContextMenuStrip2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.Label10 = New System.Windows.Forms.Label
         Me.ComboBox3 = New System.Windows.Forms.ComboBox
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.Label1 = New System.Windows.Forms.Label
         Me.ComboBox2 = New System.Windows.Forms.ComboBox
         Me.NumericUpDown4 = New System.Windows.Forms.NumericUpDown
         Me.NumericUpDown5 = New System.Windows.Forms.NumericUpDown
@@ -77,16 +79,15 @@ Partial Class UserControl3
         Me.NumericUpDown7 = New System.Windows.Forms.NumericUpDown
         Me.NumericUpDown8 = New System.Windows.Forms.NumericUpDown
         Me.NumericUpDown9 = New System.Windows.Forms.NumericUpDown
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Update1 = New System.Windows.Forms.Button
+        Me.NumericUpDown10 = New System.Windows.Forms.NumericUpDown
+        Me.NumericUpDown11 = New System.Windows.Forms.NumericUpDown
         Me.Label8 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.Label5 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.version = New System.Windows.Forms.Label
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.KryptonHeaderGroup1.Panel.SuspendLayout()
@@ -102,8 +103,6 @@ Partial Class UserControl3
         Me.KryptonHeaderGroup2.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox2.SuspendLayout()
         CType(Me.NumericUpDown4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown5, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -114,6 +113,8 @@ Partial Class UserControl3
         CType(Me.NumericUpDown7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'KryptonHeaderGroup1
@@ -510,85 +511,6 @@ Partial Class UserControl3
         Me.PictureBox1.TabIndex = 10
         Me.PictureBox1.TabStop = False
         '
-        'NumericUpDown10
-        '
-        Me.NumericUpDown10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NumericUpDown10.DecimalPlaces = 3
-        Me.NumericUpDown10.Location = New System.Drawing.Point(105, 266)
-        Me.NumericUpDown10.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
-        Me.NumericUpDown10.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-        Me.NumericUpDown10.Name = "NumericUpDown10"
-        Me.NumericUpDown10.Size = New System.Drawing.Size(80, 20)
-        Me.NumericUpDown10.TabIndex = 11
-        '
-        'NumericUpDown11
-        '
-        Me.NumericUpDown11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NumericUpDown11.DecimalPlaces = 3
-        Me.NumericUpDown11.Location = New System.Drawing.Point(105, 288)
-        Me.NumericUpDown11.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
-        Me.NumericUpDown11.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-        Me.NumericUpDown11.Name = "NumericUpDown11"
-        Me.NumericUpDown11.Size = New System.Drawing.Size(80, 20)
-        Me.NumericUpDown11.TabIndex = 13
-        '
-        'Label13
-        '
-        Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(68, 290)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(31, 13)
-        Me.Label13.TabIndex = 0
-        Me.Label13.Text = "角度"
-        '
-        'Label12
-        '
-        Me.Label12.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(78, 268)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(21, 13)
-        Me.Label12.TabIndex = 0
-        Me.Label12.Text = "D4"
-        '
-        'Label11
-        '
-        Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(78, 246)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(21, 13)
-        Me.Label11.TabIndex = 0
-        Me.Label11.Text = "D3"
-        '
-        'Label10
-        '
-        Me.Label10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(78, 224)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(21, 13)
-        Me.Label10.TabIndex = 0
-        Me.Label10.Text = "D2"
-        '
-        'Label9
-        '
-        Me.Label9.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(78, 202)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(21, 13)
-        Me.Label9.TabIndex = 0
-        Me.Label9.Text = "D1"
-        '
         'GroupBox2
         '
         Me.GroupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
@@ -629,6 +551,50 @@ Partial Class UserControl3
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         '
+        'Update1
+        '
+        Me.Update1.Location = New System.Drawing.Point(6, 137)
+        Me.Update1.Name = "Update1"
+        Me.Update1.Size = New System.Drawing.Size(74, 47)
+        Me.Update1.TabIndex = 0
+        Me.Update1.TabStop = False
+        Me.Update1.Text = "変更"
+        Me.ToolTip1.SetToolTip(Me.Update1, "Update")
+        Me.Update1.UseVisualStyleBackColor = True
+        '
+        'Label13
+        '
+        Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(68, 290)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(31, 13)
+        Me.Label13.TabIndex = 0
+        Me.Label13.Text = "角度"
+        '
+        'Label3
+        '
+        Me.Label3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(85, 176)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(14, 13)
+        Me.Label3.TabIndex = 0
+        Me.Label3.Text = "Z"
+        '
+        'Label12
+        '
+        Me.Label12.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(78, 268)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(21, 13)
+        Me.Label12.TabIndex = 0
+        Me.Label12.Text = "D4"
+        '
         'ComboBox1
         '
         Me.ComboBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -650,6 +616,39 @@ Partial Class UserControl3
         Me.ContextMenuStrip2.Size = New System.Drawing.Size(61, 4)
         Me.ContextMenuStrip2.Text = "..."
         '
+        'Label11
+        '
+        Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(78, 246)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(21, 13)
+        Me.Label11.TabIndex = 0
+        Me.Label11.Text = "D3"
+        '
+        'Label2
+        '
+        Me.Label2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(85, 154)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(14, 13)
+        Me.Label2.TabIndex = 0
+        Me.Label2.Text = "Y"
+        '
+        'Label10
+        '
+        Me.Label10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(78, 224)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(21, 13)
+        Me.Label10.TabIndex = 0
+        Me.Label10.Text = "D2"
+        '
         'ComboBox3
         '
         Me.ComboBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -659,6 +658,28 @@ Partial Class UserControl3
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(53, 21)
         Me.ComboBox3.TabIndex = 11
+        '
+        'Label9
+        '
+        Me.Label9.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(78, 202)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(21, 13)
+        Me.Label9.TabIndex = 0
+        Me.Label9.Text = "D1"
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(85, 132)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(14, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "X"
         '
         'ComboBox2
         '
@@ -780,49 +801,29 @@ Partial Class UserControl3
         Me.NumericUpDown9.Size = New System.Drawing.Size(80, 20)
         Me.NumericUpDown9.TabIndex = 10
         '
-        'Label3
+        'NumericUpDown10
         '
-        Me.Label3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.NumericUpDown10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(85, 176)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(14, 13)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = "Z"
+        Me.NumericUpDown10.DecimalPlaces = 3
+        Me.NumericUpDown10.Location = New System.Drawing.Point(105, 266)
+        Me.NumericUpDown10.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
+        Me.NumericUpDown10.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+        Me.NumericUpDown10.Name = "NumericUpDown10"
+        Me.NumericUpDown10.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown10.TabIndex = 11
         '
-        'Label2
+        'NumericUpDown11
         '
-        Me.Label2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.NumericUpDown11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(85, 154)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(14, 13)
-        Me.Label2.TabIndex = 0
-        Me.Label2.Text = "Y"
-        '
-        'Label1
-        '
-        Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(85, 132)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(14, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "X"
-        '
-        'Update1
-        '
-        Me.Update1.Location = New System.Drawing.Point(6, 137)
-        Me.Update1.Name = "Update1"
-        Me.Update1.Size = New System.Drawing.Size(74, 47)
-        Me.Update1.TabIndex = 0
-        Me.Update1.TabStop = False
-        Me.Update1.Text = "変更"
-        Me.ToolTip1.SetToolTip(Me.Update1, "Update")
-        Me.Update1.UseVisualStyleBackColor = True
+        Me.NumericUpDown11.DecimalPlaces = 3
+        Me.NumericUpDown11.Location = New System.Drawing.Point(105, 288)
+        Me.NumericUpDown11.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
+        Me.NumericUpDown11.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+        Me.NumericUpDown11.Name = "NumericUpDown11"
+        Me.NumericUpDown11.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown11.TabIndex = 13
         '
         'Label8
         '
@@ -879,12 +880,23 @@ Partial Class UserControl3
         Me.Label4.TabIndex = 0
         Me.Label4.Text = "形状名"
         '
+        'version
+        '
+        Me.version.AutoSize = True
+        Me.version.Dock = System.Windows.Forms.DockStyle.Top
+        Me.version.Location = New System.Drawing.Point(0, 842)
+        Me.version.Name = "version"
+        Me.version.Size = New System.Drawing.Size(0, 13)
+        Me.version.TabIndex = 2
+        Me.version.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
         'UserControl3
         '
         Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
+        Me.Controls.Add(Me.version)
         Me.Controls.Add(Me.KryptonHeaderGroup2)
         Me.Controls.Add(Me.KryptonHeaderGroup1)
         Me.Name = "UserControl3"
@@ -904,8 +916,6 @@ Partial Class UserControl3
         Me.KryptonHeaderGroup2.ResumeLayout(False)
         Me.GroupBox4.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         CType(Me.NumericUpDown4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -917,6 +927,8 @@ Partial Class UserControl3
         CType(Me.NumericUpDown7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -978,5 +990,6 @@ Partial Class UserControl3
     Friend WithEvents IdentifiedFeature As System.Windows.Forms.DataGridView
     Friend WithEvents UnidentifiedFeature As System.Windows.Forms.DataGridView
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents version As System.Windows.Forms.Label
 
 End Class

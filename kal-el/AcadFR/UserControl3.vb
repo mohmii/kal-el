@@ -1,5 +1,4 @@
-﻿Imports System.Text
-Imports Autodesk.AutoCAD.ApplicationServices
+﻿Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.EditorInput
 Imports Autodesk.AutoCAD.Runtime
@@ -9,8 +8,8 @@ Imports Autodesk.AutoCAD.Interop
 Imports Autodesk.AutoCAD.Geometry
 
 Imports System.IO
+Imports System.Text
 Imports System.Runtime.InteropServices
-
 
 Public Class UserControl3
 
@@ -1123,6 +1122,8 @@ Public Class UserControl3
 
     Private InitialFeature As OutputFormat
 
+    Private ProductVer As String
+
     Private Sub UserControl3_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         IFList = New System.Data.DataTable("Features")
         CreateTable(IFList, Me.IdentifiedFeature)
@@ -1130,6 +1131,8 @@ Public Class UserControl3
         UFList = New System.Data.DataTable("Features")
         CreateTable(UFList, Me.UnidentifiedFeature)
         MakeItBlank()
+
+        Me.version.Text = "Version " + ProductVersion
 
     End Sub
 
