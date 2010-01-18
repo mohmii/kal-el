@@ -33,8 +33,8 @@ Public Class ViewProcessor
 
             'set the feature property
             UnIdentifiedCounter = UnIdentifiedCounter + 1
-            Feature.FeatureName = "MillCandidate " + UnIdentifiedCounter.ToString
-            Feature.MiscProp(0) = "MillCandidate " + UnIdentifiedCounter.ToString
+            Feature.FeatureName = "Mill Candidate"
+            Feature.MiscProp(0) = "Mill Candidate"
             Feature.MiscProp(1) = setView.viewis
 
             'add to the unidentified feature list
@@ -1362,19 +1362,20 @@ Public Class ViewProcessor
                 InputStatus = New Boolean
                 ListLoopTemp = New List(Of List(Of Entity))
 
-                ''check if the loop was already part of identified feature
-                'For Each OutputIdent As OutputFormat In IdentifiedFeature
-                '    If OutputIdent.ListLoop.Contains(GroupEntity) Then
-                '        InputStatus = True
-                '    End If
-                'Next
+                'check if the loop was already part of identified feature
+                For Each OutputIdent As OutputFormat In IdentifiedFeature
+                    If OutputIdent.ListLoop.Contains(GroupEntity) Then
+                        InputStatus = True
+                    End If
+                Next
 
                 'add to unidentified list for loop which not already in unidentified list
                 If InputStatus = False Then
                     'set the feature property
+                    
                     UnIdentifiedCounter = UnIdentifiedCounter + 1
-                    Feature.FeatureName = "MillCandidate " + UnIdentifiedCounter.ToString
-                    Feature.MiscProp(0) = "MillCandidate " + UnIdentifiedCounter.ToString
+                    Feature.FeatureName = "Mill Candidate"
+                    Feature.MiscProp(0) = "Mill Candidate"
                     Feature.MiscProp(1) = View.ViewType
 
                     'add to the unidentified feature list

@@ -1349,6 +1349,27 @@ Public Class UserControl3
         Next
     End Sub
 
+    Private InitialRowCount As Integer
+    Public DeletedRowCount As Integer
+
+    Public Sub DeleteMillCandidate()
+        'hitung dulu jumlah row awal
+        InitialRowCount = Me.UnidentifiedFeature.Rows.Count
+
+        For i As Integer = 0 To (InitialRowCount - 1)
+            'cari untuk setiap row apakah cell name isinya sama dengan mill candidate, jika ya select row tersebut
+            If String.Equals(Me.UnidentifiedFeature.Rows(i).Cells("Name").Value, "Mill Candidate") Then
+                Me.UnidentifiedFeature.Rows(i).Selected = True
+            End If
+        Next
+
+        'perintah hapus row yang terseleksi
+        StartDeleting(Me.UnidentifiedFeature)
+
+        'hitung jumlah row yang terhapus
+        DeletedRowCount = InitialRowCount - Me.UnidentifiedFeature.Rows.Count
+
+    End Sub
 End Class
 
 
