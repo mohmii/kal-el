@@ -91,6 +91,7 @@ Public Class UserControl3
     Private Biner2Check As List(Of String)
     Private StatusProductSize As Boolean
     Private SaveDialog As System.Windows.Forms.SaveFileDialog
+    Private FeatureNeedToRemoved As New List(Of OutputFormat)
 
     Private Sub SaveList_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveList.Click
         Try
@@ -128,13 +129,23 @@ Public Class UserControl3
                             GenFL.GenProdSize(fw, SelectionCommand.ProjectionView, StatusProductSize)
                             If StatusProductSize = True Then
                                 GenFL.GenRefTxt(fw, SelectionCommand.ProjectionView)
-                                GenFL.GenFeatTxt(fw, Me.IdentifiedFeature)
+                                GenFL.GenFeatTxt(fw, Me.IdentifiedFeature, FeatureNeedToRemoved)
                                 fw.Flush()
                                 fw.Close()
                                 MsgBox("プロダクトデータ保存完了!!", MsgBoxStyle.Information)
                                 Me.IdentifiedFeature.ClearSelection()
                                 'Process.Start(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
                                 Process.Start(SaveDialog.FileName)
+
+                                'delete the feature that already being checked and saved
+                                If FeatureNeedToRemoved.Count <> 0 Then
+                                    For Each Feature As OutputFormat In FeatureNeedToRemoved
+                                        DeleteTheSavedFeature(Feature)
+                                    Next
+                                End If
+
+                                FeatureNeedToRemoved.Clear()
+
                             Else
                                 fw.Flush()
                                 fw.Close()
@@ -155,8 +166,36 @@ Public Class UserControl3
             MsgBox(ex.ToString)
         End Try
     End Sub
-    'autocad variable declaration 
 
+    'deleting the feature that just being saved to the list
+    Private Sub DeleteTheSavedFeature(ByVal Feature As OutputFormat)
+        AcadConnection = New AcadConn
+        DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        Try
+            Using DocLock
+                Using AcadConnection.myT
+                    AcadConnection.OpenBlockTableRec()
+                    For Each Id2Check As ObjectId In Feature.ObjectId
+                        For Each Id As ObjectId In AcadConnection.btr
+                            Entity = AcadConnection.myT.GetObject(Id, OpenMode.ForRead)
+                            If Entity.ObjectId.Equals(Id2Check) Then
+                                Entity.UpgradeOpen()
+                                Entity.Erase()
+                            End If
+                        Next
+                    Next
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
+    'autocad variable declaration 
     Friend DocLock As DocumentLock
     Friend DrawEditor As Editor
     Friend Entity As Entity
@@ -895,6 +934,10 @@ Public Class UserControl3
             'get all the indexes
             For Each Rows As System.Windows.Forms.DataGridViewRow In Table2Check.SelectedRows
                 RowIndex.Add(Rows.Index)
+
+                'add the feature to the list of feature that has to be removed
+                FeatureNeedToRemoved.Add(Rows.Cells("Object").Value)
+
             Next
 
             RowIndex.Sort()

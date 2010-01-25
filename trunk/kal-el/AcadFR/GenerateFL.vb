@@ -275,7 +275,8 @@ Public Class GenerateFL
 
     Private Feature2Export As OutputFormat
     'create the feature information
-    Public Sub GenFeatTxt(ByVal fw As StreamWriter, ByVal ReadyFL As System.Windows.Forms.DataGridView)
+    Public Sub GenFeatTxt(ByVal fw As StreamWriter, ByVal ReadyFL As System.Windows.Forms.DataGridView, _
+                          ByRef FeatureList As List(Of OutputFormat))
         Try
             counter = 1
             For Each feat As System.Windows.Forms.DataGridViewRow In ReadyFL.Rows
@@ -296,44 +297,14 @@ Public Class GenerateFL
                              + SetDot(Feature2Export.OriginAndAddition(6).ToString) + " " _
                              + SetDot(Feature2Export.OriginAndAddition(7).ToString))
                 counter = counter + 1
-                DeleteTheSavedFeature(Feature2Export)
+                FeatureList.Add(Feature2Export)
             Next
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
     End Sub
 
-    'deleting the feature that just being saved to the list
-    Private Sub DeleteTheSavedFeature(ByVal Feature As OutputFormat)
-        AcadConn = New AcadConn
-        DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
-        AcadConn.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-        Try
-            Using DocLock
-                Using AcadConn.myT
-                    AcadConn.OpenBlockTableRec()
-                    For Each Id2Check As ObjectId In Feature.ObjectId
-                        For Each Id As ObjectId In AcadConn.btr
-                            Entity = AcadConn.myT.GetObject(Id, OpenMode.ForRead)
-                            If Entity.ObjectId.Equals(Id2Check) Then
-                                Entity.UpgradeOpen()
-                                Entity.Erase()
-                            End If
-                        Next
-                    Next
-                    AcadConn.myT.Commit()
-                End Using
-            End Using
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        Finally
-            AcadConn.myT.Dispose()
-        End Try
-    End Sub
-
     Private Entity As DBObject
-    Private AcadConn As AcadConn
-    Private DocLock As DocumentLock
     Private CircleTmp As Circle
     Private LineTmp As Line
 
