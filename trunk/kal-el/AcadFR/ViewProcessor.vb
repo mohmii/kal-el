@@ -26,6 +26,10 @@ Public Class ViewProcessor
     Public Sub SingleViewProcessor(ByVal View As ViewProp, ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer)
         Dim SolLine, SolLineBound, VirtuLine, HidLine, SolArc, HidArc As Integer
 
+        'initiate the progress bar
+        UserControl3.acedSetStatusBarProgressMeter("Testing", 0, View.GroupLoop.Count)
+        Dim i As Integer
+
         For Each GroupEntity As List(Of Entity) In View.GroupLoop
             MillingObjectId = New List(Of ObjectId)
             Feature = New OutputFormat
@@ -66,7 +70,15 @@ Public Class ViewProcessor
 
             'OrganizeList.AddListToExisting2(Feature)
             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+
+            'add the progress bar
+            i = i + 1
+            'System.Threading.Thread.Sleep(1)
+            UserControl3.acedSetStatusBarProgressMeterPos(i)
+            System.Windows.Forms.Application.DoEvents()
         Next
+
+        UserControl3.acedRestoreStatusBar()
     End Sub
 
     Private Sub SingleViewProp(ByRef Feature As OutputFormat, ByVal GEntity As List(Of Entity), ByVal View As ViewProp)
@@ -452,6 +464,10 @@ Public Class ViewProcessor
         Dim count2loop As Single
         Dim LineTmp, LineTmp2 As Line
         Dim ArcTmp As Arc
+
+        'initiate the progress bar
+        UserControl3.acedSetStatusBarProgressMeter("Testing", 0, View.GroupLoop.Count)
+        Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In View.GroupLoop
             MillingObjectId = New List(Of ObjectId)
@@ -1408,8 +1424,13 @@ Public Class ViewProcessor
                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                 End If
             End If
+            'add the progress bar
+            i = i + 1
+            'System.Threading.Thread.Sleep(1)
+            UserControl3.acedSetStatusBarProgressMeterPos(i)
+            System.Windows.Forms.Application.DoEvents()
         Next
-
+        UserControl3.acedRestoreStatusBar()
     End Sub
 
 

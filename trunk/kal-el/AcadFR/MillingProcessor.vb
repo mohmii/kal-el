@@ -178,6 +178,10 @@ Public Class MillingProcessor
 
         RootPathPoint = New Point3d
 
+        'initiate the progress bar
+        UserControl3.acedSetStatusBarProgressMeter("Testing", 0, UnAdjacentPoints.Count)
+        Dim i As Integer
+
         'searching loop from each unadjacent points
         For Each PointTmp As Point3d In UnAdjacentPoints
 
@@ -188,8 +192,15 @@ Public Class MillingProcessor
 
             'start iterate
             CheckInnerLoop(RootPathPoint, MainLoop, GroupLoop, GroupLoopPoints)
+
+            'add the progress bar
+            i = i + 1
+            'System.Threading.Thread.Sleep(1)
+            UserControl3.acedSetStatusBarProgressMeterPos(i)
+            System.Windows.Forms.Application.DoEvents()
         Next
 
+        UserControl3.acedRestoreStatusBar()
     End Sub
 
     Private EndPoint, RootPathPoint As Point3d
