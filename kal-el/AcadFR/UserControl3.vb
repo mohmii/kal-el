@@ -12,7 +12,6 @@ Imports System.Text
 Imports System.Runtime.InteropServices
 
 Public Class UserControl3
-
     Private uiSetView As setView
     Private zoom As AcadApplication
     'Private FeatureCandidateList As List(Of System.Windows.Forms.ComboBox.ObjectCollection)
