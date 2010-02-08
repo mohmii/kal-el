@@ -155,7 +155,7 @@ Public Class MillingProcessor
         AllPoints = New List(Of Point3d)
         GroupOfEntity = New List(Of AllPoints)
         UnAdjacentPoints = New List(Of Point3d)
- 
+
         'filtering the unadjacents point
         GetPoints.UnAdjacentPointExtractor(Entities, AllPoints, GroupOfEntity, UnAdjacentPoints)
 
