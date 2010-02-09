@@ -96,10 +96,19 @@ Public Class UserControl3
 
     Private Sub SaveList_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveList.Click
         Try
-            If AppPreferences.ReadPreferences() Then
-                Me.IdentifiedFeature.SelectAll()
-                If Me.IdentifiedFeature.SelectedRows.Count <> 0 Then
+            AppPreferences.ReadPreferences()
+            Me.IdentifiedFeature.SelectAll()
+            If Me.IdentifiedFeature.SelectedRows.Count <> 0 Then
 
+                GenFL = New GenerateFL
+                Biner2Check = New List(Of String)
+                For Each Row As System.Windows.Forms.DataGridViewRow In Me.IdentifiedFeature.SelectedRows
+                    Biner2Check.Add(Row.Cells("Biner").Value)
+                Next
+
+                If Biner2Check.Contains("0") Then
+                    MsgBox("保存に失敗しました。" + vbCrLf + "すべての形状にチェックマークが付いてから保存してください。", MsgBoxStyle.Exclamation)
+                Else
                     'initialize the save file dialog form
                     SaveDialog = New System.Windows.Forms.SaveFileDialog
                     SaveDialog.FileName = "frcad2pcad"
@@ -108,61 +117,50 @@ Public Class UserControl3
 
                     If SaveDialog.ShowDialog() = Forms.DialogResult.OK Then
 
-                        GenFL = New GenerateFL
-                        Biner2Check = New List(Of String)
-                        For Each Row As System.Windows.Forms.DataGridViewRow In Me.IdentifiedFeature.SelectedRows
-                            Biner2Check.Add(Row.Cells("Biner").Value)
-                        Next
+                        'FilePath = New FileInfo(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
+                        FilePath = New FileInfo(SaveDialog.FileName)
 
-                        If Biner2Check.Contains("0") Then
-                            MsgBox("保存に失敗しました。" + vbCrLf + "すべての形状にチェックマークが付いてから保存してください。", MsgBoxStyle.Exclamation)
-                        Else
+                        If FilePath.Exists Then
+                            FilePath.Delete()
                             'FilePath = New FileInfo(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
                             FilePath = New FileInfo(SaveDialog.FileName)
-
-                            If FilePath.Exists Then
-                                FilePath.Delete()
-                                'FilePath = New FileInfo(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
-                                FilePath = New FileInfo(SaveDialog.FileName)
-                            End If
-
-                            fw = FilePath.CreateText
-                            GenFL.GenProdSize(fw, SelectionCommand.ProjectionView, StatusProductSize)
-                            If StatusProductSize = True Then
-                                GenFL.GenRefTxt(fw, SelectionCommand.ProjectionView)
-                                GenFL.GenFeatTxt(fw, Me.IdentifiedFeature, FeatureNeedToRemoved)
-                                fw.Flush()
-                                fw.Close()
-                                MsgBox("プロダクトデータ保存完了!!", MsgBoxStyle.Information)
-                                Me.IdentifiedFeature.ClearSelection()
-                                'Process.Start(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
-                                Process.Start(SaveDialog.FileName)
-
-                                'delete the feature that already being checked and saved
-                                If FeatureNeedToRemoved.Count <> 0 Then
-                                    For Each Feature As OutputFormat In FeatureNeedToRemoved
-                                        DeleteTheSavedFeature(Feature)
-                                    Next
-                                End If
-
-                                FeatureNeedToRemoved.Clear()
-
-                            Else
-                                fw.Flush()
-                                fw.Close()
-                                MsgBox("Saving feature list could not be completed!!", MsgBoxStyle.Information)
-                                Exit Sub
-                            End If
                         End If
 
-                    End If
+                        fw = FilePath.CreateText
+                        GenFL.GenProdSize(fw, SelectionCommand.ProjectionView, StatusProductSize)
+                        If StatusProductSize = True Then
+                            GenFL.GenRefTxt(fw, SelectionCommand.ProjectionView)
+                            GenFL.GenFeatTxt(fw, Me.IdentifiedFeature, FeatureNeedToRemoved)
+                            fw.Flush()
+                            fw.Close()
+                            MsgBox("プロダクトデータ保存完了!!", MsgBoxStyle.Information)
+                            Me.IdentifiedFeature.ClearSelection()
+                            'Process.Start(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
+                            Process.Start(SaveDialog.FileName)
 
-                Else
-                    MsgBox("The saving process could not be done. There are no identified feature on the list.", MsgBoxStyle.Exclamation)
+                            'delete the feature that already being checked and saved
+                            If FeatureNeedToRemoved.Count <> 0 Then
+                                For Each Feature As OutputFormat In FeatureNeedToRemoved
+                                    DeleteTheSavedFeature(Feature)
+                                Next
+                            End If
+
+                            FeatureNeedToRemoved.Clear()
+
+                        Else
+                            fw.Flush()
+                            fw.Close()
+                            MsgBox("Saving feature list could not be completed!!", MsgBoxStyle.Information)
+                            Exit Sub
+                        End If
+                    End If
                 End If
             Else
-                MsgBox("設定ページに、収納場所を指定してください", MsgBoxStyle.Exclamation)
+                MsgBox("The saving process could not be done. There are no identified feature on the list.", MsgBoxStyle.Exclamation)
             End If
+            'Else
+            'MsgBox("設定ページに、収納場所を指定してください", MsgBoxStyle.Exclamation)
+            'End If
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -914,6 +912,7 @@ Public Class UserControl3
 
             Feature2Compare = Row.Cells("Object").Value
             If Feature2Highlight.MiscProp(0).Equals(Feature2Compare.MiscProp(0)) And _
+            Feature2Highlight.MiscProp(1).Equals(Feature2Compare.MiscProp(1)) And _
             Feature2Highlight.OriginAndAddition(3).Equals(Feature2Compare.OriginAndAddition(3)) Then
                 Row.Selected = True
             End If
