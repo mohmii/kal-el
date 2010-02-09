@@ -119,10 +119,9 @@ Public Class ViewProcessor
                     D2 = Round(LineLength(TmpLine), 3)
                 End If
             Next
-        End If
 
-        'Slot with D3
-        If Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+            'Slot with D1 dan D3
+        ElseIf Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 1 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
@@ -141,10 +140,9 @@ Public Class ViewProcessor
                     End If
                 Next
             Next
-        End If
 
-        'Step with D1, D2
-        If Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 0 _
+            'Step with D1, D2
+        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
@@ -180,10 +178,47 @@ Public Class ViewProcessor
                     End If
                 Next
             Next
-        End If
 
-        '2-side pocket with D1, D2, D4
-        If Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
+            '    'Step surely with D1, D3
+            'ElseIf Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+            'And Feature.VirtualLineCount = 2 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
+            '    For Each EntityTmp As Entity In GEntity
+            '        TmpLine = New Line
+            '        TmpLine = EntityTmp
+            '        For Each LineBB As Line In View.BoundingBox
+            '            If (isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint)) = True _
+            '            Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
+            '                D2 = Round(LineLength(TmpLine), 3)
+            '                If LineBB = View.BoundingBox(0) Then
+            '                    Orientation = "3" 'Lower Side
+            '                    OriU = View.BoundProp(0) - View.BoundProp(0)
+            '                    OriV = View.BoundProp(1) - View.BoundProp(1)
+            '                ElseIf LineBB = View.BoundingBox(1) Then
+            '                    Orientation = "4" 'Right Side
+            '                    OriU = View.BoundProp(2) - View.BoundProp(0)
+            '                    OriV = View.BoundProp(1) - View.BoundProp(1)
+            '                ElseIf LineBB = View.BoundingBox(2) Then
+            '                    Orientation = "5" 'Upper Side
+            '                    OriU = View.BoundProp(2) - View.BoundProp(0)
+            '                    OriV = View.BoundProp(3) - View.BoundProp(1)
+            '                ElseIf LineBB = View.BoundingBox(3) Then
+            '                    Orientation = "6" 'Left Side
+            '                    OriU = View.BoundProp(0) - View.BoundProp(0)
+            '                    OriV = View.BoundProp(3) - View.BoundProp(1)
+            '                End If
+            '                Exit For
+            '            ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
+            '            Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = False _
+            '            Or (isequalpoint(TmpLine.EndPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.EndPoint)) = False _
+            '            Or (isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = False)) And D1 = 0 Then
+            '                D1 = Round(LineLength(TmpLine), 3)
+            '                Exit For
+            '            End If
+            '        Next
+            '    Next
+
+            '2-side pocket with D1, D2, D4
+        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 1 And Feature.HiddenArcCount = 0 Then
             Dim Position1 As String = Nothing
             Dim Position2 As String = Nothing
@@ -284,10 +319,9 @@ Public Class ViewProcessor
                     D2 = Round(DimPos2, 3)
                 End If
             End If
-        End If
 
-        '3-side pocket with D1, D2, D4
-        If Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+            '3-side pocket with D1, D2, D4
+        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0 Then
             For Each EntityTmp As Entity In GEntity
                 If TypeOf EntityTmp Is Line Then
@@ -310,9 +344,9 @@ Public Class ViewProcessor
                             End If
                             Exit For
                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
                             (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
                             D2 = Round(LineLength(TmpLine), 3)
                             Exit For
                         End If
@@ -326,10 +360,42 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + D4
-        End If
 
-        '4-side pocket with D1, D2, D4, angle
-        If Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+            '3-side pocket or blind slot with D1, D3
+        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
+            For Each EntityTmp As Entity In GEntity
+                If TypeOf EntityTmp Is Line Then
+                    TmpLine = New Line
+                    TmpLine = EntityTmp
+                    For Each LineBB As Line In View.BoundingBox
+                        If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                        PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
+                            D1 = Round(LineLength(TmpLine), 3)
+                            If LineBB = View.BoundingBox(0) Then
+                                Orientation = "5" 'Upper Side
+                            ElseIf LineBB = View.BoundingBox(1) Then
+                                Orientation = "6" 'Left Side
+                            ElseIf LineBB = View.BoundingBox(2) Then
+                                Orientation = "3" 'Lower Side
+                            ElseIf LineBB = View.BoundingBox(3) Then
+                                Orientation = "4" 'Right Side
+                            End If
+                            Exit For
+                        ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
+                            D3 = Round(LineLength(TmpLine), 3)
+                            Exit For
+                        End If
+                    Next
+                End If
+            Next
+            D2 = D2 + D4
+
+            '4-side pocket with D1, D2, D4, angle
+        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0 Then
             Dim D2Temp, AngleTmp As New Double
             Dim InitialStat As Boolean = True
@@ -369,10 +435,9 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0)
             OriV = Origin.Y - View.BoundProp(1)
             Angle = AngleTmp
-        End If
 
-        'long hole with D1, D2, D4, angle
-        If Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+            'long hole with D1, D2, D4, angle
+        ElseIf Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0 Then
             Dim D2Temp As New Double
             Dim Origin As Point3d
@@ -398,10 +463,9 @@ Public Class ViewProcessor
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             OriU = Origin.X - View.BoundProp(0)
             OriV = Origin.Y - View.BoundProp(1)
-        End If
 
-        'Blind Slot with D1, D2,
-        If Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+            'Blind Slot with D1, D2,
+        ElseIf Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0 Then
             Dim TempRad As New Double
             For Each EntityTmp As Entity In GEntity
@@ -449,6 +513,7 @@ Public Class ViewProcessor
         Feature.OriginAndAddition(2) = OriW
         Feature.OriginAndAddition(3) = D1
         Feature.OriginAndAddition(4) = D2
+        Feature.OriginAndAddition(5) = D3
         Feature.OriginAndAddition(6) = D4
         Feature.OriginAndAddition(7) = Angle
     End Sub
