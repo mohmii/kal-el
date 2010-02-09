@@ -727,7 +727,7 @@ Public Class UserControl3
             'single view result
             If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") And SelectedUF.Count = 1 Then
                 SingleView(SelectedUF)
-            Else
+            ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) And SelectedUF.Count = 1 Then
                 Me.ComboBox1.Items.Clear()
                 Me.ComboBox1.Items.Add("タップ穴")
                 Me.ComboBox1.Items.Add("ＰＴタップ穴")
