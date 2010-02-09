@@ -637,8 +637,10 @@ Public Class ViewProcessor
                                         HLCorresponding, SACorresponding, HACorresponding, SeqBound, SeqHid)
 
                             'rule-based for square slot features
-                            If SLReference = 4 And SLBReference = 2 And SAReference = 0 And SLCorresponding = 3 _
-                               And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 1 Then
+                            If (SLReference = 4 And SLBReference = 2 And SAReference = 0 And SLCorresponding = 3 _
+                               And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 1) _
+                               Or (SLReference = 2 And SLBReference = 2 And SAReference = 0 And SLCorresponding = 3 And HLReference = 2 _
+                               And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 1) Then
                                 Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                                 Dim Orientation As String = Nothing
                                 Dim StatOnBound, StatOnOrigin As Boolean
