@@ -173,7 +173,9 @@ Public Class MillingProcessor
         EndPointHasBeenReach = False
         MainLoopPoint = New List(Of Point3d)
 
+        'search main loop
         CheckMainLoop(SearchLeftCornerPoint(AllPoints), MainLoop)
+
         'create a new group of loop for this current view
 
         RootPathPoint = New Point3d
@@ -208,7 +210,7 @@ Public Class MillingProcessor
     Private GroupEntity As List(Of Entity)
     Private GroupPoints As List(Of Point3d)
 
-    Public Sub CheckInnerLoop(ByVal PointTmp As Point3d, ByVal MainLoop As List(Of Entity), _
+    Private Sub CheckInnerLoop(ByVal PointTmp As Point3d, ByVal MainLoop As List(Of Entity), _
                               ByRef GroupLoop As List(Of List(Of Entity)), ByRef GroupLoopPoints As List(Of List(Of Point3d)))
         'check the point status for the stopping rule
 
@@ -321,7 +323,7 @@ Public Class MillingProcessor
         Next
     End Sub
 
-    Public Sub CheckEachLinePath(ByVal PointTmp As Point3d)
+    Private Sub CheckEachLinePath(ByVal PointTmp As Point3d)
         While EndPoint <> PointTmp
             If EndPointHasBeenReach = False Then
                 'only set for the first time enter
