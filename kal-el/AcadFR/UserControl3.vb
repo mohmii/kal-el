@@ -1172,12 +1172,14 @@ Public Class UserControl3
         Dim SurfaceColumn As New System.Data.DataColumn("Surface", GetType(String))
         Dim BinerColumn As New System.Data.DataColumn("Biner", GetType(String))
         Dim ObjectColumn As New System.Data.DataColumn("Object", GetType(OutputFormat))
+        Dim IdColumn As New System.Data.DataColumn("Id", GetType(Object))
 
-        List.Columns.AddRange(New System.Data.DataColumn() {StatusColumn, NameColumn, SurfaceColumn, BinerColumn, ObjectColumn})
+        List.Columns.AddRange(New System.Data.DataColumn() {StatusColumn, NameColumn, SurfaceColumn, BinerColumn, ObjectColumn, IdColumn})
         Table.DataSource = List
 
         Table.Columns("Biner").Visible = False
         Table.Columns("Object").Visible = False
+        Table.Columns("Id").Visible = False
     End Sub
 
     Private InitialFeature As OutputFormat
@@ -1396,7 +1398,7 @@ Public Class UserControl3
         End If
     End Sub
 
-    Public Sub CheckUnidentified(ByVal ListEntity1 As List(Of Entity), ByVal ListEntity2 As List(Of Entity), ByVal FeatureList As List(Of OutputFormat), ByVal TmpFeatureList As List(Of OutputFormat), ByRef FeatureCounter As Integer)
+    Public Sub CheckUnidentified(ByVal ListEntity1 As List(Of Entity), ByVal ListEntity2 As List(Of Entity), ByRef FeatureList As List(Of OutputFormat), ByRef TmpFeatureList As List(Of OutputFormat), ByRef FeatureCounter As Integer)
         'remove from unidentified feature list if the feature is listed as unidentified before
         For Each OutputUnident As OutputFormat In FeatureList
             If OutputUnident.ListLoop.Contains(ListEntity1) Or OutputUnident.ListLoop.Contains(ListEntity2) Then
@@ -1419,22 +1421,37 @@ Public Class UserControl3
     Private InitialRowCount As Integer
     Public DeletedRowCount As Integer
 
-    Public Sub DeleteMillCandidate()
+    Public Sub DeleteMillCandidate(ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat))
         'hitung dulu jumlah row awal
+        Dim IndexUF As Integer
+
         InitialRowCount = Me.UnidentifiedFeature.Rows.Count
 
         For i As Integer = 0 To (InitialRowCount - 1)
             'cari untuk setiap row apakah cell name isinya sama dengan mill candidate, jika ya select row tersebut
             If String.Equals(Me.UnidentifiedFeature.Rows(i).Cells("Name").Value, "Mill Candidate") Then
                 Me.UnidentifiedFeature.Rows(i).Selected = True
+
+                'hapus data pada unidentified feature list
+                For j As Integer = 0 To UnIdentifiedFeature.Count - 1
+                    If Me.UnidentifiedFeature.Rows(i).Cells("Object").Value.Equals(UnIdentifiedFeature(j)) Then
+                        IndexUF = j
+                        Exit For
+                    End If
+                Next
+                UnIdentifiedFeature.RemoveAt(IndexUF)
+                TmpUnidentifiedFeature.RemoveAt(IndexUF)
+
             End If
         Next
 
         'perintah hapus row yang terseleksi
         StartDeleting(Me.UnidentifiedFeature)
 
-        'hitung jumlah row yang terhapus
-        DeletedRowCount = InitialRowCount - Me.UnidentifiedFeature.Rows.Count
+        'hapus data pada unidentified feature list
+        For Each UIF As OutputFormat In UnIdentifiedFeature
+
+        Next
 
     End Sub
 End Class
