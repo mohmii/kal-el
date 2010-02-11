@@ -25,7 +25,7 @@ Public Class ViewProp
 
     Private BoundBox() As Double = New Double() {0, 0, 0, 0, 0, 0}
 
-    Public Property BoundProp(ByVal index As Integer) As String
+    Public Overloads Property BoundProp(ByVal index As Integer) As String
         Get
             Return BoundBox(index)
         End Get
@@ -34,14 +34,34 @@ Public Class ViewProp
         End Set
     End Property
 
+    Public Overloads Property BoundProp() As Double()
+        Get
+            Return BoundBox
+        End Get
+        Set(ByVal value As Double())
+            BoundBox = value
+        End Set
+    End Property
+
     Private RefPoint() As Double = New Double() {0, 0, 0}
 
-    Public Property RefProp(ByVal index As Integer) As Double
+    'get and set the reference point by their index
+    Public Overloads Property RefProp(ByVal index As Integer) As Double
         Get
             Return RefPoint(index)
         End Get
         Set(ByVal value As Double)
             RefPoint(index) = value
+        End Set
+    End Property
+
+    'get and set the reference point
+    Public Overloads Property RefProp() As Double()
+        Get
+            Return RefPoint
+        End Get
+        Set(ByVal value As Double())
+            RefPoint = value
         End Set
     End Property
 
@@ -127,6 +147,35 @@ Public Class ViewProp
         End Get
         Set(ByVal value As List(Of List(Of Point3d)))
             GloopPoints = value
+        End Set
+    End Property
+
+    'list of features
+    Private Features As List(Of OutputFormat)
+
+    'get single feature
+    Public Overloads Function GetFeature(ByVal index As Integer) As OutputFormat
+        Return Features(index)
+    End Function
+
+    'get all features
+    Public Overloads Function GetFeature() As List(Of OutputFormat)
+        Return Features
+    End Function
+
+    'insert the feature in the list of features
+    Public Sub SetFeature(ByVal Feature As OutputFormat)
+        Features.Add(Feature)
+    End Sub
+
+    'status for indicating which process is being used to generating the view
+    Private status As Boolean = False
+    Public Property GenerationStat() As Boolean
+        Get
+            Return status
+        End Get
+        Set(ByVal value As Boolean)
+            status = value
         End Set
     End Property
 
