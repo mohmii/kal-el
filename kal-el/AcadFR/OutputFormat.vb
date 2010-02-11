@@ -39,17 +39,7 @@ Public Class OutputFormat
     End Property
 
     'place for id/ids from ACAD entity that belongs to this feature
-    'SelectionCommand.CircMember - 1
     Public ObjectId As New List(Of ObjectId) '= New String() {"", ""}
-
-    'Public Property Objectid() As List(Of ObjectId)
-    '    Get
-    '        Return id
-    '    End Get
-    '    Set(ByVal value As List(Of ObjectId))
-    '        id = value
-    '    End Set
-    'End Property
 
     'place for miscellaneous properties {name,surface,orientation,chamfer,quality} for each feature
     Private Misc() As String = New String() {FeatName, Surface, "2", "-1", "0"}
