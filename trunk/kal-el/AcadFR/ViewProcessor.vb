@@ -528,7 +528,7 @@ Public Class ViewProcessor
         Dim IdentificationStatus, InputStatus As Boolean
         Dim count2loop As Single
         Dim LineTmp, LineTmp2 As Line
-        Dim ArcTmp As Arc
+        Dim ArcTmp, ArcTmp2 As Arc
 
         'initiate the progress bar
         UserControl3.acedSetStatusBarProgressMeter("Testing", 0, ListView(ViewNum).GroupLoop.Count)
@@ -554,36 +554,57 @@ Public Class ViewProcessor
                                 If TypeOf EntityTmp Is Line Then
                                     LineTmp = New Line
                                     LineTmp = EntityTmp
-                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "right") _
-                                    Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "front") Then
+                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "right") Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "left") Or (ListView(ViewNum).ViewType.ToLower = "left" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "back") Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "right") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "left") Or (ListView(ViewNum).ViewType.ToLower = "left" And ListView(j).ViewType.ToLower = "back") Then
                                         If GPCFrontRight(LineTmp.StartPoint, LineTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
                                                          ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
                                                          ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
                                             count2loop = count2loop + 1
                                         End If
-                                    End If
 
-                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "top") _
-                                    Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "front") Then
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "top") Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "bottom") Or (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "front") Then
                                         If GPCFrontTop(LineTmp.StartPoint, LineTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
                                                        ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
                                                        ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
                                             count2loop = count2loop + 1
                                         End If
-                                    End If
 
-                                    If (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "right") Then
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "top") Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "back") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "bottom") Or (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "back") Then
+                                        If GPCFrontTop(LineTmp.StartPoint, LineTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(3)) = 1 Then
+                                            count2loop = count2loop + 1
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "right") Then
                                         If GPCTopRight(LineTmp.StartPoint, LineTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
                                                        ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
                                                        ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
                                             count2loop = count2loop + 1
                                         End If
-                                    End If
 
-                                    If (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "top") Then
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "top") Then
                                         If GPCTopRight(LineTmp2.StartPoint, LineTmp2.EndPoint, LineTmp.StartPoint, LineTmp.EndPoint, _
-                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(2), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1), _
                                                        ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 1
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "right") Then
+                                        If GPCTopRight(LineTmp.StartPoint, LineTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(3), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 1
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "bottom") Then
+                                        If GPCTopRight(LineTmp2.StartPoint, LineTmp2.EndPoint, LineTmp.StartPoint, LineTmp.EndPoint, _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1), _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(3)) = 1 Then
                                             count2loop = count2loop + 1
                                         End If
                                     End If
@@ -591,44 +612,126 @@ Public Class ViewProcessor
                                 ElseIf TypeOf EntityTmp Is Arc Then
                                     ArcTmp = New Arc
                                     ArcTmp = EntityTmp
-                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "right") _
-                                    Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "front") Then
+
+                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "right") Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "left") Or (ListView(ViewNum).ViewType.ToLower = "left" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "back") Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "right") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "left") Or (ListView(ViewNum).ViewType.ToLower = "left" And ListView(j).ViewType.ToLower = "back") Then
                                         If GPCFrontRight(ArcTmp.StartPoint, ArcTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
                                                          ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
                                                          ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 2 Then
                                             count2loop = count2loop + 0.5
                                         End If
-                                    End If
 
-                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "top") _
-                                    Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "front") Then
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "top") Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "bottom") Or (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "front") Then
                                         If GPCFrontTop(ArcTmp.StartPoint, ArcTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
                                                        ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
                                                        ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 2 Then
                                             count2loop = count2loop + 0.5
                                         End If
-                                    End If
 
-                                    If (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "right") _
-                                    Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "top") Then
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "top") Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "back") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "bottom") Or (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "back") Then
+                                        If GPCFrontTop(ArcTmp.StartPoint, ArcTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(3)) = 1 Then
+                                            count2loop = count2loop + 1
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "right") Then
                                         If GPCTopRight(ArcTmp.StartPoint, ArcTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
                                                        ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
                                                        ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 2 Then
                                             count2loop = count2loop + 0.5
                                         End If
-                                    End If
 
-                                    If (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "top") Then
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "top") Then
                                         If GPCTopRight(LineTmp2.StartPoint, LineTmp2.EndPoint, ArcTmp.StartPoint, ArcTmp.EndPoint, _
                                                        ListView(j).BoundProp(0), ListView(j).BoundProp(2), _
                                                        ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1)) = 2 Then
                                             count2loop = count2loop + 0.5
                                         End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "right") Then
+                                        If GPCTopRight(ArcTmp.StartPoint, ArcTmp.EndPoint, LineTmp2.StartPoint, LineTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(3), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 1
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "bottom") Then
+                                        If GPCTopRight(LineTmp2.StartPoint, LineTmp2.EndPoint, ArcTmp.StartPoint, ArcTmp.EndPoint, _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1), _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(3)) = 1 Then
+                                            count2loop = count2loop + 1
+                                        End If
                                     End If
                                 End If
-                            Else
-                                Exit For
-                            End If
+
+                            ElseIf TypeOf EntityTmp2 Is Arc Then
+                                ArcTmp2 = New Arc
+                                ArcTmp2 = EntityTmp2
+
+                                If TypeOf EntityTmp Is Line Then
+                                    LineTmp = New Line
+                                    LineTmp = EntityTmp
+                                    If (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "right") Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "left") Or (ListView(ViewNum).ViewType.ToLower = "left" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "back") Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "right") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "left") Or (ListView(ViewNum).ViewType.ToLower = "left" And ListView(j).ViewType.ToLower = "back") Then
+                                        If GPCFrontRight(LineTmp.StartPoint, LineTmp.EndPoint, ArcTmp2.StartPoint, ArcTmp2.EndPoint, _
+                                                         ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
+                                                         ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "top") Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "front") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "front" And ListView(j).ViewType.ToLower = "bottom") Or (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "front") Then
+                                        If GPCFrontTop(LineTmp.StartPoint, LineTmp.EndPoint, ArcTmp2.StartPoint, ArcTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "top") Or (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "back") _
+                                     Or (ListView(ViewNum).ViewType.ToLower = "back" And ListView(j).ViewType.ToLower = "bottom") Or (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "back") Then
+                                        If GPCFrontTop(LineTmp.StartPoint, LineTmp.EndPoint, ArcTmp2.StartPoint, ArcTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(3)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "top" And ListView(j).ViewType.ToLower = "right") Then
+                                        If GPCTopRight(LineTmp.StartPoint, LineTmp.EndPoint, ArcTmp2.StartPoint, ArcTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "top") Then
+                                        If GPCTopRight(ArcTmp2.StartPoint, ArcTmp2.EndPoint, LineTmp.StartPoint, LineTmp.EndPoint, _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1), _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "bottom" And ListView(j).ViewType.ToLower = "right") Then
+                                        If GPCTopRight(LineTmp.StartPoint, LineTmp.EndPoint, ArcTmp2.StartPoint, ArcTmp2.EndPoint, _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(3), _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+
+                                    ElseIf (ListView(ViewNum).ViewType.ToLower = "right" And ListView(j).ViewType.ToLower = "bottom") Then
+                                        If GPCTopRight(ArcTmp2.StartPoint, ArcTmp2.EndPoint, LineTmp.StartPoint, LineTmp.EndPoint, _
+                                                       ListView(j).BoundProp(0), ListView(j).BoundProp(1), _
+                                                       ListView(ViewNum).BoundProp(0), ListView(ViewNum).BoundProp(3)) = 1 Then
+                                            count2loop = count2loop + 0.5
+                                        End If
+                                    End If
+                                End If
+                                End If
                         Next
                     Next
 
@@ -664,7 +767,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Square Slot"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HLReference = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
@@ -761,7 +868,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Square Slot"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HLCorresponding = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
@@ -832,8 +943,10 @@ Public Class ViewProcessor
 
 
                             'rule-based for square step features
-                        ElseIf SLReference = 4 And SLBReference = 3 And SAReference = 0 And SLCorresponding = 2 _
-                               And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 2 Then
+                        ElseIf (SLReference = 4 And SLBReference = 3 And HLReference = 0 And VLReference = 0 _
+                                And SLCorresponding = 2 And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 2) _
+                               Or (SLReference = 3 And SLBReference = 3 And HLReference = 1 And VLReference = 0 _
+                                   And SLCorresponding = 2 And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 2) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                             Dim Orientation As String = Nothing
                             Dim StatD3Step As Boolean
@@ -856,7 +969,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Square Step"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HLReference = 1 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
@@ -940,8 +1057,10 @@ Public Class ViewProcessor
 
 
                             'rule-based for square step features alt 
-                        ElseIf SLReference = 2 And SLBReference = 0 And SAReference = 0 And VLReference = 2 _
-                        And SLCorresponding = 4 And SLBCorresponding = 3 And HLCorresponding = 0 And VLCorresponding = 0 Then
+                        ElseIf (SLReference = 2 And SLBReference = 0 And HLReference = 0 And VLReference = 2 _
+                                And SLCorresponding = 4 And SLBCorresponding = 3 And HLCorresponding = 0 And VLCorresponding = 0) _
+                               Or (SLReference = 2 And SLBReference = 0 And HLReference = 0 And VLReference = 2 _
+                                   And SLCorresponding = 3 And SLBCorresponding = 3 And HLCorresponding = 1 And VLCorresponding = 0) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                             Dim Orientation As String = Nothing
                             Dim StatD3Step As Boolean
@@ -964,7 +1083,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Square Step"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HLCorresponding = 1 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
@@ -1050,7 +1173,9 @@ Public Class ViewProcessor
                         ElseIf (SLReference = 4 And SLBReference = 0 And SAReference = 4 And SLCorresponding = 1 _
                                And SLBCorresponding = 1 And HLCorresponding = 3 And VLCorresponding = 0) Or _
                                (SLReference = 4 And SLBReference = 0 And SAReference = 4 And SLCorresponding = 2 _
-                               And SLBCorresponding = 2 And HLCorresponding = 2 And VLCorresponding = 0) Then
+                               And SLBCorresponding = 2 And HLCorresponding = 2 And VLCorresponding = 0) Or _
+                               (SLReference = 0 And SLBReference = 0 And HAReference = 4 And HLReference = 4 _
+                               And SLCorresponding = 1 And SLBCorresponding = 1 And HACorresponding = 0 And HLCorresponding = 3) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, D2Temp, AngleTmp As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1075,7 +1200,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "4-side Pocket"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HAReference = 4 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, D4, Angle
                             PolygonProcessor = New PolygonProcessor
@@ -1156,7 +1285,9 @@ Public Class ViewProcessor
                         ElseIf (SLReference = 1 And SLBReference = 1 And SAReference = 0 And HLReference = 3 _
                                 And SLCorresponding = 4 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0) Or _
                                (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 _
-                                And SLCorresponding = 4 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0) Then
+                                And SLCorresponding = 4 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0) Or _
+                                (SLReference = 1 And SLBReference = 1 And HAReference = 0 And HLReference = 3 _
+                               And SLCorresponding = 0 And SLBCorresponding = 0 And HACorresponding = 4 And HLCorresponding = 4) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, D2Temp, AngleTmp As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1181,7 +1312,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "4-side Pocket"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HACorresponding = 4 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, D4, Angle
                             PolygonProcessor = New PolygonProcessor
@@ -1259,8 +1394,14 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for 3-side pocket features main
-                        ElseIf SLReference = 4 And SLBReference = 1 And SAReference = 2 _
-                        And SLCorresponding = 4 And SLBCorresponding = 1 And SACorresponding = 0 Then
+                        ElseIf (SLReference = 4 And SLBReference = 1 And SAReference = 2 _
+                        And SLCorresponding = 4 And SLBCorresponding = 1 And SACorresponding = 0) Or _
+                        (SLReference = 4 And SLBReference = 1 And SAReference = 2 And HLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And SACorresponding = 0 And HLCorresponding = 2) Or _
+                        (SLReference = 1 And SLBReference = 1 And HAReference = 2 And HLReference = 3 _
+                        And SLCorresponding = 4 And SLBCorresponding = 1 And HACorresponding = 0 And HLCorresponding = 0) Or _
+                        (SLReference = 1 And SLBReference = 1 And HAReference = 2 And HLReference = 3 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And HACorresponding = 0 And HLCorresponding = 2) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1276,7 +1417,12 @@ Public Class ViewProcessor
                             ListLoopTemp = New List(Of List(Of Entity))
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HAReference = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
+
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp1 As Entity In GroupEntity
@@ -1363,8 +1509,14 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for 3-side pocket features alt
-                        ElseIf SLReference = 4 And SLBReference = 1 And SAReference = 0 _
-                        And SLCorresponding = 4 And SLBCorresponding = 1 And SACorresponding = 2 Then
+                        ElseIf (SLReference = 4 And SLBReference = 1 And SAReference = 0 _
+                        And SLCorresponding = 4 And SLBCorresponding = 1 And SACorresponding = 2) Or _
+                        (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 _
+                        And SLCorresponding = 4 And SLBCorresponding = 1 And SACorresponding = 2 And HLCorresponding = 0) Or _
+                        (SLReference = 4 And SLBReference = 1 And HAReference = 0 And HLReference = 0 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HACorresponding = 2 And HLCorresponding = 3) Or _
+                        (SLReference = 2 And SLBReference = 2 And HAReference = 0 And HLReference = 2 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HACorresponding = 2 And HLCorresponding = 3) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1380,7 +1532,11 @@ Public Class ViewProcessor
                             ListLoopTemp = New List(Of List(Of Entity))
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HACorresponding = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp1 As Entity In GroupEntity
@@ -1467,8 +1623,14 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for 2-side pocket features main
-                        ElseIf SLReference = 4 And SLBReference = 2 And SAReference = 1 _
-                        And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 0 Then
+                        ElseIf (SLReference = 4 And SLBReference = 2 And SAReference = 1 _
+                        And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 0) Or _
+                        (SLReference = 4 And SLBReference = 2 And SAReference = 1 And HLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And SACorresponding = 0 And HLCorresponding = 2) Or _
+                        (SLReference = 2 And SLBReference = 2 And HAReference = 1 And HLReference = 2 _
+                        And SLCorresponding = 4 And SLBCorresponding = 2 And HACorresponding = 0 And HLCorresponding = 0) Or _
+                        (SLReference = 2 And SLBReference = 2 And HAReference = 1 And HLReference = 2 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And HACorresponding = 0 And HLCorresponding = 2) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, DimPos1, DimPos2, D3H, D3V As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1493,7 +1655,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "2-side Pocket"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HAReference = 1 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp As Entity In GroupEntity
@@ -1656,8 +1822,14 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for 2-side pocket features alt
-                        ElseIf SLReference = 4 And SLBReference = 2 And SAReference = 0 _
-                        And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 1 Then
+                        ElseIf (SLReference = 4 And SLBReference = 2 And SAReference = 0 _
+                        And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 1) Or _
+                        (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 _
+                        And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 1 And HLCorresponding = 0) Or _
+                        (SLReference = 4 And SLBReference = 2 And HAReference = 0 And HLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And HACorresponding = 1 And HLCorresponding = 2) Or _
+                        (SLReference = 2 And SLBReference = 2 And HAReference = 0 And HLReference = 2 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And HACorresponding = 1 And HLCorresponding = 2) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, DimPos1, DimPos2, D3H, D3V As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1682,7 +1854,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "2-side Pocket"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HACorresponding = 1 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp As Entity In GroupEntity
@@ -1845,8 +2021,12 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for long hole feature main
-                        ElseIf SLReference = 2 And SLBReference = 0 And SAReference = 4 And HLReference = 0 _
-                        And SLCorresponding = 1 And SLBCorresponding = 1 And SACorresponding = 0 And HLCorresponding = 3 Then
+                        ElseIf (SLReference = 2 And SLBReference = 0 And SAReference = 4 And HLReference = 0 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And SACorresponding = 0 And HLCorresponding = 3) Or _
+                        (SLReference = 2 And SLBReference = 0 And SAReference = 4 And HLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And SACorresponding = 0 And HLCorresponding = 2) Or _
+                        (SLReference = 0 And SLBReference = 0 And HAReference = 2 And HLReference = 2 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HACorresponding = 0 And HLCorresponding = 3) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1870,7 +2050,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Long Hole"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HLReference = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, Angle
                             PolygonProcessor = New PolygonProcessor
@@ -1935,8 +2119,12 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for long hole feature alt
-                        ElseIf SLReference = 1 And SLBReference = 1 And SAReference = 0 And HLReference = 3 _
-                        And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0 Then
+                        ElseIf (SLReference = 1 And SLBReference = 1 And SAReference = 0 And HLReference = 3 _
+                        And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0) Or _
+                        (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 _
+                        And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0) Or _
+                        (SLReference = 1 And SLBReference = 1 And HAReference = 0 And HLReference = 3 _
+                        And SLCorresponding = 0 And SLBCorresponding = 0 And HACorresponding = 2 And HLCorresponding = 2) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -1960,7 +2148,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Long Hole"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HLCorresponding = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2, Angle
                             PolygonProcessor = New PolygonProcessor
@@ -2025,8 +2217,24 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for blind slot features main
-                        ElseIf SLReference = 3 And SLBReference = 1 And SAReference = 2 And VLReference = 0 _
-                        And SLCorresponding = 3 And SLBCorresponding = 0 And SACorresponding = 0 And VLCorresponding = 1 Then
+                        ElseIf (SLReference = 3 And SLBReference = 1 And SAReference = 1 _
+                        And SLCorresponding = 4 And SLBCorresponding = 1 And SACorresponding = 0) Or _
+                        (SLReference = 3 And SLBReference = 1 And SAReference = 1 And HLReference = 0 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And SACorresponding = 0 And HLCorresponding = 3) Or _
+                        (SLReference = 3 And SLBReference = 1 And SAReference = 1 And HLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And SACorresponding = 0 And HLCorresponding = 2) Or _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 1 And HAReference = 2 _
+                        And SLCorresponding = 4 And SLBCorresponding = 1 And HLCorresponding = 0 And HACorresponding = 0) Or _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 1 And HAReference = 2 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 3 And HACorresponding = 0) Or _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 1 And HAReference = 2 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And HLCorresponding = 2 And HACorresponding = 0) Or _
+                        (SLReference = 2 And SLBReference = 0 And SAReference = 1 And VLReference = 1 _
+                        And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 0 And VLCorresponding = 0) Or _
+                        (SLReference = 2 And SLBReference = 0 And SAReference = 1 And HLReference = 0 And VLReference = 1 _
+                        And SLCorresponding = 2 And SLBCorresponding = 2 And SACorresponding = 0 And HLCorresponding = 2 And VLCorresponding = 0) Or _
+                        (SLReference = 2 And SLBReference = 0 And SAReference = 1 And HLReference = 0 And VLReference = 1 _
+                        And SLCorresponding = 3 And SLBCorresponding = 3 And SACorresponding = 0 And HLCorresponding = 1 And VLCorresponding = 0) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, TempRad As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -2049,7 +2257,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Blind Slot"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            If HLReference = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
@@ -2129,8 +2341,24 @@ Public Class ViewProcessor
                             Exit For
 
                             'rule-based for blind slot features alt
-                        ElseIf SLReference = 3 And SLBReference = 0 And SAReference = 0 And VLReference = 1 _
-                        And SLCorresponding = 3 And SLBCorresponding = 1 And SACorresponding = 2 And VLCorresponding = 0 Then
+                        ElseIf (SLReference = 4 And SLBReference = 1 And SAReference = 0 _
+                        And SLCorresponding = 3 And SLBCorresponding = 1 And SACorresponding = 1) Or _
+                        (SLReference = 1 And SLBReference = 1 And SAReference = 0 And HLReference = 3 _
+                        And SLCorresponding = 3 And SLBCorresponding = 1 And SACorresponding = 1 And HLCorresponding = 0) Or _
+                        (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 _
+                        And SLCorresponding = 3 And SLBCorresponding = 1 And SACorresponding = 1 And HLCorresponding = 0) Or _
+                        (SLReference = 4 And SLBReference = 1 And HLReference = 0 And HAReference = 0 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 1 And HACorresponding = 2) Or _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 3 And HAReference = 0 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 1 And HACorresponding = 2) Or _
+                        (SLReference = 2 And SLBReference = 2 And HLReference = 2 And HAReference = 0 _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 1 And HACorresponding = 2) Or _
+                        (SLReference = 4 And SLBReference = 2 And SAReference = 0 And VLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 1 And VLCorresponding = 1) Or _
+                        (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 And VLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 1 And HLCorresponding = 0 And VLCorresponding = 1) Or _
+                        (SLReference = 3 And SLBReference = 3 And SAReference = 0 And HLReference = 1 And VLReference = 0 _
+                        And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 1 And HLCorresponding = 0 And VLCorresponding = 1) Then
                             Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, TempRad As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
@@ -2153,7 +2381,11 @@ Public Class ViewProcessor
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "Blind Slot"
                             Feature.ListLoop = ListLoopTemp
-                            Feature.MiscProp(1) = ListView(j).ViewType
+                            If HLReference = 2 Then
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                            Else
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
 
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
@@ -2460,6 +2692,7 @@ Public Class ViewProcessor
 
         Return 0
     End Function
+
     'checking whether if the lines are the same one to know whether the loops are corresponded or not (Top-Right Constraint)
     Private Function GPCTopRight(ByVal StartPoint1 As Point3d, ByVal EndPoint1 As Point3d, _
                                  ByVal StartPoint2 As Point3d, ByVal EndPoint2 As Point3d, _
@@ -2488,5 +2721,25 @@ Public Class ViewProcessor
 
         List.Rows.Add(NewRow)
     End Sub
+
+    'search the surface if the linetype is define as a hidden line type
+    Private Function SearchOppositeSurf(ByVal Surface As String) As String
+        Select Case Surface.ToLower
+            Case "front"
+                Return "BACK"
+            Case "back"
+                Return "FRONT"
+            Case "top"
+                Return "BOTTOM"
+            Case "bottom"
+                Return "TOP"
+            Case "left"
+                Return "RIGHT"
+            Case "right"
+                Return "LEFT"
+            Case Else
+                Return Nothing
+        End Select
+    End Function
 
 End Class
