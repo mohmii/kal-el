@@ -151,7 +151,7 @@ Public Class ViewProp
     End Property
 
     'list of features
-    Private Features As List(Of OutputFormat)
+    Private Features As New List(Of OutputFormat)
 
     'get single feature
     Public Overloads Function GetFeature(ByVal index As Integer) As OutputFormat
