@@ -1172,14 +1172,11 @@ Public Class UserControl3
         Dim SurfaceColumn As New System.Data.DataColumn("Surface", GetType(String))
         Dim BinerColumn As New System.Data.DataColumn("Biner", GetType(String))
         Dim ObjectColumn As New System.Data.DataColumn("Object", GetType(OutputFormat))
-        Dim IdColumn As New System.Data.DataColumn("Id", GetType(Object))
-
-        List.Columns.AddRange(New System.Data.DataColumn() {StatusColumn, NameColumn, SurfaceColumn, BinerColumn, ObjectColumn, IdColumn})
+        List.Columns.AddRange(New System.Data.DataColumn() {StatusColumn, NameColumn, SurfaceColumn, BinerColumn, ObjectColumn})
         Table.DataSource = List
 
         Table.Columns("Biner").Visible = False
         Table.Columns("Object").Visible = False
-        Table.Columns("Id").Visible = False
     End Sub
 
     Private InitialFeature As OutputFormat
