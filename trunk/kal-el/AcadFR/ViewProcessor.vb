@@ -519,7 +519,8 @@ Public Class ViewProcessor
                         HLReference, SAReference, HAReference, SeqBound, SeqHid)
 
             'For Each ViewTmp As ViewProp In ListView
-            For j As Integer = ViewNum + 1 To ListView.Count - 1
+            'For j As Integer = ViewNum + 1 To ListView.Count - 1
+            For j As Integer = 0 To ListView.Count - 2
                 'If IsNothing(ViewTmp.ViewTag) Then
                 For Each GroupEntity2 As List(Of Entity) In ListView(j).GroupLoop
                     count2loop = New Single
@@ -708,7 +709,7 @@ Public Class ViewProcessor
                                         End If
                                     End If
                                 End If
-                                End If
+                            End If
                         Next
                     Next
 
@@ -786,8 +787,8 @@ Public Class ViewProcessor
                                 For Each LineBB As Line In ListView(j).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -852,7 +853,7 @@ Public Class ViewProcessor
                             End If
 
                             'add Orientation, Origin, D1, D2
-                            For Each EntityTmp As Entity In GroupEntity
+                            For Each EntityTmp As Entity In GroupEntity2
                                 TmpLine = New Line
                                 TmpLine = EntityTmp
                                 StatOnBound = New Boolean
@@ -881,14 +882,14 @@ Public Class ViewProcessor
                             Next
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -996,8 +997,8 @@ Public Class ViewProcessor
                                 For Each LineBB As Line In ListView(j).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         If StatD3Step = False Then
                                             D3 = Round(LineLength(TmpLine), 3)
                                             StatD3Step = True
@@ -1067,7 +1068,7 @@ Public Class ViewProcessor
                             End If
 
                             'add Orientation, Origin, D1, D2
-                            For Each EntityTmp As Entity In GroupEntity
+                            For Each EntityTmp As Entity In GroupEntity2
                                 TmpLine = New Line
                                 TmpLine = EntityTmp
                                 For Each LineBB As Line In ListView(j).BoundingBox
@@ -1103,15 +1104,15 @@ Public Class ViewProcessor
                             Next
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 StatD3Step = New Boolean
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         If StatD3Step = False Then
                                             D3 = Round(LineLength(TmpLine), 3)
                                             StatD3Step = True
@@ -1227,8 +1228,8 @@ Public Class ViewProcessor
                                 For Each LineBB As Line In ListView(j).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -1297,7 +1298,7 @@ Public Class ViewProcessor
 
                             'add Orientation, Origin, D1, D2, D4, Angle
                             PolygonProcessor = New PolygonProcessor
-                            For Each EntityTmp As Entity In GroupEntity
+                            For Each EntityTmp As Entity In GroupEntity2
                                 If TypeOf EntityTmp Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp
@@ -1333,14 +1334,14 @@ Public Class ViewProcessor
                             Angle = AngleTmp
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -1423,9 +1424,9 @@ Public Class ViewProcessor
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                                            (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) And D2 = 0 Then
                                             D2 = Round(LineLength(TmpLine), 3)
                                             Exit For
                                         End If
@@ -1447,8 +1448,8 @@ Public Class ViewProcessor
                                 For Each LineBB As Line In ListView(j).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -1516,7 +1517,7 @@ Public Class ViewProcessor
                             End If
 
                             'add Orientation, Origin, D1, D2, D4
-                            For Each EntityTmp1 As Entity In GroupEntity
+                            For Each EntityTmp1 As Entity In GroupEntity2
                                 If TypeOf EntityTmp1 Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp1
@@ -1537,9 +1538,9 @@ Public Class ViewProcessor
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                                            (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) And D2 = 0 Then
                                             D2 = Round(LineLength(TmpLine), 3)
                                             Exit For
                                         End If
@@ -1555,14 +1556,14 @@ Public Class ViewProcessor
                             D2 = D2 + D4
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -1838,7 +1839,7 @@ Public Class ViewProcessor
                             End If
 
                             'add Orientation, Origin, D1, D2, D4
-                            For Each EntityTmp As Entity In GroupEntity
+                            For Each EntityTmp As Entity In GroupEntity2
                                 If TypeOf EntityTmp Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp
@@ -1935,7 +1936,7 @@ Public Class ViewProcessor
                             End If
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
@@ -2064,8 +2065,8 @@ Public Class ViewProcessor
                                 For Each LineBB As Line In ListView(j).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -2133,7 +2134,7 @@ Public Class ViewProcessor
 
                             'add Orientation, Origin, D1, D2, Angle
                             PolygonProcessor = New PolygonProcessor
-                            For Each EntityTmp As Entity In GroupEntity
+                            For Each EntityTmp As Entity In GroupEntity2
                                 If TypeOf EntityTmp Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp
@@ -2156,14 +2157,14 @@ Public Class ViewProcessor
                             OriV = Origin.Y - ListView(j).BoundProp(1)
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -2263,8 +2264,8 @@ Public Class ViewProcessor
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                             PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) And D2 = 0 Then
                                             D2 = Round(LineLength(TmpLine), 3)
                                             Exit For
                                         End If
@@ -2286,8 +2287,8 @@ Public Class ViewProcessor
                                 For Each LineBB As Line In ListView(j).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
@@ -2365,7 +2366,7 @@ Public Class ViewProcessor
                             End If
 
                             'add Orientation, Origin, D1, D2
-                            For Each EntityTmp As Entity In GroupEntity
+                            For Each EntityTmp As Entity In GroupEntity2
                                 If TypeOf EntityTmp Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp
@@ -2387,8 +2388,8 @@ Public Class ViewProcessor
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                             PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) And D2 = 0 Then
                                             D2 = Round(LineLength(TmpLine), 3)
                                             Exit For
                                         End If
@@ -2404,14 +2405,14 @@ Public Class ViewProcessor
                             D2 = D2 + TempRad
 
                             'add D3
-                            For Each EntityTmp2 As Entity In GroupEntity2
+                            For Each EntityTmp2 As Entity In GroupEntity
                                 TmpLine = New Line
                                 TmpLine = EntityTmp2
                                 For Each LineBB As Line In ListView(ViewNum).BoundingBox
                                     If (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                     PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                                    (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                    PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Then
                                         D3 = Round(LineLength(TmpLine), 3)
                                         Exit For
                                     End If
