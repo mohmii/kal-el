@@ -242,12 +242,13 @@ Public Class UserControl3
     End Sub
 
     'method for highlighting the selected entities
-    Private Sub HighlightEntity(ByVal FeatureListId As List(Of ObjectId), _
+    Private Sub HighlightEntity(ByVal FeatureList As OutputFormat, _
                                 ByVal BlockTableRecInstances As BlockTableRecord, _
                                 ByVal PastEntColor As List(Of InitialColor))
 
         Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-
+        Dim FeatureListId As List(Of ObjectId)
+        FeatureListId = FeatureList.ObjectId
         'create loop checking for each element in selected item
         For Each ObjectIdTmp As ObjectId In FeatureListId
 
@@ -266,7 +267,12 @@ Public Class UserControl3
                     PastEntColor.Add(EntityColor)
 
                     'change the color and the lineweight for making the highlights
-                    Entity.Color = Color.FromColorIndex(ColorMethod.ByColor, 10)
+                    Select Case FeatureList.FeatureName.ToLower
+                        Case "mill candidate", "square slot", "square step", "4-side pocket", "3-side pocket", "2-side pocket", "long hole", "blind slot", "other feature", "not a feature"
+                            Entity.Color = Color.FromColorIndex(ColorMethod.ByColor, 30)
+                        Case Else
+                            Entity.Color = Color.FromColorIndex(ColorMethod.ByColor, 10)
+                    End Select
 
                     'save the changed entity id
                     TempId = Entity.Id.ToString
@@ -274,7 +280,7 @@ Public Class UserControl3
                 End If
             Next
         Next
-        
+
         'ed.WriteMessage(" *")
     End Sub
 
@@ -359,35 +365,56 @@ Public Class UserControl3
         End If
     End Sub
 
-    Private Sub SetUpFeatureName(ByVal SelectedIndex As Integer, ByRef EngFeatureName As String, ByRef JapsFeatureName As String)
-        Select Case SelectedIndex
-            Case 0
+    Private Sub SetUpFeatureName(ByVal FeatureText As String, ByRef EngFeatureName As String, ByRef JapsFeatureName As String)
+        Select Case FeatureText
+            Case "タップ穴"
                 EngFeatureName = "Tap"
                 JapsFeatureName = "タップ穴"
-            Case 1
+            Case "ＰＴタップ穴"
                 EngFeatureName = "Tap, PT"
                 JapsFeatureName = "ＰＴタップ穴"
-            Case 2
+            Case "リーマ穴"
                 EngFeatureName = "Ream"
                 JapsFeatureName = "リーマ穴"
-            Case 3
+            Case "ドリル穴"
                 EngFeatureName = "Drill"
                 JapsFeatureName = "ドリル穴"
-            Case 4
+            Case "底付き穴"
                 EngFeatureName = "BlindBore"
                 JapsFeatureName = "底付き穴"
-            Case 5
+            Case "貫通穴"
                 EngFeatureName = "ThroughBore"
                 JapsFeatureName = "貫通穴"
-            Case 6
+            Case "段付きボルト穴"
                 EngFeatureName = "SunkBolt"
                 JapsFeatureName = "段付きボルト穴"
-            Case 7
+            Case "円形溝"
                 EngFeatureName = "Ring"
                 JapsFeatureName = "円形溝"
-            Case 8
+            Case "ボーリング穴"
                 EngFeatureName = "Boring"
-                JapsFeatureName = ""
+                JapsFeatureName = "ボーリング穴"
+            Case "Square Slot"
+                EngFeatureName = "Square Slot"
+                JapsFeatureName = "Square Slot"
+            Case "Square Step"
+                EngFeatureName = "Square Step"
+                JapsFeatureName = "Square Step"
+            Case "4-side Pocket"
+                EngFeatureName = "4-side Pocket"
+                JapsFeatureName = "4-side Pocket"
+            Case "3-side Pocket"
+                EngFeatureName = "3-side Pocket"
+                JapsFeatureName = "3-side Pocket"
+            Case "2-side Pocket"
+                EngFeatureName = "2-side Pocket"
+                JapsFeatureName = "2-side Pocket"
+            Case "Long Hole"
+                EngFeatureName = "Long Hole"
+                JapsFeatureName = "Long Hole"
+            Case "Blind Slot"
+                EngFeatureName = "Blind Slot"
+                JapsFeatureName = "Blind Slot"
         End Select
 
         If Me.ComboBox3.Enabled = True Then
@@ -475,8 +502,8 @@ Public Class UserControl3
     Private Sub ComboBox1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectionChangeCommitted
         ComboBox3.Enabled = False
         ComboBox3.Items.Clear()
-        Select Case ComboBox1.SelectedIndex
-            Case 0, 1, 2, 6
+        Select Case ComboBox1.SelectedItem.ToString
+            Case "タップ穴", "ＰＴタップ穴", "リーマ穴", "段付きボルト穴" 'selected index 0,1,2,6
                 ComboBox3.Enabled = True
                 SearchSM(ComboBox1.SelectedIndex)
             Case Else
@@ -636,6 +663,7 @@ Public Class UserControl3
             If SelectedIF.Count = 1 Then
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
+                FillComboBox1(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
@@ -672,7 +700,7 @@ Public Class UserControl3
 
                             For Each SelectedFeature As OutputFormat In SelectedIF
                                 'highlight the current selected entities
-                                HighlightEntity(SelectedFeature.ObjectId, AcadConnection.btr, PastEntityColor)
+                                HighlightEntity(SelectedFeature, AcadConnection.btr, PastEntityColor)
                             Next
 
                             'committing the autocad transaction
@@ -726,17 +754,7 @@ Public Class UserControl3
             If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") And SelectedUF.Count = 1 Then
                 SingleView(SelectedUF)
             ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) And SelectedUF.Count = 1 Then
-                Me.ComboBox1.Items.Clear()
-                Me.ComboBox1.Items.Add("タップ穴")
-                Me.ComboBox1.Items.Add("ＰＴタップ穴")
-                Me.ComboBox1.Items.Add("リーマ穴")
-                Me.ComboBox1.Items.Add("ドリル穴")
-                Me.ComboBox1.Items.Add("底付き穴")
-                Me.ComboBox1.Items.Add("貫通穴")
-                Me.ComboBox1.Items.Add("段付きボルト穴")
-                Me.ComboBox1.Items.Add("円形溝")
-                Me.ComboBox1.Items.Add("段付きボルト穴")
-                Me.ComboBox1.Items.Add("ボーリング穴")
+                FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
             End If
 
             Try
@@ -770,7 +788,7 @@ Public Class UserControl3
                             PastEntityColor2 = New List(Of InitialColor)
 
                             For Each SelectedFeature As OutputFormat In SelectedUF
-                                HighlightEntity(SelectedFeature.ObjectId, AcadConnection.btr, PastEntityColor2)
+                                HighlightEntity(SelectedFeature, AcadConnection.btr, PastEntityColor2)
                             Next
 
                             'committing the autocad transaction
@@ -977,7 +995,7 @@ Public Class UserControl3
 
     Private Sub Update1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Update1.Click
         Try
-            If CheckEditingStatus(Me.ComboBox1.SelectedIndex) = True Then
+            If CheckEditingStatus(Me.ComboBox1.SelectedItem.ToString) = True Then
                 If Me.Label16.Text <> "0" Then
                     StartUpdate(Me.IdentifiedFeature)
                 ElseIf Me.Label17.Text <> "0" Then
@@ -990,15 +1008,14 @@ Public Class UserControl3
         End Try
     End Sub
 
-    Private Function CheckEditingStatus(ByVal FeatureIndex As Integer) As Boolean
+    Private Function CheckEditingStatus(ByVal FeatureText As String) As Boolean
         Dim EngName, JapName As String
 
         EngName = ""
         JapName = ""
-        SetUpFeatureName(FeatureIndex, EngName, JapName)
+        SetUpFeatureName(FeatureText, EngName, JapName)
 
         If EngName.Equals("Tap") Or EngName.Equals("Tap, PT") Then
-
             If Me.NumericUpDown7.Value > Me.NumericUpDown9.Value Then 'D1 > D3
                 If Me.NumericUpDown8.Value < Me.NumericUpDown10.Value Then 'D2 < D4
                     Return True
@@ -1063,6 +1080,48 @@ Public Class UserControl3
                 Return False
             End If
         End If
+
+        If EngName.Equals("Square Slot") Or EngName.Equals("Square Step") Or EngName.Equals("Blind Slot") Or EngName.Equals("Long Hole") Then
+            If Me.NumericUpDown7.Value > 0 And Me.NumericUpDown8.Value > 0 And Me.NumericUpDown9.Value > 0 Then 'D1,D2,D3 > 0
+                If Me.NumericUpDown10.Value = 0 Then 'D4 <= 0
+                    Return True
+                Else
+                    MsgBox("D4 value should be 0", MsgBoxStyle.Exclamation)
+                    Me.NumericUpDown10.Focus()
+                    Return False
+                End If
+            Else
+                MsgBox("D1, D2, D3 value should be filled", MsgBoxStyle.Exclamation)
+                Me.NumericUpDown7.Focus()
+                Return False
+            End If
+
+            If (EngName.Equals("Square Slot") Or EngName.Equals("Square Step") Or EngName.Equals("Blind Slot")) And Me.NumericUpDown11.Value = 0 Then
+                Return True
+            Else
+                MsgBox("Angle value should be 0", MsgBoxStyle.Exclamation)
+                Me.NumericUpDown7.Focus()
+                Return False
+            End If
+        End If
+
+        If EngName.Equals("2-side Pocket") Or EngName.Equals("3-side Pocket") Or EngName.Equals("4-side Pocket") Then
+            If Me.NumericUpDown7.Value > 0 And Me.NumericUpDown8.Value > 0 And Me.NumericUpDown9.Value > 0 And Me.NumericUpDown10.Value > 0 Then 'D1,D2,D3,D4 > 0
+                Return True
+            Else
+                MsgBox("D1, D2, D3, D4 value should be filled", MsgBoxStyle.Exclamation)
+                Me.NumericUpDown7.Focus()
+                Return False
+            End If
+
+            If (EngName.Equals("2-side Pocket") Or EngName.Equals("3-side Pocket")) And Me.NumericUpDown11.Value = 0 Then
+                Return True
+            Else
+                MsgBox("Angle value should be 0", MsgBoxStyle.Exclamation)
+                Me.NumericUpDown11.Focus()
+                Return False
+            End If
+        End If
     End Function
 
     Private Feature2Update As OutputFormat
@@ -1081,7 +1140,7 @@ Public Class UserControl3
             NewUpdatedFeature = New OutputFormat    'set new field for the new machining parameter
 
             'get all the new machining parameters
-            SetUpFeatureName(Me.ComboBox1.SelectedIndex, NewUpdatedFeature.FeatureName, NewUpdatedFeature.MiscProp(0))
+            SetUpFeatureName(Me.ComboBox1.SelectedItem.ToString, NewUpdatedFeature.FeatureName, NewUpdatedFeature.MiscProp(0))
             NewUpdatedFeature.MiscProp(1) = Me.ComboBox2.SelectedItem 'surface
             NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
             NewUpdatedFeature.MiscProp(3) = Me.NumericUpDown5.Value 'chamfer
@@ -1112,7 +1171,7 @@ Public Class UserControl3
 
             Table2Check.Rows(RowIndex(i)).Cells("Object").Value = NewUpdatedFeature
 
-            If ComboBox3.Enabled = False Then
+            If Me.ComboBox3.Enabled = False Then
                 Table2Check.Rows(RowIndex(i)).Cells("Name").Value = Me.ComboBox1.Text
             Else
                 Table2Check.Rows(RowIndex(i)).Cells("Name").Value = Me.ComboBox1.Text + ", " + Me.ComboBox3.Text
@@ -1221,28 +1280,84 @@ Public Class UserControl3
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
-        FindTheirPicture(Me.ComboBox1.SelectedIndex)
+        FindTheirPicture(Me.ComboBox1.SelectedItem.ToString)
     End Sub
 
-    Private Sub FindTheirPicture(ByVal FeatureIndex As Integer)
+    Private Sub FindTheirPicture(ByVal FeatureText As String)
         Try
-            Select Case FeatureIndex
-                Case 0 Or 1 'Tap and Tap PT
+            Select Case FeatureText
+                Case "タップ穴", "ＰＴタップ穴" 'Tap and Tap PT
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holetap.bmp")
-                Case 2 'Ream
+                Case "リーマ穴" 'Ream
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holereamer.bmp")
-                Case 3 'Drill
+                Case "ドリル穴" 'Drill
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holedrill.bmp")
-                Case 4 'BlindBore
+                Case "底付き穴" 'BlindBore
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holebldbore.bmp")
-                Case 5 'ThroughBore
+                Case "貫通穴" 'ThroughBore
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holethrbore.bmp")
-                Case 6 'SunkBolt
+                Case "段付きボルト穴" 'SunkBolt
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holesnkbolt.bmp")
-                Case 7 'Ring
+                Case "円形溝" 'Ring
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holering.bmp")
-                Case 8 'Boring
+                Case "ボーリング穴" 'Boring
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holeboring.bmp")
+                Case "Square Slot"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot1.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
+                    End If
+                Case "Square Step"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep3.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep4.bmp")
+                    End If
+                Case "4-side Pocket"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\4pocket1.bmp")
+                    End If
+                Case "3-side Pocket"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket1.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket3.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket4.bmp")
+                    End If
+                Case "2-side Pocket"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket1.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket3.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket4.bmp")
+                    End If
+                Case "Long Hole"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\lnghole1.bmp")
+                    End If
+                Case "Blind Slot"
+                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot1.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
+                    End If
+                Case Else
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\blank.bmp")
             End Select
         Catch ex As Exception
             MsgBox(ex.ToString)
@@ -1313,6 +1428,7 @@ Public Class UserControl3
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
             Me.ComboBox1.Items.Add("Square Slot")
             Me.ComboBox1.Items.Add("Square Step")
+            Me.ComboBox1.Items.Add("Blind Slot")
             Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1327,6 +1443,7 @@ Public Class UserControl3
                And Feat.Item(0).SequenceSolidHidden = False Then
             Me.ComboBox1.Items.Add("3-side Pocket")
             Me.ComboBox1.Items.Add("2-side Pocket")
+            Me.ComboBox1.Items.Add("Long Hole")
             Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1368,30 +1485,27 @@ Public Class UserControl3
             Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
-               And Feat.Item(0).SolidArcCount = 4 And Feat.Item(0).HiddenArcCount = 0) _
+               And Feat.Item(0).SolidArcCount = 2 And Feat.Item(0).HiddenArcCount = 0) _
                Or (Feat.Item(0).SolidLineCount = 0 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
-               And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 4) Then
+               And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 2) Then
             Me.ComboBox1.Items.Add("Long Hole")
             Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 3 And Feat.Item(0).SolidLineInBoundCount = 1 _
-               And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
-               And Feat.Item(0).SolidArcCount = 2 And Feat.Item(0).HiddenArcCount = 0) _
-               Or (Feat.Item(0).SolidLineCount = 1 And Feat.Item(0).SolidLineInBoundCount = 1 _
-               And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
-               And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 2) Then
+         And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
+         And Feat.Item(0).SolidArcCount = 1 And Feat.Item(0).HiddenArcCount = 0) _
+         Or (Feat.Item(0).SolidLineCount = 1 And Feat.Item(0).SolidLineInBoundCount = 1 _
+         And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
+         And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 1) _
+         Or (Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 0 _
+         And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 1 _
+         And Feat.Item(0).SolidArcCount = 1 And Feat.Item(0).HiddenArcCount = 0) Then
             Me.ComboBox1.Items.Add("Blind Slot")
             Me.ComboBox1.Items.Add("Not A Feature")
         Else
-            Me.ComboBox1.Items.Add("Square Slot")
-            Me.ComboBox1.Items.Add("Square Step")
-            Me.ComboBox1.Items.Add("4-side Pocket")
-            Me.ComboBox1.Items.Add("3-side Pocket")
-            Me.ComboBox1.Items.Add("2-side Pocket")
-            Me.ComboBox1.Items.Add("Long Hole")
-            Me.ComboBox1.Items.Add("Blind Slot")
-            Me.ComboBox1.Items.Add("Other Feature")
+            FillComboBox1("Mill Candidate")
             Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Other Feature")
         End If
     End Sub
 
@@ -1450,6 +1564,31 @@ Public Class UserControl3
 
         Next
 
+    End Sub
+
+    Private Sub FillComboBox1(ByVal FeatureText As String)
+        Select Case FeatureText
+            Case "Square Slot", "Square Step", "4-side Pocket", "3-side Pocket", "2-side Pocket", "Long Hole", "Blind Slot", "Mill Candidate"
+                Me.ComboBox1.Items.Clear()
+                Me.ComboBox1.Items.Add("Square Slot")
+                Me.ComboBox1.Items.Add("Square Step")
+                Me.ComboBox1.Items.Add("4-side Pocket")
+                Me.ComboBox1.Items.Add("3-side Pocket")
+                Me.ComboBox1.Items.Add("2-side Pocket")
+                Me.ComboBox1.Items.Add("Long Hole")
+                Me.ComboBox1.Items.Add("Blind Slot")
+            Case Else ' "タップ穴", "ＰＴタップ穴", "リーマ穴", "ドリル穴", "底付き穴", "貫通穴", "段付きボルト穴", "円形溝", "ボーリング穴"
+                Me.ComboBox1.Items.Clear()
+                Me.ComboBox1.Items.Add("タップ穴")
+                Me.ComboBox1.Items.Add("ＰＴタップ穴")
+                Me.ComboBox1.Items.Add("リーマ穴")
+                Me.ComboBox1.Items.Add("ドリル穴")
+                Me.ComboBox1.Items.Add("底付き穴")
+                Me.ComboBox1.Items.Add("貫通穴")
+                Me.ComboBox1.Items.Add("段付きボルト穴")
+                Me.ComboBox1.Items.Add("円形溝")
+                Me.ComboBox1.Items.Add("ボーリング穴")
+        End Select
     End Sub
 End Class
 
