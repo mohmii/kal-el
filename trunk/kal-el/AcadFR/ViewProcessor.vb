@@ -83,15 +83,16 @@ Public Class ViewProcessor
 
     Private Sub SingleViewProp(ByRef Feature As OutputFormat, ByVal GEntity As List(Of Entity), ByVal View As ViewProp)
         Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
-        Dim Orientation As String = Nothing
+        Dim Orientation As String = 0
         Dim StatOnBound, StatOnOrigin As Boolean
         Dim TmpLine As Line
         Dim TmpArc As Arc
 
         'Slot with D1, D2
-        If Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 _
-        And Feature.SequenceSolidBound = True Then
+        If (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Or _
+        (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 2 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Then
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
                 TmpLine = EntityTmp
@@ -152,19 +153,19 @@ Public Class ViewProcessor
                     Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
                         D2 = Round(LineLength(TmpLine), 3)
                         If LineBB = View.BoundingBox(0) Then
-                            Orientation = "3" 'Lower Side
+                            Orientation = "2" 'Lower Side
                             OriU = View.BoundProp(0) - View.BoundProp(0)
                             OriV = View.BoundProp(1) - View.BoundProp(1)
                         ElseIf LineBB = View.BoundingBox(1) Then
-                            Orientation = "4" 'Right Side
+                            Orientation = "3" 'Right Side
                             OriU = View.BoundProp(2) - View.BoundProp(0)
                             OriV = View.BoundProp(1) - View.BoundProp(1)
                         ElseIf LineBB = View.BoundingBox(2) Then
-                            Orientation = "5" 'Upper Side
+                            Orientation = "4" 'Upper Side
                             OriU = View.BoundProp(2) - View.BoundProp(0)
                             OriV = View.BoundProp(3) - View.BoundProp(1)
                         ElseIf LineBB = View.BoundingBox(3) Then
-                            Orientation = "6" 'Left Side
+                            Orientation = "1" 'Left Side
                             OriU = View.BoundProp(0) - View.BoundProp(0)
                             OriV = View.BoundProp(3) - View.BoundProp(1)
                         End If
@@ -179,47 +180,11 @@ Public Class ViewProcessor
                 Next
             Next
 
-            '    'Step surely with D1, D3
-            'ElseIf Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
-            'And Feature.VirtualLineCount = 2 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
-            '    For Each EntityTmp As Entity In GEntity
-            '        TmpLine = New Line
-            '        TmpLine = EntityTmp
-            '        For Each LineBB As Line In View.BoundingBox
-            '            If (isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint)) = True _
-            '            Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
-            '                D2 = Round(LineLength(TmpLine), 3)
-            '                If LineBB = View.BoundingBox(0) Then
-            '                    Orientation = "3" 'Lower Side
-            '                    OriU = View.BoundProp(0) - View.BoundProp(0)
-            '                    OriV = View.BoundProp(1) - View.BoundProp(1)
-            '                ElseIf LineBB = View.BoundingBox(1) Then
-            '                    Orientation = "4" 'Right Side
-            '                    OriU = View.BoundProp(2) - View.BoundProp(0)
-            '                    OriV = View.BoundProp(1) - View.BoundProp(1)
-            '                ElseIf LineBB = View.BoundingBox(2) Then
-            '                    Orientation = "5" 'Upper Side
-            '                    OriU = View.BoundProp(2) - View.BoundProp(0)
-            '                    OriV = View.BoundProp(3) - View.BoundProp(1)
-            '                ElseIf LineBB = View.BoundingBox(3) Then
-            '                    Orientation = "6" 'Left Side
-            '                    OriU = View.BoundProp(0) - View.BoundProp(0)
-            '                    OriV = View.BoundProp(3) - View.BoundProp(1)
-            '                End If
-            '                Exit For
-            '            ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
-            '            Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = False _
-            '            Or (isequalpoint(TmpLine.EndPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.EndPoint)) = False _
-            '            Or (isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = False)) And D1 = 0 Then
-            '                D1 = Round(LineLength(TmpLine), 3)
-            '                Exit For
-            '            End If
-            '        Next
-            '    Next
-
             '2-side pocket with D1, D2, D4
-        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 1 And Feature.HiddenArcCount = 0 Then
+        ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 1 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 2 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 1) Then
             Dim Position1 As String = Nothing
             Dim Position2 As String = Nothing
             Dim DimPos1, DimPos2 As New Double
@@ -275,7 +240,7 @@ Public Class ViewProcessor
 
             'searching the orientation and origin
             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
-                Orientation = "7" 'Lower Left
+                Orientation = "1" 'Lower Left
                 OriU = View.BoundProp(0) - View.BoundProp(0)
                 OriV = View.BoundProp(1) - View.BoundProp(1)
                 If (Position1 = "lower" And Position2 = "left") Then
@@ -286,7 +251,7 @@ Public Class ViewProcessor
                     D1 = Round(DimPos2, 3)
                 End If
             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
-                Orientation = "8" 'Lower Right
+                Orientation = "2" 'Lower Right
                 OriU = View.BoundProp(2) - View.BoundProp(0)
                 OriV = View.BoundProp(1) - View.BoundProp(1)
                 If (Position1 = "lower" And Position2 = "right") Then
@@ -297,7 +262,7 @@ Public Class ViewProcessor
                     D2 = Round(DimPos2, 3)
                 End If
             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
-                Orientation = "9" 'Upper Right
+                Orientation = "3" 'Upper Right
                 OriU = View.BoundProp(2) - View.BoundProp(0)
                 OriV = View.BoundProp(3) - View.BoundProp(1)
                 If (Position1 = "upper" And Position2 = "right") Then
@@ -308,7 +273,7 @@ Public Class ViewProcessor
                     D1 = Round(DimPos2, 3)
                 End If
             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
-                Orientation = "10" 'Upper Left
+                Orientation = "4" 'Upper Left
                 OriU = View.BoundProp(0) - View.BoundProp(0)
                 OriV = View.BoundProp(3) - View.BoundProp(1)
                 If (Position1 = "upper" And Position2 = "left") Then
@@ -321,8 +286,10 @@ Public Class ViewProcessor
             End If
 
             '3-side pocket with D1, D2, D4
-        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0 Then
+        ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 1 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 3 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 2) Then
             For Each EntityTmp As Entity In GEntity
                 If TypeOf EntityTmp Is Line Then
                     TmpLine = New Line
@@ -334,13 +301,13 @@ Public Class ViewProcessor
                             OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0)
                             OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1)
                             If LineBB = View.BoundingBox(0) Then
-                                Orientation = "3" 'Lower Side
+                                Orientation = "2" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
-                                Orientation = "4" 'Right Side
+                                Orientation = "3" 'Right Side
                             ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "5" 'Upper Side
+                                Orientation = "4" 'Upper Side
                             ElseIf LineBB = View.BoundingBox(3) Then
-                                Orientation = "6" 'Left Side
+                                Orientation = "1" 'Left Side
                             End If
                             Exit For
                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -362,8 +329,8 @@ Public Class ViewProcessor
             D2 = D2 + D4
 
             '3-side pocket or blind slot with D1, D3
-        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
+        ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0) Then
             For Each EntityTmp As Entity In GEntity
                 If TypeOf EntityTmp Is Line Then
                     TmpLine = New Line
@@ -373,13 +340,13 @@ Public Class ViewProcessor
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
                             If LineBB = View.BoundingBox(0) Then
-                                Orientation = "5" 'Upper Side
+                                Orientation = "4" 'Upper Side
                             ElseIf LineBB = View.BoundingBox(1) Then
-                                Orientation = "6" 'Left Side
+                                Orientation = "1" 'Left Side
                             ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "3" 'Lower Side
+                                Orientation = "2" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(3) Then
-                                Orientation = "4" 'Right Side
+                                Orientation = "3" 'Right Side
                             End If
                             Exit For
                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -395,8 +362,10 @@ Public Class ViewProcessor
             D2 = D2 + D4
 
             '4-side pocket with D1, D2, D4, angle
-        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0 Then
+        ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 0 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 4 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 4) Then
             Dim D2Temp, AngleTmp As New Double
             Dim InitialStat As Boolean = True
             Dim Origin As Point3d
@@ -435,10 +404,13 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0)
             OriV = Origin.Y - View.BoundProp(1)
             Angle = AngleTmp
+            Orientation = "1"
 
             'long hole with D1, D2, D4, angle
-        ElseIf Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0 Then
+        ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 0 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 2 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 2) Then
             Dim D2Temp As New Double
             Dim Origin As Point3d
             PolygonProcessor = New PolygonProcessor
@@ -464,9 +436,13 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0)
             OriV = Origin.Y - View.BoundProp(1)
 
-            'Blind Slot with D1, D2,
-        ElseIf Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0 Then
+            'Blind Slot with D1, D2
+        ElseIf (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 1 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 1 And Feature.SolidArcCount = 1 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 1 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 2 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 1) Then
             Dim TempRad As New Double
             For Each EntityTmp As Entity In GEntity
                 If TypeOf EntityTmp Is Line Then
@@ -479,13 +455,13 @@ Public Class ViewProcessor
                             OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0)
                             OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1)
                             If LineBB = View.BoundingBox(0) Then
-                                Orientation = "3" 'Lower Side
+                                Orientation = "2" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
-                                Orientation = "4" 'Right Side
+                                Orientation = "3" 'Right Side
                             ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "5" 'Upper Side
+                                Orientation = "4" 'Upper Side
                             ElseIf LineBB = View.BoundingBox(3) Then
-                                Orientation = "6" 'Left Side
+                                Orientation = "1" 'Left Side
                             End If
                             Exit For
                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -505,6 +481,7 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + TempRad
+
         End If
 
         Feature.MiscProp(2) = Orientation
@@ -984,19 +961,19 @@ Public Class ViewProcessor
                                     Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
                                         D2 = Round(LineLength(TmpLine), 3)
                                         If LineBB = ListView(ViewNum).BoundingBox(0) Then
-                                            Orientation = "3" 'Lower Side
+                                            Orientation = "2" 'Lower Side
                                             OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
                                             OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
                                         ElseIf LineBB = ListView(ViewNum).BoundingBox(1) Then
-                                            Orientation = "4" 'Right Side
+                                            Orientation = "3" 'Right Side
                                             OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
                                             OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
                                         ElseIf LineBB = ListView(ViewNum).BoundingBox(2) Then
-                                            Orientation = "5" 'Upper Side
+                                            Orientation = "4" 'Upper Side
                                             OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
                                             OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
                                         ElseIf LineBB = ListView(ViewNum).BoundingBox(3) Then
-                                            Orientation = "6" 'Left Side
+                                            Orientation = "1" 'Left Side
                                             OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
                                             OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
                                         End If
@@ -1098,19 +1075,19 @@ Public Class ViewProcessor
                                     Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
                                         D2 = Round(LineLength(TmpLine), 3)
                                         If LineBB = ListView(j).BoundingBox(0) Then
-                                            Orientation = "3" 'Lower Side
+                                            Orientation = "2" 'Lower Side
                                             OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
                                             OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
                                         ElseIf LineBB = ListView(j).BoundingBox(1) Then
-                                            Orientation = "4" 'Right Side
+                                            Orientation = "3" 'Right Side
                                             OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
                                             OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
                                         ElseIf LineBB = ListView(j).BoundingBox(2) Then
-                                            Orientation = "5" 'Upper Side
+                                            Orientation = "4" 'Upper Side
                                             OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
                                             OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
                                         ElseIf LineBB = ListView(j).BoundingBox(3) Then
-                                            Orientation = "6" 'Left Side
+                                            Orientation = "1" 'Left Side
                                             OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
                                             OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
                                         End If
@@ -1258,7 +1235,7 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = Orientation
+                            Feature.MiscProp(2) = "1" 'Top
                             Feature.OriginAndAddition(0) = OriU
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
@@ -1370,7 +1347,7 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = Orientation
+                            Feature.MiscProp(2) = "1" 'Top
                             Feature.OriginAndAddition(0) = OriU
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
@@ -1436,13 +1413,13 @@ Public Class ViewProcessor
                                             OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0)
                                             OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1)
                                             If LineBB = ListView(ViewNum).BoundingBox(0) Then
-                                                Orientation = "3" 'Lower Side
+                                                Orientation = "2" 'Lower Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(1) Then
-                                                Orientation = "4" 'Right Side
+                                                Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(2) Then
-                                                Orientation = "5" 'Upper Side
+                                                Orientation = "4" 'Upper Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(3) Then
-                                                Orientation = "6" 'Left Side
+                                                Orientation = "1" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -1550,13 +1527,13 @@ Public Class ViewProcessor
                                             OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0)
                                             OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1)
                                             If LineBB = ListView(j).BoundingBox(0) Then
-                                                Orientation = "3" 'Lower Side
+                                                Orientation = "2" 'Lower Side
                                             ElseIf LineBB = ListView(j).BoundingBox(1) Then
-                                                Orientation = "4" 'Right Side
+                                                Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(j).BoundingBox(2) Then
-                                                Orientation = "5" 'Upper Side
+                                                Orientation = "4" 'Upper Side
                                             ElseIf LineBB = ListView(j).BoundingBox(3) Then
-                                                Orientation = "6" 'Left Side
+                                                Orientation = "1" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -1713,7 +1690,7 @@ Public Class ViewProcessor
                             Next
 
                             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
-                                Orientation = "7" 'Lower Left
+                                Orientation = "1" 'Lower Left
                                 OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
                                 OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
                                 If (Position1 = "lower" And Position2 = "left") Then
@@ -1724,7 +1701,7 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
-                                Orientation = "8" 'Lower Right
+                                Orientation = "2" 'Lower Right
                                 OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
                                 OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
                                 If (Position1 = "lower" And Position2 = "right") Then
@@ -1735,7 +1712,7 @@ Public Class ViewProcessor
                                     D2 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
-                                Orientation = "9" 'Upper Right
+                                Orientation = "4" 'Upper Right
                                 OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
                                 OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
                                 If (Position1 = "upper" And Position2 = "right") Then
@@ -1746,7 +1723,7 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
-                                Orientation = "10" 'Upper Left
+                                Orientation = "3" 'Upper Left
                                 OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
                                 OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
                                 If (Position1 = "upper" And Position2 = "left") Then
@@ -1912,7 +1889,7 @@ Public Class ViewProcessor
                             Next
 
                             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
-                                Orientation = "7" 'Lower Left
+                                Orientation = "1" 'Lower Left
                                 OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
                                 OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
                                 If (Position1 = "lower" And Position2 = "left") Then
@@ -1923,7 +1900,7 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
-                                Orientation = "8" 'Lower Right
+                                Orientation = "2" 'Lower Right
                                 OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
                                 OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
                                 If (Position1 = "lower" And Position2 = "right") Then
@@ -1934,7 +1911,7 @@ Public Class ViewProcessor
                                     D2 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
-                                Orientation = "9" 'Upper Right
+                                Orientation = "4" 'Upper Right
                                 OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
                                 OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
                                 If (Position1 = "upper" And Position2 = "right") Then
@@ -1945,7 +1922,7 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
-                                Orientation = "10" 'Upper Left
+                                Orientation = "3" 'Upper Left
                                 OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
                                 OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
                                 If (Position1 = "upper" And Position2 = "left") Then
@@ -2095,7 +2072,7 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = Orientation
+                            Feature.MiscProp(2) = "1" 'Top
                             Feature.OriginAndAddition(0) = OriU
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
@@ -2193,7 +2170,7 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = Orientation
+                            Feature.MiscProp(2) = "1" 'Top
                             Feature.OriginAndAddition(0) = OriU
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
@@ -2223,11 +2200,11 @@ Public Class ViewProcessor
                         And SLCorresponding = 1 And SLBCorresponding = 1 And SACorresponding = 0 And HLCorresponding = 3) Or _
                         (SLReference = 3 And SLBReference = 1 And SAReference = 1 And HLReference = 0 _
                         And SLCorresponding = 2 And SLBCorresponding = 2 And SACorresponding = 0 And HLCorresponding = 2) Or _
-                        (SLReference = 1 And SLBReference = 1 And HLReference = 1 And HAReference = 2 _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 2 And HAReference = 1 _
                         And SLCorresponding = 4 And SLBCorresponding = 1 And HLCorresponding = 0 And HACorresponding = 0) Or _
-                        (SLReference = 1 And SLBReference = 1 And HLReference = 1 And HAReference = 2 _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 2 And HAReference = 1 _
                         And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 3 And HACorresponding = 0) Or _
-                        (SLReference = 1 And SLBReference = 1 And HLReference = 1 And HAReference = 2 _
+                        (SLReference = 1 And SLBReference = 1 And HLReference = 2 And HAReference = 1 _
                         And SLCorresponding = 2 And SLBCorresponding = 2 And HLCorresponding = 2 And HACorresponding = 0) Or _
                         (SLReference = 2 And SLBReference = 0 And SAReference = 1 And VLReference = 1 _
                         And SLCorresponding = 4 And SLBCorresponding = 2 And SACorresponding = 0 And VLCorresponding = 0) Or _
@@ -2275,13 +2252,13 @@ Public Class ViewProcessor
                                             OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0)
                                             OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1)
                                             If LineBB = ListView(ViewNum).BoundingBox(0) Then
-                                                Orientation = "3" 'Lower Side
+                                                Orientation = "2" 'Lower Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(1) Then
-                                                Orientation = "4" 'Right Side
+                                                Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(2) Then
-                                                Orientation = "5" 'Upper Side
+                                                Orientation = "4" 'Upper Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(3) Then
-                                                Orientation = "6" 'Left Side
+                                                Orientation = "1" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -2348,11 +2325,11 @@ Public Class ViewProcessor
                         (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 _
                         And SLCorresponding = 3 And SLBCorresponding = 1 And SACorresponding = 1 And HLCorresponding = 0) Or _
                         (SLReference = 4 And SLBReference = 1 And HLReference = 0 And HAReference = 0 _
-                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 1 And HACorresponding = 2) Or _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 2 And HACorresponding = 1) Or _
                         (SLReference = 1 And SLBReference = 1 And HLReference = 3 And HAReference = 0 _
-                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 1 And HACorresponding = 2) Or _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 2 And HACorresponding = 1) Or _
                         (SLReference = 2 And SLBReference = 2 And HLReference = 2 And HAReference = 0 _
-                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 1 And HACorresponding = 2) Or _
+                        And SLCorresponding = 1 And SLBCorresponding = 1 And HLCorresponding = 2 And HACorresponding = 1) Or _
                         (SLReference = 4 And SLBReference = 2 And SAReference = 0 And VLReference = 0 _
                         And SLCorresponding = 2 And SLBCorresponding = 0 And SACorresponding = 1 And VLCorresponding = 1) Or _
                         (SLReference = 2 And SLBReference = 2 And SAReference = 0 And HLReference = 2 And VLReference = 0 _
@@ -2399,13 +2376,13 @@ Public Class ViewProcessor
                                             OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0)
                                             OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1)
                                             If LineBB = ListView(j).BoundingBox(0) Then
-                                                Orientation = "3" 'Lower Side
+                                                Orientation = "2" 'Lower Side
                                             ElseIf LineBB = ListView(j).BoundingBox(1) Then
-                                                Orientation = "4" 'Right Side
+                                                Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(j).BoundingBox(2) Then
-                                                Orientation = "5" 'Upper Side
+                                                Orientation = "4" 'Upper Side
                                             ElseIf LineBB = ListView(j).BoundingBox(3) Then
-                                                Orientation = "6" 'Left Side
+                                                Orientation = "1" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -2610,7 +2587,8 @@ Public Class ViewProcessor
         Next
 
         'Checking Sequence for redundant component of feature
-        If SLCount = 4 And SLBCount = 2 And HLCount = 0 And VLCount = 0 And SACount = 0 And HACount = 0 Then
+        If (SLCount = 4 And SLBCount = 2 And HLCount = 0 And VLCount = 0 And SACount = 0 And HACount = 0) Or _
+        (SLCount = 2 And SLBCount = 2 And HLCount = 2 And VLCount = 0 And SACount = 0 And HACount = 0) Then
             For Each EntTemp As Entity In GEntity
                 sb = New Boolean
                 For Each LineBB As Line In View.BoundingBox
