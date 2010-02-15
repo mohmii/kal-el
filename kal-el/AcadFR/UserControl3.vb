@@ -138,13 +138,22 @@ Public Class UserControl3
                             'Process.Start(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
                             Process.Start(SaveDialog.FileName)
 
+                            acedSetStatusBarProgressMeter("Deleting", 0, FeatureNeedToRemoved.Count)
+                            Dim i As Integer
+
                             'delete the feature that already being checked and saved
                             If FeatureNeedToRemoved.Count <> 0 Then
                                 For Each Feature As OutputFormat In FeatureNeedToRemoved
                                     DeleteTheSavedFeature(Feature)
+                                    'add the progress bar
+                                    i = i + 1
+                                    'System.Threading.Thread.Sleep(1)
+                                    acedSetStatusBarProgressMeterPos(i)
+                                    System.Windows.Forms.Application.DoEvents()
                                 Next
                             End If
 
+                            acedRestoreStatusBar()
                             FeatureNeedToRemoved.Clear()
 
                         Else
@@ -333,10 +342,14 @@ Public Class UserControl3
 
     Private Sub Clear2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Delete2.Click
         StartDeleting(Me.UnidentifiedFeature)
+        Me.UnidentifiedFeature.ClearSelection()
+        Me.Label17.Text = 0
     End Sub
 
     Private Sub Delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Delete.Click
         StartDeleting(Me.IdentifiedFeature)
+        Me.IdentifiedFeature.ClearSelection()
+        Me.Label16.Text = 0
     End Sub
 
     Private ClickPlace As Integer
@@ -922,7 +935,7 @@ Public Class UserControl3
         Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
 
         'initiate the progress bar
-        acedSetStatusBarProgressMeter("Testing", 0, Table2Check.Rows.Count)
+        acedSetStatusBarProgressMeter("Highlighting", 0, Table2Check.Rows.Count)
         Dim i As Integer
 
         'higlighting process
@@ -947,18 +960,23 @@ Public Class UserControl3
     End Sub
 
     'deleting process when delete command in context menu strip was being clicked
-    Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteStripMenuItem1.Click
+    'Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteStripMenuItem1.Click
 
-        'delete the selected items in Identified Feature table
-        If Me.Label16.Text <> 0 Then
-            StartDeleting(Me.IdentifiedFeature)
-        End If
+    '    'delete the selected items in Identified Feature table
+    '    If Me.Label16.Text <> 0 Then
+    '        StartDeleting(Me.IdentifiedFeature)
+    '        Me.IdentifiedFeature.ClearSelection()
+    '        Me.Label16.Text = 0
+    '    End If
 
-        'delete the selected items in Unidentified Feature table
-        If Me.Label17.Text <> 0 Then
-            StartDeleting(Me.UnidentifiedFeature)
-        End If
-    End Sub
+    '    'delete the selected items in Unidentified Feature table
+    '    If Me.Label17.Text <> 0 Then
+    '        StartDeleting(Me.UnidentifiedFeature)
+    '        Me.UnidentifiedFeature.ClearSelection()
+    '        Me.Label17.Text = 0
+    '    End If
+
+    'End Sub
 
     Private RowIndex As List(Of Integer)
 
