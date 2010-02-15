@@ -35,12 +35,6 @@ Public Class ViewProcessor
             Feature = New OutputFormat
             ListLoopTemp = New List(Of List(Of Entity))
 
-            'set the feature property
-            UnIdentifiedCounter = UnIdentifiedCounter + 1
-            Feature.FeatureName = "Mill Candidate"
-            Feature.MiscProp(0) = "Mill Candidate"
-            Feature.MiscProp(1) = setView.viewis
-
             'add to the unidentified feature list
             For Each EntityTmp As Entity In GroupEntity
                 MillingObjectId.Add(EntityTmp.ObjectId)
@@ -64,6 +58,16 @@ Public Class ViewProcessor
             Feature.SequenceSolidHidden = SeqHid
 
             SingleViewProp(Feature, GroupEntity, View)
+
+            'set the feature property
+            UnIdentifiedCounter = UnIdentifiedCounter + 1
+            Feature.FeatureName = "Mill Candidate"
+            Feature.MiscProp(0) = "Mill Candidate"
+            If Feature.HiddenLineCount > 0 Then
+                Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+            Else
+                Feature.MiscProp(1) = View.ViewType
+            End If
 
             UnIdentifiedFeature.Add(Feature)
             TmpUnidentifiedFeature.Add(Feature)

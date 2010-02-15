@@ -1547,43 +1547,6 @@ Public Class UserControl3
         Next
     End Sub
 
-    Private InitialRowCount As Integer
-    Public DeletedRowCount As Integer
-
-    Public Sub DeleteMillCandidate(ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat))
-        'hitung dulu jumlah row awal
-        Dim IndexUF As Integer
-
-        InitialRowCount = Me.UnidentifiedFeature.Rows.Count
-
-        For i As Integer = 0 To (InitialRowCount - 1)
-            'cari untuk setiap row apakah cell name isinya sama dengan mill candidate, jika ya select row tersebut
-            If String.Equals(Me.UnidentifiedFeature.Rows(i).Cells("Name").Value, "Mill Candidate") Then
-                Me.UnidentifiedFeature.Rows(i).Selected = True
-
-                'hapus data pada unidentified feature list
-                For j As Integer = 0 To UnIdentifiedFeature.Count - 1
-                    If Me.UnidentifiedFeature.Rows(i).Cells("Object").Value.Equals(UnIdentifiedFeature(j)) Then
-                        IndexUF = j
-                        Exit For
-                    End If
-                Next
-                UnIdentifiedFeature.RemoveAt(IndexUF)
-                TmpUnidentifiedFeature.RemoveAt(IndexUF)
-
-            End If
-        Next
-
-        'perintah hapus row yang terseleksi
-        StartDeleting(Me.UnidentifiedFeature)
-
-        'hapus data pada unidentified feature list
-        For Each UIF As OutputFormat In UnIdentifiedFeature
-
-        Next
-
-    End Sub
-
     Private Sub FillComboBox1(ByVal FeatureText As String)
         Select Case FeatureText
             Case "Square Slot", "Square Step", "4-side Pocket", "3-side Pocket", "2-side Pocket", "Long Hole", "Blind Slot", "Mill Candidate"
