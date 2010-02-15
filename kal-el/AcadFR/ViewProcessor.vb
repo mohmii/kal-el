@@ -817,7 +817,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -918,7 +918,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1032,7 +1032,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1146,7 +1146,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1258,7 +1258,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1370,7 +1370,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1485,7 +1485,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1599,7 +1599,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1798,7 +1798,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -1997,7 +1997,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -2095,7 +2095,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -2193,7 +2193,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -2317,7 +2317,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For
@@ -2441,7 +2441,7 @@ Public Class ViewProcessor
                             AddToTable(Feature, adskClass.myPalette.IFList, adskClass.myPalette.IdentifiedFeature)
 
                             'remove from unidentified feature list if the feature is listed as unidentified before
-                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature, UnIdentifiedCounter)
+                            adskClass.myPalette.CheckUnidentified(GroupEntity, GroupEntity2, UnIdentifiedFeature, TmpUnidentifiedFeature)
 
                             IdentificationStatus = True
                             Exit For

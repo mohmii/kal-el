@@ -1527,18 +1527,17 @@ Public Class UserControl3
         End If
     End Sub
 
-    Public Sub CheckUnidentified(ByVal ListEntity1 As List(Of Entity), ByVal ListEntity2 As List(Of Entity), ByRef FeatureList As List(Of OutputFormat), ByRef TmpFeatureList As List(Of OutputFormat), ByRef FeatureCounter As Integer)
+    Public Sub CheckUnidentified(ByVal ListEntity1 As List(Of Entity), ByVal ListEntity2 As List(Of Entity), ByRef FeatureList As List(Of OutputFormat), ByRef TmpFeatureList As List(Of OutputFormat))
         'remove from unidentified feature list if the feature is listed as unidentified before
         For Each OutputUnident As OutputFormat In FeatureList
             If OutputUnident.ListLoop.Contains(ListEntity1) Or OutputUnident.ListLoop.Contains(ListEntity2) Then
                 For j As Integer = 0 To FeatureList.Count - 1
-                    If adskClass.myPalette.UnidentifiedFeature.Rows(j).Cells("Name").Value = OutputUnident.FeatureName Then
+                    If adskClass.myPalette.UnidentifiedFeature.Rows(j).Cells("Object").Value.Equals(OutputUnident) = True Then
                         adskClass.myPalette.UnidentifiedFeature.ClearSelection()
                         adskClass.myPalette.UnidentifiedFeature.Rows(j).Selected = True
                         adskClass.myPalette.StartDeleting(adskClass.myPalette.UnidentifiedFeature)
                         FeatureList.Remove(OutputUnident)
                         TmpFeatureList.Remove(OutputUnident)
-                        FeatureCounter = FeatureCounter - 1
                         Exit For
                     End If
                 Next
