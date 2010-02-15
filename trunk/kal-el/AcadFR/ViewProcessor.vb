@@ -27,7 +27,7 @@ Public Class ViewProcessor
         Dim SolLine, SolLineBound, VirtuLine, HidLine, SolArc, HidArc As Integer
 
         'initiate the progress bar
-        UserControl3.acedSetStatusBarProgressMeter("Testing", 0, View.GroupLoop.Count)
+        UserControl3.acedSetStatusBarProgressMeter("Get Features", 0, View.GroupLoop.Count)
         Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In View.GroupLoop
@@ -508,7 +508,7 @@ Public Class ViewProcessor
         Dim ArcTmp, ArcTmp2 As Arc
 
         'initiate the progress bar
-        UserControl3.acedSetStatusBarProgressMeter("Testing", 0, ListView(ViewNum).GroupLoop.Count)
+        UserControl3.acedSetStatusBarProgressMeter("Get Features", 0, ListView(ViewNum).GroupLoop.Count)
         Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In ListView(ViewNum).GroupLoop

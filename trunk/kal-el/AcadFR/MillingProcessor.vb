@@ -181,7 +181,7 @@ Public Class MillingProcessor
         RootPathPoint = New Point3d
 
         'initiate the progress bar
-        UserControl3.acedSetStatusBarProgressMeter("Testing", 0, UnAdjacentPoints.Count)
+        UserControl3.acedSetStatusBarProgressMeter("Finding Loop", 0, UnAdjacentPoints.Count)
         Dim i As Integer
 
         'searching loop from each unadjacent points
