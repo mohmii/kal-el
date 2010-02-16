@@ -14,8 +14,6 @@ Imports System.Runtime.InteropServices
 Public Class UserControl3
     Private uiSetView As setView
     Private zoom As AcadApplication
-    'Private FeatureCandidateList As List(Of System.Windows.Forms.ComboBox.ObjectCollection)
-    'Private FeatureCandidate As System.Windows.Forms.ComboBox.ObjectCollection
 
     'works when the add button was being pressed
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddEntity.Click
@@ -33,45 +31,47 @@ Public Class UserControl3
     Private RowSelectedIndex As Integer
     'clear all the feature that listed on machining feature list
     Private Sub Undo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Undo.Click
-        MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.Information)
+
         Try
-            zoom = Application.AcadApplication
-            zoom.ZoomAll()
+            If MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.OkCancel, "Undo view recognition") = MsgBoxResult.Ok Then
 
-            If remove_Line() = False Then
-                MsgBox("Object '" & adskClass.TempName & "' Cannot Deleted By Application You must Erased Manual", MsgBoxStyle.Information)
-            Else
-                Me.IdentifiedFeature.ClearSelection()
-                Me.UnidentifiedFeature.ClearSelection()
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
 
-                RowSelectedIndex = Me.IdentifiedFeature.Rows.Count - 1
-                While RowSelectedIndex >= 0
-                    If Me.IdentifiedFeature.Rows(RowSelectedIndex).Cells("Surface").Value = adskClass.TempName Then
-                        Me.IdentifiedFeature.Rows.RemoveAt(RowSelectedIndex)
-                    End If
-                    RowSelectedIndex = RowSelectedIndex - 1
-                End While
+                If remove_Line() = False Then
+                    MsgBox("Object '" & adskClass.TempName & "' Cannot Deleted By Application You must Erased Manual", MsgBoxStyle.Information)
+                Else
+                    Me.IdentifiedFeature.ClearSelection()
+                    Me.UnidentifiedFeature.ClearSelection()
 
-                RowSelectedIndex = Me.UnidentifiedFeature.Rows.Count - 1
-                While RowSelectedIndex >= 0
-                    If Me.UnidentifiedFeature.Rows(RowSelectedIndex).Cells("Surface").Value = adskClass.TempName Then
-                        Me.UnidentifiedFeature.Rows.RemoveAt(RowSelectedIndex)
-                    End If
-                    RowSelectedIndex = RowSelectedIndex - 1
-                End While
+                    RowSelectedIndex = Me.IdentifiedFeature.Rows.Count - 1
+                    While RowSelectedIndex >= 0
+                        If Me.IdentifiedFeature.Rows(RowSelectedIndex).Cells("Surface").Value = adskClass.TempName Then
+                            Me.IdentifiedFeature.Rows.RemoveAt(RowSelectedIndex)
+                        End If
+                        RowSelectedIndex = RowSelectedIndex - 1
+                    End While
 
-                'hapus surface yang dipilih
-                Dim index As Integer
-                index = adskClass.myPalette.ComboBox2.Items.IndexOf(adskClass.TempName)
-                adskClass.myPalette.ComboBox2.Items.RemoveAt(index)
-                For i As Integer = 0 To SelectionCommand.ProjectionView.Count - 1
-                    If SelectionCommand.ProjectionView(i).ViewType = adskClass.TempName Then
-                        SelectionCommand.ProjectionView.RemoveAt(i)
-                    End If
-                Next
+                    RowSelectedIndex = Me.UnidentifiedFeature.Rows.Count - 1
+                    While RowSelectedIndex >= 0
+                        If Me.UnidentifiedFeature.Rows(RowSelectedIndex).Cells("Surface").Value = adskClass.TempName Then
+                            Me.UnidentifiedFeature.Rows.RemoveAt(RowSelectedIndex)
+                        End If
+                        RowSelectedIndex = RowSelectedIndex - 1
+                    End While
 
-                MakeItBlank()
+                    'hapus surface yang dipilih
+                    Dim index As Integer
+                    index = adskClass.myPalette.ComboBox2.Items.IndexOf(adskClass.TempName)
+                    adskClass.myPalette.ComboBox2.Items.RemoveAt(index)
+                    For i As Integer = 0 To SelectionCommand.ProjectionView.Count - 1
+                        If SelectionCommand.ProjectionView(i).ViewType = adskClass.TempName Then
+                            SelectionCommand.ProjectionView.RemoveAt(i)
+                        End If
+                    Next
 
+                    MakeItBlank()
+                End If
             End If
         Catch ex As Exception
             ex.ToString()
@@ -165,11 +165,9 @@ Public Class UserControl3
                     End If
                 End If
             Else
-                MsgBox("The saving process could not be done. There are no identified feature on the list.", MsgBoxStyle.Exclamation)
+                MsgBox("保存作業が出来ません。認識済みの形状が一つも表に入っていません。", MsgBoxStyle.Exclamation)
             End If
-            'Else
-            'MsgBox("設定ページに、収納場所を指定してください", MsgBoxStyle.Exclamation)
-            'End If
+            
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -341,16 +339,41 @@ Public Class UserControl3
     Private counter As Integer
 
     Private Sub Clear2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Delete2.Click
-        StartDeleting(Me.UnidentifiedFeature)
-        Me.UnidentifiedFeature.ClearSelection()
-        Me.Label17.Text = 0
+        If PromptDeleteResult(Me.Label17.Text) = True Then
+            StartDeleting(Me.UnidentifiedFeature)
+            Me.UnidentifiedFeature.ClearSelection()
+            Me.Label17.Text = 0
+        End If
     End Sub
 
     Private Sub Delete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Delete.Click
-        StartDeleting(Me.IdentifiedFeature)
-        Me.IdentifiedFeature.ClearSelection()
-        Me.Label16.Text = 0
+        If PromptDeleteResult(Me.Label16.Text) = True Then
+            StartDeleting(Me.IdentifiedFeature)
+            Me.IdentifiedFeature.ClearSelection()
+            Me.Label16.Text = 0
+        End If
     End Sub
+
+    'used for double checking when user want to delete one or several features
+    Private Function PromptDeleteResult(ByVal LabelCount As String) As Boolean
+        If LabelCount = 1 Then
+            'are you sure you want to permanently delete this feature?"
+            If MsgBox("この形状を完全に削除しますが、よろしいですか？", MsgBoxStyle.OkCancel, "Delete Feature") = MsgBoxResult.Ok Then
+                Return True
+            Else
+                Return False
+            End If
+        ElseIf LabelCount = 0 Then
+            Return False
+        Else
+            If MsgBox("これら " + LabelCount + " 個の形状を完全に削除しますが、よろしいですか？", MsgBoxStyle.OkCancel, _
+                      "Delete Multiple Features") = MsgBoxResult.Ok Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+    End Function
 
     Private ClickPlace As Integer
     Private Index() As Integer
@@ -885,7 +908,7 @@ Public Class UserControl3
                         'acquire the entity from the object id
                         Entity = AcadConnection.myT.GetObject(idTmp, OpenMode.ForRead)
                         'test if the entity id were the as entity id in the selected item
-                        If Entity.ObjectId = Feature2Zoom.Objectid(0) Then
+                        If Entity.ObjectId = Feature2Zoom.ObjectId(0) Then
                             Dim obj As DBObject
                             obj = AcadConnection.myT.GetObject(idTmp, OpenMode.ForRead)
                             For Each i As ViewProp In SelectionCommand.ProjectionView
@@ -913,7 +936,7 @@ Public Class UserControl3
 
         If Me.IdentifiedFeature.SelectedRows.Count <> 0 Then
             StartHighlighting(Me.IdentifiedFeature)
-            
+
         End If
 
         If Me.UnidentifiedFeature.SelectedRows.Count <> 0 Then
@@ -1020,7 +1043,7 @@ Public Class UserControl3
                     StartUpdate(Me.UnidentifiedFeature)
                 End If
             End If
-            
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -1234,6 +1257,9 @@ Public Class UserControl3
 
                     i = i - 1
                 End While
+
+                Me.UnidentifiedFeature.ClearSelection()
+                Me.Label17.Text = 0
             End If
 
         Catch ex As Exception
