@@ -71,6 +71,34 @@ Public Class GenerateFL
             CodeName = "BORING"
         End If
 
+        If s.MiscProp(0).Contains("Square Slot") Then
+            CodeName = "SQRSLOT"
+        End If
+
+        If s.MiscProp(0).Contains("Square Step") Then
+            CodeName = "SQRSTEP"
+        End If
+
+        If s.MiscProp(0).Contains("4-side Pocket") Then
+            CodeName = "4SPOCKET"
+        End If
+
+        If s.MiscProp(0).Contains("3-side Pocket") Then
+            CodeName = "3SPOCKET"
+        End If
+
+        If s.MiscProp(0).Contains("2-side Pocket") Then
+            CodeName = "2SPOCKET"
+        End If
+
+        If s.MiscProp(0).Contains("Long Hole") Then
+            CodeName = "LNGHOLE"
+        End If
+
+        If s.MiscProp(0).Contains("Blind Slot") Then
+            CodeName = "BLDSLOT"
+        End If
+
         Return CodeName
     End Function
 
