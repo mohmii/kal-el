@@ -2468,13 +2468,6 @@ Public Class ViewProcessor
 
                 'add to unidentified list for loop which not already in unidentified list
                 If InputStatus = False Then
-                    'set the feature property
-
-                    UnIdentifiedCounter = UnIdentifiedCounter + 1
-                    Feature.FeatureName = "Mill Candidate"
-                    Feature.MiscProp(0) = "Mill Candidate"
-                    Feature.MiscProp(1) = ListView(ViewNum).ViewType
-
                     'add to the unidentified feature list
                     For Each EntityTmp As Entity In GroupEntity
                         MillingObjectId.Add(EntityTmp.ObjectId)
@@ -2499,6 +2492,15 @@ Public Class ViewProcessor
 
                     SingleViewProp(Feature, GroupEntity, ListView(ViewNum))
 
+                    'set the feature property
+                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+                    Feature.FeatureName = "Mill Candidate"
+                    Feature.MiscProp(0) = "Mill Candidate"
+                    If Feature.HiddenLineCount > 0 Then
+                        Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                    Else
+                        Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                    End If
                     UnIdentifiedFeature.Add(Feature)
                     TmpUnidentifiedFeature.Add(Feature)
 
