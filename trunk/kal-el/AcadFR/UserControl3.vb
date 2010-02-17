@@ -1336,6 +1336,7 @@ Public Class UserControl3
 
     Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
         FindTheirPicture(Me.ComboBox1.SelectedItem.ToString)
+        GraySelection(Me.ComboBox1.SelectedItem.ToString)
     End Sub
 
     Private Sub FindTheirPicture(ByVal FeatureText As String)
@@ -1412,7 +1413,36 @@ Public Class UserControl3
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
                     End If
                 Case Else
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\blank.bmp")
+                    Me.PictureBox1.Image = Nothing
+            End Select
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
+    Private Sub GraySelection(ByVal FeatureText As String)
+        Try
+            Select Case FeatureText
+                Case "リーマ穴", "ドリル穴", "底付き穴", "ボーリング穴", "貫通穴" 'Ream, Drill, BlindBore, Boring, ThroughBore
+                    Me.NumericUpDown9.Enabled = False
+                    Me.NumericUpDown10.Enabled = False
+                    Me.NumericUpDown11.Enabled = False
+                Case "Square Slot", "Square Step", "Blind Slot", "円形溝" 'Ring
+                    Me.NumericUpDown9.Enabled = True
+                    Me.NumericUpDown10.Enabled = False
+                    Me.NumericUpDown11.Enabled = False
+                Case "3-side Pocket", "2-side Pocket", "タップ穴", "ＰＴタップ穴", "段付きボルト穴" 'Tap, Tap PT, SunkBolt
+                    Me.NumericUpDown9.Enabled = True
+                    Me.NumericUpDown10.Enabled = True
+                    Me.NumericUpDown11.Enabled = False
+                Case "Long Hole"
+                    Me.NumericUpDown9.Enabled = True
+                    Me.NumericUpDown10.Enabled = False
+                    Me.NumericUpDown11.Enabled = True
+                Case Else
+                    Me.NumericUpDown9.Enabled = True
+                    Me.NumericUpDown10.Enabled = True
+                    Me.NumericUpDown11.Enabled = True
             End Select
         Catch ex As Exception
             MsgBox(ex.ToString)
@@ -1458,18 +1488,18 @@ Public Class UserControl3
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
                And Feat.Item(0).SequenceSolidBound = True Then
             Me.ComboBox1.Items.Add("Square Slot")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
               And Feat.Item(0).SequenceSolidBound = False Then
             Me.ComboBox1.Items.Add("2-side Pocket")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 3 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
             Me.ComboBox1.Items.Add("Square Step")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 3 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 1 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
@@ -1484,14 +1514,14 @@ Public Class UserControl3
             Me.ComboBox1.Items.Add("Square Slot")
             Me.ComboBox1.Items.Add("Square Step")
             Me.ComboBox1.Items.Add("Blind Slot")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
                And Feat.Item(0).SequenceSolidHidden = True Then
             Me.ComboBox1.Items.Add("Square Slot")
             Me.ComboBox1.Items.Add("4-side Pocket")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
@@ -1499,7 +1529,7 @@ Public Class UserControl3
             Me.ComboBox1.Items.Add("3-side Pocket")
             Me.ComboBox1.Items.Add("2-side Pocket")
             Me.ComboBox1.Items.Add("Long Hole")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 4 And Feat.Item(0).HiddenArcCount = 0) _
@@ -1507,7 +1537,7 @@ Public Class UserControl3
                And Feat.Item(0).HiddenLineCount = 4 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 4) Then
             Me.ComboBox1.Items.Add("4-side Pocket")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 1 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 3 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
@@ -1515,7 +1545,7 @@ Public Class UserControl3
             Me.ComboBox1.Items.Add("3-side Pocket")
             Me.ComboBox1.Items.Add("Long Hole")
             Me.ComboBox1.Items.Add("Blind Slot")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 2 And Feat.Item(0).HiddenArcCount = 0) _
@@ -1523,13 +1553,13 @@ Public Class UserControl3
                And Feat.Item(0).HiddenLineCount = 3 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 2) Then
             Me.ComboBox1.Items.Add("3-side Pocket")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0) Then
             Me.ComboBox1.Items.Add("3-side Pocket")
             Me.ComboBox1.Items.Add("Blind Slot")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 1 And Feat.Item(0).HiddenArcCount = 0) _
@@ -1537,7 +1567,7 @@ Public Class UserControl3
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 1) Then
             Me.ComboBox1.Items.Add("2-side Pocket")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 2 And Feat.Item(0).HiddenArcCount = 0) _
@@ -1545,7 +1575,7 @@ Public Class UserControl3
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 2) Then
             Me.ComboBox1.Items.Add("Long Hole")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 3 And Feat.Item(0).SolidLineInBoundCount = 1 _
          And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
          And Feat.Item(0).SolidArcCount = 1 And Feat.Item(0).HiddenArcCount = 0) _
@@ -1556,10 +1586,10 @@ Public Class UserControl3
          And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 1 _
          And Feat.Item(0).SolidArcCount = 1 And Feat.Item(0).HiddenArcCount = 0) Then
             Me.ComboBox1.Items.Add("Blind Slot")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
         Else
             FillComboBox1("Mill Candidate")
-            Me.ComboBox1.Items.Add("Not A Feature")
+            'Me.ComboBox1.Items.Add("Not A Feature")
             'Me.ComboBox1.Items.Add("Other Feature")
         End If
     End Sub
