@@ -1036,18 +1036,28 @@ Public Class UserControl3
 
     Private Sub Update1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Update1.Click
         Try
-            If CheckEditingStatus(Me.ComboBox1.SelectedItem.ToString) = True Then
-                If Me.Label16.Text <> "0" Then
-                    StartUpdate(Me.IdentifiedFeature)
-                ElseIf Me.Label17.Text <> "0" Then
-                    StartUpdate(Me.UnidentifiedFeature)
+            If CheckMillingName(Me.ComboBox1) = True Then
+                If CheckEditingStatus(Me.ComboBox1.SelectedItem.ToString) = True Then
+                    If Me.Label16.Text <> "0" Then
+                        StartUpdate(Me.IdentifiedFeature)
+                    ElseIf Me.Label17.Text <> "0" Then
+                        StartUpdate(Me.UnidentifiedFeature)
+                    End If
                 End If
             End If
-
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
     End Sub
+
+    Private Function CheckMillingName(ByVal CB As System.Windows.Forms.ComboBox) As Boolean
+        If CB.SelectedItem Is Nothing Then
+            MsgBox("Please select the feature name", MsgBoxStyle.Exclamation)
+            Return False
+        Else
+            Return True
+        End If
+    End Function
 
     Private Function CheckEditingStatus(ByVal FeatureText As String) As Boolean
         Dim EngName, JapName As String
@@ -1163,6 +1173,7 @@ Public Class UserControl3
                 Return False
             End If
         End If
+
     End Function
 
     Private Feature2Update As OutputFormat

@@ -370,7 +370,7 @@ Public Class ViewProcessor
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0) Or _
         (Feature.SolidLineCount = 0 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 4 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 4) Then
-            Dim D2Temp, AngleTmp As New Double
+            Dim AngleTmp As New Double
             Dim InitialStat As Boolean = True
             Dim Origin As Point3d
             PolygonProcessor = New PolygonProcessor
@@ -378,37 +378,38 @@ Public Class ViewProcessor
                 If TypeOf EntityTmp Is Line Then
                     TmpLine = New Line
                     TmpLine = EntityTmp
-                    If InitialStat = True Then
+                    AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                    If AngleTmp < 90 Or (AngleTmp >= 180 And AngleTmp < 270) Then
                         D1 = Round(LineLength(TmpLine), 3)
-                    ElseIf InitialStat = False And D2Temp = 0 Then
-                        D2Temp = Round(LineLength(TmpLine), 3)
-                    ElseIf InitialStat = False And isequal(D1, Round(LineLength(TmpLine), 3)) = False And isequal(D1, D2Temp) = True Then
-                        D2Temp = Round(LineLength(TmpLine), 3)
+                        If (AngleTmp >= 180 And AngleTmp < 270) Then
+                            AngleTmp = AngleTmp - 180
+                        End If
+                    ElseIf AngleTmp >= 90 Or (AngleTmp >= 270 And AngleTmp < 360) Then
+                        D2 = Round(LineLength(TmpLine), 3)
+                        If (AngleTmp >= 270 And AngleTmp < 360) Then
+                            AngleTmp = AngleTmp - 180
+                        End If
                     End If
 
                     If InitialStat = True Then
-                        AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                        Angle = AngleTmp
                         InitialStat = False
                     Else
-                        AngleTmp = Min(Angle, Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI))
+                        Angle = Min(Angle, AngleTmp)
                     End If
 
-                ElseIf TypeOf EntityTmp Is Arc Then
+                ElseIf (TypeOf EntityTmp Is Arc) And (D4 = 0) Then
                     TmpArc = New Arc
                     TmpArc = EntityTmp
-                    If D4 = 0 Then
-                        D4 = Round(TmpArc.Radius, 3)
-                    End If
+                    D4 = Round(TmpArc.Radius, 3)
                 End If
             Next
             D1 = D1 + (2 * D4)
-            D2 = D2Temp + (2 * D4)
+            D2 = D2 + (2 * D4)
             PolygonProcessor.GetArea(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             OriU = Origin.X - View.BoundProp(0)
             OriV = Origin.Y - View.BoundProp(1)
-            Angle = AngleTmp
-            Orientation = "1"
 
             'long hole with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -1158,7 +1159,7 @@ Public Class ViewProcessor
                                And SLBCorresponding = 2 And HLCorresponding = 2 And VLCorresponding = 0) Or _
                                (SLReference = 0 And SLBReference = 0 And HAReference = 4 And HLReference = 4 _
                                And SLCorresponding = 1 And SLBCorresponding = 1 And HACorresponding = 0 And HLCorresponding = 3) Then
-                            Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, D2Temp, AngleTmp As New Double
+                            Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, AngleTmp As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
                             Dim TmpArc As Arc
@@ -1194,36 +1195,38 @@ Public Class ViewProcessor
                                 If TypeOf EntityTmp Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp
-                                    If InitialStat = True Then
+                                    AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                    If AngleTmp < 90 Or (AngleTmp >= 180 And AngleTmp < 270) Then
                                         D1 = Round(LineLength(TmpLine), 3)
-                                    ElseIf InitialStat = False And D2Temp = 0 Then
-                                        D2Temp = Round(LineLength(TmpLine), 3)
-                                    ElseIf InitialStat = False And isequal(D1, Round(LineLength(TmpLine), 3)) = False And isequal(D1, D2Temp) = True Then
-                                        D2Temp = Round(LineLength(TmpLine), 3)
+                                        If (AngleTmp >= 180 And AngleTmp < 270) Then
+                                            AngleTmp = AngleTmp - 180
+                                        End If
+                                    ElseIf AngleTmp >= 90 Or (AngleTmp >= 270 And AngleTmp < 360) Then
+                                        D2 = Round(LineLength(TmpLine), 3)
+                                        If (AngleTmp >= 270 And AngleTmp < 360) Then
+                                            AngleTmp = AngleTmp - 180
+                                        End If
                                     End If
 
                                     If InitialStat = True Then
-                                        AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                        Angle = AngleTmp
                                         InitialStat = False
                                     Else
-                                        AngleTmp = Min(Angle, Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI))
+                                        Angle = Min(Angle, AngleTmp)
                                     End If
 
-                                ElseIf TypeOf EntityTmp Is Arc Then
+                                ElseIf (TypeOf EntityTmp Is Arc) And (D4 = 0) Then
                                     TmpArc = New Arc
                                     TmpArc = EntityTmp
-                                    If D4 = 0 Then
-                                        D4 = Round(TmpArc.Radius, 3)
-                                    End If
+                                    D4 = Round(TmpArc.Radius, 3)
                                 End If
                             Next
                             D1 = D1 + (2 * D4)
-                            D2 = D2Temp + (2 * D4)
+                            D2 = D2 + (2 * D4)
                             PolygonProcessor.GetArea(ListView(ViewNum).GroupLoopPoints(ListView(ViewNum).GroupLoop.IndexOf(GroupEntity)))
                             Origin = PolygonProcessor.GetCentroid(ListView(ViewNum).GroupLoopPoints(ListView(ViewNum).GroupLoop.IndexOf(GroupEntity)))
                             OriU = Origin.X - ListView(ViewNum).BoundProp(0)
                             OriV = Origin.Y - ListView(ViewNum).BoundProp(1)
-                            Angle = AngleTmp
 
                             'add D3
                             For Each EntityTmp2 As Entity In GroupEntity2
@@ -1238,9 +1241,12 @@ Public Class ViewProcessor
                                         Exit For
                                     End If
                                 Next
+                                If D3 > 0 Then
+                                    Exit For
+                                End If
                             Next
 
-                            Feature.MiscProp(2) = "1" 'Top
+                            Feature.MiscProp(2) = Orientation
                             Feature.OriginAndAddition(0) = OriU
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
@@ -1270,7 +1276,7 @@ Public Class ViewProcessor
                                 And SLCorresponding = 4 And SLBCorresponding = 0 And SACorresponding = 4 And HLCorresponding = 0) Or _
                                 (SLReference = 1 And SLBReference = 1 And HAReference = 0 And HLReference = 3 _
                                And SLCorresponding = 0 And SLBCorresponding = 0 And HACorresponding = 4 And HLCorresponding = 4) Then
-                            Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, D2Temp, AngleTmp As New Double
+                            Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle, AngleTmp As New Double
                             Dim Orientation As String = Nothing
                             Dim TmpLine As Line
                             Dim TmpArc As Arc
@@ -1306,36 +1312,38 @@ Public Class ViewProcessor
                                 If TypeOf EntityTmp Is Line Then
                                     TmpLine = New Line
                                     TmpLine = EntityTmp
-                                    If InitialStat = True Then
+                                    AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                    If AngleTmp < 90 Or (AngleTmp >= 180 And AngleTmp < 270) Then
                                         D1 = Round(LineLength(TmpLine), 3)
-                                    ElseIf InitialStat = False And D2Temp = 0 Then
-                                        D2Temp = Round(LineLength(TmpLine), 3)
-                                    ElseIf InitialStat = False And isequal(D1, Round(LineLength(TmpLine), 3)) = False And isequal(D1, D2Temp) = True Then
-                                        D2Temp = Round(LineLength(TmpLine), 3)
+                                        If (AngleTmp >= 180 And AngleTmp < 270) Then
+                                            AngleTmp = AngleTmp - 180
+                                        End If
+                                    ElseIf AngleTmp >= 90 Or (AngleTmp >= 270 And AngleTmp < 360) Then
+                                        D2 = Round(LineLength(TmpLine), 3)
+                                        If (AngleTmp >= 270 And AngleTmp < 360) Then
+                                            AngleTmp = AngleTmp - 180
+                                        End If
                                     End If
 
                                     If InitialStat = True Then
-                                        AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                        Angle = AngleTmp
                                         InitialStat = False
                                     Else
-                                        AngleTmp = Min(Angle, Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI))
+                                        Angle = Min(Angle, AngleTmp)
                                     End If
 
-                                ElseIf TypeOf EntityTmp Is Arc Then
+                                ElseIf (TypeOf EntityTmp Is Arc) And (D4 = 0) Then
                                     TmpArc = New Arc
                                     TmpArc = EntityTmp
-                                    If D4 = 0 Then
-                                        D4 = Round(TmpArc.Radius, 3)
-                                    End If
+                                    D4 = Round(TmpArc.Radius, 3)
                                 End If
                             Next
                             D1 = D1 + (2 * D4)
-                            D2 = D2Temp + (2 * D4)
+                            D2 = D2 + (2 * D4)
                             PolygonProcessor.GetArea(ListView(j).GroupLoopPoints(ListView(j).GroupLoop.IndexOf(GroupEntity)))
                             Origin = PolygonProcessor.GetCentroid(ListView(j).GroupLoopPoints(ListView(j).GroupLoop.IndexOf(GroupEntity)))
                             OriU = Origin.X - ListView(j).BoundProp(0)
                             OriV = Origin.Y - ListView(j).BoundProp(1)
-                            Angle = AngleTmp
 
                             'add D3
                             For Each EntityTmp2 As Entity In GroupEntity
@@ -1352,7 +1360,7 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = "1" 'Top
+                            Feature.MiscProp(2) = Orientation
                             Feature.OriginAndAddition(0) = OriU
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
