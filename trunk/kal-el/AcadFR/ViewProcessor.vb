@@ -426,7 +426,7 @@ Public Class ViewProcessor
                     If D1 = 0 Then
                         D1 = Round(LineLength(TmpLine), 3)
                     End If
-                    Angle = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                    Angle = Atan2(Abs(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y), Abs(TmpLine.EndPoint.X - TmpLine.StartPoint.X)) * (180 / PI)
                 ElseIf TypeOf EntityTmp Is Arc Then
                     TmpArc = New Arc
                     TmpArc = EntityTmp
@@ -2055,7 +2055,7 @@ Public Class ViewProcessor
                                     If D1 = 0 Then
                                         D1 = Round(LineLength(TmpLine), 3)
                                     End If
-                                    Angle = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                    Angle = Atan2(Abs(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y), Abs(TmpLine.EndPoint.X - TmpLine.StartPoint.X)) * (180 / PI)
                                 ElseIf TypeOf EntityTmp Is Arc Then
                                     TmpArc = New Arc
                                     TmpArc = EntityTmp
@@ -2153,7 +2153,7 @@ Public Class ViewProcessor
                                     If D1 = 0 Then
                                         D1 = Round(LineLength(TmpLine), 3)
                                     End If
-                                    Angle = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                    Angle = Atan2(Abs(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y), Abs(TmpLine.EndPoint.X - TmpLine.StartPoint.X)) * (180 / PI)
                                 ElseIf TypeOf EntityTmp Is Arc Then
                                     TmpArc = New Arc
                                     TmpArc = EntityTmp
