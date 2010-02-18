@@ -322,9 +322,9 @@ Public Class UserControl3
         End If
 
         Me.ComboBox2.Text = FeatureList(0).MiscProp(1) 'surface
-        Me.NumericUpDown4.Value = FeatureList(0).MiscProp(2) 'orientation
-        Me.NumericUpDown5.Value = FeatureList(0).MiscProp(3) 'chamfer
-        Me.NumericUpDown6.Value = FeatureList(0).MiscProp(4) 'quality
+        Me.NumericUpDown4.Value = FeatureList(0).MiscProp(2) 'orientation --> 'quality
+        Me.NumericUpDown5.Value = FeatureList(0).MiscProp(3) 'chamfer     --> 'orientation
+        Me.NumericUpDown6.Value = FeatureList(0).MiscProp(4) 'quality     --> 'chamfer
         Me.NumericUpDown1.Value = FeatureList(0).OriginAndAddition(0) 'origin.x
         Me.NumericUpDown2.Value = FeatureList(0).OriginAndAddition(1) 'origin.y
         Me.NumericUpDown3.Value = FeatureList(0).OriginAndAddition(2) 'origin.z
@@ -384,9 +384,9 @@ Public Class UserControl3
 
         SetUpFeatureName(Me.ComboBox1.SelectedIndex, FeatureList(index).FeatureName, FeatureList(index).MiscProp(0))
         FeatureList(index).MiscProp(1) = Me.ComboBox2.SelectedItem 'surface
-        FeatureList(index).MiscProp(2) = Me.NumericUpDown4.Value 'orientation
-        FeatureList(index).MiscProp(3) = Me.NumericUpDown5.Value 'chamfer
-        FeatureList(index).MiscProp(4) = Me.NumericUpDown6.Value 'quality
+        FeatureList(index).MiscProp(2) = Me.NumericUpDown4.Value 'orientation   --> 'quality
+        FeatureList(index).MiscProp(3) = Me.NumericUpDown5.Value 'chamfer       --> 'orientation
+        FeatureList(index).MiscProp(4) = Me.NumericUpDown6.Value 'quality       --> 'chamfer
         FeatureList(index).OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
         FeatureList(index).OriginAndAddition(3) = Me.NumericUpDown7.Value 'D1
         FeatureList(index).OriginAndAddition(4) = Me.NumericUpDown8.Value 'D2
@@ -699,7 +699,11 @@ Public Class UserControl3
             If SelectedIF.Count = 1 Then
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
-                FillComboBox1(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
+                If String.Equals(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") Then
+                    SingleView(SelectedIF)
+                Else
+                    FillComboBox1(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
+                End If
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
@@ -781,16 +785,15 @@ Public Class UserControl3
             If SelectedUF.Count = 1 Then
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
+                'single view result
+                If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") Then
+                    SingleView(SelectedUF)
+                ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) Then
+                    FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
+                End If
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
-            End If
-
-            'single view result
-            If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") And SelectedUF.Count = 1 Then
-                SingleView(SelectedUF)
-            ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) And SelectedUF.Count = 1 Then
-                FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
             End If
 
             Try
@@ -1637,6 +1640,13 @@ Public Class UserControl3
                 Me.ComboBox1.Items.Add("ボーリング穴")
         End Select
     End Sub
+
+    Public Sub AddHiddenView(ByVal ViewText As String)
+        If Me.ComboBox2.Items.Contains(ViewText.ToUpper) = False Then
+            Me.ComboBox2.Items.Add(ViewText.ToUpper)
+        End If
+    End Sub
+
 End Class
 
 

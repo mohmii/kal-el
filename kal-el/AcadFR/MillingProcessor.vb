@@ -301,10 +301,10 @@ Public Class MillingProcessor
                     CheckEachLinePath(PointTmp)
                     PointTmp = EndPoint
 
-                    If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False Then
+                    If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 3 And GroupEntity.Count <= 8) Then
                         GroupLoop.Add(GroupEntity)
                         GroupLoopPoints.Add(GroupPoints)
-                    ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False Then
+                    ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 3 And GroupEntity.Count <= 8) Then
                         Dim IsLoopEqualStatus As Boolean
                         For Each GroupEntityTmp As List(Of Entity) In GroupLoop
                             IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)

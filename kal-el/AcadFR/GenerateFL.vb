@@ -311,11 +311,12 @@ Public Class GenerateFL
                 Feature2Export = New OutputFormat
                 Feature2Export = feat.Cells("Object").Value
                 Dim StringTmp As String = FindCodeName(Feature2Export)
+                'print miscprop(x) yg lama : 2, 3, 4, diedit 4, 2, 3
                 fw.WriteLine(counter.ToString + ". " + FindCodeName(Feature2Export) + " " _
                              + ViewIndex(Feature2Export.MiscProp(1)).ToString + " " _
+                             + Feature2Export.MiscProp(4) + " " _
                              + Feature2Export.MiscProp(2) + " " _
-                             + Feature2Export.MiscProp(3) + " " _
-                             + SetDot(Feature2Export.MiscProp(4)) + " " _
+                             + SetDot(Feature2Export.MiscProp(3)) + " " _
                              + SetDot(Feature2Export.OriginAndAddition(0).ToString) + " " _
                              + SetDot(Feature2Export.OriginAndAddition(1).ToString) + " " _
                              + SetDot(Feature2Export.OriginAndAddition(2).ToString) + " " _
