@@ -65,6 +65,7 @@ Public Class ViewProcessor
             Feature.MiscProp(0) = "Mill Candidate"
             If Feature.HiddenLineCount > 0 Then
                 Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
             Else
                 Feature.MiscProp(1) = View.ViewType
             End If
@@ -108,22 +109,27 @@ Public Class ViewProcessor
                         StatOnBound = True
                         If isequal(TmpLine.StartPoint.X, View.BoundProp(0)) = True And isequal(TmpLine.EndPoint.X, View.BoundProp(0)) = True Then
                             StatOnOrigin = True
-                            Orientation = "1" 'Horizontal
+                            Orientation = "0" 'Horizontal
                         ElseIf isequal(TmpLine.StartPoint.Y, View.BoundProp(1)) = True And isequal(TmpLine.EndPoint.Y, View.BoundProp(1)) = True Then
                             StatOnOrigin = True
-                            Orientation = "2" 'Vertical
+                            Orientation = "1" 'Vertical
                         End If
                         Exit For
                     End If
                 Next
                 If StatOnBound = True And StatOnOrigin = True And D1 = 0 Then
                     D1 = Round(LineLength(TmpLine), 3)
-                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0)
-                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1)
+                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
+                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
                 ElseIf StatOnBound = False And D2 = 0 Then
                     D2 = Round(LineLength(TmpLine), 3)
                 End If
             Next
+            If Orientation = "0" Then
+                OriU = 0
+            Else
+                OriU = OriU
+            End If
 
             'Slot with D1 dan D3
         ElseIf Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -157,21 +163,21 @@ Public Class ViewProcessor
                     Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
                         D2 = Round(LineLength(TmpLine), 3)
                         If LineBB = View.BoundingBox(0) Then
-                            Orientation = "2" 'Lower Side
-                            OriU = View.BoundProp(0) - View.BoundProp(0)
-                            OriV = View.BoundProp(1) - View.BoundProp(1)
+                            Orientation = "0" 'Lower Side
+                            OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
+                            OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
                         ElseIf LineBB = View.BoundingBox(1) Then
                             Orientation = "3" 'Right Side
-                            OriU = View.BoundProp(2) - View.BoundProp(0)
-                            OriV = View.BoundProp(1) - View.BoundProp(1)
+                            OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
+                            OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
                         ElseIf LineBB = View.BoundingBox(2) Then
-                            Orientation = "4" 'Upper Side
-                            OriU = View.BoundProp(2) - View.BoundProp(0)
-                            OriV = View.BoundProp(3) - View.BoundProp(1)
+                            Orientation = "1" 'Upper Side
+                            OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
+                            OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
                         ElseIf LineBB = View.BoundingBox(3) Then
-                            Orientation = "1" 'Left Side
-                            OriU = View.BoundProp(0) - View.BoundProp(0)
-                            OriV = View.BoundProp(3) - View.BoundProp(1)
+                            Orientation = "2" 'Left Side
+                            OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
+                            OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
                         End If
                         Exit For
                     ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
@@ -244,9 +250,9 @@ Public Class ViewProcessor
 
             'searching the orientation and origin
             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
-                Orientation = "1" 'Lower Left
-                OriU = View.BoundProp(0) - View.BoundProp(0)
-                OriV = View.BoundProp(1) - View.BoundProp(1)
+                Orientation = "0" 'Lower Left
+                OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
+                OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
                 If (Position1 = "lower" And Position2 = "left") Then
                     D1 = Round(DimPos1, 3)
                     D2 = Round(DimPos2, 3)
@@ -255,9 +261,9 @@ Public Class ViewProcessor
                     D1 = Round(DimPos2, 3)
                 End If
             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
-                Orientation = "2" 'Lower Right
-                OriU = View.BoundProp(2) - View.BoundProp(0)
-                OriV = View.BoundProp(1) - View.BoundProp(1)
+                Orientation = "1" 'Lower Right
+                OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
+                OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
                 If (Position1 = "lower" And Position2 = "right") Then
                     D2 = Round(DimPos1, 3)
                     D1 = Round(DimPos2, 3)
@@ -267,8 +273,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
                 Orientation = "3" 'Upper Right
-                OriU = View.BoundProp(2) - View.BoundProp(0)
-                OriV = View.BoundProp(3) - View.BoundProp(1)
+                OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
+                OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
                 If (Position1 = "upper" And Position2 = "right") Then
                     D1 = Round(DimPos1, 3)
                     D2 = Round(DimPos2, 3)
@@ -277,9 +283,9 @@ Public Class ViewProcessor
                     D1 = Round(DimPos2, 3)
                 End If
             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
-                Orientation = "4" 'Upper Left
-                OriU = View.BoundProp(0) - View.BoundProp(0)
-                OriV = View.BoundProp(3) - View.BoundProp(1)
+                Orientation = "2" 'Upper Left
+                OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
+                OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
                 If (Position1 = "upper" And Position2 = "left") Then
                     D2 = Round(DimPos1, 3)
                     D1 = Round(DimPos2, 3)
@@ -288,6 +294,19 @@ Public Class ViewProcessor
                     D2 = Round(DimPos2, 3)
                 End If
             End If
+            If Feature.HiddenLineCount > 0 Then
+                If Orientation = "0" Then
+                    Orientation = "1"
+                ElseIf Orientation = "1" Then
+                    Orientation = "0"
+                ElseIf Orientation = "2" Then
+                    Orientation = "3"
+                ElseIf Orientation = "3" Then
+                    Orientation = "2"
+                End If
+            End If
+
+
 
             '3-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -302,16 +321,16 @@ Public Class ViewProcessor
                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
-                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0)
-                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1)
+                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
+                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
                             If LineBB = View.BoundingBox(0) Then
-                                Orientation = "2" 'Lower Side
+                                Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
                                 Orientation = "3" 'Right Side
                             ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "4" 'Upper Side
+                                Orientation = "1" 'Upper Side
                             ElseIf LineBB = View.BoundingBox(3) Then
-                                Orientation = "1" 'Left Side
+                                Orientation = "2" 'Left Side
                             End If
                             Exit For
                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -331,6 +350,13 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + D4
+            If Feature.HiddenLineCount > 0 Then
+                If Orientation = "2" Then
+                    Orientation = "3"
+                ElseIf Orientation = "3" Then
+                    Orientation = "2"
+                End If
+            End If
 
             '3-side pocket or blind slot with D1, D3
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -344,11 +370,11 @@ Public Class ViewProcessor
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
                             If LineBB = View.BoundingBox(0) Then
-                                Orientation = "4" 'Upper Side
+                                Orientation = "1" 'Upper Side
                             ElseIf LineBB = View.BoundingBox(1) Then
-                                Orientation = "1" 'Left Side
+                                Orientation = "2" 'Left Side
                             ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "2" 'Lower Side
+                                Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(3) Then
                                 Orientation = "3" 'Right Side
                             End If
@@ -408,8 +434,8 @@ Public Class ViewProcessor
             D2 = D2 + (2 * D4)
             PolygonProcessor.GetArea(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
-            OriU = Origin.X - View.BoundProp(0)
-            OriV = Origin.Y - View.BoundProp(1)
+            OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
+            OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
 
             'long hole with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -438,8 +464,8 @@ Public Class ViewProcessor
             D1 = D1 + D2
             PolygonProcessor.GetArea(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
-            OriU = Origin.X - View.BoundProp(0)
-            OriV = Origin.Y - View.BoundProp(1)
+            OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
+            OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
 
             'Blind Slot with D1, D2
         ElseIf (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -457,16 +483,16 @@ Public Class ViewProcessor
                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
-                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0)
-                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1)
+                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
+                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
                             If LineBB = View.BoundingBox(0) Then
-                                Orientation = "2" 'Lower Side
+                                Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
                                 Orientation = "3" 'Right Side
                             ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "4" 'Upper Side
+                                Orientation = "1" 'Upper Side
                             ElseIf LineBB = View.BoundingBox(3) Then
-                                Orientation = "1" 'Left Side
+                                Orientation = "2" 'Left Side
                             End If
                             Exit For
                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -486,13 +512,28 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + TempRad
-
+            If Feature.HiddenLineCount > 0 Then
+                If Orientation = "0" Then
+                    Orientation = "1"
+                ElseIf Orientation = "1" Then
+                    Orientation = "0"
+                ElseIf Orientation = "2" Then
+                    Orientation = "3"
+                ElseIf Orientation = "3" Then
+                    Orientation = "2"
+                End If
+            End If
         End If
 
         Feature.MiscProp(2) = Orientation
-        Feature.OriginAndAddition(0) = OriU
-        Feature.OriginAndAddition(1) = OriV
-        Feature.OriginAndAddition(2) = OriW
+        If Feature.HiddenLineCount > 0 Then
+            OriU = -OriU
+        Else
+            OriU = OriU
+        End If
+        Feature.OriginAndAddition(0) = Round(OriU, 3)
+        Feature.OriginAndAddition(1) = Round(OriV, 3)
+        Feature.OriginAndAddition(2) = Round(OriW, 3)
         Feature.OriginAndAddition(3) = D1
         Feature.OriginAndAddition(4) = D2
         Feature.OriginAndAddition(5) = D3
@@ -744,18 +785,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Square Slot"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Slot"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLReference = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
                                 TmpLine = New Line
@@ -768,18 +797,18 @@ Public Class ViewProcessor
                                         StatOnBound = True
                                         If isequal(TmpLine.StartPoint.X, ListView(ViewNum).BoundProp(0)) = True And isequal(TmpLine.EndPoint.X, ListView(ViewNum).BoundProp(0)) = True Then
                                             StatOnOrigin = True
-                                            Orientation = "1" 'Horizontal
+                                            Orientation = "0" 'Horizontal
                                         ElseIf isequal(TmpLine.StartPoint.Y, ListView(ViewNum).BoundProp(1)) = True And isequal(TmpLine.EndPoint.Y, ListView(ViewNum).BoundProp(1)) = True Then
                                             StatOnOrigin = True
-                                            Orientation = "2" 'Vertical
+                                            Orientation = "1" 'Vertical
                                         End If
                                         Exit For
                                     End If
                                 Next
                                 If StatOnBound = True And StatOnOrigin = True And D1 = 0 Then
                                     D1 = Round(LineLength(TmpLine), 3)
-                                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0)
-                                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1)
+                                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                 ElseIf StatOnBound = False And D2 = 0 Then
                                     D2 = Round(LineLength(TmpLine), 3)
                                 End If
@@ -800,10 +829,28 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Square Slot"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Square Slot"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLReference = 2 Then
+                                If Orientation = "0" Then
+                                    OriU = 0
+                                Else
+                                    OriU = -OriU
+                                End If
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -845,18 +892,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Square Slot"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Slot"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLCorresponding = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity2
                                 TmpLine = New Line
@@ -869,18 +904,18 @@ Public Class ViewProcessor
                                         StatOnBound = True
                                         If isequal(TmpLine.StartPoint.X, ListView(j).BoundProp(0)) = True And isequal(TmpLine.EndPoint.X, ListView(j).BoundProp(0)) = True Then
                                             StatOnOrigin = True
-                                            Orientation = "1" 'Horizontal
+                                            Orientation = "0" 'Horizontal
                                         ElseIf isequal(TmpLine.StartPoint.Y, ListView(j).BoundProp(1)) = True And isequal(TmpLine.EndPoint.Y, ListView(j).BoundProp(1)) = True Then
                                             StatOnOrigin = True
-                                            Orientation = "2" 'Vertical
+                                            Orientation = "1" 'Vertical
                                         End If
                                         Exit For
                                     End If
                                 Next
                                 If StatOnBound = True And StatOnOrigin = True And D1 = 0 Then
                                     D1 = Round(LineLength(TmpLine), 3)
-                                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0)
-                                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1)
+                                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                 ElseIf StatOnBound = False And D2 = 0 Then
                                     D2 = Round(LineLength(TmpLine), 3)
                                 End If
@@ -901,10 +936,28 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Square Slot"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Square Slot"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLCorresponding = 2 Then
+                                If Orientation = "0" Then
+                                    OriU = 0
+                                Else
+                                    OriU = -OriU
+                                End If
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -925,7 +978,7 @@ Public Class ViewProcessor
                             Exit For
 
 
-                            'rule-based for square step features
+                            'rule-based for square step features main
                         ElseIf (SLReference = 4 And SLBReference = 3 And HLReference = 0 And VLReference = 0 _
                                 And SLCorresponding = 2 And SLBCorresponding = 0 And HLCorresponding = 0 And VLCorresponding = 2) _
                                Or (SLReference = 3 And SLBReference = 3 And HLReference = 1 And VLReference = 0 _
@@ -946,18 +999,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Square Step"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Step"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLReference = 1 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
                                 TmpLine = New Line
@@ -967,21 +1008,21 @@ Public Class ViewProcessor
                                     Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
                                         D2 = Round(LineLength(TmpLine), 3)
                                         If LineBB = ListView(ViewNum).BoundingBox(0) Then
-                                            Orientation = "2" 'Lower Side
-                                            OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
-                                            OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
+                                            Orientation = "0" 'Lower Side
+                                            OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                            OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                         ElseIf LineBB = ListView(ViewNum).BoundingBox(1) Then
                                             Orientation = "3" 'Right Side
-                                            OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
-                                            OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
+                                            OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                            OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                         ElseIf LineBB = ListView(ViewNum).BoundingBox(2) Then
-                                            Orientation = "4" 'Upper Side
-                                            OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
-                                            OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
+                                            Orientation = "1" 'Upper Side
+                                            OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                            OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                         ElseIf LineBB = ListView(ViewNum).BoundingBox(3) Then
-                                            Orientation = "1" 'Left Side
-                                            OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
-                                            OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
+                                            Orientation = "2" 'Left Side
+                                            OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                            OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                         End If
                                         Exit For
                                     ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
@@ -1015,10 +1056,29 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Square Step"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Square Step"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLReference = 1 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "3" Then
+                                    Orientation = "2"
+                                ElseIf Orientation = "2" Then
+                                    Orientation = "3"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -1060,18 +1120,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Square Step"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Step"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLCorresponding = 1 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity2
                                 TmpLine = New Line
@@ -1081,21 +1129,21 @@ Public Class ViewProcessor
                                     Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = True Then
                                         D2 = Round(LineLength(TmpLine), 3)
                                         If LineBB = ListView(j).BoundingBox(0) Then
-                                            Orientation = "2" 'Lower Side
-                                            OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
-                                            OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
+                                            Orientation = "0" 'Lower Side
+                                            OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                            OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                         ElseIf LineBB = ListView(j).BoundingBox(1) Then
                                             Orientation = "3" 'Right Side
-                                            OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
-                                            OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
+                                            OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                            OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                         ElseIf LineBB = ListView(j).BoundingBox(2) Then
-                                            Orientation = "4" 'Upper Side
-                                            OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
-                                            OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
+                                            Orientation = "1" 'Upper Side
+                                            OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                            OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                         ElseIf LineBB = ListView(j).BoundingBox(3) Then
-                                            Orientation = "1" 'Left Side
-                                            OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
-                                            OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
+                                            Orientation = "2" 'Left Side
+                                            OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                            OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                         End If
                                         Exit For
                                     ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
@@ -1129,15 +1177,35 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Square Step"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Square Step"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLCorresponding = 1 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "3" Then
+                                    Orientation = "2"
+                                ElseIf Orientation = "2" Then
+                                    Orientation = "3"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
                             Feature.OriginAndAddition(6) = D4
                             Feature.OriginAndAddition(7) = Angle
+
 
                             'add to the identified feature list
                             IdentifiedFeature.Add(Feature)
@@ -1177,18 +1245,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "4-side Pocket"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "4-side Pocket"
-                            Feature.ListLoop = ListLoopTemp
-                            If HAReference = 4 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2, D4, Angle
                             PolygonProcessor = New PolygonProcessor
                             For Each EntityTmp As Entity In GroupEntity
@@ -1225,8 +1281,8 @@ Public Class ViewProcessor
                             D2 = D2 + (2 * D4)
                             PolygonProcessor.GetArea(ListView(ViewNum).GroupLoopPoints(ListView(ViewNum).GroupLoop.IndexOf(GroupEntity)))
                             Origin = PolygonProcessor.GetCentroid(ListView(ViewNum).GroupLoopPoints(ListView(ViewNum).GroupLoop.IndexOf(GroupEntity)))
-                            OriU = Origin.X - ListView(ViewNum).BoundProp(0)
-                            OriV = Origin.Y - ListView(ViewNum).BoundProp(1)
+                            OriU = Origin.X - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                            OriV = Origin.Y - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
 
                             'add D3
                             For Each EntityTmp2 As Entity In GroupEntity2
@@ -1246,10 +1302,24 @@ Public Class ViewProcessor
                                 End If
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "4-side Pocket"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "4-side Pocket"
+                            Feature.ListLoop = ListLoopTemp
+                            If HAReference = 4 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -1294,18 +1364,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "4-side Pocket"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "4-side Pocket"
-                            Feature.ListLoop = ListLoopTemp
-                            If HACorresponding = 4 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2, D4, Angle
                             PolygonProcessor = New PolygonProcessor
                             For Each EntityTmp As Entity In GroupEntity2
@@ -1342,8 +1400,8 @@ Public Class ViewProcessor
                             D2 = D2 + (2 * D4)
                             PolygonProcessor.GetArea(ListView(j).GroupLoopPoints(ListView(j).GroupLoop.IndexOf(GroupEntity)))
                             Origin = PolygonProcessor.GetCentroid(ListView(j).GroupLoopPoints(ListView(j).GroupLoop.IndexOf(GroupEntity)))
-                            OriU = Origin.X - ListView(j).BoundProp(0)
-                            OriV = Origin.Y - ListView(j).BoundProp(1)
+                            OriU = Origin.X - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                            OriV = Origin.Y - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
 
                             'add D3
                             For Each EntityTmp2 As Entity In GroupEntity
@@ -1360,10 +1418,24 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "4-side Pocket"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "4-side Pocket"
+                            Feature.ListLoop = ListLoopTemp
+                            If HACorresponding = 4 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -1407,12 +1479,6 @@ Public Class ViewProcessor
                             ListLoopTemp = New List(Of List(Of Entity))
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
-                            If HAReference = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
-
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp1 As Entity In GroupEntity
@@ -1423,16 +1489,16 @@ Public Class ViewProcessor
                                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                                             D1 = Round(LineLength(TmpLine), 3)
-                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0)
-                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1)
+                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                             If LineBB = ListView(ViewNum).BoundingBox(0) Then
-                                                Orientation = "2" 'Lower Side
+                                                Orientation = "0" 'Lower Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(1) Then
                                                 Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(2) Then
-                                                Orientation = "4" 'Upper Side
+                                                Orientation = "1" 'Upper Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(3) Then
-                                                Orientation = "1" 'Left Side
+                                                Orientation = "2" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -1468,8 +1534,29 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "3-side Pocket"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "3-side Pocket"
+                            Feature.ListLoop = ListLoopTemp
+                            If HAReference = 2 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "2" Then
+                                    Orientation = "3"
+                                ElseIf Orientation = "3" Then
+                                    Orientation = "2"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(1) = OriV
                             Feature.OriginAndAddition(2) = OriW
                             Feature.OriginAndAddition(3) = D1
@@ -1477,13 +1564,6 @@ Public Class ViewProcessor
                             Feature.OriginAndAddition(5) = D3
                             Feature.OriginAndAddition(6) = D4
                             Feature.OriginAndAddition(7) = Angle
-
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "3-side Pocket"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "3-side Pocket"
-                            Feature.ListLoop = ListLoopTemp
 
                             'add to the identified feature list
                             IdentifiedFeature.Add(Feature)
@@ -1522,11 +1602,6 @@ Public Class ViewProcessor
                             ListLoopTemp = New List(Of List(Of Entity))
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
-                            If HACorresponding = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp1 As Entity In GroupEntity2
@@ -1537,16 +1612,16 @@ Public Class ViewProcessor
                                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                                             D1 = Round(LineLength(TmpLine), 3)
-                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0)
-                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1)
+                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                             If LineBB = ListView(j).BoundingBox(0) Then
-                                                Orientation = "2" 'Lower Side
+                                                Orientation = "0" 'Lower Side
                                             ElseIf LineBB = ListView(j).BoundingBox(1) Then
                                                 Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(j).BoundingBox(2) Then
-                                                Orientation = "4" 'Upper Side
+                                                Orientation = "1" 'Upper Side
                                             ElseIf LineBB = ListView(j).BoundingBox(3) Then
-                                                Orientation = "1" 'Left Side
+                                                Orientation = "2" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -1582,22 +1657,34 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
-                            Feature.OriginAndAddition(3) = D1
-                            Feature.OriginAndAddition(4) = D2
-                            Feature.OriginAndAddition(5) = D3
-                            Feature.OriginAndAddition(6) = D4
-                            Feature.OriginAndAddition(7) = Angle
-
                             'set the feature property
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "3-side Pocket"
                             Feature.ObjectId = MillingObjectId
                             Feature.MiscProp(0) = "3-side Pocket"
                             Feature.ListLoop = ListLoopTemp
+                            If HACorresponding = 2 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "2" Then
+                                    Orientation = "3"
+                                ElseIf Orientation = "3" Then
+                                    Orientation = "2"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
+                            Feature.MiscProp(2) = Orientation
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
+                            Feature.OriginAndAddition(3) = D1
+                            Feature.OriginAndAddition(4) = D2
+                            Feature.OriginAndAddition(5) = D3
+                            Feature.OriginAndAddition(6) = D4
+                            Feature.OriginAndAddition(7) = Angle
 
                             'add to the identified feature list
                             IdentifiedFeature.Add(Feature)
@@ -1638,18 +1725,6 @@ Public Class ViewProcessor
                             ListLoopTemp = New List(Of List(Of Entity))
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
-
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "2-side Pocket"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "2-side Pocket"
-                            Feature.ListLoop = ListLoopTemp
-                            If HAReference = 1 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp As Entity In GroupEntity
@@ -1703,9 +1778,9 @@ Public Class ViewProcessor
                             Next
 
                             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
-                                Orientation = "1" 'Lower Left
-                                OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
-                                OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
+                                Orientation = "0" 'Lower Left
+                                OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                 If (Position1 = "lower" And Position2 = "left") Then
                                     D1 = Round(DimPos1, 3)
                                     D2 = Round(DimPos2, 3)
@@ -1714,9 +1789,9 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
-                                Orientation = "2" 'Lower Right
-                                OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
-                                OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1)
+                                Orientation = "1" 'Lower Right
+                                OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                OriV = ListView(ViewNum).BoundProp(1) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                 If (Position1 = "lower" And Position2 = "right") Then
                                     D2 = Round(DimPos1, 3)
                                     D1 = Round(DimPos2, 3)
@@ -1725,9 +1800,9 @@ Public Class ViewProcessor
                                     D2 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
-                                Orientation = "4" 'Upper Right
-                                OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0)
-                                OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
+                                Orientation = "3" 'Upper Right
+                                OriU = ListView(ViewNum).BoundProp(2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                 If (Position1 = "upper" And Position2 = "right") Then
                                     D1 = Round(DimPos1, 3)
                                     D2 = Round(DimPos2, 3)
@@ -1736,9 +1811,9 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
-                                Orientation = "3" 'Upper Left
-                                OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0)
-                                OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1)
+                                Orientation = "2" 'Upper Left
+                                OriU = ListView(ViewNum).BoundProp(0) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                OriV = ListView(ViewNum).BoundProp(3) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                 If (Position1 = "upper" And Position2 = "left") Then
                                     D2 = Round(DimPos1, 3)
                                     D1 = Round(DimPos2, 3)
@@ -1788,10 +1863,33 @@ Public Class ViewProcessor
                                     End If
                             End Select
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "2-side Pocket"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "2-side Pocket"
+                            Feature.ListLoop = ListLoopTemp
+                            If HAReference = 1 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "0" Then
+                                    Orientation = "1"
+                                ElseIf Orientation = "1" Then
+                                    Orientation = "0"
+                                ElseIf Orientation = "2" Then
+                                    Orientation = "3"
+                                ElseIf Orientation = "3" Then
+                                    Orientation = "2"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -1837,18 +1935,6 @@ Public Class ViewProcessor
                             ListLoopTemp = New List(Of List(Of Entity))
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
-
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "2-side Pocket"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "2-side Pocket"
-                            Feature.ListLoop = ListLoopTemp
-                            If HACorresponding = 1 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
 
                             'add Orientation, Origin, D1, D2, D4
                             For Each EntityTmp As Entity In GroupEntity2
@@ -1902,9 +1988,9 @@ Public Class ViewProcessor
                             Next
 
                             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
-                                Orientation = "1" 'Lower Left
-                                OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
-                                OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
+                                Orientation = "0" 'Lower Left
+                                OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                 If (Position1 = "lower" And Position2 = "left") Then
                                     D1 = Round(DimPos1, 3)
                                     D2 = Round(DimPos2, 3)
@@ -1913,9 +1999,9 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
-                                Orientation = "2" 'Lower Right
-                                OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
-                                OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1)
+                                Orientation = "1" 'Lower Right
+                                OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                OriV = ListView(j).BoundProp(1) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                 If (Position1 = "lower" And Position2 = "right") Then
                                     D2 = Round(DimPos1, 3)
                                     D1 = Round(DimPos2, 3)
@@ -1924,9 +2010,9 @@ Public Class ViewProcessor
                                     D2 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
-                                Orientation = "4" 'Upper Right
-                                OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0)
-                                OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
+                                Orientation = "3" 'Upper Right
+                                OriU = ListView(j).BoundProp(2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                 If (Position1 = "upper" And Position2 = "right") Then
                                     D1 = Round(DimPos1, 3)
                                     D2 = Round(DimPos2, 3)
@@ -1935,9 +2021,9 @@ Public Class ViewProcessor
                                     D1 = Round(DimPos2, 3)
                                 End If
                             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
-                                Orientation = "3" 'Upper Left
-                                OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0)
-                                OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1)
+                                Orientation = "2" 'Upper Left
+                                OriU = ListView(j).BoundProp(0) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                OriV = ListView(j).BoundProp(3) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                 If (Position1 = "upper" And Position2 = "left") Then
                                     D2 = Round(DimPos1, 3)
                                     D1 = Round(DimPos2, 3)
@@ -1987,10 +2073,33 @@ Public Class ViewProcessor
                                     End If
                             End Select
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "2-side Pocket"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "2-side Pocket"
+                            Feature.ListLoop = ListLoopTemp
+                            If HACorresponding = 1 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "0" Then
+                                    Orientation = "1"
+                                ElseIf Orientation = "1" Then
+                                    Orientation = "0"
+                                ElseIf Orientation = "2" Then
+                                    Orientation = "3"
+                                ElseIf Orientation = "3" Then
+                                    Orientation = "2"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -2034,18 +2143,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Long Hole"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Long Hole"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLReference = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2, Angle
                             PolygonProcessor = New PolygonProcessor
                             For Each EntityTmp As Entity In GroupEntity
@@ -2067,8 +2164,8 @@ Public Class ViewProcessor
                             D1 = D1 + D2
                             PolygonProcessor.GetArea(ListView(ViewNum).GroupLoopPoints(ListView(ViewNum).GroupLoop.IndexOf(GroupEntity)))
                             Origin = PolygonProcessor.GetCentroid(ListView(ViewNum).GroupLoopPoints(ListView(ViewNum).GroupLoop.IndexOf(GroupEntity)))
-                            OriU = Origin.X - ListView(ViewNum).BoundProp(0)
-                            OriV = Origin.Y - ListView(ViewNum).BoundProp(1)
+                            OriU = Origin.X - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                            OriV = Origin.Y - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
 
                             'add D3
                             For Each EntityTmp2 As Entity In GroupEntity2
@@ -2085,10 +2182,24 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = "1" 'Top
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Long Hole"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Long Hole"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLReference = 2 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
+                            Feature.MiscProp(2) = Orientation
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -2132,18 +2243,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Long Hole"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Long Hole"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLCorresponding = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2, Angle
                             PolygonProcessor = New PolygonProcessor
                             For Each EntityTmp As Entity In GroupEntity2
@@ -2165,8 +2264,8 @@ Public Class ViewProcessor
                             D1 = D1 + D2
                             PolygonProcessor.GetArea(ListView(j).GroupLoopPoints(ListView(j).GroupLoop.IndexOf(GroupEntity)))
                             Origin = PolygonProcessor.GetCentroid(ListView(j).GroupLoopPoints(ListView(j).GroupLoop.IndexOf(GroupEntity)))
-                            OriU = Origin.X - ListView(j).BoundProp(0)
-                            OriV = Origin.Y - ListView(j).BoundProp(1)
+                            OriU = Origin.X - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                            OriV = Origin.Y - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
 
                             'add D3
                             For Each EntityTmp2 As Entity In GroupEntity
@@ -2183,10 +2282,25 @@ Public Class ViewProcessor
                                 Next
                             Next
 
-                            Feature.MiscProp(2) = "1" 'Top
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Long Hole"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Long Hole"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLCorresponding = 2 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
+                            Feature.MiscProp(2) = Orientation
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -2241,18 +2355,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Blind Slot"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Blind Slot"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLReference = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity
                                 If TypeOf EntityTmp Is Line Then
@@ -2262,16 +2364,16 @@ Public Class ViewProcessor
                                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                                             D1 = Round(LineLength(TmpLine), 3)
-                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0)
-                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1)
+                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(ViewNum).BoundProp(0) - ListView(ViewNum).RefProp(0)
+                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(ViewNum).BoundProp(1) - ListView(ViewNum).RefProp(1)
                                             If LineBB = ListView(ViewNum).BoundingBox(0) Then
-                                                Orientation = "2" 'Lower Side
+                                                Orientation = "0" 'Lower Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(1) Then
                                                 Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(2) Then
-                                                Orientation = "4" 'Upper Side
+                                                Orientation = "1" 'Upper Side
                                             ElseIf LineBB = ListView(ViewNum).BoundingBox(3) Then
-                                                Orientation = "1" 'Left Side
+                                                Orientation = "2" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -2307,10 +2409,29 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Blind Slot"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Blind Slot"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLReference = 2 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "2" Then
+                                    Orientation = "3"
+                                ElseIf Orientation = "3" Then
+                                    Orientation = "2"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(ViewNum).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
@@ -2365,18 +2486,6 @@ Public Class ViewProcessor
                             ListLoopTemp.Add(GroupEntity)
                             ListLoopTemp.Add(GroupEntity2)
 
-                            'set the feature property
-                            Feature.EntityMember = MillingObjectId.Count
-                            Feature.FeatureName = "Blind Slot"
-                            Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Blind Slot"
-                            Feature.ListLoop = ListLoopTemp
-                            If HLReference = 2 Then
-                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
-                            Else
-                                Feature.MiscProp(1) = ListView(j).ViewType
-                            End If
-
                             'add Orientation, Origin, D1, D2
                             For Each EntityTmp As Entity In GroupEntity2
                                 If TypeOf EntityTmp Is Line Then
@@ -2386,16 +2495,16 @@ Public Class ViewProcessor
                                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                                             D1 = Round(LineLength(TmpLine), 3)
-                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0)
-                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1)
+                                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - ListView(j).BoundProp(0) - ListView(j).RefProp(0)
+                                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - ListView(j).BoundProp(1) - ListView(j).RefProp(1)
                                             If LineBB = ListView(j).BoundingBox(0) Then
-                                                Orientation = "2" 'Lower Side
+                                                Orientation = "0" 'Lower Side
                                             ElseIf LineBB = ListView(j).BoundingBox(1) Then
                                                 Orientation = "3" 'Right Side
                                             ElseIf LineBB = ListView(j).BoundingBox(2) Then
-                                                Orientation = "4" 'Upper Side
+                                                Orientation = "1" 'Upper Side
                                             ElseIf LineBB = ListView(j).BoundingBox(3) Then
-                                                Orientation = "1" 'Left Side
+                                                Orientation = "2" 'Left Side
                                             End If
                                             Exit For
                                         ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
@@ -2431,15 +2540,35 @@ Public Class ViewProcessor
                                 Next
                             Next
 
+                            'set the feature property
+                            Feature.EntityMember = MillingObjectId.Count
+                            Feature.FeatureName = "Blind Slot"
+                            Feature.ObjectId = MillingObjectId
+                            Feature.MiscProp(0) = "Blind Slot"
+                            Feature.ListLoop = ListLoopTemp
+                            If HLCorresponding = 2 Then
+                                OriU = -OriU
+                                Feature.MiscProp(1) = SearchOppositeSurf(ListView(j).ViewType)
+                                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                                If Orientation = "2" Then
+                                    Orientation = "3"
+                                ElseIf Orientation = "3" Then
+                                    Orientation = "2"
+                                End If
+                            Else
+                                OriU = OriU
+                                Feature.MiscProp(1) = ListView(j).ViewType
+                            End If
                             Feature.MiscProp(2) = Orientation
-                            Feature.OriginAndAddition(0) = OriU
-                            Feature.OriginAndAddition(1) = OriV
-                            Feature.OriginAndAddition(2) = OriW
+                            Feature.OriginAndAddition(0) = Round(OriU, 3)
+                            Feature.OriginAndAddition(1) = Round(OriV, 3)
+                            Feature.OriginAndAddition(2) = Round(OriW, 3)
                             Feature.OriginAndAddition(3) = D1
                             Feature.OriginAndAddition(4) = D2
                             Feature.OriginAndAddition(5) = D3
                             Feature.OriginAndAddition(6) = D4
                             Feature.OriginAndAddition(7) = Angle
+
 
                             'add to the identified feature list
                             IdentifiedFeature.Add(Feature)
@@ -2506,6 +2635,7 @@ Public Class ViewProcessor
                     Feature.MiscProp(0) = "Mill Candidate"
                     If Feature.HiddenLineCount > 0 Then
                         Feature.MiscProp(1) = SearchOppositeSurf(ListView(ViewNum).ViewType)
+                        adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
                     Else
                         Feature.MiscProp(1) = ListView(ViewNum).ViewType
                     End If
