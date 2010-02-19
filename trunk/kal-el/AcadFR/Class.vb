@@ -56,6 +56,7 @@ Public Class adskClass
                 myPalette = New UserControl3
                 ' now add the palette to the paletteset
                 myPaletteSet.Add("Palette1", myPalette)
+
             End If
 
         Catch ex As Exception

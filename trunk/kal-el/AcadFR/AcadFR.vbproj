@@ -107,6 +107,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InitialColor.vb" />
+    <Compile Include="LinetypesPresetting.Designer.vb">
+      <DependentUpon>LinetypesPresetting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LinetypesPresetting.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="LoopSet.vb" />
     <Compile Include="MillingProcessor.vb">
       <SubType>Code</SubType>
@@ -124,6 +130,12 @@
     </Compile>
     <Compile Include="GenerateFL.vb" />
     <Compile Include="OrganizeList.vb" />
+    <Compile Include="SchematicPresetting.Designer.vb">
+      <DependentUpon>SchematicPresetting.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SchematicPresetting.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SelectionSet.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -180,8 +192,16 @@
       <DependentUpon>AppPreferencesForm.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="LinetypesPresetting.resx">
+      <DependentUpon>LinetypesPresetting.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProductSize.resx">
       <DependentUpon>ProductSize.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SchematicPresetting.resx">
+      <DependentUpon>SchematicPresetting.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl1.resx">

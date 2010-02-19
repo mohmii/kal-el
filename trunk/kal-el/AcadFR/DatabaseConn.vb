@@ -258,7 +258,7 @@ Public Class DatabaseConn
         If (ReamData.Count = 0) Then
             Return Nothing
         Else
-            Return New String() {"Ream", Result.FirstOrDefault.Id.ToString, ReamData.FirstOrDefault.Diameter.ToString, _
+            Return New String() {"Ream, R-" + ReamData.SingleOrDefault.Diameter.ToString, Result.FirstOrDefault.Id.ToString, ReamData.FirstOrDefault.Diameter.ToString, _
                                  ReamData.FirstOrDefault.Depth.ToString}
         End If
 
