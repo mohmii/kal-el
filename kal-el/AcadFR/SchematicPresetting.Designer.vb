@@ -22,40 +22,148 @@ Partial Class SchematicPresetting
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Button2 = New System.Windows.Forms.Button
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Me.Proceed = New System.Windows.Forms.Button
+        Me.Cancel = New System.Windows.Forms.Button
+        Me.TapHoleList = New System.Windows.Forms.DataGridView
+        Me.Number = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.HoleLayer = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.HoleLineType = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.HoleColor = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.UnderholeLayer = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.UnderholeLineType = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.UnderholeColor = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.Top = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.Bottom = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.Ignore = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        CType(Me.TapHoleList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'Button1
+        'Proceed
         '
-        Me.Button1.Location = New System.Drawing.Point(585, 328)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 2
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Proceed.Location = New System.Drawing.Point(603, 316)
+        Me.Proceed.Name = "Proceed"
+        Me.Proceed.Size = New System.Drawing.Size(75, 23)
+        Me.Proceed.TabIndex = 2
+        Me.Proceed.Text = "Proceed >>"
+        Me.Proceed.UseVisualStyleBackColor = True
         '
-        'Button2
+        'Cancel
         '
-        Me.Button2.Location = New System.Drawing.Point(504, 328)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
-        Me.Button2.TabIndex = 3
-        Me.Button2.Text = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Cancel.Location = New System.Drawing.Point(702, 316)
+        Me.Cancel.Name = "Cancel"
+        Me.Cancel.Size = New System.Drawing.Size(75, 23)
+        Me.Cancel.TabIndex = 3
+        Me.Cancel.Text = "Cancel"
+        Me.Cancel.UseVisualStyleBackColor = True
+        '
+        'TapHoleList
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.TapHoleList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.TapHoleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.TapHoleList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Number, Me.HoleLayer, Me.HoleLineType, Me.HoleColor, Me.UnderholeLayer, Me.UnderholeLineType, Me.UnderholeColor, Me.Top, Me.Bottom, Me.Ignore})
+        Me.TapHoleList.Location = New System.Drawing.Point(4, 12)
+        Me.TapHoleList.Name = "TapHoleList"
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.TapHoleList.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
+        Me.TapHoleList.RowHeadersVisible = False
+        Me.TapHoleList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.TapHoleList.Size = New System.Drawing.Size(780, 289)
+        Me.TapHoleList.TabIndex = 4
+        '
+        'Number
+        '
+        Me.Number.HeaderText = "No"
+        Me.Number.Name = "Number"
+        Me.Number.Width = 30
+        '
+        'HoleLayer
+        '
+        Me.HoleLayer.HeaderText = "Layer"
+        Me.HoleLayer.Name = "HoleLayer"
+        '
+        'HoleLineType
+        '
+        Me.HoleLineType.HeaderText = "Line Type"
+        Me.HoleLineType.Name = "HoleLineType"
+        '
+        'HoleColor
+        '
+        Me.HoleColor.HeaderText = "Color"
+        Me.HoleColor.Name = "HoleColor"
+        '
+        'UnderholeLayer
+        '
+        Me.UnderholeLayer.HeaderText = "Layer"
+        Me.UnderholeLayer.Name = "UnderholeLayer"
+        '
+        'UnderholeLineType
+        '
+        Me.UnderholeLineType.HeaderText = "Line Type"
+        Me.UnderholeLineType.Name = "UnderholeLineType"
+        '
+        'UnderholeColor
+        '
+        Me.UnderholeColor.HeaderText = "Color"
+        Me.UnderholeColor.Name = "UnderholeColor"
+        '
+        'Top
+        '
+        Me.Top.HeaderText = "Top"
+        Me.Top.Name = "Top"
+        Me.Top.Width = 50
+        '
+        'Bottom
+        '
+        Me.Bottom.HeaderText = "Bottom"
+        Me.Bottom.Name = "Bottom"
+        Me.Bottom.Width = 50
+        '
+        'Ignore
+        '
+        Me.Ignore.HeaderText = "Nothing"
+        Me.Ignore.Name = "Ignore"
+        Me.Ignore.Width = 50
         '
         'SchematicPresetting
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(673, 360)
-        Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.Button1)
+        Me.ClientSize = New System.Drawing.Size(789, 360)
+        Me.Controls.Add(Me.TapHoleList)
+        Me.Controls.Add(Me.Cancel)
+        Me.Controls.Add(Me.Proceed)
         Me.Name = "SchematicPresetting"
         Me.Text = "Tap Hole Schematic Pre-setting"
+        CType(Me.TapHoleList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents Proceed As System.Windows.Forms.Button
+    Friend WithEvents Cancel As System.Windows.Forms.Button
+    Friend WithEvents TapHoleList As System.Windows.Forms.DataGridView
+    Friend WithEvents Number As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents HoleLayer As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents HoleLineType As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents HoleColor As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents UnderholeLayer As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents UnderholeLineType As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents UnderholeColor As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Top As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents Bottom As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents Ignore As System.Windows.Forms.DataGridViewCheckBoxColumn
 End Class
