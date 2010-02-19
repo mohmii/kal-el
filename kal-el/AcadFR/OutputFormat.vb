@@ -56,12 +56,21 @@ Public Class OutputFormat
     'place for the origin {x,y,z} and additional properties {d1,d2,d3,d4,angle} for each feature
     Private OriAndAdd() As Double = New Double() {0, 0, 0, 0, 0, 0, 0, 0}
 
-    Public Property OriginAndAddition(ByVal index As Integer) As String
+    Public Overloads Property OriginAndAddition(ByVal index As Integer) As String
         Get
             Return OriAndAdd(index)
         End Get
         Set(ByVal value As String)
             OriAndAdd(index) = value
+        End Set
+    End Property
+
+    Public Overloads Property OriginAndAddition() As Double()
+        Get
+            Return OriAndAdd
+        End Get
+        Set(ByVal value As Double())
+            OriAndAdd = value
         End Set
     End Property
 

@@ -33,7 +33,7 @@ Public Class UserControl3
     Private Sub Undo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Undo.Click
 
         Try
-            If MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.OkCancel, "Undo view recognition") = MsgBoxResult.Ok Then
+            If MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.OkCancel, "Undo View Recognition") = MsgBoxResult.Ok Then
 
                 zoom = Application.AcadApplication
                 zoom.ZoomAll()
@@ -1296,10 +1296,6 @@ Public Class UserControl3
         Table.Columns("Object").Visible = False
     End Sub
 
-    Private InitialFeature As OutputFormat
-
-    Private ProductVer As String
-
     Private Sub UserControl3_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         IFList = New System.Data.DataTable("Features")
         CreateTable(IFList, Me.IdentifiedFeature)
@@ -1309,13 +1305,6 @@ Public Class UserControl3
         MakeItBlank()
 
         Me.version.Text = "Version " + ProductVersion
-
-        'FeatureCandidateList = New List(Of System.Windows.Forms.ComboBox.ObjectCollection)
-
-        'FeatureCandidate.Clear()
-        'FeatureCandidate.Add("Square Slot")
-        'FeatureCandidate.Add("Not A Feature")
-        'FeatureCandidateList.Add(FeatureCandidate)
 
     End Sub
 
