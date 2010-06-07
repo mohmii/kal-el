@@ -7,9 +7,6 @@ Imports System.Runtime.InteropServices
 
 Public Class SchematicPresetting
 
-    'variabel yg dibutuhkan
-    Private CheckBox1, CheckBox2, CheckBox3 As System.Windows.Forms.CheckBox
-
     'variabel hole underhole
     Private TopHole As TopTapLineType
     Private BottomHole As BottomTapLineType
@@ -20,29 +17,23 @@ Public Class SchematicPresetting
     Private Sub TapHoleList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles TapHoleList.CellContentClick
         ProceedStat = True
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
-            CheckBox1 = New System.Windows.Forms.CheckBox
-            CheckBox2 = New System.Windows.Forms.CheckBox
-            CheckBox3 = New System.Windows.Forms.CheckBox
-            CheckBox1 = Row.Cells("Top").Value
-            CheckBox2 = Row.Cells("Bottom").Value
-            CheckBox3 = Row.Cells("Ignore").Value
+            Row.Cells("Top").Value = False
+            Row.Cells("Bottom").Value = False
+            Row.Cells("Ignore").Value = False
 
-            If CheckBox1.Checked = True Then
-                CheckBox2.Checked = False
-                CheckBox3.Checked = False
+            If Row.Cells("Bottom").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = True Then
+                Row.Cells("Top").Value = False
+                Row.Cells("Bottom").Value = True
+                Row.Cells("Ignore").Value = False
             End If
 
-            If CheckBox2.Checked = True Then
-                CheckBox1.Checked = False
-                CheckBox3.Checked = False
+            If Row.Cells("Ignore").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = True Then
+                Row.Cells("Top").Value = False
+                Row.Cells("Bottom").Value = False
+                Row.Cells("Ignore").Value = True
             End If
 
-            If CheckBox3.Checked = True Then
-                CheckBox1.Checked = False
-                CheckBox2.Checked = False
-            End If
-
-            If CheckBox1.Checked = False And CheckBox2.Checked = False And CheckBox3.Checked = False Then
+            If Row.Cells("Top").Value = False And Row.Cells("Bottom").Value = False And Row.Cells("Ignore").Value = False Then
                 ProceedStat = False
             End If
         Next
@@ -58,18 +49,11 @@ Public Class SchematicPresetting
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'masukin ke database
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
-            CheckBox1 = New System.Windows.Forms.CheckBox
-            CheckBox2 = New System.Windows.Forms.CheckBox
-            CheckBox3 = New System.Windows.Forms.CheckBox
-            CheckBox1 = Row.Cells("Top").Value
-            CheckBox2 = Row.Cells("Bottom").Value
-            CheckBox3 = Row.Cells("Ignore").Value
-
-            If CheckBox1.Checked = True Then
+            If Row.Cells("Top").FormattedValue = True Then
                 TopHole = New TopTapLineType
                 'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
                 'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database yg top
-            ElseIf CheckBox2.Checked = True Then
+            ElseIf Row.Cells("Bottom").FormattedValue = True Then
                 BottomHole = New BottomTapLineType
                 'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
                 'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database yg bottom
