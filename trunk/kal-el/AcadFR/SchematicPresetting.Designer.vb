@@ -34,8 +34,8 @@ Partial Class SchematicPresetting
         Me.UnderholeLayer = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.UnderholeLineType = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.UnderholeColor = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.Top = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.Bottom = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.TopSurface = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.BottomSurface = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.Ignore = New System.Windows.Forms.DataGridViewCheckBoxColumn
         CType(Me.TapHoleList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -71,7 +71,7 @@ Partial Class SchematicPresetting
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.TapHoleList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.TapHoleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.TapHoleList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Number, Me.HoleLayer, Me.HoleLineType, Me.HoleColor, Me.UnderholeLayer, Me.UnderholeLineType, Me.UnderholeColor, Me.Top, Me.Bottom, Me.Ignore})
+        Me.TapHoleList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Number, Me.HoleLayer, Me.HoleLineType, Me.HoleColor, Me.UnderholeLayer, Me.UnderholeLineType, Me.UnderholeColor, Me.TopSurface, Me.BottomSurface, Me.Ignore})
         Me.TapHoleList.Location = New System.Drawing.Point(4, 12)
         Me.TapHoleList.Name = "TapHoleList"
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
@@ -123,17 +123,17 @@ Partial Class SchematicPresetting
         Me.UnderholeColor.HeaderText = "Color"
         Me.UnderholeColor.Name = "UnderholeColor"
         '
-        'Top
+        'TopSurface
         '
-        Me.Top.HeaderText = "Top"
-        Me.Top.Name = "Top"
-        Me.Top.Width = 50
+        Me.TopSurface.HeaderText = "Top"
+        Me.TopSurface.Name = "TopSurface"
+        Me.TopSurface.Width = 50
         '
-        'Bottom
+        'BottomSurface
         '
-        Me.Bottom.HeaderText = "Bottom"
-        Me.Bottom.Name = "Bottom"
-        Me.Bottom.Width = 50
+        Me.BottomSurface.HeaderText = "Bottom"
+        Me.BottomSurface.Name = "BottomSurface"
+        Me.BottomSurface.Width = 50
         '
         'Ignore
         '
@@ -165,7 +165,7 @@ Partial Class SchematicPresetting
     Friend WithEvents UnderholeLayer As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents UnderholeLineType As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents UnderholeColor As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Top As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents Bottom As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents TopSurface As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents BottomSurface As System.Windows.Forms.DataGridViewCheckBoxColumn
     Friend WithEvents Ignore As System.Windows.Forms.DataGridViewCheckBoxColumn
 End Class

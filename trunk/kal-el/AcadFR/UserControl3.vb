@@ -130,7 +130,7 @@ Public Class UserControl3
                         GenFL.GenProdSize(fw, SelectionCommand.ProjectionView, StatusProductSize)
                         If StatusProductSize = True Then
                             GenFL.GenRefTxt(fw, SelectionCommand.ProjectionView)
-                            GenFL.GenFeatTxt(fw, Me.IdentifiedFeature, FeatureNeedToRemoved)
+                            GenFL.GenFeatTxt(fw, Me.IdentifiedFeature, FeatureNeedToRemoved, FilePath)
                             fw.Flush()
                             fw.Close()
                             MsgBox("プロダクトデータ保存完了!!", MsgBoxStyle.Information)
@@ -149,7 +149,7 @@ Public Class UserControl3
                                     i = i + 1
                                     'System.Threading.Thread.Sleep(1)
                                     acedSetStatusBarProgressMeterPos(i)
-                                    System.Windows.Forms.Application.DoEvents()
+
                                 Next
                             End If
 
@@ -451,6 +451,12 @@ Public Class UserControl3
             Case "Blind Slot"
                 EngFeatureName = "Blind Slot"
                 JapsFeatureName = "Blind Slot"
+            Case "Cut Off"
+                EngFeatureName = "Cut Off"
+                JapsFeatureName = "Cut Off"
+            Case "Cutter Path"
+                EngFeatureName = "Cutter Path"
+                JapsFeatureName = "Cutter Path"
         End Select
 
         If Me.ComboBox3.Enabled = True Then
@@ -542,6 +548,11 @@ Public Class UserControl3
             Case "タップ穴", "ＰＴタップ穴", "リーマ穴", "段付きボルト穴" 'selected index 0,1,2,6
                 ComboBox3.Enabled = True
                 SearchSM(ComboBox1.SelectedIndex)
+            Case "Cut Off", "Cutter Path"
+                ComboBox3.Enabled = True
+                ComboBox3.Items.Clear()
+                ComboBox3.Items.Add("CW")
+                ComboBox3.Items.Add("CCW")
             Case Else
                 ComboBox3.Enabled = False
         End Select
@@ -549,7 +560,10 @@ Public Class UserControl3
 
     Private Sub NameList_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles ComboBox3.SelectedIndexChanged
         If ComboBox3.SelectedItem <> Nothing Then
-            ShowDetail(ComboBox1.SelectedIndex, ComboBox3.SelectedItem)
+            Select Case ComboBox1.SelectedItem.ToString
+                Case "タップ穴", "ＰＴタップ穴", "リーマ穴", "段付きボルト穴"
+                    ShowDetail(ComboBox1.SelectedIndex, ComboBox3.SelectedItem)
+            End Select
         End If
     End Sub
 
@@ -1177,6 +1191,22 @@ Public Class UserControl3
             End If
         End If
 
+        If EngName.Equals("Cut Off") Or EngName.Equals("Cutter Path") Then
+            If Me.ComboBox3.SelectedItem = Nothing Then
+                MsgBox("Please select the path direction")
+                Me.ComboBox3.BackColor = Drawing.Color.Orange
+                Return False
+            ElseIf Me.NumericUpDown9.Value <= 0 Then
+                MsgBox("Please check again D3 parameter")
+                Me.NumericUpDown9.BackColor = Drawing.Color.Orange
+                Return False
+            Else
+                Me.ComboBox3.BackColor = Drawing.Color.White
+                Me.NumericUpDown9.BackColor = Drawing.Color.White
+                Return True
+            End If
+        End If
+
     End Function
 
     Private Feature2Update As OutputFormat
@@ -1224,13 +1254,20 @@ Public Class UserControl3
                 NewUpdatedFeature.OriginAndAddition(1) = Feature2Update.OriginAndAddition(1)
             End If
 
-            Table2Check.Rows(RowIndex(i)).Cells("Object").Value = NewUpdatedFeature
+            'get the polyline feature and the plane location
+            If Feature2Update.Pline <> Nothing Then
+                NewUpdatedFeature.Pline = Feature2Update.Pline
+                NewUpdatedFeature.Planelocation = Feature2Update.Planelocation
+            End If
 
             If Me.ComboBox3.Enabled = False Then
                 Table2Check.Rows(RowIndex(i)).Cells("Name").Value = Me.ComboBox1.Text
             Else
+                NewUpdatedFeature.MiscProp(5) = Me.ComboBox3.SelectedItem
                 Table2Check.Rows(RowIndex(i)).Cells("Name").Value = Me.ComboBox1.Text + ", " + Me.ComboBox3.Text
             End If
+
+            Table2Check.Rows(RowIndex(i)).Cells("Object").Value = NewUpdatedFeature
 
             Table2Check.Rows(RowIndex(i)).Cells("State").Value = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\tick.png")
             Table2Check.Rows(RowIndex(i)).Cells("Biner").Value = "1"
@@ -1253,8 +1290,6 @@ Public Class UserControl3
 
                 RowIndex.Sort()
 
-                Me.UnidentifiedFeature.ClearSelection()
-
                 Dim i As Integer
                 i = RowIndex.Count - 1
 
@@ -1272,13 +1307,19 @@ Public Class UserControl3
                     i = i - 1
                 End While
 
-                Me.UnidentifiedFeature.ClearSelection()
-                Me.Label17.Text = 0
+                RefreshList()
             End If
 
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
+    End Sub
+
+    Private Sub RefreshList()
+        Me.IdentifiedFeature.ClearSelection()
+        Me.Label16.Text = 0
+        Me.UnidentifiedFeature.ClearSelection()
+        Me.Label17.Text = 0
     End Sub
 
     Public IFList, UFList As System.Data.DataTable
@@ -1350,6 +1391,10 @@ Public Class UserControl3
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holering.bmp")
                 Case "ボーリング穴" 'Boring
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holeboring.bmp")
+                Case "Cut Off"
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutoff.jpg")
+                Case "Cutter Path"
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutterpath.jpg")
                 Case "Square Slot"
                     If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot1.bmp")
@@ -1616,6 +1661,10 @@ Public Class UserControl3
                 Me.ComboBox1.Items.Add("2-side Pocket")
                 Me.ComboBox1.Items.Add("Long Hole")
                 Me.ComboBox1.Items.Add("Blind Slot")
+            Case "POLYLINE"
+                Me.ComboBox1.Items.Clear()
+                Me.ComboBox1.Items.Add("Cut Off")
+                Me.ComboBox1.Items.Add("Cutter Path")
             Case Else ' "タップ穴", "ＰＴタップ穴", "リーマ穴", "ドリル穴", "底付き穴", "貫通穴", "段付きボルト穴", "円形溝", "ボーリング穴"
                 Me.ComboBox1.Items.Clear()
                 Me.ComboBox1.Items.Add("タップ穴")

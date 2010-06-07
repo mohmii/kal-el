@@ -686,6 +686,7 @@ Partial Class UserControl3
         Me.ComboBox2.AllowDrop = True
         Me.ComboBox2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ComboBox2.Enabled = False
         Me.ComboBox2.FormattingEnabled = True
         Me.ComboBox2.Location = New System.Drawing.Point(105, 40)
         Me.ComboBox2.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)

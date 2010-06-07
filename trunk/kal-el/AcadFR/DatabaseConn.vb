@@ -9,7 +9,7 @@ Imports System.Data.OleDb
 Public Class DatabaseConn
 
     'prepare the some database to be the fr data manager
-    Private FRDatabase As New FRDataManager
+    Private FRDatabase As New FRDataManager()
 
     ''retrieve collection of top tap hole line type from the fr database
     'Private TopTapLTArray As ICollection(Of TopTapLineType) = FRDatabase.GetAllTopTapLineTypes()
@@ -36,6 +36,12 @@ Public Class DatabaseConn
 
     'check if the entity is one of the entity defined in the database
     Public Function CheckIfEntity(ByVal LineObject As Entity) As Boolean
+
+        Dim SolidlineTest As New SolidLine
+        SolidlineTest.LayerName = "13"
+        SolidlineTest.LayerType = "BORDER"
+        SolidlineTest.LayerColor = "RED"
+        FRDatabase.AddSolidLine(SolidlineTest)
 
         If setView.CBVisible = True And setView.CBHidden = False Then
             If CheckIfEntitySolid(LineObject) = True Then
