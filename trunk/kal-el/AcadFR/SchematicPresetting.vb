@@ -17,10 +17,6 @@ Public Class SchematicPresetting
     Private Sub TapHoleList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles TapHoleList.CellContentClick
         ProceedStat = True
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
-            Row.Cells("Top").Value = False
-            Row.Cells("Bottom").Value = False
-            Row.Cells("Ignore").Value = False
-
             If Row.Cells("Bottom").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = True Then
                 Row.Cells("Top").Value = False
                 Row.Cells("Bottom").Value = True
@@ -33,7 +29,9 @@ Public Class SchematicPresetting
                 Row.Cells("Ignore").Value = True
             End If
 
-            If Row.Cells("Top").Value = False And Row.Cells("Bottom").Value = False And Row.Cells("Ignore").Value = False Then
+            If Row.Cells("Top").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False _
+            And Row.Cells("Bottom").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False _
+            And Row.Cells("Ignore").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False Then
                 ProceedStat = False
             End If
         Next

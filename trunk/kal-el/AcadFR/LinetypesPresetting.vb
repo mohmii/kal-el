@@ -17,11 +17,6 @@ Public Class LinetypesPresetting
     Private Sub LinetypesList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles LinetypesList.CellContentClick
         ProceedStat = True
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
-            'Row.Cells("Solid").Value = False
-            'Row.Cells("Hidden").Value = False
-            'Row.Cells("Auxiliary").Value = False
-            'Row.Cells("Ignore").Value = False
-
             If Row.Cells("Solid").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = True Then
                 Row.Cells("Solid").Value = True
                 Row.Cells("Hidden").Value = False
@@ -50,8 +45,10 @@ Public Class LinetypesPresetting
                 Row.Cells("Ignore").Value = True
             End If
 
-            If Row.Cells("Solid").Value = False And Row.Cells("Hidden").Value = False _
-            And Row.Cells("Auxiliary").Value = False And Row.Cells("Ignore").Value = False Then
+            If Row.Cells("Solid").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False _
+            And Row.Cells("Hidden").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False _
+            And Row.Cells("Auxiliary").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False _
+            And Row.Cells("Ignore").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = False Then
                 ProceedStat = False
             End If
         Next
