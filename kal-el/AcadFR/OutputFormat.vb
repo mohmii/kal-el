@@ -42,7 +42,7 @@ Public Class OutputFormat
     Public ObjectId As New List(Of ObjectId) '= New String() {"", ""}
 
     'place for miscellaneous properties {name,surface,orientation,chamfer,quality} for each feature
-    Private Misc() As String = New String() {FeatName, Surface, "2", "-1", "0"}
+    Private Misc() As String = New String() {FeatName, Surface, "2", "0", "0", "-1"}
 
     Public Property MiscProp(ByVal index As Integer) As String
         Get
@@ -183,6 +183,27 @@ Public Class OutputFormat
         End Get
         Set(ByVal value As Boolean)
             SeqHid = value
+        End Set
+    End Property
+
+    'place for polyline entity
+    Private Poly As Polyline
+    Public Property Pline() As Polyline
+        Get
+            Return Poly
+        End Get
+        Set(ByVal value As Polyline)
+            Poly = value
+        End Set
+    End Property
+
+    Private Plane As ViewProp
+    Public Property Planelocation() As ViewProp
+        Get
+            Return Plane
+        End Get
+        Set(ByVal value As ViewProp)
+            Plane = value
         End Set
     End Property
 

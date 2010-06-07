@@ -99,6 +99,14 @@ Public Class GenerateFL
             CodeName = "BLDSLOT"
         End If
 
+        If s.MiscProp(0).Contains("Cut Off") Then
+            CodeName = "CUTOFF"
+        End If
+
+        If s.MiscProp(0).Contains("Cutter Path") Then
+            CodeName = "CUTTERPATH"
+        End If
+
         Return CodeName
     End Function
 
@@ -304,35 +312,72 @@ Public Class GenerateFL
     Private Feature2Export As OutputFormat
     'create the feature information
     Public Sub GenFeatTxt(ByVal fw As StreamWriter, ByVal ReadyFL As System.Windows.Forms.DataGridView, _
-                          ByRef FeatureList As List(Of OutputFormat))
+                          ByRef FeatureList As List(Of OutputFormat), ByVal FilePath As FileInfo)
         Try
+            PlineList = New List(Of OutputFormat)
             counter = 1
             For Each feat As System.Windows.Forms.DataGridViewRow In ReadyFL.Rows
                 Feature2Export = New OutputFormat
                 Feature2Export = feat.Cells("Object").Value
-                Dim StringTmp As String = FindCodeName(Feature2Export)
-                'print miscprop(x) yg lama : 2, 3, 4, diedit 4, 2, 3
-                fw.WriteLine(counter.ToString + ". " + FindCodeName(Feature2Export) + " " _
-                             + ViewIndex(Feature2Export.MiscProp(1)).ToString + " " _
-                             + Feature2Export.MiscProp(4) + " " _
-                             + Feature2Export.MiscProp(2) + " " _
-                             + SetDot(Feature2Export.MiscProp(3)) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(0).ToString) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(1).ToString) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(2).ToString) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(3).ToString) + " " _
-                             + SetDot(CheckD2Param(Feature2Export)) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(5).ToString) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(6).ToString) + " " _
-                             + SetDot(Feature2Export.OriginAndAddition(7).ToString))
-                counter = counter + 1
+
+                If IsNothing(Feature2Export.Pline) Then
+                    'print miscprop(x) yg lama : 2, 3, 4, diedit 4, 2, 3
+                    fw.WriteLine(counter.ToString + ". " + FindCodeName(Feature2Export) + " " _
+                                 + ViewIndex(Feature2Export.MiscProp(1)).ToString + " " _
+                                 + Feature2Export.MiscProp(4) + " " _
+                                 + Feature2Export.MiscProp(2) + " " _
+                                 + SetDot(Feature2Export.MiscProp(3)) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(0).ToString) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(1).ToString) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(2).ToString) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(3).ToString) + " " _
+                                 + SetDot(CheckD2Param(Feature2Export)) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(5).ToString) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(6).ToString) + " " _
+                                 + SetDot(Feature2Export.OriginAndAddition(7).ToString))
+                    counter = counter + 1
+                Else
+                    PlineList.Add(Feature2Export)
+                End If
                 FeatureList.Add(Feature2Export)
             Next
+
+            'printing the polyline
+            If PlineList.Count <> 0 Then
+
+                'instantiate the polyline processor
+                PlineProcessor = New PLprocessor
+                PlineProcessor.PathDirectory = FilePath.FullName
+
+                counter = 1
+                'iterate through the polyline entities
+                For Each Pline As OutputFormat In PlineList
+                    'create the dxf
+                    PlineProcessor.Export2Dxf(Pline, counter)
+                    'print the product dater
+                    fw.WriteLine(counter.ToString + ". " + FindCodeName(Pline) + " " + _
+                                 ViewIndex(Pline.MiscProp(1)).ToString + " " + FindDirectionIndex(Pline.MiscProp(5)) + " " + _
+                                 SetDot(Pline.OriginAndAddition(5).ToString))
+                    counter = counter + 1
+                Next
+            End If
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
     End Sub
 
+    'find the direction only for cutoff and cutterpath feature
+    Private Function FindDirectionIndex(ByVal Direction As String) As String
+        If Direction.ToLower.Equals("cw") Then
+            Return "0"
+        Else
+            Return "1"
+        End If
+    End Function
+
+    Private PlineProcessor As PLprocessor
+    Private PlineList As List(Of OutputFormat)
     Private Entity As DBObject
     Private CircleTmp As Circle
     Private LineTmp As Line
