@@ -42,7 +42,7 @@ Partial Class SchematicPresetting
         '
         'Proceed
         '
-        Me.Proceed.Location = New System.Drawing.Point(603, 316)
+        Me.Proceed.Location = New System.Drawing.Point(723, 316)
         Me.Proceed.Name = "Proceed"
         Me.Proceed.Size = New System.Drawing.Size(75, 23)
         Me.Proceed.TabIndex = 2
@@ -51,7 +51,7 @@ Partial Class SchematicPresetting
         '
         'Cancel
         '
-        Me.Cancel.Location = New System.Drawing.Point(702, 316)
+        Me.Cancel.Location = New System.Drawing.Point(821, 316)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(75, 23)
         Me.Cancel.TabIndex = 3
@@ -84,7 +84,7 @@ Partial Class SchematicPresetting
         Me.TapHoleList.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.TapHoleList.RowHeadersVisible = False
         Me.TapHoleList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.TapHoleList.Size = New System.Drawing.Size(780, 289)
+        Me.TapHoleList.Size = New System.Drawing.Size(892, 289)
         Me.TapHoleList.TabIndex = 4
         '
         'Number
@@ -95,33 +95,38 @@ Partial Class SchematicPresetting
         '
         'HoleLayer
         '
-        Me.HoleLayer.HeaderText = "Layer"
+        Me.HoleLayer.HeaderText = "Hole Layer"
         Me.HoleLayer.Name = "HoleLayer"
+        Me.HoleLayer.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         '
         'HoleLineType
         '
-        Me.HoleLineType.HeaderText = "Line Type"
+        Me.HoleLineType.HeaderText = "Hole Line Type"
         Me.HoleLineType.Name = "HoleLineType"
+        Me.HoleLineType.Width = 120
         '
         'HoleColor
         '
-        Me.HoleColor.HeaderText = "Color"
+        Me.HoleColor.HeaderText = "Hole Color"
         Me.HoleColor.Name = "HoleColor"
         '
         'UnderholeLayer
         '
-        Me.UnderholeLayer.HeaderText = "Layer"
+        Me.UnderholeLayer.HeaderText = "Underhole Layer"
         Me.UnderholeLayer.Name = "UnderholeLayer"
+        Me.UnderholeLayer.Width = 120
         '
         'UnderholeLineType
         '
-        Me.UnderholeLineType.HeaderText = "Line Type"
+        Me.UnderholeLineType.HeaderText = "Underhole Line Type"
         Me.UnderholeLineType.Name = "UnderholeLineType"
+        Me.UnderholeLineType.Width = 150
         '
         'UnderholeColor
         '
-        Me.UnderholeColor.HeaderText = "Color"
+        Me.UnderholeColor.HeaderText = "Underhole Color"
         Me.UnderholeColor.Name = "UnderholeColor"
+        Me.UnderholeColor.Width = 120
         '
         'TopSurface
         '
@@ -145,7 +150,7 @@ Partial Class SchematicPresetting
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(789, 360)
+        Me.ClientSize = New System.Drawing.Size(904, 360)
         Me.Controls.Add(Me.TapHoleList)
         Me.Controls.Add(Me.Cancel)
         Me.Controls.Add(Me.Proceed)
