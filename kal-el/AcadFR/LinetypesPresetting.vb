@@ -1,4 +1,7 @@
-﻿Imports FR
+﻿Imports Autodesk.AutoCAD.ApplicationServices
+Imports Autodesk.AutoCAD.DatabaseServices
+Imports Autodesk.AutoCAD.Runtime
+Imports FR
 Imports System.Linq
 Imports System.Data.OleDb
 Imports System.IO
@@ -8,10 +11,9 @@ Imports System.Runtime.InteropServices
 Public Class LinetypesPresetting
 
     'variabel yg dibutuhkan
-    Private SolidUIF As SolidLine
-    Private HiddenUIF As HiddenLine
-    Private AuxUIF As AuxiliaryLine
-    Private ProceedStat As New Boolean
+    Private ProceedStat As Boolean
+    Private DBConn As DatabaseConn
+    Private Counter As Integer
 
     'setiap isi sel di klik
     Private Sub LinetypesList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles LinetypesList.CellContentClick
@@ -64,17 +66,21 @@ Public Class LinetypesPresetting
     'jika Proceed diklik
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'masukin ke database
+        DBConn = New DatabaseConn
+        Counter = New Integer
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
+            'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
+            'UIFEntity.Layer = Row.Cells("Layer").Value.ToString
+            'UIFEntity.Linetype = Row.Cells("Linetype").Value.ToString
+            'UIFEntity.Color = Row.Cells("Color").Value
             If Row.Cells("Solid").FormattedValue = True Then
-                'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke database Solid
-                SolidUIF = New SolidLine
+                DBConn.AddToSolidLineDatabase(SelectionCommand.UIEntities(Counter))
             ElseIf Row.Cells("Hidden").FormattedValue = True Then
-                'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke database Hidden
-                HiddenUIF = New HiddenLine
+                DBConn.AddToHiddenLineDatabase(SelectionCommand.UIEntities(Counter))
             ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
-                'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke database Auxiliary
-                AuxUIF = New AuxiliaryLine
+                DBConn.AddToAuxiliaryLineDatabase(SelectionCommand.UIEntities(Counter))
             End If
+            Counter = Counter + 1
         Next
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -87,12 +93,5 @@ Public Class LinetypesPresetting
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Dispose()
     End Sub
-
-    'Dim LTList As System.Data.DataTable
-
-    'Private Sub LinetypesList_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-    '    LTList = New System.Data.DataTable("Linetypes")
-    '    CreateTable(LTList, Me.IdentifiedFeature)
-    'End Sub
 
 End Class

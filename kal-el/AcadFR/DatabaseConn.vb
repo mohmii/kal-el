@@ -25,6 +25,58 @@ Public Class DatabaseConn
     Private HiddenLines As List(Of HiddenLine) = New List(Of HiddenLine)(FRDatabase.GetAllHiddenLines())
     Private TmpHiddenLine As List(Of HiddenLine) = HiddenLines
 
+    Private SL As SolidLine
+    Private HL As HiddenLine
+    Private AL As AuxiliaryLine
+    Private TTL As TopTapLineType
+    Private BTL As BottomTapLineType
+
+    Public Sub AddToSolidLineDatabase(ByVal Ent As Entity)
+        SL = New SolidLine
+        SL.LayerName = Ent.Layer.ToString
+        SL.LayerType = Ent.Linetype.ToString
+        SL.LayerColor = Ent.Color.ToString
+        FRDatabase.AddSolidLine(SL)
+    End Sub
+
+    Public Sub AddToHiddenLineDatabase(ByVal Ent As Entity)
+        HL = New HiddenLine
+        HL.LayerName = Ent.Layer.ToString
+        HL.LayerType = Ent.Linetype.ToString
+        HL.LayerColor = Ent.Color.ToString
+        FRDatabase.AddHiddenLine(HL)
+    End Sub
+
+    Public Sub AddToAuxiliaryLineDatabase(ByVal Ent As Entity)
+        AL = New AuxiliaryLine
+        AL.LayerName = Ent.Layer.ToString
+        AL.LayerType = Ent.Linetype.ToString
+        AL.LayerColor = Ent.Color.ToString
+        FRDatabase.AddAuxiliaryLine(AL)
+    End Sub
+
+    Public Sub AddToTopTapLineDatabase(ByVal CircleGroup As IEnumerable(Of Circle))
+        TTL = New TopTapLineType
+        TTL.TapLineName = CircleGroup(0).Layer.ToString
+        TTL.TapLineType = CircleGroup(0).Linetype.ToString
+        TTL.TapLineColor = CircleGroup(0).Color.ToString
+        TTL.UnHoleLineName = CircleGroup(1).Layer.ToString
+        TTL.UnHoleLineType = CircleGroup(1).Linetype.ToString
+        TTL.UnHoleLineColor = CircleGroup(1).Color.ToString
+        FRDatabase.AddTopTapLineType(TTL)
+    End Sub
+
+    Public Sub AddToBottomTapLineDatabase(ByVal CircleGroup As IEnumerable(Of Circle))
+        BTL = New BottomTapLineType
+        BTL.TapLineName = CircleGroup(0).Layer.ToString
+        BTL.TapLineType = CircleGroup(0).Linetype.ToString
+        BTL.TapLineColor = CircleGroup(0).Color.ToString
+        BTL.UnHoleLineName = CircleGroup(1).Layer.ToString
+        BTL.UnHoleLineType = CircleGroup(1).Linetype.ToString
+        BTL.UnHoleLineColor = CircleGroup(1).Color.ToString
+        FRDatabase.AddBottomTapLineType(BTL)
+    End Sub
+
     Private Function ReturnNull(ByVal IsByLayer As String) As String
         If IsByLayer.ToLower.Equals("bylayer") Then
             Return "null"
@@ -36,13 +88,6 @@ Public Class DatabaseConn
 
     'check if the entity is one of the entity defined in the database
     Public Function CheckIfEntity(ByVal LineObject As Entity) As Boolean
-
-        Dim SolidlineTest As New SolidLine
-        SolidlineTest.LayerName = "13"
-        SolidlineTest.LayerType = "BORDER"
-        SolidlineTest.LayerColor = "RED"
-        FRDatabase.AddSolidLine(SolidlineTest)
-
         If setView.CBVisible = True And setView.CBHidden = False Then
             If CheckIfEntitySolid(LineObject) = True Then
                 Return True
@@ -153,7 +198,7 @@ Public Class DatabaseConn
     Private TmpBottomTap As List(Of BottomTapLineType) = BottomTap
 
     'checking the Top Tap Table
-    Private Function CheckTopTap(ByVal Result As IEnumerable(Of Circle)) As Boolean
+    Public Function CheckTopTap(ByVal Result As IEnumerable(Of Circle)) As Boolean
         If Result.Last.Radius > Result.First.Radius Then
             TopTap = TmpTopTap
             Dim query = (From TopTapItem In TopTap _
@@ -192,7 +237,7 @@ Public Class DatabaseConn
     End Function
 
     'checking the Bottom Tap Table
-    Private Function CheckBottomTap(ByVal Result As IEnumerable(Of Circle)) As Boolean
+    Public Function CheckBottomTap(ByVal Result As IEnumerable(Of Circle)) As Boolean
         If Result.Last.Radius > Result.First.Radius Then
             BottomTap = TmpBottomTap
             Dim query = (From BottomTapItem In BottomTap _
