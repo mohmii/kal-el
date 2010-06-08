@@ -22,12 +22,13 @@ Partial Class LinetypesPresetting
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.LinetypesList = New System.Windows.Forms.DataGridView
         Me.Proceed = New System.Windows.Forms.Button
         Me.Cancel = New System.Windows.Forms.Button
         Me.Number = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.ObjectID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Layer = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.LineType = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Color = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -42,26 +43,26 @@ Partial Class LinetypesPresetting
         '
         Me.LinetypesList.AllowUserToAddRows = False
         Me.LinetypesList.AllowUserToDeleteRows = False
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.LinetypesList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.LinetypesList.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.LinetypesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.LinetypesList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Number, Me.Layer, Me.LineType, Me.Color, Me.Solid, Me.Hidden, Me.Auxiliary, Me.Ignore})
+        Me.LinetypesList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Number, Me.ObjectID, Me.Layer, Me.LineType, Me.Color, Me.Solid, Me.Hidden, Me.Auxiliary, Me.Ignore})
         Me.LinetypesList.Location = New System.Drawing.Point(12, 12)
         Me.LinetypesList.Name = "LinetypesList"
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.LinetypesList.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.LinetypesList.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.LinetypesList.RowHeadersVisible = False
         Me.LinetypesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.LinetypesList.Size = New System.Drawing.Size(619, 169)
@@ -92,6 +93,12 @@ Partial Class LinetypesPresetting
         Me.Number.Name = "Number"
         Me.Number.ReadOnly = True
         Me.Number.Width = 50
+        '
+        'ObjectID
+        '
+        Me.ObjectID.HeaderText = "ObjectID"
+        Me.ObjectID.Name = "ObjectID"
+        Me.ObjectID.Visible = False
         '
         'Layer
         '
@@ -159,6 +166,7 @@ Partial Class LinetypesPresetting
     Friend WithEvents Proceed As System.Windows.Forms.Button
     Friend WithEvents Cancel As System.Windows.Forms.Button
     Friend WithEvents Number As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents ObjectID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Layer As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents LineType As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Color As System.Windows.Forms.DataGridViewTextBoxColumn
