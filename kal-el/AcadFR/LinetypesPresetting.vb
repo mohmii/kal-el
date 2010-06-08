@@ -16,7 +16,6 @@ Imports System.Runtime.InteropServices
 
 Public Class LinetypesPresetting
 
-    'variabel yg dibutuhkan
     Private ProceedStat As Boolean
     Private DBConn As DatabaseConn
     Private Counter As Integer
@@ -114,9 +113,6 @@ Public Class LinetypesPresetting
         Counter = New Integer
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
             'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
-            'UIFEntity.Layer = Row.Cells("Layer").Value.ToString
-            'UIFEntity.Linetype = Row.Cells("Linetype").Value.ToString
-            'UIFEntity.Color = Row.Cells("Color").Value
             If Row.Cells("Solid").FormattedValue = True Then
                 DBConn.AddToSolidLineDatabase(SelectionCommand.UIEntities(Counter))
             ElseIf Row.Cells("Hidden").FormattedValue = True Then
@@ -127,6 +123,33 @@ Public Class LinetypesPresetting
             Counter = Counter + 1
         Next
 
+        Try
+            'create a document lock and acquire the information from the current drawing editor
+            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+            'initiate a new connection
+            AcadConnection = New AcadConn
+
+            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+            Using AcadConnection.myT
+                'initial setting for opening the connection for read the autocad database
+                AcadConnection.OpenBlockTableRec()
+
+                If Not (PastEntityColor.Count = 0) Then
+                    RollbackColor(PastEntityColor, AcadConnection.btr)
+                    PastEntityColor.Clear()
+                End If
+                'committing the autocad transaction
+                AcadConnection.myT.Commit()
+            End Using
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            DrawEditor.UpdateScreen()
+            AcadConnection.myT.Dispose()
+        End Try
+
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Dispose()
 
@@ -134,16 +157,43 @@ Public Class LinetypesPresetting
 
     'jika cancel diklik
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
+        Try
+            'create a document lock and acquire the information from the current drawing editor
+            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+            'initiate a new connection
+            AcadConnection = New AcadConn
+
+            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+            Using AcadConnection.myT
+                'initial setting for opening the connection for read the autocad database
+                AcadConnection.OpenBlockTableRec()
+
+                If Not (PastEntityColor.Count = 0) Then
+                    RollbackColor(PastEntityColor, AcadConnection.btr)
+                    PastEntityColor.Clear()
+                End If
+                'committing the autocad transaction
+                AcadConnection.myT.Commit()
+            End Using
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            DrawEditor.UpdateScreen()
+            AcadConnection.myT.Dispose()
+        End Try
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Dispose()
     End Sub
 
+    'hilangkan selection ketika diload
     Private Sub LinetypesPresetting_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         LinetypesList.ClearSelection()
     End Sub
 
     Private AcadConnection As AcadConn
-    Private DocLock As DocumentLock
     Private DrawEditor As Editor
     Private Entity As Entity
     Private PastEntityColor As New List(Of InitialColor)
@@ -174,10 +224,6 @@ Public Class LinetypesPresetting
                                 ByVal PastEntColor As List(Of InitialColor))
 
         Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-        'Dim FeatureListId As List(Of ObjectId)
-        'FeatureListId = FeatureList.ObjectId
-        'create loop checking for each element in selected item
-        'For Each ObjectIdTmp As ObjectId In FeatureListId
 
         'create a loop checking for each objectid id autocad database
         For Each idTmp As Autodesk.AutoCAD.DatabaseServices.ObjectId In BlockTableRecInstances
@@ -200,6 +246,5 @@ Public Class LinetypesPresetting
 
             End If
         Next
-        'Next
     End Sub
 End Class
