@@ -1,7 +1,8 @@
 ﻿Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.Geometry
 Imports Autodesk.AutoCAD.DatabaseServices
-
+Imports Autodesk.AutoCAD.Interop
+Imports System.Math
 Imports System.IO
 
 Public Class PLprocessor
@@ -9,6 +10,19 @@ Public Class PLprocessor
     Private FilePath As FileInfo
     Private Directory As String
     Private Plane As ViewProp
+    Private ProdSize() As Double
+    Private TranslatedPoint, NewPoint, RelativePoint As Point3d
+    Private Direction() As Integer
+
+    'get & set the product size
+    Public Property ProductSize() As Double()
+        Get
+            Return ProdSize
+        End Get
+        Set(ByVal value As Double())
+            ProdSize = value
+        End Set
+    End Property
 
     'get & set the path directory for saving the dxf file
     Public Property PathDirectory() As String
@@ -27,9 +41,6 @@ Public Class PLprocessor
         FilePath = New FileInfo(Directory + Path.DirectorySeparatorChar + "pl" + counter.ToString + ".dxf")
         fw = FilePath.CreateText
 
-        'Write the proceeding information
-        WriteProlog()
-
         'prepare the plane for acquire the boundary information
         Plane = New ViewProp
         Plane = Feature.Planelocation
@@ -38,25 +49,11 @@ Public Class PLprocessor
         WritePL(Feature.Pline)
 
         'write the ending information
-        WriteEnding()
+        WriteEnding(Feature.Pline)
 
         fw.Flush()
         fw.Close()
 
-    End Sub
-
-    'write the dxf prolog
-    Private Sub WriteProlog()
-        fw.WriteLine("  0" + vbCrLf + _
-                     "SECTION" + vbCrLf + _
-                     "  2" + vbCrLf + _
-                     "HEADER" + vbCrLf + _
-                     "  9" + vbCrLf + _
-                     "$ACADVER" + vbCrLf + _
-                     "  1" + vbCrLf + _
-                     "AC1009" + vbCrLf + _
-                     "  0" + vbCrLf + _
-                     "ENDSEC")
     End Sub
 
     'get the reference (10 = x, 20 = y, 30 = z)
@@ -78,26 +75,28 @@ Public Class PLprocessor
 
     'write the polyline
     Private Sub WritePL(ByVal PolylineTmp As Polyline)
-        fw.WriteLine("  0" + vbCrLf + _
+        fw.WriteLine("0" + vbCrLf + _
                      "SECTION" + vbCrLf + _
-                     "  2" + vbCrLf + _
+                     "2" + vbCrLf + _
                      "ENTITIES" + vbCrLf + _
-                     "  0" + vbCrLf + _
-                     "POLYLINE")
+                     "0" + vbCrLf + _
+                     "POLYLINE" + vbCrLf + _
+                     "5" + vbCrLf + _
+                     "1050")
 
         'print the first vertex
         WritePlane()
-        fw.WriteLine(" 10" + vbCrLf + _
+        fw.WriteLine("10" + vbCrLf + _
                      "0.0" + vbCrLf + _
-                     " 20" + vbCrLf + _
+                     "20" + vbCrLf + _
                      "0.0" + vbCrLf + _
-                     " 30" + vbCrLf + _
-                     "0.0")
+                     "30" + vbCrLf + _
+                     vbTab + FindTranslation(Plane.ViewType))
 
         'check if the polyline is closed or not
         If PolylineTmp.Closed Then
-            fw.WriteLine(" 70" + vbCrLf + _
-                         "     1")
+            fw.WriteLine("70" + vbCrLf + _
+                         "1")
         End If
 
         'write the extrude direction
@@ -106,39 +105,89 @@ Public Class PLprocessor
         'write the second until the last vertex
         For i As Integer = 0 To (PolylineTmp.NumberOfVertices - 1)
 
-            fw.WriteLine("  0" + vbCrLf + _
-                         "VERTEX")
+            fw.WriteLine("0" + vbCrLf + _
+                         "VERTEX" + vbCrLf + _
+                         "5" + vbCrLf + _
+                         (1050 + (i + 1)).ToString)
             WritePlane()
-            fw.WriteLine(" 10" + vbCrLf + _
-                         (PolylineTmp.GetPoint3dAt(i).X - GetReference(10)).ToString + vbCrLf + _
-                         " 20" + vbCrLf + _
-                         (PolylineTmp.GetPoint3dAt(i).Y - GetReference(20)).ToString + vbCrLf + _
-                         " 30" + vbCrLf + _
-                         PolylineTmp.GetPoint3dAt(i).Z.ToString)
+
+            'get the correct point
+            TranslatedPoint = New Point3d
+            TranslatedPoint = GetTranslatedPoint(PolylineTmp.GetPoint2dAt(i))
+
+            fw.WriteLine("10" + vbCrLf + _
+                         vbTab + TranslatedPoint.X.ToString + vbCrLf + _
+                         "20" + vbCrLf + _
+                         vbTab + TranslatedPoint.Y.ToString + vbCrLf + _
+                         "30" + vbCrLf + _
+                         vbTab + FindTranslation(Plane.ViewType))
 
             'check the bulge
             If PolylineTmp.GetBulgeAt(i) <> 0 Then
                 fw.WriteLine(" 42" + vbCrLf + _
-                             PolylineTmp.GetBulgeAt(i).ToString)
+                             Getbulge(PolylineTmp.GetBulgeAt(i)).ToString)
             End If
-
         Next
 
     End Sub
+
+    'find the axis slide for each surface
+    Private Function FindTranslation(ByVal Surface As String) As String
+
+        If Surface.ToLower.Equals("top") Then
+            Return ProdSize(2).ToString
+        End If
+
+        If Surface.ToLower.Equals("right") Then
+            Return ProdSize(0).ToString
+        End If
+
+        If Surface.ToLower.Equals("back") Then
+            Return (-1 * ProdSize(1)).ToString
+        End If
+
+        Return "0.0"
+    End Function
+
+    'find the relative point
+    Private Function GetTranslatedPoint(ByVal CurrentPoint As Point2d) As Point3d
+
+        RelativePoint = New Point3d(CurrentPoint.X - GetReference(10), CurrentPoint.Y - GetReference(20), 0)
+
+        'find the correct x value for each surface
+        Select Case Plane.ViewType.ToLower
+            Case "bottom", "back"
+                NewPoint = New Point3d(Abs(ProdSize(0) - RelativePoint.X), RelativePoint.Y, RelativePoint.Z)
+            Case "left"
+                NewPoint = New Point3d(Abs(ProdSize(1) - RelativePoint.X), RelativePoint.Y, RelativePoint.Z)
+            Case Else
+                NewPoint = RelativePoint
+        End Select
+
+        Return NewPoint
+    End Function
+
+    'get the correct bulge for each surface
+    Private Function GetBulge(ByVal BulgeValue As Double) As Double
+        Select Case Plane.ViewType.ToLower
+            Case "bottom", "left", "back"
+                Return (-1 * BulgeValue)
+            Case Else
+                Return BulgeValue
+        End Select
+    End Function
 
     'write the plane location and other misc information
     Private Sub WritePlane()
         fw.WriteLine("100" + vbCrLf + _
                      "AcDbEntity" + vbCrLf + _
-                     "  8" + vbCrLf + _
+                     "8" + vbCrLf + _
                      Plane.ViewType.ToUpper + vbCrLf + _
                      "100" + vbCrLf + _
                      "AcDb2dPolyline" + vbCrLf + _
-                     " 66" + vbCrLf + _
-                     "     1")
+                     "66" + vbCrLf + _
+                     "1")
     End Sub
-
-    Private Direction() As Integer
 
     'write extrude direction
     Private Sub WriteExtrudeDirection(ByVal Surface As String)
@@ -147,15 +196,15 @@ Public Class PLprocessor
             Case "top"
                 Direction = New Integer() {0, 0, 1}
             Case "bottom"
-                Direction = New Integer() {0, 0, -1}
+                Direction = New Integer() {0, 0, 1}
             Case "left"
-                Direction = New Integer() {-1, 0, 0}
+                Direction = New Integer() {1, 0, 0}
             Case "right"
                 Direction = New Integer() {1, 0, 0}
             Case "front"
                 Direction = New Integer() {0, -1, 0}
             Case "back"
-                Direction = New Integer() {0, 1, 0}
+                Direction = New Integer() {0, -1, 0}
         End Select
 
         fw.WriteLine("210" + vbCrLf + _
@@ -167,11 +216,11 @@ Public Class PLprocessor
     End Sub
 
     'Write the ending information
-    Private Sub WriteEnding()
-        fw.WriteLine("  0" + vbCrLf + _
+    Private Sub WriteEnding(ByVal Pline As Polyline)
+        fw.WriteLine("0" + vbCrLf + _
                      "SEQEND" + vbCrLf + _
-                     "  5" + vbCrLf + _
-                     "78" + vbCrLf + _
+                     "5" + vbCrLf + _
+                     (1050 + Pline.NumberOfVertices + 1).ToString + vbCrLf + _
                      "100" + vbCrLf + _
                      "AcDbEntity" + vbCrLf + _
                      "  8" + vbCrLf + _
@@ -182,8 +231,4 @@ Public Class PLprocessor
                      "EOF")
     End Sub
 
-    'Check the bulge at each vertex
-    Private Sub CheckBulge(ByVal index As Integer)
-
-    End Sub
 End Class

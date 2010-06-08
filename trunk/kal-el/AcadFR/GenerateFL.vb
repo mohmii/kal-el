@@ -348,6 +348,7 @@ Public Class GenerateFL
                 'instantiate the polyline processor
                 PlineProcessor = New PLprocessor
                 PlineProcessor.PathDirectory = FilePath.FullName
+                PlineProcessor.ProductSize = ProdSize
 
                 counter = 1
                 'iterate through the polyline entities
