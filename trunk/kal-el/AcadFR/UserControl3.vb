@@ -31,7 +31,6 @@ Public Class UserControl3
     Private RowSelectedIndex As Integer
     'clear all the feature that listed on machining feature list
     Private Sub Undo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Undo.Click
-
         Try
             If MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.OkCancel, "Undo View Recognition") = MsgBoxResult.Ok Then
 
@@ -491,6 +490,7 @@ Public Class UserControl3
         Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
         DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
         DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
         Dim values() As TypedValue = {New TypedValue(DxfCode.Color, 10)}
         Dim sfilter As New SelectionFilter(values) ' Create the filter using our values...
 
@@ -498,22 +498,24 @@ Public Class UserControl3
             Using DocLock
                 AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
                 Using AcadConnection.myT
+
+                    AcadConnection.OpenBlockTableRec()
+                    If Not (PastEntityColor.Count = 0) Then
+                        RollBackColor(PastEntityColor, AcadConnection.btr)
+                        PastEntityColor.Clear()
+                    ElseIf Not (PastEntityColor2.Count = 0) Then
+                        RollBackColor(PastEntityColor2, AcadConnection.btr)
+                        PastEntityColor2.Clear()
+                    End If
+
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-
                     res = ed.GetSelection(Opts, sfilter)
 
                     If res.Status = PromptStatus.OK Then
                         SS = res.Value
                         tempIdArray = SS.GetObjectIds()
-                        AcadConnection.OpenBlockTableRec()
-                        If Not (PastEntityColor.Count = 0) Then
-                            RollBackColor(PastEntityColor, AcadConnection.btr)
-                            PastEntityColor.Clear()
-                        ElseIf Not (PastEntityColor2.Count = 0) Then
-                            RollBackColor(PastEntityColor2, AcadConnection.btr)
-                            PastEntityColor2.Clear()
-                        End If
+                        
 
                         For Each Idtemp In tempIdArray
                             Dim Ent As Entity = CType(AcadConnection.myT.GetObject(Idtemp, OpenMode.ForWrite), Entity)
@@ -523,8 +525,8 @@ Public Class UserControl3
                                 adskClass.TempName = Context.Contents.ToString
                             End If
                             If Not (TypeOf Ent Is Circle) Then Ent.Erase()
-
                         Next
+
                     End If
                     AcadConnection.myT.Commit()
 
