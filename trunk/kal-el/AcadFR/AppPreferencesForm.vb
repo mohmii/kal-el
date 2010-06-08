@@ -24,25 +24,43 @@ Public Class AppPreferencesForm
 
     Private Sub Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save.Click
         AppPreferences.WSDir = Me.Directory.Text
+        AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
+        AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
+        AppPreferences.DrawPP = Me.PreProcess.Checked
         AppPreferences.ToleranceValues = Me.Tolerance.Value
         AppPreferences.SchematicSymbol = Me.Schematic.Value
-        AppPreferences.DrawPP = Me.PreProcess.Checked
         AppPreferences.SetWorkSpaceDir()
 
         adskClass.AppPreferences.WSDir = Me.Directory.Text
+        adskClass.AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
+        adskClass.AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
+        adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
         adskClass.AppPreferences.ToleranceValues = Me.Tolerance.Value
         adskClass.AppPreferences.SchematicSymbol = Me.Schematic.Value
-        adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
+
         Me.Dispose()
     End Sub
 
     Private Sub AppPreferencesForm_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         If AppPreferences.ReadPreferences() Then
             Me.Directory.Text = AppPreferences.WSDir
+            Me.AutoRegLine.Checked = AppPreferences.AutoRegLine
+            Me.AutoRegScheme.Checked = AppPreferences.AutoRegSchem
+            Me.PreProcess.Checked = AppPreferences.DrawPP
             Me.Tolerance.Value = AppPreferences.ToleranceValues
             Me.Schematic.Value = AppPreferences.SchematicSymbol
-            Me.PreProcess.Checked = AppPreferences.DrawPP
         End If
+    End Sub
 
+    Private Sub PreProcess_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreProcess.CheckStateChanged
+
+        If Me.PreProcess.CheckState = 1 Then
+            Me.Tolerance.Enabled = True
+            Me.Schematic.Enabled = True
+        End If
+        If Me.PreProcess.CheckState = 0 Then
+            Me.Tolerance.Enabled = False
+            Me.Schematic.Enabled = False
+        End If
     End Sub
 End Class

@@ -35,11 +35,11 @@ Public Class AppPreferences
 
                 If pref.Count = 6 Then
                     WorkSpaceDir = pref(0)
-                    TolValue = pref(1)
-                    Schema = pref(2)
-                    VisSurface = pref(3)
-                    HidSurface = pref(4)
-                    PreProc = pref(5)
+                    RegLine = pref(1)
+                    RegSchem = pref(2)
+                    PreProc = pref(3)
+                    TolValue = pref(4)
+                    Schema = pref(5)
                 End If
 
                 TmpFileRead.Close()
@@ -55,11 +55,11 @@ Public Class AppPreferences
 
         TmpFileWrite = path2.CreateText()
         TmpFileWrite.WriteLine(WorkSpaceDir)
+        TmpFileWrite.WriteLine(RegLine.ToString)
+        TmpFileWrite.WriteLine(RegSchem.ToString)
+        TmpFileWrite.WriteLine(PreProc.ToString)
         TmpFileWrite.WriteLine(TolValue)
         TmpFileWrite.WriteLine(Schema)
-        TmpFileWrite.WriteLine(VisSurface.ToString)
-        TmpFileWrite.WriteLine(HidSurface.ToString)
-        TmpFileWrite.Write(PreProc.ToString)
         TmpFileWrite.Flush()
         TmpFileWrite.Close()
 
@@ -103,23 +103,23 @@ Public Class AppPreferences
         End Set
     End Property
 
-    Private VisSurface, HidSurface, PreProc As Boolean
+    Private RegLine, RegSchem, PreProc As Boolean
 
-    Public Property VisibleSurface() As Boolean
+    Public Property AutoRegLine() As Boolean
         Get
-            Return VisSurface
+            Return RegLine
         End Get
         Set(ByVal value As Boolean)
-            VisSurface = value
+            RegLine = value
         End Set
     End Property
 
-    Public Property HiddenSurface() As Boolean
+    Public Property AutoRegSchem() As Boolean
         Get
-            Return HidSurface
+            Return RegSchem
         End Get
         Set(ByVal value As Boolean)
-            HidSurface = value
+            RegSchem = value
         End Set
     End Property
 
