@@ -231,7 +231,7 @@ Public Class UserControl3
     End Function
 
     'method for setting the entity color defaults
-    Private Sub RoleBackColor(ByVal PastEntColor As List(Of InitialColor), _
+    Private Sub RollBackColor(ByVal PastEntColor As List(Of InitialColor), _
                               ByVal BlockTableRecInstances As BlockTableRecord)
 
         If Not (PastEntColor.Count = 0) Then
@@ -508,10 +508,10 @@ Public Class UserControl3
                         tempIdArray = SS.GetObjectIds()
                         AcadConnection.OpenBlockTableRec()
                         If Not (PastEntityColor.Count = 0) Then
-                            RoleBackColor(PastEntityColor, AcadConnection.btr)
+                            RollBackColor(PastEntityColor, AcadConnection.btr)
                             PastEntityColor.Clear()
                         ElseIf Not (PastEntityColor2.Count = 0) Then
-                            RoleBackColor(PastEntityColor2, AcadConnection.btr)
+                            RollBackColor(PastEntityColor2, AcadConnection.btr)
                             PastEntityColor2.Clear()
                         End If
 
@@ -746,9 +746,9 @@ Public Class UserControl3
                             TempId = Nothing
 
                             'roleback each precious selected entities to their default color
-                            RoleBackColor(PastEntityColor2, AcadConnection.btr)
+                            RollBackColor(PastEntityColor2, AcadConnection.btr)
                             PastEntityColor2.Clear()
-                            RoleBackColor(PastEntityColor, AcadConnection.btr)
+                            RollBackColor(PastEntityColor, AcadConnection.btr)
 
                             PastEntityColor = New List(Of InitialColor)
 
@@ -833,10 +833,10 @@ Public Class UserControl3
                             'dummy variable for preventing clearing the current highlighted entity/entities
                             TempId = Nothing
 
-                            RoleBackColor(PastEntityColor, AcadConnection.btr)
+                            RollBackColor(PastEntityColor, AcadConnection.btr)
                             PastEntityColor.Clear()
 
-                            RoleBackColor(PastEntityColor2, AcadConnection.btr)
+                            RollBackColor(PastEntityColor2, AcadConnection.btr)
 
                             PastEntityColor2 = New List(Of InitialColor)
 
