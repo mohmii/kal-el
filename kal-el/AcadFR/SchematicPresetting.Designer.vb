@@ -83,6 +83,7 @@ Partial Class SchematicPresetting
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.TapHoleList.RowHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.TapHoleList.RowHeadersVisible = False
+        Me.TapHoleList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TapHoleList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.TapHoleList.Size = New System.Drawing.Size(892, 163)
         Me.TapHoleList.TabIndex = 4
