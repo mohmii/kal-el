@@ -33,7 +33,7 @@ Public Class AppPreferences
                     pref.Add(TmpFileRead.ReadLine)
                 End While
 
-                If pref.Count = 6 Then
+                If pref.Count = 7 Then
                     WorkSpaceDir = pref(0)
                     RegLine = pref(1)
                     RegSchem = pref(2)
