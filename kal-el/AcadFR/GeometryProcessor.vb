@@ -80,30 +80,30 @@ Public Class GeometryProcessor
 
         AcadConn = New AcadConn
         AcadConn.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-        Try
-            Using AcadConn.myT
+        'Try
+        Using AcadConn.myT
 
-                SplitResult = LineInput.GetSplitCurves(Points)
+            SplitResult = LineInput.GetSplitCurves(Points)
 
-                DummyLine1 = SplitResult(0)
-                DummyLine2 = SplitResult(1)
+            DummyLine1 = SplitResult(0)
+            DummyLine2 = SplitResult(1)
 
-                AcadConn.OpenBlockTableRec()
+            AcadConn.OpenBlockTableRec()
 
-                AcadConn.btr.UpgradeOpen()
-                AcadConn.btr.AppendEntity(DummyLine1)
-                AcadConn.btr.AppendEntity(DummyLine2)
+            AcadConn.btr.UpgradeOpen()
+            AcadConn.btr.AppendEntity(DummyLine1)
+            AcadConn.btr.AppendEntity(DummyLine2)
 
-                AcadConn.myT.AddNewlyCreatedDBObject(DummyLine1, True)
-                AcadConn.myT.AddNewlyCreatedDBObject(DummyLine2, True)
-                AcadConn.myT.Commit()
+            AcadConn.myT.AddNewlyCreatedDBObject(DummyLine1, True)
+            AcadConn.myT.AddNewlyCreatedDBObject(DummyLine2, True)
+            AcadConn.myT.Commit()
 
-            End Using
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        Finally
-            AcadConn.myT.Dispose()
-        End Try
+        End Using
+        'Catch ex As Exception
+        '    MsgBox(ex.ToString)
+        'Finally
+        '    AcadConn.myT.Dispose()
+        'End Try
 
         Return SplitResult
 
