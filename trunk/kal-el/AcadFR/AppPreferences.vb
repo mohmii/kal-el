@@ -37,9 +37,10 @@ Public Class AppPreferences
                     WorkSpaceDir = pref(0)
                     RegLine = pref(1)
                     RegSchem = pref(2)
-                    PreProc = pref(3)
-                    TolValue = pref(4)
-                    Schema = pref(5)
+                    Mview = pref(3)
+                    PreProc = pref(4)
+                    TolValue = pref(5)
+                    Schema = pref(6)
                 End If
 
                 TmpFileRead.Close()
@@ -57,6 +58,7 @@ Public Class AppPreferences
         TmpFileWrite.WriteLine(WorkSpaceDir)
         TmpFileWrite.WriteLine(RegLine.ToString)
         TmpFileWrite.WriteLine(RegSchem.ToString)
+        TmpFileWrite.WriteLine(Mview.ToString)
         TmpFileWrite.WriteLine(PreProc.ToString)
         TmpFileWrite.WriteLine(TolValue)
         TmpFileWrite.WriteLine(Schema)
@@ -103,7 +105,7 @@ Public Class AppPreferences
         End Set
     End Property
 
-    Private RegLine, RegSchem, PreProc As Boolean
+    Private RegLine, RegSchem, Mview, PreProc As Boolean
 
     Public Property AutoRegLine() As Boolean
         Get
@@ -120,6 +122,15 @@ Public Class AppPreferences
         End Get
         Set(ByVal value As Boolean)
             RegSchem = value
+        End Set
+    End Property
+
+    Public Property MultiAnalysis() As Boolean
+        Get
+            Return Mview
+        End Get
+        Set(ByVal value As Boolean)
+            Mview = value
         End Set
     End Property
 
