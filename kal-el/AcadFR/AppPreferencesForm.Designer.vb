@@ -33,6 +33,8 @@ Partial Class AppPreferencesForm
         Me.Cancel = New System.Windows.Forms.Button
         Me.Directory = New System.Windows.Forms.TextBox
         Me.PreProcess = New System.Windows.Forms.CheckBox
+        Me.AutoRegLine = New System.Windows.Forms.CheckBox
+        Me.AutoRegScheme = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         CType(Me.Schematic, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Tolerance, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -62,7 +64,7 @@ Partial Class AppPreferencesForm
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.Tolerance)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 52)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 121)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(293, 62)
         Me.GroupBox1.TabIndex = 3
@@ -72,6 +74,7 @@ Partial Class AppPreferencesForm
         'Schematic
         '
         Me.Schematic.DecimalPlaces = 2
+        Me.Schematic.Enabled = False
         Me.Schematic.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
         Me.Schematic.Location = New System.Drawing.Point(236, 33)
         Me.Schematic.Name = "Schematic"
@@ -91,6 +94,7 @@ Partial Class AppPreferencesForm
         '
         Me.Tolerance.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Tolerance.DecimalPlaces = 2
+        Me.Tolerance.Enabled = False
         Me.Tolerance.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
         Me.Tolerance.Location = New System.Drawing.Point(236, 14)
         Me.Tolerance.Name = "Tolerance"
@@ -109,7 +113,7 @@ Partial Class AppPreferencesForm
         '
         'Save
         '
-        Me.Save.Location = New System.Drawing.Point(197, 137)
+        Me.Save.Location = New System.Drawing.Point(197, 189)
         Me.Save.Name = "Save"
         Me.Save.Size = New System.Drawing.Size(51, 23)
         Me.Save.TabIndex = 4
@@ -118,7 +122,7 @@ Partial Class AppPreferencesForm
         '
         'Cancel
         '
-        Me.Cancel.Location = New System.Drawing.Point(254, 137)
+        Me.Cancel.Location = New System.Drawing.Point(254, 189)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(51, 23)
         Me.Cancel.TabIndex = 5
@@ -135,19 +139,40 @@ Partial Class AppPreferencesForm
         'PreProcess
         '
         Me.PreProcess.AutoSize = True
-        Me.PreProcess.Enabled = False
-        Me.PreProcess.Location = New System.Drawing.Point(12, 120)
+        Me.PreProcess.Location = New System.Drawing.Point(12, 98)
         Me.PreProcess.Name = "PreProcess"
         Me.PreProcess.Size = New System.Drawing.Size(132, 17)
         Me.PreProcess.TabIndex = 8
         Me.PreProcess.Text = "Drawing pre-processor"
         Me.PreProcess.UseVisualStyleBackColor = True
         '
+        'AutoRegLine
+        '
+        Me.AutoRegLine.AutoSize = True
+        Me.AutoRegLine.Location = New System.Drawing.Point(12, 52)
+        Me.AutoRegLine.Name = "AutoRegLine"
+        Me.AutoRegLine.Size = New System.Drawing.Size(222, 17)
+        Me.AutoRegLine.TabIndex = 9
+        Me.AutoRegLine.Text = "Auto registration for undefined line entities"
+        Me.AutoRegLine.UseVisualStyleBackColor = True
+        '
+        'AutoRegScheme
+        '
+        Me.AutoRegScheme.AutoSize = True
+        Me.AutoRegScheme.Location = New System.Drawing.Point(12, 75)
+        Me.AutoRegScheme.Name = "AutoRegScheme"
+        Me.AutoRegScheme.Size = New System.Drawing.Size(254, 17)
+        Me.AutoRegScheme.TabIndex = 10
+        Me.AutoRegScheme.Text = "Auto registration for undefined schematic entities"
+        Me.AutoRegScheme.UseVisualStyleBackColor = True
+        '
         'AppPreferencesForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(317, 166)
+        Me.ClientSize = New System.Drawing.Size(317, 224)
+        Me.Controls.Add(Me.AutoRegScheme)
+        Me.Controls.Add(Me.AutoRegLine)
         Me.Controls.Add(Me.PreProcess)
         Me.Controls.Add(Me.Directory)
         Me.Controls.Add(Me.Cancel)
@@ -177,4 +202,6 @@ Partial Class AppPreferencesForm
     Friend WithEvents Schematic As System.Windows.Forms.NumericUpDown
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents PreProcess As System.Windows.Forms.CheckBox
+    Friend WithEvents AutoRegLine As System.Windows.Forms.CheckBox
+    Friend WithEvents AutoRegScheme As System.Windows.Forms.CheckBox
 End Class
