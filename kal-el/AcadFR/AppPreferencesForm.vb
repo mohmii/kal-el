@@ -26,6 +26,7 @@ Public Class AppPreferencesForm
         AppPreferences.WSDir = Me.Directory.Text
         AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
         AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
+        AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
         AppPreferences.DrawPP = Me.PreProcess.Checked
         AppPreferences.ToleranceValues = Me.Tolerance.Value
         AppPreferences.SchematicSymbol = Me.Schematic.Value
@@ -34,6 +35,7 @@ Public Class AppPreferencesForm
         adskClass.AppPreferences.WSDir = Me.Directory.Text
         adskClass.AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
         adskClass.AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
+        adskClass.AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
         adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
         adskClass.AppPreferences.ToleranceValues = Me.Tolerance.Value
         adskClass.AppPreferences.SchematicSymbol = Me.Schematic.Value
@@ -46,6 +48,7 @@ Public Class AppPreferencesForm
             Me.Directory.Text = AppPreferences.WSDir
             Me.AutoRegLine.Checked = AppPreferences.AutoRegLine
             Me.AutoRegScheme.Checked = AppPreferences.AutoRegSchem
+            Me.MultiAnalysis.Checked = AppPreferences.MultiAnalysis
             Me.PreProcess.Checked = AppPreferences.DrawPP
             Me.Tolerance.Value = AppPreferences.ToleranceValues
             Me.Schematic.Value = AppPreferences.SchematicSymbol
