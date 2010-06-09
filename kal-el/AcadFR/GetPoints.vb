@@ -53,6 +53,7 @@ Public Class GetPoints
 
                 If AllPoints.Contains(TempStartPoint) Then
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Line = LineTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -62,6 +63,7 @@ Public Class GetPoints
                     AllPoints.Add(TempStartPoint)
                     ListOfEntity = New AllPoints
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Line = LineTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -72,6 +74,7 @@ Public Class GetPoints
 
                 If AllPoints.Contains(TempEndPoint) Then
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Line = LineTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -81,6 +84,7 @@ Public Class GetPoints
                     AllPoints.Add(TempEndPoint)
                     ListOfEntity = New AllPoints
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Line = LineTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -96,6 +100,7 @@ Public Class GetPoints
 
                 If AllPoints.Contains(TempStartPoint) Then
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Arc = ArcTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -105,6 +110,7 @@ Public Class GetPoints
                     AllPoints.Add(TempStartPoint)
                     ListOfEntity = New AllPoints
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Arc = ArcTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -115,6 +121,7 @@ Public Class GetPoints
 
                 If AllPoints.Contains(TempEndPoint) Then
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Arc = ArcTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
@@ -124,6 +131,7 @@ Public Class GetPoints
                     AllPoints.Add(TempEndPoint)
                     ListOfEntity = New AllPoints
                     EntityCheckingTmp = New EntityProp
+                    EntityCheckingTmp.Entity = EntityTmp
                     EntityCheckingTmp.Arc = ArcTrans
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint

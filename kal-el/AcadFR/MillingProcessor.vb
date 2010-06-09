@@ -458,6 +458,7 @@ Public Class AllPoints
 End Class
 
 Public Class EntityProp
+    Public Entity As Entity
     Public Line As New Line
     Public Arc As New Arc
     Public StartPoint As Point3d
