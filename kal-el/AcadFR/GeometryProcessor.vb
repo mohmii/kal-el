@@ -1,6 +1,7 @@
 ﻿Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.Geometry
+Imports System.Math
 
 Public Class GeometryProcessor
     Private xParam, yParam, rParam, sParam, Upper, Lower As Double
@@ -76,7 +77,7 @@ Public Class GeometryProcessor
     Private AcadConn As AcadConn
 
     'breaking line
-    Public function BreakingLine(ByVal LineInput As Line, ByVal Points As Point3dCollection)
+    Private Function BreakingLine(ByVal LineInput As Line, ByVal Points As Point3dCollection)
 
         AcadConn = New AcadConn
         AcadConn.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
@@ -99,14 +100,68 @@ Public Class GeometryProcessor
             AcadConn.myT.Commit()
 
         End Using
-        'Catch ex As Exception
-        '    MsgBox(ex.ToString)
-        'Finally
-        '    AcadConn.myT.Dispose()
-        'End Try
 
         Return SplitResult
 
+    End Function
+
+    Private BreakPoint As Point3dCollection
+
+    'used in start or end of line
+    Public Overloads Sub SplitLine(ByVal LineInput As Line, ByVal Points As Point3d, ByRef EntitiesToAdd As List(Of Entity), _
+                              ByRef RemovedEntities As List(Of Entity), ByVal EntityTmp As Entity, _
+                              ByRef EntityIndexes As List(Of Integer), ByVal AllEntities As List(Of Entity), _
+                              ByRef LineIndexes As List(Of Integer), ByVal LineEntities As List(Of Line))
+
+        'set the break point
+        BreakPoint = New Point3dCollection
+        BreakPoint.Add(Points)
+
+        'split the line
+        SplitResult = BreakingLine(LineInput, BreakPoint)
+
+        'add the new splitted line into current line list
+        EntitiesToAdd.Add(SplitResult(0))
+        EntitiesToAdd.Add(SplitResult(1))
+        RemovedEntities.Add(EntityTmp)
+        EntityIndexes.Add(AllEntities.IndexOf(EntityTmp))
+        LineIndexes.Add(LineEntities.IndexOf(LineInput))
+
+    End Sub
+
+    'used in intersecting line
+    Public Overloads Sub SplitLine(ByVal LineInput As Line, ByVal Points As Point3dCollection, ByRef EntitiesToAdd As List(Of Entity), _
+                              ByRef RemovedEntities As List(Of Entity), ByVal Index As Integer, _
+                              ByRef EntityIndexes As List(Of Integer), ByVal AllEntities As List(Of Entity), _
+                              ByRef LineIndexes As List(Of Integer), ByVal LineEntities As List(Of Line))
+
+        'set the break point
+        BreakPoint = New Point3dCollection
+        BreakPoint = Points
+
+        'split the line
+        SplitResult = BreakingLine(LineInput, BreakPoint)
+
+        'add the new splitted line into current line list
+        EntitiesToAdd.Add(SplitResult(0))
+        EntitiesToAdd.Add(SplitResult(1))
+        RemovedEntities.Add(AllEntities(Index))
+        EntityIndexes.Add(Index)
+        LineIndexes.Add(LineEntities.IndexOf(LineInput))
+    End Sub
+
+    Public Function GetBreakPoint(ByVal PointA As Double, ByVal PointB As Double) As Double
+        If CheckDifferences(PointA, PointB) Then
+            Return PointA
+        End If
+    End Function
+
+    Public Function CheckDifferences(ByRef PointA As Double, ByRef PointB As Double) As Boolean
+        If Abs(PointA - PointB) <= adskClass.AppPreferences.ToleranceValues Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
 End Class
