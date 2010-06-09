@@ -345,7 +345,7 @@ Public Class MillingProcessor
                 For Each EntityTmp As EntityProp In GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList
                     If GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.Count = 2 Then
                         If EntityTmp.Line.ObjectId.IsNull = True Then
-                            If (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) And (PreviousEntity.Linetype <> EntityTmp.LineType) Then
+                            If (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) And (PreviousEntity.Linetype = EntityTmp.LineType) Then
                                 EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
                                 GetLinePathStatus = True
                                 LastEntityOk = True
@@ -353,7 +353,7 @@ Public Class MillingProcessor
                                 LastEntityOk = False
                             End If
                         ElseIf EntityTmp.Line.ObjectId.IsNull = False Then
-                            If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And ((PreviousEntity.Linetype <> EntityTmp.LineType) Or _
+                            If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And ((PreviousEntity.Linetype = EntityTmp.LineType) Or _
                                                                                         EntityTmp.Line.ColorIndex = 10) Then
                                 EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
                                 GetLinePathStatus = True
@@ -382,7 +382,7 @@ Public Class MillingProcessor
                         'selecting the biggest line angle for the next path
                         If AngleTmpConversion >= AngleTmp Then
                             If EntityTmp.Line.ObjectId.IsNull = True Then
-                                If (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) And (PreviousEntity.Linetype <> EntityTmp.LineType) Then
+                                If (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) And (PreviousEntity.Linetype = EntityTmp.LineType) Then
                                     AngleTmp = AngleTmpConversion
                                     EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
                                     GetLinePathStatus = True
@@ -391,7 +391,7 @@ Public Class MillingProcessor
                                     LastEntityOk = False
                                 End If
                             ElseIf EntityTmp.Line.ObjectId.IsNull = False Then
-                                If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And ((PreviousEntity.Linetype <> EntityTmp.LineType) Or _
+                                If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And ((PreviousEntity.Linetype = EntityTmp.LineType) Or _
                                                                                             (EntityTmp.Line.ColorIndex = 10)) Then
                                     AngleTmp = AngleTmpConversion
                                     EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
