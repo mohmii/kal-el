@@ -58,6 +58,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.StartPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempStartPoint) Then
                     AllPoints.Add(TempStartPoint)
@@ -68,6 +69,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
@@ -79,6 +81,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.EndPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempEndPoint) Then
                     AllPoints.Add(TempEndPoint)
@@ -89,6 +92,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
@@ -105,6 +109,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.StartPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempStartPoint) Then
                     AllPoints.Add(TempStartPoint)
@@ -115,6 +120,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
@@ -126,6 +132,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.EndPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempEndPoint) Then
                     AllPoints.Add(TempEndPoint)
@@ -136,6 +143,7 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
+                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
