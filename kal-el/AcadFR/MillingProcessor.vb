@@ -38,7 +38,7 @@ Public Class MillingProcessor
     End Function
 
     Private PreviousEntity As Entity
-    Private FirstTimeEnter, EndPointHasBeenReach, AngleInitiateStatus, GetLinePathStatus As Boolean
+    Private FirstTimeEnter, EndPointHasBeenReach, LastEntityOk, AngleInitiateStatus, GetLinePathStatus As Boolean
     Private EntityPathIndex, PointPathIndex As Integer
     Private AngleTmp As Double
     Private MainLoopPoint As List(Of Point3d)
@@ -259,26 +259,28 @@ Public Class MillingProcessor
                     End If
 
                     EndPointHasBeenReach = False
+                    LastEntityOk = False
 
                     CheckEachLinePath(PointTmp)
                     PointTmp = EndPoint
 
-                    If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
-                        GroupLoop.Add(GroupEntity)
-                        GroupLoopPoints.Add(GroupPoints)
-                    ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
-                        Dim IsLoopEqualStatus As Boolean
-                        For Each GroupEntityTmp As List(Of Entity) In GroupLoop
-                            IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)
-                            If IsLoopEqualStatus = True Then
-                                Exit For
-                            End If
-                        Next
-                        If IsLoopEqualStatus = False Then
+                    If LastEntityOk = True Then
+                        If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
                             GroupLoop.Add(GroupEntity)
                             GroupLoopPoints.Add(GroupPoints)
+                        ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
+                            Dim IsLoopEqualStatus As Boolean
+                            For Each GroupEntityTmp As List(Of Entity) In GroupLoop
+                                IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)
+                                If IsLoopEqualStatus = True Then
+                                    Exit For
+                                End If
+                            Next
+                            If IsLoopEqualStatus = False Then
+                                GroupLoop.Add(GroupEntity)
+                                GroupLoopPoints.Add(GroupPoints)
+                            End If
                         End If
-
                     End If
 
                     'For arc type
@@ -297,24 +299,27 @@ Public Class MillingProcessor
                     End If
 
                     EndPointHasBeenReach = False
+                    LastEntityOk = False
 
                     CheckEachLinePath(PointTmp)
                     PointTmp = EndPoint
 
-                    If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
-                        GroupLoop.Add(GroupEntity)
-                        GroupLoopPoints.Add(GroupPoints)
-                    ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
-                        Dim IsLoopEqualStatus As Boolean
-                        For Each GroupEntityTmp As List(Of Entity) In GroupLoop
-                            IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)
-                            If IsLoopEqualStatus = True Then
-                                Exit For
-                            End If
-                        Next
-                        If IsLoopEqualStatus = False Then
+                    If LastEntityOk = True Then
+                        If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
                             GroupLoop.Add(GroupEntity)
                             GroupLoopPoints.Add(GroupPoints)
+                        ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
+                            Dim IsLoopEqualStatus As Boolean
+                            For Each GroupEntityTmp As List(Of Entity) In GroupLoop
+                                IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)
+                                If IsLoopEqualStatus = True Then
+                                    Exit For
+                                End If
+                            Next
+                            If IsLoopEqualStatus = False Then
+                                GroupLoop.Add(GroupEntity)
+                                GroupLoopPoints.Add(GroupPoints)
+                            End If
                         End If
                     End If
                 End If
@@ -339,9 +344,23 @@ Public Class MillingProcessor
 
                 For Each EntityTmp As EntityProp In GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList
                     If GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.Count = 2 Then
-                        If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) Then
-                            EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
-                            GetLinePathStatus = True
+                        If EntityTmp.Line.ObjectId.IsNull = True Then
+                            If (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) And (PreviousEntity.Linetype <> EntityTmp.LineType) Then
+                                EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                                GetLinePathStatus = True
+                                LastEntityOk = True
+                            Else
+                                LastEntityOk = False
+                            End If
+                        ElseIf EntityTmp.Line.ObjectId.IsNull = False Then
+                            If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And ((PreviousEntity.Linetype <> EntityTmp.LineType) Or _
+                                                                                        EntityTmp.Line.ColorIndex = 10) Then
+                                EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                                GetLinePathStatus = True
+                                LastEntityOk = True
+                            Else
+                                LastEntityOk = False
+                            End If
                         End If
                     Else
                         AngleTmpConversion = New Double
@@ -361,11 +380,37 @@ Public Class MillingProcessor
                         End If
 
                         'selecting the biggest line angle for the next path
-                        If AngleTmpConversion >= AngleTmp And (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) _
-                        And (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) Then
-                            AngleTmp = AngleTmpConversion
-                            EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
-                            GetLinePathStatus = True
+                        If AngleTmpConversion >= AngleTmp Then
+                            If EntityTmp.Line.ObjectId.IsNull = True Then
+                                If (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) And (PreviousEntity.Linetype <> EntityTmp.LineType) Then
+                                    AngleTmp = AngleTmpConversion
+                                    EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                                    GetLinePathStatus = True
+                                    LastEntityOk = True
+                                Else
+                                    LastEntityOk = False
+                                End If
+                            ElseIf EntityTmp.Line.ObjectId.IsNull = False Then
+                                If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And ((PreviousEntity.Linetype <> EntityTmp.LineType) Or _
+                                                                                            (EntityTmp.Line.ColorIndex = 10)) Then
+                                    AngleTmp = AngleTmpConversion
+                                    EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                                    GetLinePathStatus = True
+                                    LastEntityOk = True
+                                Else
+                                    LastEntityOk = False
+                                End If
+                            End If
+                            'If (PreviousEntity.Linetype <> EntityTmp.LineType) Then
+                            '    LastEntityOk = False
+                            'Else
+                            '    If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) And (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) Then
+                            '        AngleTmp = AngleTmpConversion
+                            '        EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                            '        GetLinePathStatus = True
+                            '        LastEntityOk = True
+                            '    End If
+                            'End If
                         End If
                     End If
                 Next
@@ -412,6 +457,19 @@ Public Class MillingProcessor
         EndPointHasBeenReach = True
     End Sub
 
+    'check if the next line is virtual or the same line type
+    Private Function CheckIfVirtual(ByVal PreviousLineType As String, ByVal CurrentLineType As String, ByVal ColorIndex As Integer) As Boolean
+        If ColorIndex = 10 Then
+            Return True
+        Else
+            If String.Equals(PreviousLineType, CurrentLineType) = True Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+    End Function
+
     Private Function IsLoopEqual(ByVal LoopA As List(Of Entity), ByVal LoopB As List(Of Entity)) As Boolean
 
         If LoopA.Count <> LoopB.Count Then Return False
@@ -436,7 +494,7 @@ Public Class MillingProcessor
     End Function
 
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Math.Abs(x - y) > 0.1 Then
+        If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
             Return False
         Else
             Return True
@@ -444,7 +502,8 @@ Public Class MillingProcessor
     End Function
 
     Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
-        If Math.Abs(point1.X - point2.X) < 0.1 And Math.Abs(point1.Y - point2.Y) < 0.1 And Math.Abs(point1.Z - point2.Z) < 0.1 Then
+        If Math.Abs(point1.X - point2.X) < adskClass.AppPreferences.ToleranceValues And Math.Abs(point1.Y - point2.Y) < adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Z - point2.Z) < adskClass.AppPreferences.ToleranceValues Then
             Return True
         Else
             Return False
@@ -465,6 +524,7 @@ Public Class EntityProp
     Public EndPoint As Point3d
     'Angle between start point and end point of entity
     Public Angle As New Double
+    Public LineType As String
 End Class
 
 Public Class AllLoop
