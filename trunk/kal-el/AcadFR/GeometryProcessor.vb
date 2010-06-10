@@ -42,14 +42,24 @@ Public Class GeometryProcessor
         Lower = New Double
 
         'see the formula in the dr mohsen dissertation
-        Upper = ((Math.Round(LineB.EndPoint.X, 3) - Math.Round(LineB.StartPoint.X, 3)) * (Math.Round(LineB.StartPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3))) _
-        - ((Math.Round(LineB.EndPoint.Y, 3) - Math.Round(LineB.StartPoint.Y, 3)) * (Math.Round(LineB.StartPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)))
-        Lower = ((Math.Round(LineB.EndPoint.X, 3) - Math.Round(LineB.StartPoint.X, 3)) * (Math.Round(LineA.EndPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3))) _
-        - ((Math.Round(LineB.EndPoint.Y, 3) - Math.Round(LineB.StartPoint.Y, 3)) * (Math.Round(LineA.EndPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)))
+        'Upper = ((Math.Round(LineB.EndPoint.X, 3) - Math.Round(LineB.StartPoint.X, 3)) * (Math.Round(LineB.StartPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3))) _
+        '- ((Math.Round(LineB.EndPoint.Y, 3) - Math.Round(LineB.StartPoint.Y, 3)) * (Math.Round(LineB.StartPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)))
+        'Lower = ((Math.Round(LineB.EndPoint.X, 3) - Math.Round(LineB.StartPoint.X, 3)) * (Math.Round(LineA.EndPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3))) _
+        '- ((Math.Round(LineB.EndPoint.Y, 3) - Math.Round(LineB.StartPoint.Y, 3)) * (Math.Round(LineA.EndPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)))
+
+        Upper = ((LineB.EndPoint.X - LineB.StartPoint.X) * (LineB.StartPoint.Y - LineA.StartPoint.Y)) _
+        - ((LineB.EndPoint.Y - LineB.StartPoint.Y) * (LineB.StartPoint.X - LineA.StartPoint.X))
+        Lower = ((LineB.EndPoint.X - LineB.StartPoint.X) * (LineA.EndPoint.Y - LineA.StartPoint.Y)) _
+        - ((LineB.EndPoint.Y - LineB.StartPoint.Y) * (LineA.EndPoint.X - LineA.StartPoint.X))
+
         rParam = Upper / Lower
 
-        Upper = ((Math.Round(LineA.EndPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)) * (Math.Round(LineB.StartPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3))) _
-        - ((Math.Round(LineA.EndPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3)) * (Math.Round(LineB.StartPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)))
+        'Upper = ((Math.Round(LineA.EndPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)) * (Math.Round(LineB.StartPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3))) _
+        '- ((Math.Round(LineA.EndPoint.Y, 3) - Math.Round(LineA.StartPoint.Y, 3)) * (Math.Round(LineB.StartPoint.X, 3) - Math.Round(LineA.StartPoint.X, 3)))
+
+        Upper = ((LineA.EndPoint.X - LineA.StartPoint.X) * (LineB.StartPoint.Y - LineA.StartPoint.Y)) _
+- ((LineA.EndPoint.Y - LineA.StartPoint.Y) * (LineB.StartPoint.X - LineA.StartPoint.X))
+
         sParam = Upper / Lower
 
         If 0 < rParam And rParam < 1 And 0 < sParam And sParam < 1 Then
@@ -65,8 +75,11 @@ Public Class GeometryProcessor
         xParam = New Double
         yParam = New Double
 
-        xParam = Math.Round(lineA.StartPoint.X, 3) + ((Math.Round(lineA.EndPoint.X, 3) - Math.Round(lineA.StartPoint.X, 3)) * sParam)
-        yParam = Math.Round(lineA.StartPoint.Y, 3) + ((Math.Round(lineA.EndPoint.Y, 3) - Math.Round(lineA.StartPoint.Y, 3)) * rParam)
+        'xParam = Math.Round(lineA.StartPoint.X, 3) + ((Math.Round(lineA.EndPoint.X, 3) - Math.Round(lineA.StartPoint.X, 3)) * sParam)
+        'yParam = Math.Round(lineA.StartPoint.Y, 3) + ((Math.Round(lineA.EndPoint.Y, 3) - Math.Round(lineA.StartPoint.Y, 3)) * rParam)
+
+        xParam = lineA.StartPoint.X + ((lineA.EndPoint.X - lineA.StartPoint.X) * sParam)
+        yParam = lineA.StartPoint.Y + ((lineA.EndPoint.Y - lineA.StartPoint.Y) * rParam)
 
         Return New Point3d(xParam, yParam, 0)
 
@@ -84,7 +97,9 @@ Public Class GeometryProcessor
         'Try
         Using AcadConn.myT
 
-            SplitResult = LineInput.GetSplitCurves(BreakPointTmp)
+            If LineInput.GetSplitCurves(BreakPointTmp).Count <> 0 Then
+                SplitResult = LineInput.GetSplitCurves(BreakPointTmp)
+            End If
 
             DummyLine1 = SplitResult(0)
             DummyLine2 = SplitResult(1)
@@ -115,8 +130,9 @@ Public Class GeometryProcessor
         AcadConn.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
         'Try
         Using AcadConn.myT
-
-            SplitResult = LineInput.GetSplitCurves(Points)
+            If LineInput.GetSplitCurves(Points).Count <> 0 Then
+                SplitResult = LineInput.GetSplitCurves(Points)
+            End If
 
             DummyLine1 = SplitResult(0)
             DummyLine2 = SplitResult(1)
@@ -208,14 +224,14 @@ Public Class GeometryProcessor
     End Sub
 
     'used in intersecting line
-    Public Overloads Sub SplitLine(ByVal LineInput As Line, ByVal Points As Point3dCollection, ByRef EntitiesToAdd As List(Of Entity), _
+    Public Overloads Sub SplitLine(ByVal LineInput As Line, ByVal Points As Point3d, ByRef EntitiesToAdd As List(Of Entity), _
                               ByRef RemovedEntities As List(Of Entity), ByVal Index As Integer, _
                               ByRef EntityIndexes As List(Of Integer), ByVal AllEntities As List(Of Entity), _
                               ByRef LineIndexes As List(Of Integer), ByVal LineEntities As List(Of Line))
 
         'set the break point
         BreakPoint = New Point3dCollection
-        BreakPoint = Points
+        BreakPoint.Add(Points)
 
         'split the line
         SplitResult = BreakingLine(LineInput, BreakPoint)

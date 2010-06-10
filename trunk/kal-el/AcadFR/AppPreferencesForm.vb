@@ -42,10 +42,10 @@ Public Class AppPreferencesForm
             adskClass.AppPreferences.ToleranceValues = Me.Tolerance.Value
             adskClass.AppPreferences.SchematicSymbol = Me.Schematic.Value
         Else
-            AppPreferences.ToleranceValues = 0
+            AppPreferences.ToleranceValues = 0.01
             AppPreferences.SchematicSymbol = 0
 
-            adskClass.AppPreferences.ToleranceValues = 0
+            adskClass.AppPreferences.ToleranceValues = 0.01
             adskClass.AppPreferences.SchematicSymbol = 0
         End If
 
