@@ -28,17 +28,28 @@ Public Class AppPreferencesForm
         AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
         AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
         AppPreferences.DrawPP = Me.PreProcess.Checked
-        AppPreferences.ToleranceValues = Me.Tolerance.Value
-        AppPreferences.SchematicSymbol = Me.Schematic.Value
-        AppPreferences.SetWorkSpaceDir()
 
         adskClass.AppPreferences.WSDir = Me.Directory.Text
         adskClass.AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
         adskClass.AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
         adskClass.AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
         adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
-        adskClass.AppPreferences.ToleranceValues = Me.Tolerance.Value
-        adskClass.AppPreferences.SchematicSymbol = Me.Schematic.Value
+
+        If Me.PreProcess.Checked = True Then
+            AppPreferences.ToleranceValues = Me.Tolerance.Value
+            AppPreferences.SchematicSymbol = Me.Schematic.Value
+
+            adskClass.AppPreferences.ToleranceValues = Me.Tolerance.Value
+            adskClass.AppPreferences.SchematicSymbol = Me.Schematic.Value
+        Else
+            AppPreferences.ToleranceValues = 0
+            AppPreferences.SchematicSymbol = 0
+
+            adskClass.AppPreferences.ToleranceValues = 0
+            adskClass.AppPreferences.SchematicSymbol = 0
+        End If
+
+        AppPreferences.SetWorkSpaceDir()
 
         Me.Dispose()
     End Sub
