@@ -157,17 +157,17 @@ Public Class GeometryProcessor
             Dim LineToEdit As New Line
             LineToEdit = EntityTmp2
             Dim LineEdit As New Line
-            If isequal(LineInput.StartPoint.X, LineInput.EndPoint.X) = True Then
-                If PointDistance(LineToEdit.StartPoint, LineInput.StartPoint) > PointDistance(LineToEdit.EndPoint, LineInput.StartPoint) Then
-                    LineEdit = New Line(LineToEdit.StartPoint, New Point3d(LineInput.StartPoint.X, LineToEdit.StartPoint.Y, 0))
+            If CheckDifferences(LineInput.StartPoint.X, LineInput.EndPoint.X) = True Then
+                If PointDistance(LineToEdit.StartPoint, Points) > PointDistance(LineToEdit.EndPoint, Points) Then
+                    LineEdit = New Line(LineToEdit.StartPoint, New Point3d(Round(LineInput.StartPoint.X, 5), Round(LineToEdit.EndPoint.Y, 5), 0))
                 Else
-                    LineEdit = New Line(LineToEdit.EndPoint, New Point3d(LineInput.StartPoint.X, LineToEdit.EndPoint.Y, 0))
+                    LineEdit = New Line(LineToEdit.EndPoint, New Point3d(Round(LineInput.StartPoint.X, 5), Round(LineToEdit.StartPoint.Y, 5), 0))
                 End If
-            ElseIf isequal(LineInput.StartPoint.Y, LineInput.EndPoint.Y) = True Then
-                If PointDistance(LineToEdit.StartPoint, LineInput.StartPoint) > PointDistance(LineToEdit.EndPoint, LineInput.StartPoint) Then
-                    LineEdit = New Line(LineToEdit.StartPoint, New Point3d(LineToEdit.StartPoint.X, LineInput.StartPoint.Y, 0))
+            ElseIf CheckDifferences(LineInput.StartPoint.Y, LineInput.EndPoint.Y) = True Then
+                If PointDistance(LineToEdit.StartPoint, Points) > PointDistance(LineToEdit.EndPoint, Points) Then
+                    LineEdit = New Line(LineToEdit.StartPoint, New Point3d(Round(LineToEdit.EndPoint.X, 5), Round(LineInput.StartPoint.Y, 5), 0))
                 Else
-                    LineEdit = New Line(LineToEdit.EndPoint, New Point3d(LineToEdit.EndPoint.X, LineInput.StartPoint.Y, 0))
+                    LineEdit = New Line(LineToEdit.EndPoint, New Point3d(Round(LineToEdit.StartPoint.X, 5), Round(LineInput.StartPoint.Y, 5), 0))
                 End If
             End If
 
@@ -247,24 +247,6 @@ Public Class GeometryProcessor
     Public Overloads Function CheckDifferences(ByRef PointA As Point3d, ByRef PointB As Point3d) As Boolean
         If Abs(PointA.X - PointB.X) <= adskClass.AppPreferences.ToleranceValues _
         And Abs(PointA.Y - PointB.Y) <= adskClass.AppPreferences.ToleranceValues Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
-            Return False
-        Else
-            Return True
-        End If
-    End Function
-
-    Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
-        If Math.Abs(point1.X - point2.X) < adskClass.AppPreferences.ToleranceValues _
-        And Math.Abs(point1.Y - point2.Y) < adskClass.AppPreferences.ToleranceValues _
-        And Math.Abs(point1.Z - point2.Z) < adskClass.AppPreferences.ToleranceValues Then
             Return True
         Else
             Return False

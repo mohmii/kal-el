@@ -2769,16 +2769,17 @@ Public Class ViewProcessor
         End If
     End Sub
 
-    Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Math.Abs(x - y) > 0.1 Then
-            Return False
-        Else
+    Private Function isequal(ByVal PointA As Double, ByVal PointB As Double) As Boolean
+        If Abs(PointA - PointB) <= adskClass.AppPreferences.ToleranceValues Then
             Return True
+        Else
+            Return False
         End If
     End Function
 
-    Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
-        If Math.Abs(point1.X - point2.X) < 0.1 And Math.Abs(point1.Y - point2.Y) < 0.1 And Math.Abs(point1.Z - point2.Z) < 0.1 Then
+    Private Function isequalpoint(ByVal PointA As Point3d, ByVal PointB As Point3d) As Boolean
+        If Abs(PointA.X - PointB.X) <= adskClass.AppPreferences.ToleranceValues _
+        And Abs(PointA.Y - PointB.Y) <= adskClass.AppPreferences.ToleranceValues Then
             Return True
         Else
             Return False
