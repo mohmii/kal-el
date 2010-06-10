@@ -486,23 +486,6 @@ Public Class MillingProcessor
 
     End Function
 
-    Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
-            Return False
-        Else
-            Return True
-        End If
-    End Function
-
-    Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
-        If Math.Abs(point1.X - point2.X) < adskClass.AppPreferences.ToleranceValues And Math.Abs(point1.Y - point2.Y) < adskClass.AppPreferences.ToleranceValues _
-        And Math.Abs(point1.Z - point2.Z) < adskClass.AppPreferences.ToleranceValues Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
 End Class
 
 Public Class AllPoints
