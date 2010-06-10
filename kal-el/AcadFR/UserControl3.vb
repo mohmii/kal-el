@@ -282,6 +282,7 @@ Public Class UserControl3
 
                     'save the changed entity id
                     TempId = Entity.Id.ToString
+                    Exit For
 
                 End If
             Next

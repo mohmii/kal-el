@@ -48,11 +48,11 @@ Public Class GetPoints
         For Each EntityTmp As Entity In AllEntity
             If TypeOf EntityTmp Is Line Then
                 LineTrans = EntityTmp
-                'TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 5), Round(LineTrans.StartPoint.Y, 5), Round(LineTrans.StartPoint.Z, 5))
-                'TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 5), Round(LineTrans.EndPoint.Y, 5), Round(LineTrans.EndPoint.Z, 5))
+                TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 5), Round(LineTrans.StartPoint.Y, 5), Round(LineTrans.StartPoint.Z, 5))
+                TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 5), Round(LineTrans.EndPoint.Y, 5), Round(LineTrans.EndPoint.Z, 5))
 
-                TempStartPoint = New Point3d(LineTrans.StartPoint.X, LineTrans.StartPoint.Y, LineTrans.StartPoint.Z)
-                TempEndPoint = New Point3d(LineTrans.EndPoint.X, LineTrans.EndPoint.Y, LineTrans.EndPoint.Z)
+                'TempStartPoint = New Point3d(LineTrans.StartPoint.X, LineTrans.StartPoint.Y, LineTrans.StartPoint.Z)
+                'TempEndPoint = New Point3d(LineTrans.EndPoint.X, LineTrans.EndPoint.Y, LineTrans.EndPoint.Z)
 
                 If AllPoints.Contains(TempStartPoint) Then
                     EntityCheckingTmp = New EntityProp
@@ -61,7 +61,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.StartPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempStartPoint) Then
                     AllPoints.Add(TempStartPoint)
@@ -72,7 +71,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
@@ -84,7 +82,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.EndPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempEndPoint) Then
                     AllPoints.Add(TempEndPoint)
@@ -95,18 +92,17 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = LineTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
 
             ElseIf TypeOf EntityTmp Is Arc Then
                 ArcTrans = EntityTmp
-                'TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 5), Round(ArcTrans.StartPoint.Y, 5), Round(ArcTrans.StartPoint.Z, 5))
-                'TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 5), Round(ArcTrans.EndPoint.Y, 5), Round(ArcTrans.EndPoint.Z, 5))
+                TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 5), Round(ArcTrans.StartPoint.Y, 5), Round(ArcTrans.StartPoint.Z, 5))
+                TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 5), Round(ArcTrans.EndPoint.Y, 5), Round(ArcTrans.EndPoint.Z, 5))
 
-                TempStartPoint = New Point3d(ArcTrans.StartPoint.X, ArcTrans.StartPoint.Y, ArcTrans.StartPoint.Z)
-                TempEndPoint = New Point3d(ArcTrans.EndPoint.X, ArcTrans.EndPoint.Y, ArcTrans.EndPoint.Z)
+                'TempStartPoint = New Point3d(ArcTrans.StartPoint.X, ArcTrans.StartPoint.Y, ArcTrans.StartPoint.Z)
+                'TempEndPoint = New Point3d(ArcTrans.EndPoint.X, ArcTrans.EndPoint.Y, ArcTrans.EndPoint.Z)
 
                 If AllPoints.Contains(TempStartPoint) Then
                     EntityCheckingTmp = New EntityProp
@@ -115,7 +111,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.StartPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempStartPoint) Then
                     AllPoints.Add(TempStartPoint)
@@ -126,7 +121,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.EndPoint.Y - EntityCheckingTmp.StartPoint.Y, EntityCheckingTmp.EndPoint.X - EntityCheckingTmp.StartPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
@@ -138,7 +132,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     GroupOfEntity(AllPoints.IndexOf(EntityCheckingTmp.EndPoint)).EntityList.Add(EntityCheckingTmp)
                 ElseIf Not AllPoints.Contains(TempEndPoint) Then
                     AllPoints.Add(TempEndPoint)
@@ -149,7 +142,6 @@ Public Class GetPoints
                     EntityCheckingTmp.StartPoint = TempStartPoint
                     EntityCheckingTmp.EndPoint = TempEndPoint
                     EntityCheckingTmp.Angle = Atan2(EntityCheckingTmp.StartPoint.Y - EntityCheckingTmp.EndPoint.Y, EntityCheckingTmp.StartPoint.X - EntityCheckingTmp.EndPoint.X) * (180 / PI)
-                    EntityCheckingTmp.LineType = ArcTrans.Linetype
                     ListOfEntity.EntityList.Add(EntityCheckingTmp)
                     GroupOfEntity.Add(ListOfEntity)
                 End If
@@ -163,11 +155,11 @@ Public Class GetPoints
                 For Each EntityTmp As Entity In AllEntity
                     If TypeOf EntityTmp Is Line Then
                         LineTrans = EntityTmp
-                        'TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 5), Round(LineTrans.StartPoint.Y, 5), Round(LineTrans.StartPoint.Z, 5))
-                        'TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 5), Round(LineTrans.EndPoint.Y, 5), Round(LineTrans.EndPoint.Z, 5))
+                        TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 5), Round(LineTrans.StartPoint.Y, 5), Round(LineTrans.StartPoint.Z, 5))
+                        TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 5), Round(LineTrans.EndPoint.Y, 5), Round(LineTrans.EndPoint.Z, 5))
 
-                        TempStartPoint = New Point3d(LineTrans.StartPoint.X, LineTrans.StartPoint.Y, LineTrans.StartPoint.Z)
-                        TempEndPoint = New Point3d(LineTrans.EndPoint.X, LineTrans.EndPoint.Y, LineTrans.EndPoint.Z)
+                        'TempStartPoint = New Point3d(LineTrans.StartPoint.X, LineTrans.StartPoint.Y, LineTrans.StartPoint.Z)
+                        'TempEndPoint = New Point3d(LineTrans.EndPoint.X, LineTrans.EndPoint.Y, LineTrans.EndPoint.Z)
 
                         If (TempStartPoint = PointTmp) And Not AdjacentPoints.Contains(TempEndPoint) Then
                             AdjacentPoints.Add(TempEndPoint)
@@ -176,11 +168,11 @@ Public Class GetPoints
                         End If
                     ElseIf TypeOf EntityTmp Is Arc Then
                         ArcTrans = EntityTmp
-                        'TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 5), Round(ArcTrans.StartPoint.Y, 5), Round(ArcTrans.StartPoint.Z, 5))
-                        'TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 5), Round(ArcTrans.EndPoint.Y, 5), Round(ArcTrans.EndPoint.Z, 5))
+                        TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 5), Round(ArcTrans.StartPoint.Y, 5), Round(ArcTrans.StartPoint.Z, 5))
+                        TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 5), Round(ArcTrans.EndPoint.Y, 5), Round(ArcTrans.EndPoint.Z, 5))
 
-                        TempStartPoint = New Point3d(ArcTrans.StartPoint.X, ArcTrans.StartPoint.Y, ArcTrans.StartPoint.Z)
-                        TempEndPoint = New Point3d(ArcTrans.EndPoint.X, ArcTrans.EndPoint.Y, ArcTrans.EndPoint.Z)
+                        'TempStartPoint = New Point3d(ArcTrans.StartPoint.X, ArcTrans.StartPoint.Y, ArcTrans.StartPoint.Z)
+                        'TempEndPoint = New Point3d(ArcTrans.EndPoint.X, ArcTrans.EndPoint.Y, ArcTrans.EndPoint.Z)
 
                         If (TempStartPoint = PointTmp) And Not AdjacentPoints.Contains(TempEndPoint) Then
                             AdjacentPoints.Add(TempEndPoint)
