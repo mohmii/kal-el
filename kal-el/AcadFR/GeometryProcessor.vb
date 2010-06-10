@@ -77,14 +77,14 @@ Public Class GeometryProcessor
     Private AcadConn As AcadConn
 
     'breaking line
-    Private Overloads Function BreakingLine(ByVal LineInput As Line, ByVal Points As Point3dCollection, ByVal LineEdited As Line)
+    Private Overloads Function BreakingLine(ByVal LineInput As Line, ByVal BreakPointTmp As Point3dCollection, ByVal LineEdited As Line)
 
         AcadConn = New AcadConn
         AcadConn.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
         'Try
         Using AcadConn.myT
 
-            SplitResult = LineInput.GetSplitCurves(Points)
+            SplitResult = LineInput.GetSplitCurves(BreakPointTmp)
 
             DummyLine1 = SplitResult(0)
             DummyLine2 = SplitResult(1)
@@ -104,6 +104,8 @@ Public Class GeometryProcessor
         End Using
 
         Return SplitResult
+
+        AcadConn.myT.Dispose()
 
     End Function
 
@@ -132,6 +134,8 @@ Public Class GeometryProcessor
         End Using
 
         Return SplitResult
+
+        AcadConn.myT.Dispose()
 
     End Function
 
@@ -230,7 +234,8 @@ Public Class GeometryProcessor
         End If
     End Function
 
-    Public Function CheckDifferences(ByRef PointA As Double, ByRef PointB As Double) As Boolean
+    'check differences between two points
+    Public Overloads Function CheckDifferences(ByRef PointA As Double, ByRef PointB As Double) As Boolean
         If Abs(PointA - PointB) <= adskClass.AppPreferences.ToleranceValues Then
             Return True
         Else
@@ -238,8 +243,18 @@ Public Class GeometryProcessor
         End If
     End Function
 
+    'check differences between two points
+    Public Overloads Function CheckDifferences(ByRef PointA As Point3d, ByRef PointB As Point3d) As Boolean
+        If Abs(PointA.X - PointB.X) <= adskClass.AppPreferences.ToleranceValues _
+        And Abs(PointA.Y - PointB.Y) <= adskClass.AppPreferences.ToleranceValues Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Math.Abs(x - y) > 0.1 Then
+        If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
             Return False
         Else
             Return True
@@ -247,7 +262,9 @@ Public Class GeometryProcessor
     End Function
 
     Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
-        If Math.Abs(point1.X - point2.X) < 0.1 And Math.Abs(point1.Y - point2.Y) < 0.1 And Math.Abs(point1.Z - point2.Z) < 0.1 Then
+        If Math.Abs(point1.X - point2.X) < adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Y - point2.Y) < adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Z - point2.Z) < adskClass.AppPreferences.ToleranceValues Then
             Return True
         Else
             Return False
