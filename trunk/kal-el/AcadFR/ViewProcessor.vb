@@ -59,22 +59,41 @@ Public Class ViewProcessor
 
             SingleViewProp(Feature, GroupEntity, View)
 
-            'set the feature property
-            UnIdentifiedCounter = UnIdentifiedCounter + 1
-            Feature.FeatureName = "Mill Candidate"
-            Feature.MiscProp(0) = "Mill Candidate"
-            If Feature.HiddenLineCount > 0 Then
-                Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
-                adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+            If adskClass.AppPreferences.MultiAnalysis = True Then
+                'set the feature property
+                UnIdentifiedCounter = UnIdentifiedCounter + 1
+                Feature.FeatureName = "Mill Candidate"
+                Feature.MiscProp(0) = "Mill Candidate"
+                If Feature.HiddenLineCount > 0 Then
+                    Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                    adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                Else
+                    Feature.MiscProp(1) = View.ViewType
+                End If
+
+                UnIdentifiedFeature.Add(Feature)
+                TmpUnidentifiedFeature.Add(Feature)
+
+                'OrganizeList.AddListToExisting2(Feature)
+                AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
             Else
-                Feature.MiscProp(1) = View.ViewType
+                If Not Feature.FeatureName = "" Then
+                    'set the feature property
+                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+                    If Feature.HiddenLineCount > 0 Then
+                        Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                        adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    Else
+                        Feature.MiscProp(1) = View.ViewType
+                    End If
+
+                    UnIdentifiedFeature.Add(Feature)
+                    TmpUnidentifiedFeature.Add(Feature)
+
+                    'OrganizeList.AddListToExisting2(Feature)
+                    AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                End If
             End If
-
-            UnIdentifiedFeature.Add(Feature)
-            TmpUnidentifiedFeature.Add(Feature)
-
-            'OrganizeList.AddListToExisting2(Feature)
-            AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
 
             'add the progress bar
             i = i + 1
@@ -130,31 +149,14 @@ Public Class ViewProcessor
             Else
                 OriU = OriU
             End If
-
-            'Slot with D1 dan D3
-        ElseIf Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 1 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
-            For Each EntityTmp As Entity In GEntity
-                TmpLine = New Line
-                TmpLine = EntityTmp
-                For Each LineBB As Line In View.BoundingBox
-                    If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                        PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
-                        D1 = Round(LineLength(TmpLine), 3)
-                        Exit For
-                    ElseIf (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                            (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
-                        D3 = Round(LineLength(TmpLine), 3)
-                        Exit For
-                    End If
-                Next
-            Next
+            Feature.FeatureName = "Square Slot"
+            Feature.MiscProp(0) = "Square Slot"
 
             'Step with D1, D2
-        ElseIf Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
+        ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0) _
+        Or (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 1 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0) Then
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
                 TmpLine = EntityTmp
@@ -189,6 +191,8 @@ Public Class ViewProcessor
                     End If
                 Next
             Next
+            Feature.FeatureName = "Square Step"
+            Feature.MiscProp(0) = "Square Step"
 
             '2-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
@@ -305,8 +309,8 @@ Public Class ViewProcessor
                     Orientation = "2"
                 End If
             End If
-
-
+            Feature.FeatureName = "2-side Pocket"
+            Feature.MiscProp(0) = "2-side Pocket"
 
             '3-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -357,39 +361,8 @@ Public Class ViewProcessor
                     Orientation = "2"
                 End If
             End If
-
-            '3-side pocket or blind slot with D1, D3
-        ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
-        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0) Then
-            For Each EntityTmp As Entity In GEntity
-                If TypeOf EntityTmp Is Line Then
-                    TmpLine = New Line
-                    TmpLine = EntityTmp
-                    For Each LineBB As Line In View.BoundingBox
-                        If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                        PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
-                            D1 = Round(LineLength(TmpLine), 3)
-                            If LineBB = View.BoundingBox(0) Then
-                                Orientation = "1" 'Upper Side
-                            ElseIf LineBB = View.BoundingBox(1) Then
-                                Orientation = "2" 'Left Side
-                            ElseIf LineBB = View.BoundingBox(2) Then
-                                Orientation = "0" 'Lower Side
-                            ElseIf LineBB = View.BoundingBox(3) Then
-                                Orientation = "3" 'Right Side
-                            End If
-                            Exit For
-                        ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
-                            D3 = Round(LineLength(TmpLine), 3)
-                            Exit For
-                        End If
-                    Next
-                End If
-            Next
-            D2 = D2 + D4
+            Feature.FeatureName = "3-side Pocket"
+            Feature.MiscProp(0) = "3-side Pocket"
 
             '4-side pocket with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -436,6 +409,8 @@ Public Class ViewProcessor
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
             OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
+            Feature.FeatureName = "4-side Pocket"
+            Feature.MiscProp(0) = "4-side Pocket"
 
             'long hole with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -466,6 +441,8 @@ Public Class ViewProcessor
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
             OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
+            Feature.FeatureName = "Long Hole"
+            Feature.MiscProp(0) = "Long Hole"
 
             'Blind Slot with D1, D2
         ElseIf (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -522,6 +499,65 @@ Public Class ViewProcessor
                 ElseIf Orientation = "3" Then
                     Orientation = "2"
                 End If
+            End If
+            Feature.FeatureName = "Blind Slot"
+            Feature.MiscProp(0) = "Blind Slot"
+
+        ElseIf adskClass.AppPreferences.MultiAnalysis = True Then
+            'not main loop of a feature
+            'Slot with D1 dan D3
+            If Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+            And Feature.VirtualLineCount = 1 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
+                For Each EntityTmp As Entity In GEntity
+                    TmpLine = New Line
+                    TmpLine = EntityTmp
+                    For Each LineBB As Line In View.BoundingBox
+                        If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
+                            D1 = Round(LineLength(TmpLine), 3)
+                            Exit For
+                        ElseIf (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                                (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                                PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
+                            D3 = Round(LineLength(TmpLine), 3)
+                            Exit For
+                        End If
+                    Next
+                Next
+
+                '3-side pocket or blind slot with D1, D3
+            ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
+            And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0) Then
+                For Each EntityTmp As Entity In GEntity
+                    If TypeOf EntityTmp Is Line Then
+                        TmpLine = New Line
+                        TmpLine = EntityTmp
+                        For Each LineBB As Line In View.BoundingBox
+                            If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
+                                D1 = Round(LineLength(TmpLine), 3)
+                                If LineBB = View.BoundingBox(0) Then
+                                    Orientation = "1" 'Upper Side
+                                ElseIf LineBB = View.BoundingBox(1) Then
+                                    Orientation = "2" 'Left Side
+                                ElseIf LineBB = View.BoundingBox(2) Then
+                                    Orientation = "0" 'Lower Side
+                                ElseIf LineBB = View.BoundingBox(3) Then
+                                    Orientation = "3" 'Right Side
+                                End If
+                                Exit For
+                            ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                                (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
+                                D3 = Round(LineLength(TmpLine), 3)
+                                Exit For
+                            End If
+                        Next
+                    End If
+                Next
+                D2 = D2 + D4
             End If
         End If
 
@@ -2700,7 +2736,7 @@ Public Class ViewProcessor
 
         For Each EntTemp As Entity In GEntity
             If TypeOf EntTemp Is Line Then
-                If EntTemp.Color.ToString.ToLower = "magenta" Then
+                If EntTemp.ColorIndex = 10 Then
                     ' count the virtual lines
                     VLCount = VLCount + 1
                 ElseIf Check2Database.CheckIfEntityHidden(EntTemp) = True Then
