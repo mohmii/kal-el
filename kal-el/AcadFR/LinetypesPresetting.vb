@@ -18,10 +18,14 @@ Public Class LinetypesPresetting
 
     Private ProceedStat As Boolean
     Private DBConn As DatabaseConn
-    Private Counter As Integer
 
     'setiap isi sel di klik
     Private Sub LinetypesList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles LinetypesList.CellContentClick
+        CheckProceed()
+    End Sub
+
+    'checking the availability of proceed botton
+    Private Sub CheckProceed()
         ProceedStat = True
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
 
@@ -66,7 +70,6 @@ Public Class LinetypesPresetting
         Else
             Me.Proceed.Enabled = False
         End If
-
     End Sub
 
     Private Sub LinetypesList_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LinetypesList.SelectionChanged
@@ -106,21 +109,20 @@ Public Class LinetypesPresetting
             End Try
         End If
     End Sub
+
     'jika Proceed diklik
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'masukin ke database
         DBConn = New DatabaseConn
-        Counter = New Integer
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
             'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
             If Row.Cells("Solid").FormattedValue = True Then
-                DBConn.AddToSolidLineDatabase(SelectionCommand.UIEntities(Counter))
+                DBConn.AddToSolidLineDatabase(Row)
             ElseIf Row.Cells("Hidden").FormattedValue = True Then
-                DBConn.AddToHiddenLineDatabase(SelectionCommand.UIEntities(Counter))
+                DBConn.AddToHiddenLineDatabase(Row)
             ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
-                DBConn.AddToAuxiliaryLineDatabase(SelectionCommand.UIEntities(Counter))
+                DBConn.AddToAuxiliaryLineDatabase(Row)
             End If
-            Counter = Counter + 1
         Next
 
         Try
@@ -190,9 +192,58 @@ Public Class LinetypesPresetting
 
     'hilangkan selection ketika diload
     Private Sub LinetypesPresetting_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        CheckProceed()
         LinetypesList.ClearSelection()
     End Sub
 
+    'method open window linetypes presetting
+    Public Sub OpenLinetypes(ByRef Linetypes As LinetypesPresetting, ByRef UIEnt As List(Of Entity))
+        Dim LTCount As New Integer
+        Using Linetypes
+            For Each Ent As Entity In UIEnt
+                AddToLinetypesTable(LTCount, Ent, Linetypes)
+                LTCount = LTCount + 1
+            Next
+            Linetypes.ShowDialog()
+        End Using
+    End Sub
+
+    'add new line in LinetypesTable
+    Private Sub AddToLinetypesTable(ByVal Count As Integer, ByVal AddedEnt As Entity, _
+                       ByRef Table As LinetypesPresetting)
+
+        Dim NewRow As New System.Windows.Forms.DataGridViewRow
+        Table.LinetypesList.Rows.Add(NewRow)
+        Table.LinetypesList.Rows(Count).Cells("ObjectID").Value = AddedEnt.ObjectId
+        Table.LinetypesList.Rows(Count).Cells("Number").Value = Count + 1
+        Table.LinetypesList.Rows(Count).Cells("Layer").Value = AddedEnt.Layer.ToString
+
+        If AddedEnt.Linetype.ToString.ToLower = "bylayer" Then
+            Table.LinetypesList.Rows(Count).Cells("Linetype").Value = "NULL"
+        ElseIf AddedEnt.Linetype.ToString.ToLower = "byblock" Then
+            Table.LinetypesList.Rows(Count).Cells("Ignore").Value = True
+            Table.LinetypesList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
+            Table.LinetypesList.Rows(Count).ReadOnly = True
+        Else
+            Table.LinetypesList.Rows(Count).Cells("Linetype").Value = AddedEnt.Linetype.ToString
+        End If
+
+        If AddedEnt.Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedEnt.Color.ColorNameForDisplay.ToLower = "byblock" Then
+            Table.LinetypesList.Rows(Count).Cells("Ignore").Value = True
+            Table.LinetypesList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
+            Table.LinetypesList.Rows(Count).ReadOnly = True
+        Else
+            Table.LinetypesList.Rows(Count).Cells("Color").Value = AddedEnt.Color.ColorNameForDisplay.ToUpper
+            Table.LinetypesList.Rows(Count).Cells("Ignore").Value = False
+        End If
+
+        Table.LinetypesList.Rows(Count).Cells("Solid").Value = False
+        Table.LinetypesList.Rows(Count).Cells("Hidden").Value = False
+        Table.LinetypesList.Rows(Count).Cells("Auxiliary").Value = False
+
+    End Sub
+
+    'highlight
     Private AcadConnection As AcadConn
     Private DrawEditor As Editor
     Private Entity As Entity

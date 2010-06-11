@@ -105,7 +105,7 @@ Public Class AppPreferences
         End Set
     End Property
 
-    Private RegLine, RegSchem, Mview, PreProc As Boolean
+    Private RegLine, RegSchem, Mview, PreProc, UnessEnt As Boolean
 
     Public Property AutoRegLine() As Boolean
         Get
@@ -142,4 +142,14 @@ Public Class AppPreferences
             PreProc = value
         End Set
     End Property
+
+    Public Property RemoveUEE() As Boolean
+        Get
+            Return UnessEnt
+        End Get
+        Set(ByVal value As Boolean)
+            UnessEnt = value
+        End Set
+    End Property
+
 End Class
