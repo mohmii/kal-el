@@ -18,10 +18,14 @@ Public Class SchematicPresetting
 
     Private DBConn As DatabaseConn
     Private ProceedStat As Boolean
-    Private Counter As Integer
 
     'setiap isi sel di klik
     Private Sub TapHoleList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles TapHoleList.CellContentClick
+        CheckProceed()
+    End Sub
+
+    'checking the availability of proceed botton
+    Private Sub CheckProceed()
         ProceedStat = True
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
             If Row.Cells("TopSurface").GetEditedFormattedValue(Row.Index, Forms.DataGridViewDataErrorContexts.Formatting) = True Then
@@ -59,18 +63,16 @@ Public Class SchematicPresetting
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'masukin ke database
         DBConn = New DatabaseConn
-        Counter = New Integer
         For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
             If Row.Cells("TopSurface").FormattedValue = True Then
-                DBConn.AddToTopTapLineDatabase(SelectionCommand.UI2CircList(Counter))
                 'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
                 'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database top tap
+                DBConn.AddToTopTapLineDatabase(Row)
             ElseIf Row.Cells("BottomSurface").FormattedValue = True Then
                 'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
-                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database top tap
-                DBConn.AddToBottomTapLineDatabase(SelectionCommand.UI2CircList(Counter))
+                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database bottom tap
+                DBConn.AddToBottomTapLineDatabase(Row)
             End If
-            Counter = Counter + 1
         Next
 
         Try
@@ -139,9 +141,83 @@ Public Class SchematicPresetting
 
     'hilangkan selection ketika diload
     Private Sub SchematicPresetting_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        CheckProceed()
         TapHoleList.ClearSelection()
     End Sub
 
+    'method open window schematic presetting
+    Public Sub OpenSchematic(ByRef Schematic As SchematicPresetting, ByVal UI2C As List(Of IEnumerable(Of Circle)))
+        Dim SchemCount As New Integer
+        Using Schematic
+            For Each result As IEnumerable(Of Circle) In UI2C
+                AddToSchematicTable(SchemCount, result, Schematic)
+                SchemCount = SchemCount + 1
+            Next
+            Schematic.Proceed.Enabled = False
+            Schematic.ShowDialog()
+        End Using
+    End Sub
+
+    'add new line in Schematic Table
+    Private Sub AddToSchematicTable(ByVal Count As Integer, ByVal AddedResult As IEnumerable(Of Circle), _
+                       ByRef Table As SchematicPresetting)
+
+        Dim NewRow As New System.Windows.Forms.DataGridViewRow
+        Dim ObjectIDList As New List(Of ObjectId)
+        ObjectIDList.Add(AddedResult(0).ObjectId)
+        ObjectIDList.Add(AddedResult(1).ObjectId)
+
+        Table.TapHoleList.Rows.Add(NewRow)
+        Table.TapHoleList.Rows(Count).Cells("ObjectID").Value = ObjectIDList
+        Table.TapHoleList.Rows(Count).Cells("Number").Value = Count + 1
+        Table.TapHoleList.Rows(Count).Cells("HoleLayer").Value = AddedResult(0).Layer.ToString
+
+        If AddedResult(0).Linetype.ToString.ToLower = "bylayer" Then
+            Table.TapHoleList.Rows(Count).Cells("HoleLineType").Value = "NULL"
+        ElseIf AddedResult(0).Linetype.ToString.ToLower = "byblock" Then
+            Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
+            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
+            Table.TapHoleList.Rows(Count).ReadOnly = True
+        Else
+            Table.TapHoleList.Rows(Count).Cells("HoleLineType").Value = AddedResult(0).Linetype.ToString
+        End If
+
+        If AddedResult(0).Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedResult(0).Color.ColorNameForDisplay.ToLower = "byblock" Then
+            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
+            Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
+            Table.TapHoleList.Rows(Count).ReadOnly = True
+        Else
+            Table.TapHoleList.Rows(Count).Cells("HoleColor").Value = AddedResult(0).Color.ColorNameForDisplay.ToUpper
+            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
+        End If
+
+        Table.TapHoleList.Rows(Count).Cells("UnderholeLayer").Value = AddedResult(1).Layer.ToString
+
+        If AddedResult(1).Linetype.ToString.ToLower = "bylayer" Then
+            Table.TapHoleList.Rows(Count).Cells("UnderholeLineType").Value = "NULL"
+        ElseIf AddedResult(1).Linetype.ToString.ToLower = "byblock" Then
+            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
+            Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
+            Table.TapHoleList.Rows(Count).ReadOnly = True
+        Else
+            Table.TapHoleList.Rows(Count).Cells("UnderholeLineType").Value = AddedResult(1).Linetype.ToString
+        End If
+
+        If AddedResult(1).Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedResult(1).Color.ColorNameForDisplay.ToLower = "byblock" Then
+            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
+            Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
+            Table.TapHoleList.Rows(Count).ReadOnly = True
+        Else
+            Table.TapHoleList.Rows(Count).Cells("UnderholeColor").Value = AddedResult(1).Color.ColorNameForDisplay.ToUpper
+            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
+        End If
+
+        Table.TapHoleList.Rows(Count).Cells("TopSurface").Value = False
+        Table.TapHoleList.Rows(Count).Cells("BottomSurface").Value = False
+
+    End Sub
+
+    'highlight
     Private AcadConnection As AcadConn
     Private DocLock As DocumentLock
     Private DrawEditor As Editor

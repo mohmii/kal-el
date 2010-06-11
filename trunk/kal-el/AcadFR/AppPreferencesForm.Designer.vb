@@ -36,6 +36,7 @@ Partial Class AppPreferencesForm
         Me.AutoRegLine = New System.Windows.Forms.CheckBox
         Me.AutoRegScheme = New System.Windows.Forms.CheckBox
         Me.MultiAnalysis = New System.Windows.Forms.CheckBox
+        Me.RemoveEntities = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
         CType(Me.Schematic, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Tolerance, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -65,7 +66,7 @@ Partial Class AppPreferencesForm
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.Tolerance)
         Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 148)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 168)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(293, 62)
         Me.GroupBox1.TabIndex = 3
@@ -114,7 +115,7 @@ Partial Class AppPreferencesForm
         '
         'Save
         '
-        Me.Save.Location = New System.Drawing.Point(197, 216)
+        Me.Save.Location = New System.Drawing.Point(197, 241)
         Me.Save.Name = "Save"
         Me.Save.Size = New System.Drawing.Size(51, 23)
         Me.Save.TabIndex = 4
@@ -123,7 +124,7 @@ Partial Class AppPreferencesForm
         '
         'Cancel
         '
-        Me.Cancel.Location = New System.Drawing.Point(254, 216)
+        Me.Cancel.Location = New System.Drawing.Point(254, 240)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(51, 23)
         Me.Cancel.TabIndex = 5
@@ -177,14 +178,25 @@ Partial Class AppPreferencesForm
         Me.MultiAnalysis.Text = "Multiview analysis for extracting  milling features"
         Me.MultiAnalysis.UseVisualStyleBackColor = True
         '
+        'RemoveEntities
+        '
+        Me.RemoveEntities.AutoSize = True
+        Me.RemoveEntities.Location = New System.Drawing.Point(12, 144)
+        Me.RemoveEntities.Name = "RemoveEntities"
+        Me.RemoveEntities.Size = New System.Drawing.Size(159, 17)
+        Me.RemoveEntities.TabIndex = 8
+        Me.RemoveEntities.Text = "Remove Unessential Entites"
+        Me.RemoveEntities.UseVisualStyleBackColor = True
+        '
         'AppPreferencesForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(317, 251)
+        Me.ClientSize = New System.Drawing.Size(317, 275)
         Me.Controls.Add(Me.MultiAnalysis)
         Me.Controls.Add(Me.AutoRegScheme)
         Me.Controls.Add(Me.AutoRegLine)
+        Me.Controls.Add(Me.RemoveEntities)
         Me.Controls.Add(Me.PreProcess)
         Me.Controls.Add(Me.Directory)
         Me.Controls.Add(Me.Cancel)
@@ -217,4 +229,5 @@ Partial Class AppPreferencesForm
     Friend WithEvents AutoRegLine As System.Windows.Forms.CheckBox
     Friend WithEvents AutoRegScheme As System.Windows.Forms.CheckBox
     Friend WithEvents MultiAnalysis As System.Windows.Forms.CheckBox
+    Friend WithEvents RemoveEntities As System.Windows.Forms.CheckBox
 End Class

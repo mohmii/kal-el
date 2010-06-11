@@ -31,49 +31,58 @@ Public Class DatabaseConn
     Private TTL As TopTapLineType
     Private BTL As BottomTapLineType
 
-    Public Sub AddToSolidLineDatabase(ByVal Ent As Entity)
+    Public Sub AddToSolidLineDatabase(ByVal TableRow As System.Windows.Forms.DataGridViewRow)
         SL = New SolidLine
-        SL.LayerName = Ent.Layer.ToString
-        SL.LayerType = Ent.Linetype.ToString
-        SL.LayerColor = Ent.Color.ToString
+        SL.LayerName = TableRow.Cells("Layer").Value
+        SL.LayerType = TableRow.Cells("Linetype").Value
+        SL.LayerColor = TableRow.Cells("Color").Value
         FRDatabase.AddSolidLine(SL)
+        'SL.LayerName = Ent.Layer.ToString
+        'SL.LayerType = Ent.Linetype.ToString
+        'SL.LayerColor = Ent.Color.ToString
     End Sub
 
-    Public Sub AddToHiddenLineDatabase(ByVal Ent As Entity)
+    Public Sub AddToHiddenLineDatabase(ByVal TableRow As System.Windows.Forms.DataGridViewRow)
         HL = New HiddenLine
-        HL.LayerName = Ent.Layer.ToString
-        HL.LayerType = Ent.Linetype.ToString
-        HL.LayerColor = Ent.Color.ToString
+        HL.LayerName = TableRow.Cells("Layer").Value
+        HL.LayerType = TableRow.Cells("Linetype").Value
+        HL.LayerColor = TableRow.Cells("Color").Value
         FRDatabase.AddHiddenLine(HL)
     End Sub
 
-    Public Sub AddToAuxiliaryLineDatabase(ByVal Ent As Entity)
+    Public Sub AddToAuxiliaryLineDatabase(ByVal TableRow As System.Windows.Forms.DataGridViewRow)
         AL = New AuxiliaryLine
-        AL.LayerName = Ent.Layer.ToString
-        AL.LayerType = Ent.Linetype.ToString
-        AL.LayerColor = Ent.Color.ToString
+        AL.LayerName = TableRow.Cells("Layer").Value
+        AL.LayerType = TableRow.Cells("Linetype").Value
+        AL.LayerColor = TableRow.Cells("Color").Value
         FRDatabase.AddAuxiliaryLine(AL)
     End Sub
 
-    Public Sub AddToTopTapLineDatabase(ByVal CircleGroup As IEnumerable(Of Circle))
+    Public Sub AddToTopTapLineDatabase(ByVal TableRow As System.Windows.Forms.DataGridViewRow)
         TTL = New TopTapLineType
-        TTL.TapLineName = CircleGroup(0).Layer.ToString
-        TTL.TapLineType = CircleGroup(0).Linetype.ToString
-        TTL.TapLineColor = CircleGroup(0).Color.ToString
-        TTL.UnHoleLineName = CircleGroup(1).Layer.ToString
-        TTL.UnHoleLineType = CircleGroup(1).Linetype.ToString
-        TTL.UnHoleLineColor = CircleGroup(1).Color.ToString
+        TTL.TapLineName = TableRow.Cells("HoleLayer").Value
+        TTL.TapLineType = TableRow.Cells("HoleLineType").Value
+        TTL.TapLineColor = TableRow.Cells("HoleColor").Value
+        TTL.UnHoleLineName = TableRow.Cells("UnderholeLayer").Value
+        TTL.UnHoleLineType = TableRow.Cells("UnderholeLineType").Value
+        TTL.UnHoleLineColor = TableRow.Cells("UnderholeColor").Value
         FRDatabase.AddTopTapLineType(TTL)
+        'TTL.TapLineName = CircleGroup(0).Layer.ToString
+        'TTL.TapLineType = CircleGroup(0).Linetype.ToString
+        'TTL.TapLineColor = CircleGroup(0).Color.ToString
+        'TTL.UnHoleLineName = CircleGroup(1).Layer.ToString
+        'TTL.UnHoleLineType = CircleGroup(1).Linetype.ToString
+        'TTL.UnHoleLineColor = CircleGroup(1).Color.ToString
     End Sub
 
-    Public Sub AddToBottomTapLineDatabase(ByVal CircleGroup As IEnumerable(Of Circle))
+    Public Sub AddToBottomTapLineDatabase(ByVal TableRow As System.Windows.Forms.DataGridViewRow)
         BTL = New BottomTapLineType
-        BTL.TapLineName = CircleGroup(0).Layer.ToString
-        BTL.TapLineType = CircleGroup(0).Linetype.ToString
-        BTL.TapLineColor = CircleGroup(0).Color.ToString
-        BTL.UnHoleLineName = CircleGroup(1).Layer.ToString
-        BTL.UnHoleLineType = CircleGroup(1).Linetype.ToString
-        BTL.UnHoleLineColor = CircleGroup(1).Color.ToString
+        BTL.TapLineName = TableRow.Cells("HoleLayer").Value
+        BTL.TapLineType = TableRow.Cells("HoleLineType").Value
+        BTL.TapLineColor = TableRow.Cells("HoleColor").Value
+        BTL.UnHoleLineName = TableRow.Cells("UnderholeLayer").Value
+        BTL.UnHoleLineType = TableRow.Cells("UnderholeLineType").Value
+        BTL.UnHoleLineColor = TableRow.Cells("UnderholeColor").Value
         FRDatabase.AddBottomTapLineType(BTL)
     End Sub
 
@@ -156,7 +165,7 @@ Public Class DatabaseConn
         End If
     End Function
 
-    'check if the entity is a solid type in the database
+    'check if the entity is a hidden type in the database
     Public Function CheckIfEntityHidden(ByVal lineObject As Entity) As Boolean
         HiddenLines = TmpHiddenLine
         Dim query = (From HiddenLine In HiddenLines _
@@ -167,6 +176,23 @@ Public Class DatabaseConn
         HiddenLines = query
 
         If (HiddenLines.Count = 0) Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+
+    'check if the entity is a auxiliary type in the database
+    Public Function CheckIfEntityAuxiliary(ByVal lineObject As Entity) As Boolean
+        AuxiliaryLines = TmpAuxiliaryLine
+        Dim query = (From AuxiliaryLine In AuxiliaryLines _
+            Where (String.Equals(AuxiliaryLine.LayerName.ToLower, lineObject.Layer.ToLower) And _
+            String.Equals(AuxiliaryLine.LayerType.ToLower, ReturnNull(lineObject.Linetype)) And _
+            String.Equals(AuxiliaryLine.LayerColor.ToLower, lineObject.Color.ColorNameForDisplay.ToLower)) _
+            Select AuxiliaryLine).ToList()
+        AuxiliaryLines = query
+
+        If (AuxiliaryLines.Count = 0) Then
             Return False
         Else
             Return True

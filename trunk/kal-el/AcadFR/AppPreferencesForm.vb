@@ -28,12 +28,14 @@ Public Class AppPreferencesForm
         AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
         AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
         AppPreferences.DrawPP = Me.PreProcess.Checked
+        AppPreferences.RemoveUEE = Me.RemoveEntities.Checked
 
         adskClass.AppPreferences.WSDir = Me.Directory.Text
         adskClass.AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
         adskClass.AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
         adskClass.AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
         adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
+        adskClass.AppPreferences.RemoveUEE = Me.RemoveEntities.Checked
 
         If Me.PreProcess.Checked = True Then
             AppPreferences.ToleranceValues = Me.Tolerance.Value
@@ -61,12 +63,13 @@ Public Class AppPreferencesForm
             Me.AutoRegScheme.Checked = AppPreferences.AutoRegSchem
             Me.MultiAnalysis.Checked = AppPreferences.MultiAnalysis
             Me.PreProcess.Checked = AppPreferences.DrawPP
+            Me.RemoveEntities.Checked = AppPreferences.RemoveUEE
             Me.Tolerance.Value = AppPreferences.ToleranceValues
             Me.Schematic.Value = AppPreferences.SchematicSymbol
         End If
     End Sub
 
-    Private Sub PreProcess_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreProcess.CheckStateChanged
+    Private Sub PreProcess_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreProcess.CheckStateChanged, RemoveEntities.CheckStateChanged
 
         If Me.PreProcess.CheckState = 1 Then
             Me.Tolerance.Enabled = True
