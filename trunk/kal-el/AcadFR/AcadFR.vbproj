@@ -96,6 +96,7 @@
     <Compile Include="DatabaseConn.vb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
+    <Compile Include="DwgProcessor.vb" />
     <Compile Include="EntityColorList.vb" />
     <Compile Include="GeometryProcessor.vb">
       <SubType>Code</SubType>
