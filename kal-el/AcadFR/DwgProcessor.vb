@@ -151,6 +151,9 @@ Public Class DwgProcessor
                         End If
                     End If
                 Next
+                If PointStatus = True Then
+                    Exit For
+                End If
             Next
 
             'membuang dan menambah jika ada entitas yang di-split serta mengedit 
