@@ -199,18 +199,26 @@ Public Class LinetypesPresetting
     'method open window linetypes presetting
     Public Sub OpenLinetypes(ByRef Linetypes As LinetypesPresetting, ByRef UIEnt As List(Of Entity))
         Dim LTCount As New Integer
+        Dim LTNothingStat As Boolean = True
+
         Using Linetypes
             For Each Ent As Entity In UIEnt
-                AddToLinetypesTable(LTCount, Ent, Linetypes)
+                AddToLinetypesTable(LTCount, Ent, Linetypes, LTNothingStat)
                 LTCount = LTCount + 1
             Next
-            Linetypes.ShowDialog()
+
+            If LTNothingStat = False Then
+                Linetypes.ShowDialog()
+            Else
+                Proceed_Click(Nothing, Nothing)
+            End If
+
         End Using
     End Sub
 
     'add new line in LinetypesTable
     Private Sub AddToLinetypesTable(ByVal Count As Integer, ByVal AddedEnt As Entity, _
-                       ByRef Table As LinetypesPresetting)
+                       ByRef Table As LinetypesPresetting, ByRef LTNothingStat As Boolean)
 
         Dim NewRow As New System.Windows.Forms.DataGridViewRow
         Table.LinetypesList.Rows.Add(NewRow)
@@ -231,10 +239,13 @@ Public Class LinetypesPresetting
         If AddedEnt.Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedEnt.Color.ColorNameForDisplay.ToLower = "byblock" Then
             Table.LinetypesList.Rows(Count).Cells("Ignore").Value = True
             Table.LinetypesList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
-            Table.LinetypesList.Rows(Count).ReadOnly = True
         Else
             Table.LinetypesList.Rows(Count).Cells("Color").Value = AddedEnt.Color.ColorNameForDisplay.ToUpper
             Table.LinetypesList.Rows(Count).Cells("Ignore").Value = False
+        End If
+
+        If Table.LinetypesList.Rows(Count).Cells("Ignore").Value = False Then
+            LTNothingStat = False
         End If
 
         Table.LinetypesList.Rows(Count).Cells("Solid").Value = False
