@@ -148,19 +148,25 @@ Public Class SchematicPresetting
     'method open window schematic presetting
     Public Sub OpenSchematic(ByRef Schematic As SchematicPresetting, ByVal UI2C As List(Of IEnumerable(Of Circle)))
         Dim SchemCount As New Integer
+        Dim LTNothingStat As Boolean = True
+
         Using Schematic
             For Each result As IEnumerable(Of Circle) In UI2C
-                AddToSchematicTable(SchemCount, result, Schematic)
+                AddToSchematicTable(SchemCount, result, Schematic, LTNothingStat)
                 SchemCount = SchemCount + 1
             Next
-            Schematic.Proceed.Enabled = False
-            Schematic.ShowDialog()
+            If LTNothingStat = False Then
+                Schematic.ShowDialog()
+            Else
+                Proceed_Click(Nothing, Nothing)
+            End If
+
         End Using
     End Sub
 
     'add new line in Schematic Table
     Private Sub AddToSchematicTable(ByVal Count As Integer, ByVal AddedResult As IEnumerable(Of Circle), _
-                       ByRef Table As SchematicPresetting)
+                       ByRef Table As SchematicPresetting, ByRef LTNothingStat As Boolean)
 
         Dim NewRow As New System.Windows.Forms.DataGridViewRow
         Dim ObjectIDList As New List(Of ObjectId)
@@ -210,6 +216,10 @@ Public Class SchematicPresetting
         Else
             Table.TapHoleList.Rows(Count).Cells("UnderholeColor").Value = AddedResult(1).Color.ColorNameForDisplay.ToUpper
             Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
+        End If
+
+        If Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False Then
+            LTNothingStat = False
         End If
 
         Table.TapHoleList.Rows(Count).Cells("TopSurface").Value = False
