@@ -61,20 +61,7 @@ Public Class SchematicPresetting
     End Sub
 
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
-        'masukin ke database
-        DBConn = New DatabaseConn
-        For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
-            If Row.Cells("TopSurface").FormattedValue = True Then
-                'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
-                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database top tap
-                DBConn.AddToTopTapLineDatabase(Row)
-            ElseIf Row.Cells("BottomSurface").FormattedValue = True Then
-                'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
-                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database bottom tap
-                DBConn.AddToBottomTapLineDatabase(Row)
-            End If
-        Next
-
+        'balikin ke warna original
         Try
             'create a document lock and acquire the information from the current drawing editor
             DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
@@ -102,8 +89,86 @@ Public Class SchematicPresetting
             AcadConnection.myT.Dispose()
         End Try
 
+        'masukin ke database
+        DBConn = New DatabaseConn
+        For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
+            If Row.Cells("TopSurface").FormattedValue = True Then
+                'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
+                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database top tap
+                DBConn.AddToTopTapLineDatabase(Row)
+            ElseIf Row.Cells("BottomSurface").FormattedValue = True Then
+                'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
+                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database bottom tap
+                DBConn.AddToBottomTapLineDatabase(Row)
+            ElseIf Row.Cells("Ignore").FormattedValue = True Then
+                If adskClass.AppPreferences.RemoveUEE = True Then
+                    EraseUEE(Row, SelectionCommand.UI2CircListAll)
+                End If
+            End If
+        Next
+
+        
+
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Dispose()
+    End Sub
+
+    'method for erasing unessential entities
+    Private Sub EraseUEE(ByVal TableRow As System.Windows.Forms.DataGridViewRow, ByRef UI2CircListAll As List(Of IEnumerable(Of Circle)))
+        Dim UEEIndex As New List(Of Integer)
+        Dim EntityToErase1, EntityToErase2 As Entity
+        AcadConnection = New AcadConn
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        AcadConnection.OpenBlockTableRec()
+        AcadConnection.btr.UpgradeOpen()
+
+        Using AcadConnection.myT
+
+            For Each UnessentialEntity As IEnumerable(Of Circle) In UI2CircListAll
+                If UnessentialEntity(0).Layer = TableRow.Cells("HoleLayer").Value And UnessentialEntity(1).Layer = TableRow.Cells("UnderholeLayer").Value _
+                And UnessentialEntity(0).Color.ColorNameForDisplay.ToLower = TableRow.Cells("Color").Value.ToString.ToLower And UnessentialEntity(1).Color.ColorNameForDisplay.ToLower = TableRow.Cells("Color").Value.ToString.ToLower Then
+                    If UnessentialEntity(0).Linetype.ToString.ToLower = "bylayer" Then
+                        If UnessentialEntity(1).Linetype.ToString.ToLower = "bylayer" Then
+                            If TableRow.Cells("HoleLineType").Value.ToString.ToLower = "null" _
+                            And TableRow.Cells("UnderholeLineType").Value.ToString.ToLower = "null" Then
+                                UEEIndex.Add(UI2CircListAll.IndexOf(UnessentialEntity))
+                            End If
+                        Else
+                            If TableRow.Cells("HoleLineType").Value.ToString.ToLower = "null" _
+                            And UnessentialEntity(1).Linetype.ToString.ToLower = TableRow.Cells("UnderholeLineType").Value.ToString.ToLower Then
+                                UEEIndex.Add(UI2CircListAll.IndexOf(UnessentialEntity))
+                            End If
+                        End If
+                        
+                    Else
+                        If UnessentialEntity(0).Linetype.ToString.ToLower = TableRow.Cells("HoleLineType").Value.ToString.ToLower Then
+                            If UnessentialEntity(1).Linetype.ToString.ToLower = "bylayer" Then
+                                If TableRow.Cells("UnderholeLineType").Value.ToString.ToLower = "null" Then
+                                    UEEIndex.Add(UI2CircListAll.IndexOf(UnessentialEntity))
+                                End If
+                            Else
+                                If UnessentialEntity(1).Linetype.ToString.ToLower = TableRow.Cells("UnderholeLineType").Value.ToString.ToLower Then
+                                    UEEIndex.Add(UI2CircListAll.IndexOf(UnessentialEntity))
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+
+            UEEIndex.Sort()
+            For i As Integer = (UEEIndex.Count - 1) To 0 Step (-1)
+                EntityToErase1 = AcadConnection.myT.GetObject(UI2CircListAll(UEEIndex(i))(0).ObjectId, OpenMode.ForWrite, True)
+                EntityToErase1.Erase()
+                EntityToErase2 = AcadConnection.myT.GetObject(UI2CircListAll(UEEIndex(i))(1).ObjectId, OpenMode.ForWrite, True)
+                EntityToErase2.Erase()
+                UI2CircListAll.RemoveAt(UEEIndex(i))
+            Next
+
+            AcadConnection.myT.Commit()
+
+        End Using
+
     End Sub
 
     'jika cancel diklik

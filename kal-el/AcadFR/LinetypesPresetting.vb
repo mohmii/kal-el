@@ -166,7 +166,7 @@ Public Class LinetypesPresetting
     End Sub
 
     'method for erasing unessential entities
-    Public Sub EraseUEE(ByVal TableRow As System.Windows.Forms.DataGridViewRow, ByRef UIEntAll As List(Of Entity))
+    Private Sub EraseUEE(ByVal TableRow As System.Windows.Forms.DataGridViewRow, ByRef UIEntAll As List(Of Entity))
         Dim UEEIndex As New List(Of Integer)
         Dim EntityToErase As Entity
         AcadConnection = New AcadConn
@@ -201,7 +201,7 @@ Public Class LinetypesPresetting
             AcadConnection.myT.Commit()
 
         End Using
-        'AcadConnection.myT.Dispose()
+
     End Sub
 
     'jika cancel diklik
