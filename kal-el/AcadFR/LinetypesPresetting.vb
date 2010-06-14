@@ -112,19 +112,7 @@ Public Class LinetypesPresetting
 
     'jika Proceed diklik
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
-        'masukin ke database
-        DBConn = New DatabaseConn
-        For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
-            'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
-            If Row.Cells("Solid").FormattedValue = True Then
-                DBConn.AddToSolidLineDatabase(Row)
-            ElseIf Row.Cells("Hidden").FormattedValue = True Then
-                DBConn.AddToHiddenLineDatabase(Row)
-            ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
-                DBConn.AddToAuxiliaryLineDatabase(Row)
-            End If
-        Next
-
+        'balikin ke warna original
         Try
             'create a document lock and acquire the information from the current drawing editor
             DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
@@ -152,9 +140,68 @@ Public Class LinetypesPresetting
             AcadConnection.myT.Dispose()
         End Try
 
+        'masukin ke database
+        DBConn = New DatabaseConn
+        For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
+            'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
+            If Row.Cells("Solid").FormattedValue = True Then
+                DBConn.AddToSolidLineDatabase(Row)
+            ElseIf Row.Cells("Hidden").FormattedValue = True Then
+                DBConn.AddToHiddenLineDatabase(Row)
+            ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
+                DBConn.AddToAuxiliaryLineDatabase(Row)
+                If adskClass.AppPreferences.RemoveUEE = True Then
+                    EraseUEE(Row, SelectionCommand.UIEntitiesAll)
+                End If
+            ElseIf Row.Cells("Ignore").FormattedValue = True Then
+                If adskClass.AppPreferences.RemoveUEE = True Then
+                    EraseUEE(Row, SelectionCommand.UIEntitiesAll)
+                End If
+            End If
+        Next
+
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Dispose()
 
+    End Sub
+
+    'method for erasing unessential entities
+    Public Sub EraseUEE(ByVal TableRow As System.Windows.Forms.DataGridViewRow, ByRef UIEntAll As List(Of Entity))
+        Dim UEEIndex As New List(Of Integer)
+        Dim EntityToErase As Entity
+        AcadConnection = New AcadConn
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        AcadConnection.OpenBlockTableRec()
+        AcadConnection.btr.UpgradeOpen()
+
+        Using AcadConnection.myT
+
+            For Each UnessentialEntity As Entity In UIEntAll
+                If UnessentialEntity.Layer = TableRow.Cells("Layer").Value _
+                And UnessentialEntity.Color.ColorNameForDisplay.ToLower = TableRow.Cells("Color").Value.ToString.ToLower Then
+                    If UnessentialEntity.Linetype.ToString.ToLower = "bylayer" Then
+                        If TableRow.Cells("Linetype").Value.ToString.ToLower = "null" Then
+                            UEEIndex.Add(UIEntAll.IndexOf(UnessentialEntity))
+                        End If
+                    Else
+                        If UnessentialEntity.Linetype.ToString.ToLower = TableRow.Cells("Linetype").Value.ToString.ToLower Then
+                            UEEIndex.Add(UIEntAll.IndexOf(UnessentialEntity))
+                        End If
+                    End If
+                End If
+            Next
+
+            UEEIndex.Sort()
+            For i As Integer = (UEEIndex.Count - 1) To 0 Step (-1)
+                EntityToErase = AcadConnection.myT.GetObject(UIEntAll(UEEIndex(i)).ObjectId, OpenMode.ForWrite, True)
+                EntityToErase.Erase()
+                UIEntAll.RemoveAt(UEEIndex(i))
+            Next
+
+            AcadConnection.myT.Commit()
+
+        End Using
+        'AcadConnection.myT.Dispose()
     End Sub
 
     'jika cancel diklik
@@ -229,6 +276,7 @@ Public Class LinetypesPresetting
         If AddedEnt.Linetype.ToString.ToLower = "bylayer" Then
             Table.LinetypesList.Rows(Count).Cells("Linetype").Value = "NULL"
         ElseIf AddedEnt.Linetype.ToString.ToLower = "byblock" Then
+            Table.LinetypesList.Rows(Count).Cells("Linetype").Value = AddedEnt.Linetype.ToString.ToUpper
             Table.LinetypesList.Rows(Count).Cells("Ignore").Value = True
             Table.LinetypesList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
             Table.LinetypesList.Rows(Count).ReadOnly = True
@@ -237,6 +285,7 @@ Public Class LinetypesPresetting
         End If
 
         If AddedEnt.Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedEnt.Color.ColorNameForDisplay.ToLower = "byblock" Then
+            Table.LinetypesList.Rows(Count).Cells("Color").Value = AddedEnt.Color.ColorNameForDisplay.ToUpper
             Table.LinetypesList.Rows(Count).Cells("Ignore").Value = True
             Table.LinetypesList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
         Else

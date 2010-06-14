@@ -33,14 +33,15 @@ Public Class AppPreferences
                     pref.Add(TmpFileRead.ReadLine)
                 End While
 
-                If pref.Count = 7 Then
+                If pref.Count = 8 Then
                     WorkSpaceDir = pref(0)
                     RegLine = pref(1)
                     RegSchem = pref(2)
                     Mview = pref(3)
-                    PreProc = pref(4)
-                    TolValue = pref(5)
-                    Schema = pref(6)
+                    UnessEnt = pref(4)
+                    PreProc = pref(5)
+                    TolValue = pref(6)
+                    Schema = pref(7)
                 End If
 
                 TmpFileRead.Close()
@@ -59,6 +60,7 @@ Public Class AppPreferences
         TmpFileWrite.WriteLine(RegLine.ToString)
         TmpFileWrite.WriteLine(RegSchem.ToString)
         TmpFileWrite.WriteLine(Mview.ToString)
+        TmpFileWrite.WriteLine(UnessEnt.ToString)
         TmpFileWrite.WriteLine(PreProc.ToString)
         TmpFileWrite.WriteLine(TolValue)
         TmpFileWrite.WriteLine(Schema)
