@@ -220,7 +220,7 @@ Public Class SchematicPresetting
                 AddToSchematicTable(SchemCount, result, Schematic, LTNothingStat)
                 SchemCount = SchemCount + 1
             Next
-            If LTNothingStat = False Then
+            If LTNothingStat = False And adskClass.AppPreferences.AutoRegSchem = True Then
                 Schematic.ShowDialog()
             Else
                 Proceed_Click(Nothing, Nothing)

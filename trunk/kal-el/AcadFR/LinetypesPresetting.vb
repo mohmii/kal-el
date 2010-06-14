@@ -254,7 +254,7 @@ Public Class LinetypesPresetting
                 LTCount = LTCount + 1
             Next
 
-            If LTNothingStat = False Then
+            If LTNothingStat = False And adskClass.AppPreferences.AutoRegLine = True Then
                 Linetypes.ShowDialog()
             Else
                 Proceed_Click(Nothing, Nothing)
