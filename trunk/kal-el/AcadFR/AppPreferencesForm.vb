@@ -27,17 +27,22 @@ Public Class AppPreferencesForm
         AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
         AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
         AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
-        AppPreferences.DrawPP = Me.PreProcess.Checked
         AppPreferences.RemoveUEE = Me.RemoveEntities.Checked
+        AppPreferences.DrawPP = Me.PreProcess.Checked
+
 
         adskClass.AppPreferences.WSDir = Me.Directory.Text
         adskClass.AppPreferences.AutoRegLine = Me.AutoRegLine.Checked
         adskClass.AppPreferences.AutoRegSchem = Me.AutoRegScheme.Checked
         adskClass.AppPreferences.MultiAnalysis = Me.MultiAnalysis.Checked
-        adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
         adskClass.AppPreferences.RemoveUEE = Me.RemoveEntities.Checked
+        adskClass.AppPreferences.DrawPP = Me.PreProcess.Checked
 
         If Me.PreProcess.Checked = True Then
+            If Me.Tolerance.Value = 0 Then
+                Me.Tolerance.Value = 0.01
+            End If
+
             AppPreferences.ToleranceValues = Me.Tolerance.Value
             AppPreferences.SchematicSymbol = Me.Schematic.Value
 
@@ -62,8 +67,8 @@ Public Class AppPreferencesForm
             Me.AutoRegLine.Checked = AppPreferences.AutoRegLine
             Me.AutoRegScheme.Checked = AppPreferences.AutoRegSchem
             Me.MultiAnalysis.Checked = AppPreferences.MultiAnalysis
-            Me.PreProcess.Checked = AppPreferences.DrawPP
             Me.RemoveEntities.Checked = AppPreferences.RemoveUEE
+            Me.PreProcess.Checked = AppPreferences.DrawPP
             Me.Tolerance.Value = AppPreferences.ToleranceValues
             Me.Schematic.Value = AppPreferences.SchematicSymbol
         End If

@@ -141,7 +141,7 @@ Partial Class AppPreferencesForm
         'PreProcess
         '
         Me.PreProcess.AutoSize = True
-        Me.PreProcess.Location = New System.Drawing.Point(12, 121)
+        Me.PreProcess.Location = New System.Drawing.Point(12, 145)
         Me.PreProcess.Name = "PreProcess"
         Me.PreProcess.Size = New System.Drawing.Size(132, 17)
         Me.PreProcess.TabIndex = 8
@@ -181,7 +181,7 @@ Partial Class AppPreferencesForm
         'RemoveEntities
         '
         Me.RemoveEntities.AutoSize = True
-        Me.RemoveEntities.Location = New System.Drawing.Point(12, 144)
+        Me.RemoveEntities.Location = New System.Drawing.Point(12, 121)
         Me.RemoveEntities.Name = "RemoveEntities"
         Me.RemoveEntities.Size = New System.Drawing.Size(159, 17)
         Me.RemoveEntities.TabIndex = 8
