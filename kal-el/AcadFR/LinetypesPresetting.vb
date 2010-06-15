@@ -1,18 +1,10 @@
 ﻿Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.EditorInput
-Imports Autodesk.AutoCAD.Runtime
 Imports Autodesk.AutoCAD.Colors
-Imports Autodesk.AutoCAD.Windows
-Imports Autodesk.AutoCAD.Interop
-Imports Autodesk.AutoCAD.Geometry
-
 Imports FR
-Imports System.Linq
-Imports System.Data.OleDb
-Imports System.IO
-Imports System.Text
-Imports System.Runtime.InteropServices
+
+
 
 Public Class LinetypesPresetting
 

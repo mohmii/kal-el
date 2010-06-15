@@ -1,134 +1,157 @@
 ﻿Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.Geometry
-Imports System.Math
 
 Public Class VirtualLine
 
-    Private SplitResult As DBObjectCollection
+    'variables prepared for generate virtual lines
+    Private LineTrans As Line
+    Private LinesOnBound As List(Of Line)
+    Private PointsOnBound As List(Of Point3d)
+    Private BoundingBoxPoints As List(Of Point3d)
+    Private PointStatus As Boolean
+    Private GeometryProcessor As GeometryProcessor
+    Private EntityIndex As List(Of Integer)
+    Private PointIndex As List(Of Integer)
+    Private SplitBB As List(Of Line)
 
-    Public Sub CheckBound(ByVal BB As List(Of Line), ByRef EntityList As List(Of Entity))
+    Public Sub GenerateVL(ByVal BBMinX As Double, ByVal BBMinY As Double, ByVal BBMaxX As Double, ByVal BBMaxY As Double, _
+                          ByVal BBLine As List(Of Line), ByRef VirtualLines As List(Of Line), ByRef LineEntities As List(Of Line), _
+                          ByRef AllEntities As List(Of Entity), ByVal Conn As AcadConn)
 
-        Dim PointCol As Point3dCollection
-        Dim SamplePoint As Point3d
-        Dim BoundBreak As New List(Of Line)
-        Dim DummyLine1, DummyLine2, DummyLine3 As Line
-        Dim PointStatus As Boolean = True
+        'variables prepared for generate virtual lines
+        LineTrans = New Line
+        LinesOnBound = New List(Of Line)
+        PointsOnBound = New List(Of Point3d)
+        BoundingBoxPoints = New List(Of Point3d)
 
-        For i As Integer = 0 To 3
-            BoundBreak.Add(BB(i))
+        BoundingBoxPoints.Add(New Point3d(BBMinX, BBMinY, 0))
+        BoundingBoxPoints.Add(New Point3d(BBMaxX, BBMinY, 0))
+        BoundingBoxPoints.Add(New Point3d(BBMinX, BBMaxY, 0))
+        BoundingBoxPoints.Add(New Point3d(BBMaxX, BBMaxY, 0))
+
+        For Each EntityTemp As Entity In AllEntities
+            If TypeOf EntityTemp Is Line Then
+                LineTrans = New Line
+                LineTrans = EntityTemp
+                If (isequal(LineTrans.StartPoint.X, LineTrans.EndPoint.X) = True And (isequal(LineTrans.StartPoint.X, BBMaxX) = True Or isequal(LineTrans.StartPoint.X, BBMinX) = True)) _
+                Or (isequal(LineTrans.StartPoint.Y, LineTrans.EndPoint.Y) = True And (isequal(LineTrans.StartPoint.Y, BBMaxY) = True Or isequal(LineTrans.StartPoint.Y, BBMinY) = True)) Then
+                    LinesOnBound.Add(LineTrans)
+                    If (Not PointsOnBound.Contains(LineTrans.StartPoint)) And isequalpoint(LineTrans.StartPoint, BoundingBoxPoints(0)) = False _
+                    And isequalpoint(LineTrans.StartPoint, BoundingBoxPoints(1)) = False And isequalpoint(LineTrans.StartPoint, BoundingBoxPoints(2)) = False _
+                    And isequalpoint(LineTrans.StartPoint, BoundingBoxPoints(3)) = False Then
+                        PointsOnBound.Add(LineTrans.StartPoint)
+                    End If
+
+                    If (Not PointsOnBound.Contains(LineTrans.EndPoint)) And isequalpoint(LineTrans.EndPoint, BoundingBoxPoints(0)) = False _
+                    And isequalpoint(LineTrans.EndPoint, BoundingBoxPoints(1)) = False And isequalpoint(LineTrans.EndPoint, BoundingBoxPoints(2)) = False _
+                    And isequalpoint(LineTrans.EndPoint, BoundingBoxPoints(3)) = False Then
+                        PointsOnBound.Add(LineTrans.EndPoint)
+                    End If
+
+                End If
+            End If
         Next
 
-        While PointStatus = True
+        For Each LineTmp As Line In BBLine
+            VirtualLines.Add(LineTmp)
+        Next
+
+        'break bounding box in every point
+        PointIndex = New List(Of Integer)
+        SplitBB = New List(Of Line)
+
+        While PointsOnBound.Count > 0
             PointStatus = False
-            DummyLine1 = New Line
-            DummyLine2 = New Line
-            DummyLine3 = New Line
-            For Each BoundTemp As Line In BoundBreak
-                For Each EntityTemp As Entity In EntityList
-                    If TypeOf EntityTemp Is Line Then
-                        Dim LineTemp As New Line
-                        If Not PartOfLine(LineTemp, BoundTemp) = 0 Then
-                            SamplePoint = New Point3d
-                            PointCol = New Point3dCollection
+            EntityIndex = New List(Of Integer)
+            PointIndex = New List(Of Integer)
+            GeometryProcessor = New GeometryProcessor
 
-                            If PartOfLine(LineTemp, BoundTemp) = 11 Then
-                                If LineTemp.StartPoint.Y > LineTemp.EndPoint.Y Then
-                                    SamplePoint = LineTemp.StartPoint
-                                Else
-                                    SamplePoint = LineTemp.EndPoint
-                                End If
-                            ElseIf PartOfLine(LineTemp, BoundTemp) = 12 Then
-                                If LineTemp.StartPoint.Y > LineTemp.EndPoint.Y Then
-                                    SamplePoint = LineTemp.EndPoint
-                                Else
-                                    SamplePoint = LineTemp.StartPoint
-                                End If
-                            ElseIf PartOfLine(LineTemp, BoundTemp) = 21 Then
-                                If LineTemp.StartPoint.X > LineTemp.EndPoint.X Then
-                                    SamplePoint = LineTemp.StartPoint
-                                Else
-                                    SamplePoint = LineTemp.EndPoint
-                                End If
-                            ElseIf PartOfLine(LineTemp, BoundTemp) = 22 Then
-                                If LineTemp.StartPoint.X > LineTemp.EndPoint.X Then
-                                    SamplePoint = LineTemp.EndPoint
-                                Else
-                                    SamplePoint = LineTemp.StartPoint
-                                End If
-                            End If
-                            PointCol.Add(SamplePoint)
+            For Each PointTemp As Point3d In PointsOnBound
+                For Each LineTemp As Line In VirtualLines
+                    If GeometryProcessor.PointOnline(PointTemp, LineTemp.StartPoint, LineTemp.EndPoint) = 2 And isequalpoint(PointTemp, LineTemp.StartPoint) = False _
+                    And isequalpoint(PointTemp, LineTemp.EndPoint) = False Then
+                        SplitBB = New List(Of Line)
+                        SplitBB = LineBreak(LineTemp, PointTemp)
 
-                            SplitResult = New DBObjectCollection
-                            SplitResult = BoundTemp.GetSplitCurves(PointCol)
+                        VirtualLines.Add(SplitBB(0))
+                        VirtualLines.Add(SplitBB(1))
+                        EntityIndex.Add(VirtualLines.IndexOf(LineTemp))
+                        PointIndex.Add(PointsOnBound.IndexOf(PointTemp))
 
-                            DummyLine1 = SplitResult(0)
-                            DummyLine2 = SplitResult(1)
-                            DummyLine3 = BoundTemp
-
-                            PointStatus = True
-                            Exit For
-                        End If
+                        PointStatus = True
+                        Exit For
                     End If
+
                 Next
+
                 If PointStatus = True Then
+                    VirtualLines.RemoveAt(EntityIndex(0))
                     Exit For
                 End If
             Next
+
             If PointStatus = True Then
-                BoundBreak.Add(DummyLine1)
-                BoundBreak.Add(DummyLine2)
-                BoundBreak.Remove(DummyLine3)
+                PointsOnBound.RemoveAt(PointIndex(0))
             End If
+
         End While
 
-        For Each BoundTemp As Line In BoundBreak
-            For Each EntityTemp As Entity In EntityList
-                If TypeOf EntityTemp Is Line Then
-                    Dim LineTemp As New Line
-                    If PartOfLine(LineTemp, BoundTemp) = 0 Then
-
+        Dim LineOnBoundIndex, VirtualLineIndex As List(Of Integer)
+        While LinesOnBound.Count > 0
+            LineOnBoundIndex = New List(Of Integer)
+            VirtualLineIndex = New List(Of Integer)
+            For Each LineTemp As Line In LinesOnBound
+                For Each LineTemp2 As Line In VirtualLines
+                    If (isequalpoint(LineTemp.StartPoint, LineTemp2.StartPoint) = True And isequalpoint(LineTemp.EndPoint, LineTemp2.EndPoint) = True) _
+                    Or (isequalpoint(LineTemp.StartPoint, LineTemp2.EndPoint) = True And isequalpoint(LineTemp.EndPoint, LineTemp2.StartPoint) = True) Then
+                        VirtualLineIndex.Add(VirtualLines.IndexOf(LineTemp2))
+                        Exit For
                     End If
-                End If
+                Next
+                VirtualLines.RemoveAt(VirtualLineIndex(0))
+                LineOnBoundIndex.Add(LinesOnBound.IndexOf(LineTemp))
+                Exit For
             Next
+            LinesOnBound.RemoveAt(LineOnBoundIndex(0))
+        End While
+
+        'drawing the virtual lines
+        For Each lineTmp As Line In VirtualLines
+            lineTmp.ColorIndex = 10
+            'lineTmp.Layer = 2
+            lineTmp.Linetype = "CONTINUOUS"
+            Conn.btr.AppendEntity(lineTmp)
+            Conn.myT.AddNewlyCreatedDBObject(lineTmp, True)
+            LineEntities.Add(lineTmp)
+            AllEntities.Add(lineTmp)
         Next
 
     End Sub
 
-    Private Function PartOfLine(ByVal LinePart As Line, ByVal TheLine As Line) As Integer
-        'original Part of Line
-        If PointOnline(LinePart.StartPoint, TheLine.StartPoint, TheLine.EndPoint) = 2 And PointOnline(LinePart.EndPoint, TheLine.StartPoint, TheLine.EndPoint) = 2 Then
-
-        End If
-    End Function
-
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Abs(x - y) > 0.1 Then
+        If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
             Return False
         Else
             Return True
         End If
     End Function
 
-    Private Function PointOnline(ByVal PointToCheck As Point3d, ByVal StartPoint As Point3d, ByVal EndPoint As Point3d) As Integer
+    Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
+        If Math.Abs(point1.X - point2.X) <= adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Y - point2.Y) <= adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Z - point2.Z) <= adskClass.AppPreferences.ToleranceValues Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
-        If Abs((Round(EndPoint.Y, 3) - Round(StartPoint.Y, 3)) * (Round(PointToCheck.X, 3) - Round(StartPoint.X, 3)) - (Round(PointToCheck.Y, 3) - Round(StartPoint.Y, 3)) * (Round(EndPoint.X, 3) - Round(StartPoint.X, 3))) _
-        >= Max(Abs(Round(EndPoint.X, 3) - Round(StartPoint.X, 3)), Abs(Round(EndPoint.Y, 3) - Round(StartPoint.Y, 3))) Then Return 0
-
-        If (Round(EndPoint.X, 3) < Round(StartPoint.X, 3) And Round(StartPoint.X, 3) < Round(PointToCheck.X, 3)) Or (Round(EndPoint.Y, 3) < Round(StartPoint.Y, 3) And Round(StartPoint.Y, 3) < Round(PointToCheck.Y, 3)) _
-        Then Return 1
-
-        If (Round(PointToCheck.X, 3) < Round(StartPoint.X, 3) And Round(StartPoint.X, 3) < Round(EndPoint.X, 3)) Or (Round(PointToCheck.Y, 3) < Round(StartPoint.Y, 3) And Round(StartPoint.Y, 3) < Round(EndPoint.Y, 3)) _
-        Then Return 1
-
-        If (Round(StartPoint.X, 3) < Round(EndPoint.X, 3) And Round(EndPoint.X, 3) < Round(PointToCheck.X, 3)) Or (Round(StartPoint.Y, 3) < Round(EndPoint.Y, 3) And Round(EndPoint.Y, 3) < Round(PointToCheck.Y, 3)) _
-        Then Return 3
-
-        If (Round(PointToCheck.X, 3) < Round(EndPoint.X, 3) And Round(EndPoint.X, 3) < Round(StartPoint.X, 3)) Or (Round(PointToCheck.Y, 3) < Round(EndPoint.Y, 3) And Round(EndPoint.Y, 3) < Round(StartPoint.Y, 3)) _
-        Then Return 3
-
-        Return 2
-
+    Private Function LineBreak(ByVal LineTemp As Line, ByVal PointTemp As Point3d)
+        Dim SplittedLines As New List(Of Line)
+        SplittedLines.Add(New Line(LineTemp.StartPoint, PointTemp))
+        SplittedLines.Add(New Line(LineTemp.EndPoint, PointTemp))
+        Return SplittedLines
     End Function
 
 End Class

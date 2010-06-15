@@ -265,10 +265,10 @@ Public Class MillingProcessor
                     LastPointAttempt = AllPoints(PointPathIndex)
 
                     If GroupPoints.First.Equals(LastPointAttempt) Then
-                        If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
+                        If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4) Then
                             GroupLoop.Add(GroupEntity)
                             GroupLoopPoints.Add(GroupPoints)
-                        ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
+                        ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4) Then
                             Dim IsLoopEqualStatus As Boolean
                             For Each GroupEntityTmp As List(Of Entity) In GroupLoop
                                 IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)
@@ -305,10 +305,10 @@ Public Class MillingProcessor
                     LastPointAttempt = AllPoints(PointPathIndex)
 
                     If GroupPoints.First.Equals(LastPointAttempt) Then
-                        If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
+                        If GroupLoop.Count = 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4) Then
                             GroupLoop.Add(GroupEntity)
                             GroupLoopPoints.Add(GroupPoints)
-                        ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4 And GroupEntity.Count <= 8) Then
+                        ElseIf GroupLoop.Count > 0 And IsLoopEqual(MainLoop, GroupEntity) = False And (GroupEntity.Count >= 4) Then
                             Dim IsLoopEqualStatus As Boolean
                             For Each GroupEntityTmp As List(Of Entity) In GroupLoop
                                 IsLoopEqualStatus = IsLoopEqual(GroupEntityTmp, GroupEntity)
