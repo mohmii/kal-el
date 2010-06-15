@@ -94,6 +94,9 @@ Public Class DwgProcessor
 
             SelectSinglePoints(AllPoints, AllSinglePoints)
 
+            UserControl3.acedSetStatusBarProgressMeter("Line Processor", 0, AllSinglePoints.Count)
+            Dim iLoadBar As Integer
+
             For Each PointTmp As Point3d In AllSinglePoints
 
                 iFor = iFor + 1
@@ -154,7 +157,14 @@ Public Class DwgProcessor
                 If PointStatus = True Then
                     Exit For
                 End If
+                'add the progress bar
+                iLoadBar = iLoadBar + 1
+                'System.Threading.Thread.Sleep(1)
+                UserControl3.acedSetStatusBarProgressMeterPos(iLoadBar)
+                System.Windows.Forms.Application.DoEvents()
             Next
+
+            UserControl3.acedRestoreStatusBar()
 
             'membuang dan menambah jika ada entitas yang di-split serta mengedit 
             If PointStatus = True Then
