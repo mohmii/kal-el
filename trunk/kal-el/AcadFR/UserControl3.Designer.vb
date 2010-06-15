@@ -33,6 +33,7 @@ Partial Class UserControl3
         Me.KryptonHeaderGroup1 = New ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup
         Me.ButtonSpecHeaderGroup1 = New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup
         Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.AddManual = New System.Windows.Forms.Button
         Me.UnidentifiedFeature = New System.Windows.Forms.DataGridView
         Me.Label17 = New System.Windows.Forms.Label
         Me.Label15 = New System.Windows.Forms.Label
@@ -153,6 +154,7 @@ Partial Class UserControl3
         '
         Me.GroupBox6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.GroupBox6.BackColor = System.Drawing.Color.Silver
+        Me.GroupBox6.Controls.Add(Me.AddManual)
         Me.GroupBox6.Controls.Add(Me.UnidentifiedFeature)
         Me.GroupBox6.Controls.Add(Me.Label17)
         Me.GroupBox6.Controls.Add(Me.Label15)
@@ -165,6 +167,16 @@ Partial Class UserControl3
         Me.GroupBox6.TabIndex = 0
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "その他の形状"
+        '
+        'AddManual
+        '
+        Me.AddManual.Location = New System.Drawing.Point(6, 93)
+        Me.AddManual.Name = "AddManual"
+        Me.AddManual.Size = New System.Drawing.Size(75, 43)
+        Me.AddManual.TabIndex = 1
+        Me.AddManual.Text = "Add Feature Manually"
+        Me.ToolTip1.SetToolTip(Me.AddManual, "Add Feature Manually")
+        Me.AddManual.UseVisualStyleBackColor = True
         '
         'UnidentifiedFeature
         '
@@ -992,5 +1004,6 @@ Partial Class UserControl3
     Friend WithEvents UnidentifiedFeature As System.Windows.Forms.DataGridView
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents version As System.Windows.Forms.Label
+    Friend WithEvents AddManual As System.Windows.Forms.Button
 
 End Class

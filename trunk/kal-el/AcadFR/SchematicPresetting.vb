@@ -1,18 +1,9 @@
 ﻿Imports Autodesk.AutoCAD.ApplicationServices
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.EditorInput
-Imports Autodesk.AutoCAD.Runtime
 Imports Autodesk.AutoCAD.Colors
-Imports Autodesk.AutoCAD.Windows
-Imports Autodesk.AutoCAD.Interop
-Imports Autodesk.AutoCAD.Geometry
-
 Imports FR
 Imports System.Linq
-Imports System.Data.OleDb
-Imports System.IO
-Imports System.Text
-Imports System.Runtime.InteropServices
 
 Public Class SchematicPresetting
 
@@ -126,7 +117,7 @@ Public Class SchematicPresetting
 
             For Each UnessentialEntity As IEnumerable(Of Circle) In UI2CircListAll
                 If UnessentialEntity(0).Layer = TableRow.Cells("HoleLayer").Value And UnessentialEntity(1).Layer = TableRow.Cells("UnderholeLayer").Value _
-                And UnessentialEntity(0).Color.ColorNameForDisplay.ToLower = TableRow.Cells("Color").Value.ToString.ToLower And UnessentialEntity(1).Color.ColorNameForDisplay.ToLower = TableRow.Cells("Color").Value.ToString.ToLower Then
+                And UnessentialEntity(0).Color.ColorNameForDisplay.ToLower = TableRow.Cells("HoleColor").Value.ToString.ToLower And UnessentialEntity(1).Color.ColorNameForDisplay.ToLower = TableRow.Cells("UnderholeColor").Value.ToString.ToLower Then
                     If UnessentialEntity(0).Linetype.ToString.ToLower = "bylayer" Then
                         If UnessentialEntity(1).Linetype.ToString.ToLower = "bylayer" Then
                             If TableRow.Cells("HoleLineType").Value.ToString.ToLower = "null" _
@@ -139,7 +130,7 @@ Public Class SchematicPresetting
                                 UEEIndex.Add(UI2CircListAll.IndexOf(UnessentialEntity))
                             End If
                         End If
-                        
+
                     Else
                         If UnessentialEntity(0).Linetype.ToString.ToLower = TableRow.Cells("HoleLineType").Value.ToString.ToLower Then
                             If UnessentialEntity(1).Linetype.ToString.ToLower = "bylayer" Then
