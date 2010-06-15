@@ -518,7 +518,6 @@ Public Class UserControl3
                         SS = res.Value
                         tempIdArray = SS.GetObjectIds()
                         
-
                         For Each Idtemp In tempIdArray
                             Dim Ent As Entity = CType(AcadConnection.myT.GetObject(Idtemp, OpenMode.ForWrite), Entity)
 
@@ -1690,92 +1689,186 @@ Public Class UserControl3
     End Sub
 
     Private Sub AddManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddManual.Click
-        Try
-            AcadConnection = New AcadConn
-            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        If MsgBox("Please select the feature", MsgBoxStyle.OkCancel, "Add Feature Manually") = MsgBoxResult.Ok Then
+            zoom = Application.AcadApplication
+            zoom.ZoomAll()
 
-            'roll back warna dulu
-            Using AcadConnection.myT
-                AcadConnection.OpenBlockTableRec()
-                If Not (PastEntityColor.Count = 0) Then
-                    RollBackColor(PastEntityColor, AcadConnection.btr)
-                    PastEntityColor.Clear()
-                ElseIf Not (PastEntityColor2.Count = 0) Then
-                    RollBackColor(PastEntityColor2, AcadConnection.btr)
-                    PastEntityColor2.Clear()
-                End If
+            Try
+                AcadConnection = New AcadConn
 
-                If MsgBox("Please select the feature", MsgBoxStyle.OkCancel, "Add Feature Manually") = MsgBoxResult.Ok Then
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+                DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
 
-                    zoom = Application.AcadApplication
-                    zoom.ZoomAll()
+                Using DocLock
+                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                    Using AcadConnection.myT
+                        AcadConnection.OpenBlockTableRec()
+                        If Not (PastEntityColor.Count = 0) Then
+                            RollBackColor(PastEntityColor, AcadConnection.btr)
+                            PastEntityColor.Clear()
+                        ElseIf Not (PastEntityColor2.Count = 0) Then
+                            RollBackColor(PastEntityColor2, AcadConnection.btr)
+                            PastEntityColor2.Clear()
+                        End If
 
-                    Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                    Dim Check2Database As New DatabaseConn
-                    Dim CircEntAdd As New List(Of Circle)
-                    Dim LineEntAdd As New List(Of Line)
-                    Dim ArcEntAdd As New List(Of Arc)
-                    Dim AllEntAdd As New List(Of Entity)
-                    Dim PLEntAdd As New List(Of Polyline)
-                    Dim MillProc As New MillingProcessor
-                    Dim MLoop As New List(Of Entity)
-                    Dim GLoop As New List(Of List(Of Entity))
-                    Dim GLoopPts As New List(Of List(Of Point3d))
-                    Dim ViewProc As New ViewProcessor
-                    Dim GetPoints As New GetPoints
+
+                        Dim Check2Database As New DatabaseConn
+                        Dim CircEntAdd As New List(Of Circle)
+                        Dim LineEntAdd As New List(Of Line)
+                        Dim ArcEntAdd As New List(Of Arc)
+                        Dim AllEntAdd As New List(Of Entity)
+                        Dim PLEntAdd As New List(Of Polyline)
+                        Dim MillProc As New MillingProcessor
+                        Dim MLoop As New List(Of Entity)
+                        Dim GLoop As New List(Of List(Of Entity))
+                        Dim GLoopPts As New List(Of List(Of Point3d))
+                        Dim ViewProc As New ViewProcessor
+                        Dim GetPoints As New GetPoints
+
+                        Opts = New PromptSelectionOptions()
+                        Opts.AllowDuplicates = False
+
+                        res = ed.GetSelection(Opts)
+
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
+
+                            'classify, bikin loop, masukin ke tabel
+                            For Each id As ObjectId In tempIdArray
+                                Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
+
+                                'add circle, line and arc entities
+                                If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                                    If TypeOf (Entity) Is Circle Then
+                                        CircEntAdd.Add(Entity)
+                                    ElseIf TypeOf (Entity) Is Line Then
+                                        LineEntAdd.Add(Entity)
+                                    ElseIf TypeOf (Entity) Is Arc Then
+                                        ArcEntAdd.Add(Entity)
+                                    ElseIf TypeOf (Entity) Is Polyline Then
+                                        PLEntAdd.Add(Entity)
+                                    End If
+                                    AllEntAdd.Add(Entity)
+                                End If
+                            Next id
+
+                        End If
+                        MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
+                        If GLoop.Count = 0 And (MLoop.Count >= 4) Then
+                            GLoop.Add(MLoop)
+                            Dim LoopPts As New List(Of Point3d)
+                            Dim GoEnt As New List(Of AllPoints)
+                            Dim UAPts As New List(Of Point3d)
+                            GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
+                            GLoopPts.Add(LoopPts)
+                        End If
+                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
+                                                     SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
+                                                     GLoopPts, SelectionCommand.UnIdentifiedCounter)
+
+                        AcadConnection.myT.Commit()
+                    End Using
+                    DrawEditor.UpdateScreen()
+                End Using
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD3.Click
+        ContextMenuStrip3.Show(Me.PointToClient(Cursor.Position).X + e.X, Me.PointToClient(Cursor.Position).Y + e.Y)
+    End Sub
+
+    Private Sub ByPoints_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints.Click
+        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim PointRef1 As New Point3d
+                Dim PointRef2 As New Point3d
+                Dim PrPointResult As PromptPointResult
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown9.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+                
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub ByEntity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity.Click
+        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim LineTmp As New Line
+                Dim CorrectSelectionStat As Boolean = False
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+                
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
 
-                    res = ed.GetSelection(Opts)
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
 
-                    If res.Status = PromptStatus.OK Then
-                        SS = res.Value
-                        tempIdArray = SS.GetObjectIds()
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
 
-                        'classify, bikin loop, masukin ke tabel
-                        For Each id As ObjectId In tempIdArray
-                            Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
-
-                            'add circle, line and arc entities
-                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
-                                If TypeOf (Entity) Is Circle Then
-                                    CircEntAdd.Add(Entity)
-                                ElseIf TypeOf (Entity) Is Line Then
-                                    LineEntAdd.Add(Entity)
-                                ElseIf TypeOf (Entity) Is Arc Then
-                                    ArcEntAdd.Add(Entity)
-                                ElseIf TypeOf (Entity) Is Polyline Then
-                                    PLEntAdd.Add(Entity)
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown9.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
+                                Else
+                                    MsgBox("Please select line entity")
                                 End If
-                                AllEntAdd.Add(Entity)
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        Next id
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
+                End Using
 
-                    End If
-                    MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
-                    If GLoop.Count = 0 And (MLoop.Count >= 4) Then
-                        GLoop.Add(MLoop)
-                        Dim LoopPts As New List(Of Point3d)
-                        Dim GoEnt As New List(Of AllPoints)
-                        Dim UAPts As New List(Of Point3d)
-                        GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
-                        GLoopPts.Add(LoopPts)
-                    End If
-                    ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
-                                                 SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
-                                                 GLoopPts, SelectionCommand.UnIdentifiedCounter)
-                End If
-
-                AcadConnection.myT.Commit()
-
-            End Using
-        Catch ex As Exception
-            MsgBox(ex.ToString)
-        Finally
-            AcadConnection.myT.Dispose()
-        End Try
-
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
     End Sub
 
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
@@ -1795,6 +1888,11 @@ Public Class UserControl3
             Return False
         End If
     End Function
+
+    Private Function PointDistance(ByVal point1 As Point3d, ByVal point2 As Point3d) As Double
+        Return Sqrt(((point1.X - point2.X) ^ 2) + ((point1.Y - point2.Y) ^ 2))
+    End Function
+
 End Class
 
 
