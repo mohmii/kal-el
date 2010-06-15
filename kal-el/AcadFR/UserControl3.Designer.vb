@@ -58,6 +58,7 @@ Partial Class UserControl3
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.AddD3 = New System.Windows.Forms.Button
         Me.Update1 = New System.Windows.Forms.Button
         Me.Label13 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
@@ -89,6 +90,9 @@ Partial Class UserControl3
         Me.Label4 = New System.Windows.Forms.Label
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.version = New System.Windows.Forms.Label
+        Me.ContextMenuStrip3 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ByPoints = New System.Windows.Forms.ToolStripMenuItem
+        Me.ByEntity = New System.Windows.Forms.ToolStripMenuItem
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.KryptonHeaderGroup1.Panel.SuspendLayout()
@@ -116,6 +120,7 @@ Partial Class UserControl3
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ContextMenuStrip3.SuspendLayout()
         Me.SuspendLayout()
         '
         'KryptonHeaderGroup1
@@ -132,7 +137,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox6)
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox5)
-        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(193, 355)
+        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(176, 355)
         Me.KryptonHeaderGroup1.TabIndex = 0
         Me.KryptonHeaderGroup1.Text = "加工特徴のリスト"
         Me.KryptonHeaderGroup1.ValuesPrimary.Description = ""
@@ -163,7 +168,7 @@ Partial Class UserControl3
         Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox6.Location = New System.Drawing.Point(0, 180)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(191, 142)
+        Me.GroupBox6.Size = New System.Drawing.Size(174, 142)
         Me.GroupBox6.TabIndex = 0
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "その他の形状"
@@ -224,7 +229,7 @@ Partial Class UserControl3
         Me.UnidentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.UnidentifiedFeature.RowHeadersVisible = False
         Me.UnidentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.UnidentifiedFeature.Size = New System.Drawing.Size(102, 103)
+        Me.UnidentifiedFeature.Size = New System.Drawing.Size(85, 103)
         Me.UnidentifiedFeature.TabIndex = 0
         Me.UnidentifiedFeature.TabStop = False
         '
@@ -235,7 +240,7 @@ Partial Class UserControl3
         Me.Label17.BackColor = System.Drawing.SystemColors.HighlightText
         Me.Label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(149, 10)
+        Me.Label17.Location = New System.Drawing.Point(132, 10)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(36, 20)
         Me.Label17.TabIndex = 0
@@ -246,7 +251,7 @@ Partial Class UserControl3
         '
         Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(83, 13)
+        Me.Label15.Location = New System.Drawing.Point(66, 13)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(60, 14)
         Me.Label15.TabIndex = 0
@@ -293,7 +298,7 @@ Partial Class UserControl3
         Me.GroupBox5.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox5.Margin = New System.Windows.Forms.Padding(3, 8, 3, 3)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(191, 180)
+        Me.GroupBox5.Size = New System.Drawing.Size(174, 180)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "認識できた形状"
@@ -355,7 +360,7 @@ Partial Class UserControl3
         Me.IdentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.IdentifiedFeature.RowHeadersVisible = False
         Me.IdentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.IdentifiedFeature.Size = New System.Drawing.Size(102, 140)
+        Me.IdentifiedFeature.Size = New System.Drawing.Size(85, 140)
         Me.IdentifiedFeature.TabIndex = 0
         Me.IdentifiedFeature.TabStop = False
         '
@@ -366,7 +371,7 @@ Partial Class UserControl3
         Me.Label16.BackColor = System.Drawing.SystemColors.HighlightText
         Me.Label16.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(149, 11)
+        Me.Label16.Location = New System.Drawing.Point(132, 11)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(36, 20)
         Me.Label16.TabIndex = 0
@@ -377,7 +382,7 @@ Partial Class UserControl3
         '
         Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(83, 14)
+        Me.Label14.Location = New System.Drawing.Point(66, 14)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(60, 15)
         Me.Label14.TabIndex = 0
@@ -479,7 +484,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox4)
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox2)
-        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(193, 487)
+        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(176, 487)
         Me.KryptonHeaderGroup2.TabIndex = 0
         Me.KryptonHeaderGroup2.Text = "データ"
         Me.KryptonHeaderGroup2.ValuesPrimary.Description = ""
@@ -505,7 +510,7 @@ Partial Class UserControl3
         Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox4.Location = New System.Drawing.Point(0, 317)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(191, 137)
+        Me.GroupBox4.Size = New System.Drawing.Size(174, 137)
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "説明図"
@@ -518,7 +523,7 @@ Partial Class UserControl3
         Me.PictureBox1.Location = New System.Drawing.Point(5, 16)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(8)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(180, 116)
+        Me.PictureBox1.Size = New System.Drawing.Size(163, 116)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 10
         Me.PictureBox1.TabStop = False
@@ -527,6 +532,7 @@ Partial Class UserControl3
         '
         Me.GroupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.GroupBox2.BackColor = System.Drawing.Color.Silver
+        Me.GroupBox2.Controls.Add(Me.AddD3)
         Me.GroupBox2.Controls.Add(Me.Update1)
         Me.GroupBox2.Controls.Add(Me.Label13)
         Me.GroupBox2.Controls.Add(Me.Label3)
@@ -559,9 +565,19 @@ Partial Class UserControl3
         Me.GroupBox2.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(3, 8, 8, 3)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(191, 317)
+        Me.GroupBox2.Size = New System.Drawing.Size(174, 317)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
+        '
+        'AddD3
+        '
+        Me.AddD3.Location = New System.Drawing.Point(6, 242)
+        Me.AddD3.Name = "AddD3"
+        Me.AddD3.Size = New System.Drawing.Size(68, 23)
+        Me.AddD3.TabIndex = 14
+        Me.AddD3.Text = "Add D3"
+        Me.ToolTip1.SetToolTip(Me.AddD3, "Add D3")
+        Me.AddD3.UseVisualStyleBackColor = True
         '
         'Update1
         '
@@ -616,7 +632,7 @@ Partial Class UserControl3
         Me.ComboBox1.Items.AddRange(New Object() {"タップ穴", "ＰＴタップ穴", "リーマ穴", "ドリル穴", "底付き穴", "貫通穴", "段付きボルト穴", "円形溝", "ボーリング穴"})
         Me.ComboBox1.Location = New System.Drawing.Point(105, 18)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(21, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(4, 21)
         Me.ComboBox1.TabIndex = 10
         '
         'ContextMenuStrip2
@@ -666,7 +682,7 @@ Partial Class UserControl3
         Me.ComboBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ComboBox3.Enabled = False
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Location = New System.Drawing.Point(132, 18)
+        Me.ComboBox3.Location = New System.Drawing.Point(115, 18)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(53, 21)
         Me.ComboBox3.TabIndex = 11
@@ -703,7 +719,7 @@ Partial Class UserControl3
         Me.ComboBox2.Location = New System.Drawing.Point(105, 40)
         Me.ComboBox2.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)
         Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(80, 21)
+        Me.ComboBox2.Size = New System.Drawing.Size(63, 21)
         Me.ComboBox2.TabIndex = 12
         '
         'NumericUpDown4
@@ -714,7 +730,7 @@ Partial Class UserControl3
         Me.NumericUpDown4.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown4.Name = "NumericUpDown4"
-        Me.NumericUpDown4.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown4.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown4.TabIndex = 2
         '
         'NumericUpDown5
@@ -724,7 +740,7 @@ Partial Class UserControl3
         Me.NumericUpDown5.Location = New System.Drawing.Point(105, 83)
         Me.NumericUpDown5.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown5.Name = "NumericUpDown5"
-        Me.NumericUpDown5.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown5.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown5.TabIndex = 3
         '
         'NumericUpDown6
@@ -735,7 +751,7 @@ Partial Class UserControl3
         Me.NumericUpDown6.Margin = New System.Windows.Forms.Padding(3, 3, 3, 1)
         Me.NumericUpDown6.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown6.Name = "NumericUpDown6"
-        Me.NumericUpDown6.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown6.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown6.TabIndex = 4
         '
         'NumericUpDown1
@@ -748,7 +764,7 @@ Partial Class UserControl3
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown1.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown1.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown1.TabIndex = 5
         '
         'NumericUpDown2
@@ -761,7 +777,7 @@ Partial Class UserControl3
         Me.NumericUpDown2.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown2.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown2.Name = "NumericUpDown2"
-        Me.NumericUpDown2.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown2.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown2.TabIndex = 6
         '
         'NumericUpDown3
@@ -774,7 +790,7 @@ Partial Class UserControl3
         Me.NumericUpDown3.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown3.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown3.Name = "NumericUpDown3"
-        Me.NumericUpDown3.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown3.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown3.TabIndex = 7
         '
         'NumericUpDown7
@@ -786,7 +802,7 @@ Partial Class UserControl3
         Me.NumericUpDown7.Margin = New System.Windows.Forms.Padding(3, 5, 3, 1)
         Me.NumericUpDown7.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown7.Name = "NumericUpDown7"
-        Me.NumericUpDown7.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown7.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown7.TabIndex = 8
         '
         'NumericUpDown8
@@ -799,7 +815,7 @@ Partial Class UserControl3
         Me.NumericUpDown8.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown8.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown8.Name = "NumericUpDown8"
-        Me.NumericUpDown8.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown8.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown8.TabIndex = 9
         '
         'NumericUpDown9
@@ -811,7 +827,7 @@ Partial Class UserControl3
         Me.NumericUpDown9.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown9.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown9.Name = "NumericUpDown9"
-        Me.NumericUpDown9.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown9.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown9.TabIndex = 10
         '
         'NumericUpDown10
@@ -823,7 +839,7 @@ Partial Class UserControl3
         Me.NumericUpDown10.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown10.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
-        Me.NumericUpDown10.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown10.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown10.TabIndex = 11
         '
         'NumericUpDown11
@@ -835,7 +851,7 @@ Partial Class UserControl3
         Me.NumericUpDown11.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
-        Me.NumericUpDown11.Size = New System.Drawing.Size(80, 20)
+        Me.NumericUpDown11.Size = New System.Drawing.Size(63, 20)
         Me.NumericUpDown11.TabIndex = 13
         '
         'Label8
@@ -903,6 +919,24 @@ Partial Class UserControl3
         Me.version.TabIndex = 2
         Me.version.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
+        'ContextMenuStrip3
+        '
+        Me.ContextMenuStrip3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints, Me.ByEntity})
+        Me.ContextMenuStrip3.Name = "ContextMenuStrip3"
+        Me.ContextMenuStrip3.Size = New System.Drawing.Size(147, 48)
+        '
+        'ByPoints
+        '
+        Me.ByPoints.Name = "ByPoints"
+        Me.ByPoints.Size = New System.Drawing.Size(146, 22)
+        Me.ByPoints.Text = "By two points"
+        '
+        'ByEntity
+        '
+        Me.ByEntity.Name = "ByEntity"
+        Me.ByEntity.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntity.Text = "By one entity"
+        '
         'UserControl3
         '
         Me.AllowDrop = True
@@ -913,7 +947,7 @@ Partial Class UserControl3
         Me.Controls.Add(Me.KryptonHeaderGroup2)
         Me.Controls.Add(Me.KryptonHeaderGroup1)
         Me.Name = "UserControl3"
-        Me.Size = New System.Drawing.Size(193, 876)
+        Me.Size = New System.Drawing.Size(176, 876)
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.KryptonHeaderGroup1.Panel.ResumeLayout(False)
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -942,6 +976,7 @@ Partial Class UserControl3
         CType(Me.NumericUpDown9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NumericUpDown11, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ContextMenuStrip3.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1005,5 +1040,9 @@ Partial Class UserControl3
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents version As System.Windows.Forms.Label
     Friend WithEvents AddManual As System.Windows.Forms.Button
+    Friend WithEvents AddD3 As System.Windows.Forms.Button
+    Friend WithEvents ContextMenuStrip3 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents ByPoints As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ByEntity As System.Windows.Forms.ToolStripMenuItem
 
 End Class
