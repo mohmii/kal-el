@@ -160,6 +160,7 @@ Public Class LinetypesPresetting
     'method for erasing unessential entities
     Private Sub EraseUEE(ByVal TableRow As System.Windows.Forms.DataGridViewRow, ByRef UIEntAll As List(Of Entity))
         Dim UEEIndex As New List(Of Integer)
+        Dim UEEObjIDIndex As New List(Of Integer)
         Dim EntityToErase As Entity
         AcadConnection = New AcadConn
         AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
@@ -174,10 +175,12 @@ Public Class LinetypesPresetting
                     If UnessentialEntity.Linetype.ToString.ToLower = "bylayer" Then
                         If TableRow.Cells("Linetype").Value.ToString.ToLower = "null" Then
                             UEEIndex.Add(UIEntAll.IndexOf(UnessentialEntity))
+                            UEEObjIDIndex.Add(SelectionCommand.ObjIDsClassify.IndexOf(UnessentialEntity.ObjectId))
                         End If
                     Else
                         If UnessentialEntity.Linetype.ToString.ToLower = TableRow.Cells("Linetype").Value.ToString.ToLower Then
                             UEEIndex.Add(UIEntAll.IndexOf(UnessentialEntity))
+                            UEEObjIDIndex.Add(SelectionCommand.ObjIDsClassify.IndexOf(UnessentialEntity.ObjectId))
                         End If
                     End If
                 End If
@@ -188,6 +191,11 @@ Public Class LinetypesPresetting
                 EntityToErase = AcadConnection.myT.GetObject(UIEntAll(UEEIndex(i)).ObjectId, OpenMode.ForWrite, True)
                 EntityToErase.Erase()
                 UIEntAll.RemoveAt(UEEIndex(i))
+            Next
+
+            UEEObjIDIndex.Sort()
+            For i As Integer = (UEEObjIDIndex.Count - 1) To 0 Step (-1)
+                SelectionCommand.ObjIDsClassify.RemoveAt(UEEObjIDIndex(i))
             Next
 
             AcadConnection.myT.Commit()

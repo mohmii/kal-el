@@ -1712,7 +1712,6 @@ Public Class UserControl3
                             PastEntityColor2.Clear()
                         End If
 
-
                         Dim Check2Database As New DatabaseConn
                         Dim CircEntAdd As New List(Of Circle)
                         Dim LineEntAdd As New List(Of Line)
