@@ -10,20 +10,91 @@ Public Class DatabaseConn
 
     'prepare the some database to be the fr data manager
     Private FRDatabase As New FRDataManager()
+    Private SolidLines, TmpSolidLines As List(Of SolidLine)
+    Private HiddenLines, TmpHiddenLines As List(Of HiddenLine)
+    Private AuxiliaryLines, TmpAuxiliaryLines As List(Of AuxiliaryLine)
+    Private TopTap, TmpTopTap As List(Of TopTapLineType)
+    Private BottomTap, TmpBottomTap As List(Of BottomTapLineType)
+    Private ReamData, TmpReamData As List(Of ReamHole)
+    Private CBoreData, TmpCBoreData As List(Of CounterBore)
+    Private TapData, TmpTapData As List(Of Tap)
 
-    ''retrieve collection of top tap hole line type from the fr database
-    'Private TopTapLTArray As ICollection(Of TopTapLineType) = FRDatabase.GetAllTopTapLineTypes()
+    'get all line properties in the database
+    Public Sub InitLinesDb()
+        'get drawing line database
+        SolidLines = New List(Of SolidLine)(FRDatabase.GetAllSolidLines())
+        HiddenLines = New List(Of HiddenLine)(FRDatabase.GetAllHiddenLines())
+        AuxiliaryLines = New List(Of AuxiliaryLine)(FRDatabase.GetAllAuxiliaryLines())
 
-    ''retrieve collection of bottom tap hole line type from the fr database
-    'Private BotTapLTArray As ICollection(Of BottomTapLineType) = FRDatabase.GetAllBottomTapLineTypes()
+        'get schematic line database
+        TopTap = New List(Of TopTapLineType)(FRDatabase.GetAllTopTapLineTypes())
+        BottomTap = New List(Of BottomTapLineType)(FRDatabase.GetAllBottomTapLineTypes())
+    End Sub
 
-    'retrieve collection of solid line from the fr database
-    Private SolidLines As List(Of SolidLine) = New List(Of SolidLine)(FRDatabase.GetAllSolidLines())
-    Private TmpSolidLines As List(Of SolidLine) = SolidLines
+    'get all hole features in the database
+    Public Sub InitHoleDb()
 
-    'retrieve collection of Hidden line from the fr database
-    Private HiddenLines As List(Of HiddenLine) = New List(Of HiddenLine)(FRDatabase.GetAllHiddenLines())
-    Private TmpHiddenLine As List(Of HiddenLine) = HiddenLines
+        TapData = New List(Of Tap)(FRDatabase.GetAllTaps())
+        ReamData = New List(Of ReamHole)(FRDatabase.GetAllReamHoles())
+        CBoreData = New List(Of CounterBore)(FRDatabase.GetAllCounterBores())
+
+    End Sub
+
+    'get the solid line
+    Public ReadOnly Property GetSolidLine()
+        Get
+            Return SolidLines
+        End Get
+    End Property
+
+    'get the hidden line
+    Public ReadOnly Property GetHiddenLine()
+        Get
+            Return HiddenLines
+        End Get
+    End Property
+
+    'get the auxiliary line
+    Public ReadOnly Property GetAuxiliaryLine()
+        Get
+            Return AuxiliaryLines
+        End Get
+    End Property
+
+    'get the top tap line
+    Public ReadOnly Property GetTopTapLine()
+        Get
+            Return TopTap
+        End Get
+    End Property
+
+    'get the bottom tap line
+    Public ReadOnly Property GetBottomTapLine()
+        Get
+            Return BottomTap
+        End Get
+    End Property
+
+    'get the tap hole
+    Public ReadOnly Property GetTapHole()
+        Get
+            Return TapData
+        End Get
+    End Property
+
+    'get the ream hole
+    Public ReadOnly Property GetReamHole()
+        Get
+            Return ReamData
+        End Get
+    End Property
+
+    'get the counter bore hole
+    Public ReadOnly Property GetCboreHole()
+        Get
+            Return CBoreData
+        End Get
+    End Property
 
     Private SL As SolidLine
     Private HL As HiddenLine
@@ -150,15 +221,16 @@ Public Class DatabaseConn
 
     'check if the entity is a solid type in the database
     Public Function CheckIfEntitySolid(ByVal lineObject As Entity) As Boolean
-        SolidLines = TmpSolidLines
+
         Dim query = (From SolidLine In SolidLines _
             Where (String.Equals(SolidLine.LayerName.ToLower, lineObject.Layer.ToLower) And _
             String.Equals(SolidLine.LayerType.ToLower, ReturnNull(lineObject.Linetype)) And _
             String.Equals(SolidLine.LayerColor.ToLower, lineObject.Color.ColorNameForDisplay.ToLower)) _
             Select SolidLine).ToList()
-        SolidLines = query
 
-        If (SolidLines.Count = 0) Then
+        TmpSolidLines = query
+
+        If (TmpSolidLines.Count = 0) Then
             Return False
         Else
             Return True
@@ -167,15 +239,16 @@ Public Class DatabaseConn
 
     'check if the entity is a hidden type in the database
     Public Function CheckIfEntityHidden(ByVal lineObject As Entity) As Boolean
-        HiddenLines = TmpHiddenLine
+
         Dim query = (From HiddenLine In HiddenLines _
             Where (String.Equals(HiddenLine.LayerName.ToLower, lineObject.Layer.ToLower) And _
             String.Equals(HiddenLine.LayerType.ToLower, ReturnNull(lineObject.Linetype)) And _
             String.Equals(HiddenLine.LayerColor.ToLower, lineObject.Color.ColorNameForDisplay.ToLower)) _
             Select HiddenLine).ToList()
-        HiddenLines = query
 
-        If (HiddenLines.Count = 0) Then
+        TmpHiddenLines = query
+
+        If (TmpHiddenLines.Count = 0) Then
             Return False
         Else
             Return True
@@ -184,49 +257,28 @@ Public Class DatabaseConn
 
     'check if the entity is a auxiliary type in the database
     Public Function CheckIfEntityAuxiliary(ByVal lineObject As Entity) As Boolean
-        AuxiliaryLines = TmpAuxiliaryLine
+
         Dim query = (From AuxiliaryLine In AuxiliaryLines _
             Where (String.Equals(AuxiliaryLine.LayerName.ToLower, lineObject.Layer.ToLower) And _
             String.Equals(AuxiliaryLine.LayerType.ToLower, ReturnNull(lineObject.Linetype)) And _
             String.Equals(AuxiliaryLine.LayerColor.ToLower, lineObject.Color.ColorNameForDisplay.ToLower)) _
             Select AuxiliaryLine).ToList()
-        AuxiliaryLines = query
 
-        If (AuxiliaryLines.Count = 0) Then
+        TmpAuxiliaryLines = query
+
+        If (TmpAuxiliaryLines.Count = 0) Then
             Return False
         Else
             Return True
         End If
     End Function
 
-    'retrieve collection of Hidden line from the fr database
-    Private AuxiliaryLines As List(Of AuxiliaryLine) = New List(Of AuxiliaryLine)(FRDatabase.GetAllAuxiliaryLines())
-    Private TmpAuxiliaryLine As List(Of AuxiliaryLine) = AuxiliaryLines
 
-    'retrieve collection of ream hole from the fr database
-    Private ReamData As List(Of ReamHole) = New List(Of ReamHole)(FRDatabase.GetAllReamHoles())
-    Private TmpReamData As List(Of ReamHole) = ReamData
-
-    'create list from cbore data in database
-    Private CBoreData As List(Of CounterBore) = New List(Of CounterBore)(FRDatabase.GetAllCounterBores())
-    Private TmpCBoreData As List(Of CounterBore) = CBoreData
-
-    'create list from tap data in database
-    Private TapData As List(Of Tap) = New List(Of Tap)(FRDatabase.GetAllTaps())
-    Private TmpTapData As List(Of Tap) = TapData
-
-    'create list from top tap data to be use in querying
-    Private TopTap As List(Of TopTapLineType) = New List(Of TopTapLineType)(FRDatabase.GetAllTopTapLineTypes())
-    Private TmpTopTap As List(Of TopTapLineType) = TopTap
-
-    'create list from bottom tap data to be use in querying
-    Private BottomTap As List(Of BottomTapLineType) = New List(Of BottomTapLineType)(FRDatabase.GetAllBottomTapLineTypes())
-    Private TmpBottomTap As List(Of BottomTapLineType) = BottomTap
 
     'checking the Top Tap Table
     Public Function CheckTopTap(ByVal Result As IEnumerable(Of Circle)) As Boolean
         If Result.Last.Radius > Result.First.Radius Then
-            TopTap = TmpTopTap
+
             Dim query = (From TopTapItem In TopTap _
                         Where (String.Equals(TopTapItem.TapLineName.ToLower, Result.Last.Layer.ToLower) And _
                                String.Equals(TopTapItem.TapLineColor.ToLower, Result.Last.Color.ColorNameForDisplay.ToLower) And _
@@ -235,15 +287,15 @@ Public Class DatabaseConn
                                String.Equals(TopTapItem.UnHoleLineColor.ToLower, Result.First.Color.ColorNameForDisplay.ToLower) And _
                                String.Equals(TopTapItem.UnHoleLineType.ToLower, ReturnNull(Result.First.Linetype))) _
                         Select TopTapItem).ToList()
-            TopTap = query
+            TmpTopTap = query
 
-            If TopTap.Count = 0 Then
+            If TmpTopTap.Count = 0 Then
                 Return False
             Else
                 Return True
             End If
         Else
-            TopTap = TmpTopTap
+
             Dim query = (From TopTapItem In TopTap _
                         Where (String.Equals(TopTapItem.TapLineName.ToLower, Result.First.Layer.ToLower) And _
                                String.Equals(TopTapItem.TapLineColor.ToLower, Result.First.Color.ColorNameForDisplay.ToLower) And _
@@ -252,9 +304,9 @@ Public Class DatabaseConn
                                String.Equals(TopTapItem.UnHoleLineColor.ToLower, Result.Last.Color.ColorNameForDisplay.ToLower) And _
                                String.Equals(TopTapItem.UnHoleLineType.ToLower, ReturnNull(Result.Last.Linetype))) _
                         Select TopTapItem).ToList()
-            TopTap = query
+            TmpTopTap = query
 
-            If TopTap.Count = 0 Then
+            If TmpTopTap.Count = 0 Then
                 Return False
             Else
                 Return True
@@ -265,7 +317,7 @@ Public Class DatabaseConn
     'checking the Bottom Tap Table
     Public Function CheckBottomTap(ByVal Result As IEnumerable(Of Circle)) As Boolean
         If Result.Last.Radius > Result.First.Radius Then
-            BottomTap = TmpBottomTap
+
             Dim query = (From BottomTapItem In BottomTap _
                         Where (String.Equals(BottomTapItem.TapLineName.ToLower, (Result.Last.Layer.ToLower)) And _
                                String.Equals(BottomTapItem.TapLineColor.ToLower, (Result.Last.Color.ColorNameForDisplay.ToLower)) And _
@@ -274,15 +326,15 @@ Public Class DatabaseConn
                                String.Equals(BottomTapItem.UnHoleLineColor.ToLower, (Result.First.Color.ColorNameForDisplay.ToLower)) And _
                                String.Equals(BottomTapItem.UnHoleLineType.ToLower, ReturnNull(Result.First.Linetype))) _
                         Select BottomTapItem).ToList()
-            BottomTap = query
+            TmpBottomTap = query
 
-            If BottomTap.Count = 0 Then
+            If TmpBottomTap.Count = 0 Then
                 Return False
             Else
                 Return True
             End If
         Else
-            BottomTap = TmpBottomTap
+
             Dim query = (From BottomTapItem In BottomTap _
                         Where (String.Equals(BottomTapItem.TapLineName, Result.First.Layer) And _
                                String.Equals(BottomTapItem.TapLineColor.ToLower, Result.First.Color.ColorNameForDisplay) And _
@@ -291,9 +343,9 @@ Public Class DatabaseConn
                                String.Equals(BottomTapItem.UnHoleLineColor.ToLower, Result.Last.Color.ColorNameForDisplay) And _
                                String.Equals(BottomTapItem.UnHoleLineType.ToLower, ReturnNull(Result.Last.Linetype))) _
                         Select BottomTapItem).ToList()
-            BottomTap = query
+            TmpBottomTap = query
 
-            If BottomTap.Count = 0 Then
+            If TmpBottomTap.Count = 0 Then
                 Return False
             Else
                 Return True
@@ -311,13 +363,13 @@ Public Class DatabaseConn
     End Function
 
     Public Function CheckIfReam(ByVal Result As IEnumerable(Of Circle)) As Boolean
-        ReamData = TmpReamData
+
         Dim query = (From ReamItem In ReamData _
             Where (isequal(ReamItem.Diameter, (Result.SingleOrDefault.Radius * 2)) = True) _
             Select ReamItem).ToList()
-        ReamData = query
+        TmpReamData = query
 
-        If (ReamData.Count = 0) Then
+        If (TmpReamData.Count = 0) Then
             Return False
         Else
             Return True
@@ -326,17 +378,17 @@ Public Class DatabaseConn
     End Function
 
     Public Function WhichReam(ByVal Result As IEnumerable(Of Circle)) As String()
-        ReamData = TmpReamData
+
         Dim query = (From ReamItem In ReamData _
             Where (isequal(ReamItem.Diameter, (Result.SingleOrDefault.Radius * 2)) = True) _
             Select ReamItem).ToList()
-        ReamData = query
+        TmpReamData = query
 
-        If (ReamData.Count = 0) Then
+        If (TmpReamData.Count = 0) Then
             Return Nothing
         Else
-            Return New String() {"Ream, R-" + ReamData.SingleOrDefault.Diameter.ToString, Result.FirstOrDefault.Id.ToString, ReamData.FirstOrDefault.Diameter.ToString, _
-                                 ReamData.FirstOrDefault.Depth.ToString}
+            Return New String() {"Ream, R-" + TmpReamData.SingleOrDefault.Diameter.ToString, Result.FirstOrDefault.Id.ToString, _
+                                 TmpReamData.FirstOrDefault.Diameter.ToString, TmpReamData.FirstOrDefault.Depth.ToString}
         End If
 
     End Function
@@ -382,68 +434,64 @@ Public Class DatabaseConn
         If Result.Last.Radius > Result.First.Radius Then
 
             'checking in tap database
-            TapData = TmpTapData
             Dim query = (From TapItem In TapData _
                         Where (isequal(TapItem.TapDiameter, (Result.Last.Radius * 2)) = True And _
                         isequal(TapItem.UnHoleDiameter, (Result.First.Radius * 2)) = True) _
                         Select TapItem).ToList()
-            TapData = query
+            TmpTapData = query
 
-            If TapData.Count = 0 Then
+            If TmpTapData.Count = 0 Then
                 'if there is no match, continue searching in cbore database
-                CBoreData = TmpCBoreData
                 Dim nextquery = (From CBoreItem In CBoreData _
                         Where (isequal(CBoreItem.Diameter, (Result.Last.Radius * 2)) = True And _
                         isequal(CBoreItem.InnerDiameter, (Result.First.Radius * 2)) = True) _
                         Select CBoreItem).ToList()
-                CBoreData = nextquery
+                TmpCBoreData = nextquery
 
-                If CBoreData.Count = 0 Then
+                If TmpCBoreData.Count = 0 Then
                     'if there is no match also in cbore output the function to nothing
                     Return Nothing
                 Else
                     'If there is, tell what type of cbore it is
-                    Return New String() {("SunkBolt, " + CBoreData.SingleOrDefault.Name), Result.First.Id.ToString(), Result.Last.Id.ToString(), _
-                                         CBoreData.SingleOrDefault.InnerDiameter.ToString, "0", CBoreData.SingleOrDefault.Diameter.ToString, _
-                                         CBoreData.SingleOrDefault.Depth.ToString}
+                    Return New String() {("SunkBolt, " + TmpCBoreData.SingleOrDefault.Name), Result.First.Id.ToString(), Result.Last.Id.ToString(), _
+                                         TmpCBoreData.SingleOrDefault.InnerDiameter.ToString, "0", TmpCBoreData.SingleOrDefault.Diameter.ToString, _
+                                         TmpCBoreData.SingleOrDefault.Depth.ToString}
                 End If
             Else
                 'if there is, tell what type of tap it is
-                Return New String() {("Tap, " + TapData.SingleOrDefault.Name), Result.First.Id.ToString(), Result.Last.Id.ToString(), _
-                                     TapData.SingleOrDefault.TapDiameter.ToString, TapData.SingleOrDefault.TapDepth.ToString, _
-                                     TapData.SingleOrDefault.UnHoleDiameter.ToString, TapData.SingleOrDefault.UnHoleDepth.ToString}
+                Return New String() {("Tap, " + TmpTapData.SingleOrDefault.Name), Result.First.Id.ToString(), Result.Last.Id.ToString(), _
+                                     TmpTapData.SingleOrDefault.TapDiameter.ToString, TmpTapData.SingleOrDefault.TapDepth.ToString, _
+                                     TmpTapData.SingleOrDefault.UnHoleDiameter.ToString, TmpTapData.SingleOrDefault.UnHoleDepth.ToString}
             End If
         Else
             'from this to next were the same process like the previous process
-            TapData = TmpTapData
             Dim query = (From TapItem In TapData _
                         Where (isequal(TapItem.TapDiameter, (Result.First.Radius * 2)) = True And _
                         isequal(TapItem.UnHoleDiameter, (Result.Last.Radius * 2)) = True) _
                         Select TapItem).ToList()
 
-            TapData = query
+            TmpTapData = query
 
-            If TapData.Count = 0 Then
+            If TmpTapData.Count = 0 Then
 
-                CBoreData = TmpCBoreData
                 Dim nextquery = (From CBoreItem In CBoreData _
                         Where (isequal(CBoreItem.Diameter, (Result.First.Radius * 2)) = True And _
                         isequal(CBoreItem.InnerDiameter, (Result.Last.Radius * 2)) = True) _
                         Select CBoreItem).ToList()
 
-                CBoreData = nextquery
+                TmpCBoreData = nextquery
 
-                If CBoreData.Count = 0 Then
+                If TmpCBoreData.Count = 0 Then
                     Return Nothing
                 Else
-                    Return New String() {("SunkBolt, " + CBoreData.SingleOrDefault.Name), Result.Last.Id.ToString(), Result.First.Id.ToString(), _
-                                         CBoreData.SingleOrDefault.InnerDiameter.ToString, "0", CBoreData.SingleOrDefault.Diameter.ToString, _
-                                         CBoreData.SingleOrDefault.Depth.ToString}
+                    Return New String() {("SunkBolt, " + TmpCBoreData.SingleOrDefault.Name), Result.Last.Id.ToString(), Result.First.Id.ToString(), _
+                                         TmpCBoreData.SingleOrDefault.InnerDiameter.ToString, "0", TmpCBoreData.SingleOrDefault.Diameter.ToString, _
+                                         TmpCBoreData.SingleOrDefault.Depth.ToString}
                 End If
             Else
-                Return New String() {("Tap, " + TapData.SingleOrDefault.Name), Result.Last.Id.ToString(), Result.First.Id.ToString(), _
-                                     TapData.SingleOrDefault.TapDiameter.ToString, TapData.SingleOrDefault.TapDepth.ToString, _
-                                     TapData.SingleOrDefault.UnHoleDiameter.ToString, TapData.SingleOrDefault.UnHoleDepth.ToString}
+                Return New String() {("Tap, " + TmpTapData.SingleOrDefault.Name), Result.Last.Id.ToString(), Result.First.Id.ToString(), _
+                                     TmpTapData.SingleOrDefault.TapDiameter.ToString, TmpTapData.SingleOrDefault.TapDepth.ToString, _
+                                     TmpTapData.SingleOrDefault.UnHoleDiameter.ToString, TmpTapData.SingleOrDefault.UnHoleDepth.ToString}
             End If
         End If
     End Function

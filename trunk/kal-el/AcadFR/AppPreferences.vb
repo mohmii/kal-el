@@ -62,8 +62,8 @@ Public Class AppPreferences
         TmpFileWrite.WriteLine(Mview.ToString)
         TmpFileWrite.WriteLine(UnessEnt.ToString)
         TmpFileWrite.WriteLine(PreProc.ToString)
-        TmpFileWrite.WriteLine(TolValue)
-        TmpFileWrite.WriteLine(Schema)
+        TmpFileWrite.WriteLine(TolValue.ToString)
+        TmpFileWrite.WriteLine(Schema.ToString)
         TmpFileWrite.Flush()
         TmpFileWrite.Close()
 

@@ -1233,11 +1233,9 @@ Public Class UserControl3
 
             'get all the new machining parameters
             SetUpFeatureName(Me.ComboBox1.SelectedItem.ToString, NewUpdatedFeature.FeatureName, NewUpdatedFeature.MiscProp(0))
-            NewUpdatedFeature.MiscProp(1) = Me.ComboBox2.SelectedItem 'surface
             NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
             NewUpdatedFeature.MiscProp(3) = Me.NumericUpDown5.Value 'chamfer
             NewUpdatedFeature.MiscProp(4) = Me.NumericUpDown6.Value 'quality
-            NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
             NewUpdatedFeature.OriginAndAddition(3) = Me.NumericUpDown7.Value 'D1
             NewUpdatedFeature.OriginAndAddition(4) = Me.NumericUpDown8.Value 'D2
             NewUpdatedFeature.OriginAndAddition(5) = Me.NumericUpDown9.Value 'D3
@@ -1254,11 +1252,15 @@ Public Class UserControl3
 
             'get the unique parameter only for the X and Y location
             If RowIndex.Count = 1 Then
+                NewUpdatedFeature.MiscProp(1) = Me.ComboBox2.SelectedItem 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Me.NumericUpDown1.Value 'X
                 NewUpdatedFeature.OriginAndAddition(1) = Me.NumericUpDown2.Value 'Y
+                NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
             Else
+                NewUpdatedFeature.MiscProp(1) = Feature2Update.MiscProp(1) 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Feature2Update.OriginAndAddition(0)
                 NewUpdatedFeature.OriginAndAddition(1) = Feature2Update.OriginAndAddition(1)
+                NewUpdatedFeature.OriginAndAddition(2) = Feature2Update.OriginAndAddition(2)
             End If
 
             'get the polyline feature and the plane location
@@ -1731,6 +1733,9 @@ Public Class UserControl3
                         Dim ViewProc As New ViewProcessor
                         Dim GetPoints As New GetPoints
 
+                        Check2Database.InitLinesDb()
+                        Check2Database.InitHoleDb()
+
                         Opts = New PromptSelectionOptions()
                         Opts.AllowDuplicates = False
 
@@ -1786,7 +1791,7 @@ Public Class UserControl3
     End Sub
 
     Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD3.Click
-        ContextMenuStrip3.Show(Me.PointToClient(Cursor.Position).X + e.X, Me.PointToClient(Cursor.Position).Y + e.Y)
+        ContextMenuStrip3.Show()
     End Sub
 
     Private Sub ByPoints_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints.Click
