@@ -8,7 +8,7 @@ Imports System.IO
 Public Class PLprocessor
     Private fw As StreamWriter
     Private FilePath As FileInfo
-    Private Directory As String
+    Private Directory, Surface As String
     Private Plane As ViewProp
     Private ProdSize() As Double
     Private TranslatedPoint, NewPoint, RelativePoint As Point3d
@@ -44,6 +44,7 @@ Public Class PLprocessor
         'prepare the plane for acquire the boundary information
         Plane = New ViewProp
         Plane = Feature.Planelocation
+        Surface = Feature.MiscProp(1)
 
         'write all the entities
         WritePL(Feature.Pline)
@@ -91,7 +92,7 @@ Public Class PLprocessor
                      "20" + vbCrLf + _
                      "0.0" + vbCrLf + _
                      "30" + vbCrLf + _
-                     vbTab + FindTranslation(Plane.ViewType))
+                     vbTab + FindTranslation(Surface))
 
         'check if the polyline is closed or not
         If PolylineTmp.Closed Then
@@ -100,7 +101,7 @@ Public Class PLprocessor
         End If
 
         'write the extrude direction
-        WriteExtrudeDirection(Plane.ViewType)
+        WriteExtrudeDirection(Surface)
 
         'write the second until the last vertex
         For i As Integer = 0 To (PolylineTmp.NumberOfVertices - 1)
@@ -125,7 +126,7 @@ Public Class PLprocessor
             'check the bulge
             If PolylineTmp.GetBulgeAt(i) <> 0 Then
                 fw.WriteLine(" 42" + vbCrLf + _
-                             Getbulge(PolylineTmp.GetBulgeAt(i)).ToString)
+                             GetBulge(PolylineTmp.GetBulgeAt(i)).ToString)
             End If
         Next
 
@@ -182,7 +183,7 @@ Public Class PLprocessor
         fw.WriteLine("100" + vbCrLf + _
                      "AcDbEntity" + vbCrLf + _
                      "8" + vbCrLf + _
-                     Plane.ViewType.ToUpper + vbCrLf + _
+                     Surface.ToUpper + vbCrLf + _
                      "100" + vbCrLf + _
                      "AcDb2dPolyline" + vbCrLf + _
                      "66" + vbCrLf + _
@@ -224,7 +225,7 @@ Public Class PLprocessor
                      "100" + vbCrLf + _
                      "AcDbEntity" + vbCrLf + _
                      "  8" + vbCrLf + _
-                     Plane.ViewType.ToUpper + vbCrLf + _
+                     Surface.ToUpper + vbCrLf + _
                      "  0" + vbCrLf + _
                      "ENDSEC" + vbCrLf + _
                      "  0" + vbCrLf + _

@@ -25,6 +25,18 @@ Public Class adskClass
 
         ' check to see if it is valid
         Try
+            If SelectionCommand.IdentifiedFeature.Count <> 0 Then
+                SelectionCommand.IdentifiedFeature.Clear()
+            End If
+
+            If SelectionCommand.UnIdentifiedFeature.Count <> 0 Then
+                SelectionCommand.UnIdentifiedFeature.Clear()
+            End If
+
+            If SelectionCommand.ProjectionView.Count <> 0 Then
+                SelectionCommand.ProjectionView.Clear()
+            End If
+
             If (myPaletteSet = Nothing) Then
                 ' create a new palette set, with a unique guid
                 myPaletteSet = New PaletteSet("Feature Recognition", New Guid("F5337918-A32C-4e7a-82A7-198F15F26662"))
@@ -32,23 +44,7 @@ Public Class adskClass
                 myPalette = New UserControl3
                 ' now add the palette to the paletteset
                 myPaletteSet.Add("Palette1", myPalette)
-
-                'initiate the workspace value
-                AppPreferences.ReadPreferences()
-
             Else
-                If Not (SelectionCommand.IdentifiedFeature.Count = 0) Then
-                    SelectionCommand.IdentifiedFeature.Clear()
-                End If
-
-                If Not (SelectionCommand.UnIdentifiedFeature.Count = 0) Then
-                    SelectionCommand.UnIdentifiedFeature.Clear()
-                End If
-
-                If Not (SelectionCommand.ProjectionView.Count = 0) Then
-                    SelectionCommand.ProjectionView.Clear()
-                End If
-
                 myPaletteSet.Dispose()
                 ' create a new palette set, with a unique guid
                 myPaletteSet = New PaletteSet("Feature Recognition", New Guid("F5337918-A32C-4e7a-82A7-198F15F26662"))
@@ -56,8 +52,10 @@ Public Class adskClass
                 myPalette = New UserControl3
                 ' now add the palette to the paletteset
                 myPaletteSet.Add("Palette1", myPalette)
-
             End If
+
+            'initiate the workspace value
+            AppPreferences.ReadPreferences()
 
         Catch ex As Exception
             MsgBox("Cannot load the feature list")

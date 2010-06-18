@@ -3292,6 +3292,8 @@ Public Class ViewProcessor
         SequenceBound = New Boolean
         SequenceHidden = New Boolean
         Check2Database = New DatabaseConn
+        Check2Database.InitLinesDb()
+        Check2Database.InitHoleDb()
 
         For Each EntTemp As Entity In GEntity
             If TypeOf EntTemp Is Line Then
