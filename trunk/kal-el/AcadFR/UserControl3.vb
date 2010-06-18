@@ -733,6 +733,8 @@ Public Class UserControl3
 
                     'fill all the machining parameters field
                     FillInTheBlank(SelectedIF)
+                    FindTheirPicture(SelectedIF(0).MiscProp(0))
+                    GraySelection(SelectedIF(0).MiscProp(0))
 
                     'create a document lock and acquire the information from the current drawing editor
                     DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
@@ -821,6 +823,8 @@ Public Class UserControl3
                 If SelectedUF.Count <> 0 Then
 
                     FillInTheBlank(SelectedUF)
+                    FindTheirPicture(SelectedUF(0).MiscProp(0))
+                    GraySelection(SelectedUF(0).MiscProp(0))
 
                     'create a document lock and acquire the information from the current drawing editor
                     DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
@@ -1411,8 +1415,6 @@ Public Class UserControl3
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
                     End If
                 Case "Square Step"
-
-
                     If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
@@ -1487,7 +1489,12 @@ Public Class UserControl3
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = True
+                Case "Cut Off", "Cutter Path"
+                    Me.NumericUpDown9.Enabled = False
+                    Me.NumericUpDown10.Enabled = False
+                    Me.NumericUpDown11.Enabled = False
                 Case Else
+                    Me.NumericUpDown7.Enabled = True
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = True
                     Me.NumericUpDown11.Enabled = True

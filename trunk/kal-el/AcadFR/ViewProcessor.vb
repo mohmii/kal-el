@@ -51,37 +51,43 @@ Public Class ViewProcessor
 
                 If adskClass.AppPreferences.MultiAnalysis = True Then
                     'set the feature property
-                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+
                     Feature.FeatureName = "Mill Candidate"
                     Feature.MiscProp(0) = "Mill Candidate"
                     If Feature.HiddenLineCount > 0 Then
-                        Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
-                        adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
-                    Else
                         Feature.MiscProp(1) = View.ViewType
+                        'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                        'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                        SelectionCommand.HiddenFeature.Add(Feature)
+                        SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                    Else
+                        UnIdentifiedCounter = UnIdentifiedCounter + 1
+                        Feature.MiscProp(1) = View.ViewType
+                        UnIdentifiedFeature.Add(Feature)
+                        TmpUnidentifiedFeature.Add(Feature)
+                        AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                     End If
 
-                    UnIdentifiedFeature.Add(Feature)
-                    TmpUnidentifiedFeature.Add(Feature)
-
-                    'OrganizeList.AddListToExisting2(Feature)
-                    AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                    
                 Else
                     If Not Feature.FeatureName = "" Then
                         'set the feature property
-                        UnIdentifiedCounter = UnIdentifiedCounter + 1
+
                         If Feature.HiddenLineCount > 0 Then
-                            Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
-                            adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
-                        Else
                             Feature.MiscProp(1) = View.ViewType
+                            'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                            'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            SelectionCommand.HiddenFeature.Add(Feature)
+                            SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                        Else
+                            UnIdentifiedCounter = UnIdentifiedCounter + 1
+                            Feature.MiscProp(1) = View.ViewType
+                            UnIdentifiedFeature.Add(Feature)
+                            TmpUnidentifiedFeature.Add(Feature)
+                            AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                         End If
 
-                        UnIdentifiedFeature.Add(Feature)
-                        TmpUnidentifiedFeature.Add(Feature)
 
-                        'OrganizeList.AddListToExisting2(Feature)
-                        AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                     End If
                 End If
             End If
@@ -129,37 +135,40 @@ Public Class ViewProcessor
 
             If Not Feature.FeatureName = "" Then
                 'set the feature property
-                UnIdentifiedCounter = UnIdentifiedCounter + 1
+
 
                 If Feature.HiddenLineCount > 0 Then
-                    Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
-                    adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
-                Else
                     Feature.MiscProp(1) = View.ViewType
+                    'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                    'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    SelectionCommand.HiddenFeature.Add(Feature)
+                    SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                Else
+                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+                    Feature.MiscProp(1) = View.ViewType
+                    UnIdentifiedFeature.Add(Feature)
+                    TmpUnidentifiedFeature.Add(Feature)
+                    AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                 End If
 
-                UnIdentifiedFeature.Add(Feature)
-                TmpUnidentifiedFeature.Add(Feature)
-
-                'OrganizeList.AddListToExisting2(Feature)
-                AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
             Else
                 'set the feature property
-                UnIdentifiedCounter = UnIdentifiedCounter + 1
+
                 Feature.FeatureName = "Mill Candidate"
                 Feature.MiscProp(0) = "Mill Candidate"
                 If Feature.HiddenLineCount > 0 Then
-                    Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
-                    adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
-                Else
                     Feature.MiscProp(1) = View.ViewType
+                    'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
+                    'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    SelectionCommand.HiddenFeature.Add(Feature)
+                    SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                Else
+                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+                    Feature.MiscProp(1) = View.ViewType
+                    UnIdentifiedFeature.Add(Feature)
+                    TmpUnidentifiedFeature.Add(Feature)
+                    AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                 End If
-
-                UnIdentifiedFeature.Add(Feature)
-                TmpUnidentifiedFeature.Add(Feature)
-
-                'OrganizeList.AddListToExisting2(Feature)
-                AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
             End If
         Next
     End Sub
