@@ -721,6 +721,8 @@ Public Class UserControl3
                 Else
                     FillComboBox1(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
                 End If
+                FindTheirPicture(SelectedIF(0).FeatureName)
+                GraySelection(SelectedIF(0).FeatureName)
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
@@ -808,6 +810,8 @@ Public Class UserControl3
                 ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) Then
                     FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
                 End If
+                FindTheirPicture(SelectedUF(0).FeatureName)
+                GraySelection(SelectedUF(0).FeatureName)
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False

@@ -38,12 +38,12 @@
   <ItemGroup>
     <Reference Include="acdbmgd, Version=16.2.54.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\AutoCAD 2006\acdbmgd.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\AutoCAD 2006\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd, Version=16.2.54.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\AutoCAD 2006\acmgd.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\AutoCAD 2006\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Toolkit, Version=2.8.5.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
