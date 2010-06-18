@@ -438,12 +438,15 @@ Public Class ViewProcessor
                     TmpLine = New Line
                     TmpLine = EntityTmp
                     AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
-                    If AngleTmp < 90 Or (AngleTmp >= 180 And AngleTmp < 270) Then
+                    If AngleTmp < 0 Then
+                        AngleTmp = AngleTmp + 360
+                    End If
+                    If (AngleTmp >= 0 And AngleTmp < 90) Or (AngleTmp >= 180 And AngleTmp < 270) Then
                         D1 = Round(LineLength(TmpLine), 3)
                         If (AngleTmp >= 180 And AngleTmp < 270) Then
                             AngleTmp = AngleTmp - 180
                         End If
-                    ElseIf AngleTmp >= 90 Or (AngleTmp >= 270 And AngleTmp < 360) Then
+                    ElseIf (AngleTmp >= 90 And AngleTmp < 180) Or (AngleTmp >= 270 And AngleTmp < 360) Then
                         D2 = Round(LineLength(TmpLine), 3)
                         If (AngleTmp >= 270 And AngleTmp < 360) Then
                             AngleTmp = AngleTmp - 180
@@ -488,6 +491,15 @@ Public Class ViewProcessor
                         D1 = Round(LineLength(TmpLine), 3)
                     End If
                     Angle = Atan2(Abs(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y), Abs(TmpLine.EndPoint.X - TmpLine.StartPoint.X)) * (180 / PI)
+
+                    If Angle < 0 Then
+                        Angle = Angle + 360
+                    End If
+
+                    If Angle >= 180 Then
+                        Angle = Angle - 180
+                    End If
+
                 ElseIf TypeOf EntityTmp Is Arc Then
                     TmpArc = New Arc
                     TmpArc = EntityTmp
@@ -912,12 +924,15 @@ Public Class ViewProcessor
                     TmpLine = New Line
                     TmpLine = EntityTmp
                     AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
-                    If AngleTmp < 90 Or (AngleTmp >= 180 And AngleTmp < 270) Then
+                    If AngleTmp < 0 Then
+                        AngleTmp = AngleTmp + 360
+                    End If
+                    If (AngleTmp >= 0 And AngleTmp < 90) Or (AngleTmp >= 180 And AngleTmp < 270) Then
                         D1 = Round(LineLength(TmpLine), 3)
                         If (AngleTmp >= 180 And AngleTmp < 270) Then
                             AngleTmp = AngleTmp - 180
                         End If
-                    ElseIf AngleTmp >= 90 Or (AngleTmp >= 270 And AngleTmp < 360) Then
+                    ElseIf (AngleTmp >= 90 And AngleTmp < 180) Or (AngleTmp >= 270 And AngleTmp < 360) Then
                         D2 = Round(LineLength(TmpLine), 3)
                         If (AngleTmp >= 270 And AngleTmp < 360) Then
                             AngleTmp = AngleTmp - 180
@@ -962,6 +977,15 @@ Public Class ViewProcessor
                         D1 = Round(LineLength(TmpLine), 3)
                     End If
                     Angle = Atan2(Abs(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y), Abs(TmpLine.EndPoint.X - TmpLine.StartPoint.X)) * (180 / PI)
+
+                    If Angle < 0 Then
+                        Angle = Angle + 360
+                    End If
+
+                    If Angle >= 180 Then
+                        Angle = Angle - 180
+                    End If
+
                 ElseIf TypeOf EntityTmp Is Arc Then
                     TmpArc = New Arc
                     TmpArc = EntityTmp

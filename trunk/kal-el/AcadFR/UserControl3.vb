@@ -1405,6 +1405,8 @@ Public Class UserControl3
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
                     End If
                 Case "Square Step"
+
+
                     If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
