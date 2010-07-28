@@ -1385,6 +1385,11 @@ Public Class UserControl3
         GraySelection(Me.ComboBox1.SelectedItem.ToString)
     End Sub
 
+    Private Sub Orientation_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDown4.ValueChanged
+        FindTheirPicture(Me.ComboBox1.SelectedItem.ToString)
+        GraySelection(Me.ComboBox1.SelectedItem.ToString)
+    End Sub
+
     Private Sub FindTheirPicture(ByVal FeatureText As String)
         Try
             Select Case FeatureText
@@ -1409,43 +1414,43 @@ Public Class UserControl3
                 Case "Cutter Path"
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutterpath.jpg")
                 Case "Square Slot"
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                    If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
                     End If
                 Case "Square Step"
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep4.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep3.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep4.bmp")
                     End If
                 Case "4-side Pocket"
                     If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\4pocket1.bmp")
                     End If
                 Case "3-side Pocket"
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket4.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket3.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket4.bmp")
                     End If
                 Case "2-side Pocket"
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                    If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket2.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket3.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
+                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket4.bmp")
                     End If
                 Case "Long Hole"
@@ -1453,13 +1458,13 @@ Public Class UserControl3
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\lnghole1.bmp")
                     End If
                 Case "Blind Slot"
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot2.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot4.bmp")
+                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "4" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
                     End If
                 Case Else
