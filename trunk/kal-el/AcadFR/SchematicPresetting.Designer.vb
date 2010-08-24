@@ -173,6 +173,7 @@ Partial Class SchematicPresetting
         Me.Controls.Add(Me.Proceed)
         Me.Name = "SchematicPresetting"
         Me.Text = "Tap Hole Schematic Pre-setting"
+        Me.TopMost = True
         CType(Me.TapHoleList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

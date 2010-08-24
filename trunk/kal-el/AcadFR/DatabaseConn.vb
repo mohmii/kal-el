@@ -186,10 +186,10 @@ Public Class DatabaseConn
             Else
                 Return False
             End If
-        Else
-            MsgBox("There are no design surface selection that has been made." + vbCrLf + vbCrLf + _
-                   "Hint: Please check the FR preferences setting for view, design surface", MsgBoxStyle.Exclamation)
-            Return False
+            'Else
+            '    MsgBox("There are no design surface selection that has been made." + vbCrLf + vbCrLf + _
+            '           "Hint: Please check the FR preferences setting for view, design surface", MsgBoxStyle.Exclamation)
+            '    Return False
         End If
 
         'SolidLines = TmpSolidLines

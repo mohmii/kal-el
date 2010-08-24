@@ -512,6 +512,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select the view that need to be erased:"
                     res = ed.GetSelection(Opts, sfilter)
 
                     If res.Status = PromptStatus.OK Then
