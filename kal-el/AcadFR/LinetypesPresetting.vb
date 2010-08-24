@@ -4,8 +4,6 @@ Imports Autodesk.AutoCAD.EditorInput
 Imports Autodesk.AutoCAD.Colors
 Imports FR
 
-
-
 Public Class LinetypesPresetting
 
     Private ProceedStat As Boolean
@@ -64,35 +62,40 @@ Public Class LinetypesPresetting
         End If
     End Sub
 
+    Private DLock As DocumentLock
+
     Private Sub LinetypesList_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LinetypesList.SelectionChanged
         'highlight jika row dipilih
         If Me.LinetypesList.Focused = True Then
+
+            'create a document lock and acquire the information from the current drawing editor
+            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+            'initiate a new connection
+            AcadConnection = New AcadConn
+
+            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+            DLock = Application.DocumentManager.MdiActiveDocument.LockDocument
             Try
-                'create a document lock and acquire the information from the current drawing editor
-                DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+                Using DLock
+                    Using AcadConnection.myT
+                        'initial setting for opening the connection for read the autocad database
+                        AcadConnection.OpenBlockTableRec()
 
-                'initiate a new connection
-                AcadConnection = New AcadConn
+                        'dummy variable for preventing clearing the current highlighted entity/entities
+                        TempId = Nothing
 
-                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                Using AcadConnection.myT
-                    'initial setting for opening the connection for read the autocad database
-                    AcadConnection.OpenBlockTableRec()
+                        'roleback each precious selected entities to their default color
+                        RollbackColor(PastEntityColor, AcadConnection.btr)
 
-                    'dummy variable for preventing clearing the current highlighted entity/entities
-                    TempId = Nothing
+                        PastEntityColor = New List(Of InitialColor)
 
-                    'roleback each precious selected entities to their default color
-                    RollbackColor(PastEntityColor, AcadConnection.btr)
+                        HighlightEntity(LinetypesList.SelectedRows(0).Cells("ObjectID").Value, AcadConnection.btr, PastEntityColor)
 
-                    PastEntityColor = New List(Of InitialColor)
-
-                    HighlightEntity(LinetypesList.SelectedRows(0).Cells("ObjectID").Value, AcadConnection.btr, PastEntityColor)
-
-                    'committing the autocad transaction
-                    AcadConnection.myT.Commit()
+                        'committing the autocad transaction
+                        AcadConnection.myT.Commit()
+                    End Using
                 End Using
-
             Catch ex As Exception
                 MsgBox(ex.ToString)
             Finally
@@ -105,56 +108,59 @@ Public Class LinetypesPresetting
     'jika Proceed diklik
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'balikin ke warna original
+
+        'create a document lock and acquire the information from the current drawing editor
+        DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+        'initiate a new connection
+        AcadConnection = New AcadConn
+
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        DLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+
         Try
-            'create a document lock and acquire the information from the current drawing editor
-            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+            Using DLock
+                Using AcadConnection.myT
+                    'initial setting for opening the connection for read the autocad database
+                    AcadConnection.OpenBlockTableRec()
 
-            'initiate a new connection
-            AcadConnection = New AcadConn
+                    If Not (PastEntityColor.Count = 0) Then
+                        RollbackColor(PastEntityColor, AcadConnection.btr)
+                        PastEntityColor.Clear()
+                    End If
+                    'committing the autocad transaction
+                    AcadConnection.myT.Commit()
 
-            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-            Using AcadConnection.myT
-                'initial setting for opening the connection for read the autocad database
-                AcadConnection.OpenBlockTableRec()
+                    'masukin ke database
+                    DBConn = New DatabaseConn
+                    For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
+                        'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
+                        If Row.Cells("Solid").FormattedValue = True Then
+                            DBConn.AddToSolidLineDatabase(Row)
+                        ElseIf Row.Cells("Hidden").FormattedValue = True Then
+                            DBConn.AddToHiddenLineDatabase(Row)
+                        ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
+                            DBConn.AddToAuxiliaryLineDatabase(Row)
+                            If adskClass.AppPreferences.RemoveUEE = True Then
+                                EraseUEE(Row, SelectionCommand.UIEntitiesAll)
+                            End If
+                        ElseIf Row.Cells("Ignore").FormattedValue = True Then
+                            If adskClass.AppPreferences.RemoveUEE = True Then
+                                EraseUEE(Row, SelectionCommand.UIEntitiesAll)
+                            End If
+                        End If
+                    Next
 
-                If Not (PastEntityColor.Count = 0) Then
-                    RollbackColor(PastEntityColor, AcadConnection.btr)
-                    PastEntityColor.Clear()
-                End If
-                'committing the autocad transaction
-                AcadConnection.myT.Commit()
+                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                    Me.Dispose()
+                End Using
             End Using
-
         Catch ex As Exception
             MsgBox(ex.ToString)
         Finally
             DrawEditor.UpdateScreen()
             AcadConnection.myT.Dispose()
         End Try
-
-        'masukin ke database
-        DBConn = New DatabaseConn
-        For Each Row As System.Windows.Forms.DataGridViewRow In Me.LinetypesList.Rows
-            'masukkan Row.Cells("Layer").Value , Row.Cells("LineType").Value , Row.Cells("Color").Value ke variabel perantara
-            If Row.Cells("Solid").FormattedValue = True Then
-                DBConn.AddToSolidLineDatabase(Row)
-            ElseIf Row.Cells("Hidden").FormattedValue = True Then
-                DBConn.AddToHiddenLineDatabase(Row)
-            ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
-                DBConn.AddToAuxiliaryLineDatabase(Row)
-                If adskClass.AppPreferences.RemoveUEE = True Then
-                    EraseUEE(Row, SelectionCommand.UIEntitiesAll)
-                End If
-            ElseIf Row.Cells("Ignore").FormattedValue = True Then
-                If adskClass.AppPreferences.RemoveUEE = True Then
-                    EraseUEE(Row, SelectionCommand.UIEntitiesAll)
-                End If
-            End If
-        Next
-
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Dispose()
-
     End Sub
 
     'method for erasing unessential entities
@@ -206,26 +212,29 @@ Public Class LinetypesPresetting
 
     'jika cancel diklik
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
+
+        'create a document lock and acquire the information from the current drawing editor
+        DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+        'initiate a new connection
+        AcadConnection = New AcadConn
+
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        DLock = Application.DocumentManager.MdiActiveDocument.LockDocument
         Try
-            'create a document lock and acquire the information from the current drawing editor
-            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+            Using DLock
+                Using AcadConnection.myT
+                    'initial setting for opening the connection for read the autocad database
+                    AcadConnection.OpenBlockTableRec()
 
-            'initiate a new connection
-            AcadConnection = New AcadConn
-
-            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-            Using AcadConnection.myT
-                'initial setting for opening the connection for read the autocad database
-                AcadConnection.OpenBlockTableRec()
-
-                If Not (PastEntityColor.Count = 0) Then
-                    RollbackColor(PastEntityColor, AcadConnection.btr)
-                    PastEntityColor.Clear()
-                End If
-                'committing the autocad transaction
-                AcadConnection.myT.Commit()
+                    If Not (PastEntityColor.Count = 0) Then
+                        RollbackColor(PastEntityColor, AcadConnection.btr)
+                        PastEntityColor.Clear()
+                    End If
+                    'committing the autocad transaction
+                    AcadConnection.myT.Commit()
+                End Using
             End Using
-
         Catch ex As Exception
             MsgBox(ex.ToString)
         Finally
@@ -248,19 +257,20 @@ Public Class LinetypesPresetting
         Dim LTCount As New Integer
         Dim LTNothingStat As Boolean = True
 
-        Using Linetypes
-            For Each Ent As Entity In UIEnt
-                AddToLinetypesTable(LTCount, Ent, Linetypes, LTNothingStat)
-                LTCount = LTCount + 1
-            Next
+        'Using Linetypes
+        For Each Ent As Entity In UIEnt
+            AddToLinetypesTable(LTCount, Ent, Linetypes, LTNothingStat)
+            LTCount = LTCount + 1
+        Next
 
-            If LTNothingStat = False And adskClass.AppPreferences.AutoRegLine = True Then
-                Linetypes.ShowDialog()
-            Else
-                Proceed_Click(Nothing, Nothing)
-            End If
+        If LTNothingStat = False And adskClass.AppPreferences.AutoRegLine = True Then
+            Linetypes.Show()
+            Linetypes.SetTopLevel(True)
+        Else
+            Proceed_Click(Nothing, Nothing)
+        End If
 
-        End Using
+        'End Using
     End Sub
 
     'add new line in LinetypesTable

@@ -9,6 +9,7 @@ Public Class SchematicPresetting
 
     Private DBConn As DatabaseConn
     Private ProceedStat As Boolean
+    Private Dlock As DocumentLock
 
     'setiap isi sel di klik
     Private Sub TapHoleList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles TapHoleList.CellContentClick
@@ -53,26 +54,29 @@ Public Class SchematicPresetting
 
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'balikin ke warna original
+
+        'create a document lock and acquire the information from the current drawing editor
+        DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+        'initiate a new connection
+        AcadConnection = New AcadConn
+
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        Dlock = Application.DocumentManager.MdiActiveDocument.LockDocument
         Try
-            'create a document lock and acquire the information from the current drawing editor
-            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+            Using Dlock
+                Using AcadConnection.myT
+                    'initial setting for opening the connection for read the autocad database
+                    AcadConnection.OpenBlockTableRec()
 
-            'initiate a new connection
-            AcadConnection = New AcadConn
-
-            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-            Using AcadConnection.myT
-                'initial setting for opening the connection for read the autocad database
-                AcadConnection.OpenBlockTableRec()
-
-                If Not (PastEntityColor.Count = 0) Then
-                    RollbackColor(PastEntityColor, AcadConnection.btr)
-                    PastEntityColor.Clear()
-                End If
-                'committing the autocad transaction
-                AcadConnection.myT.Commit()
+                    If Not (PastEntityColor.Count = 0) Then
+                        RollbackColor(PastEntityColor, AcadConnection.btr)
+                        PastEntityColor.Clear()
+                    End If
+                    'committing the autocad transaction
+                    AcadConnection.myT.Commit()
+                End Using
             End Using
-
         Catch ex As Exception
             MsgBox(ex.ToString)
         Finally
@@ -97,8 +101,6 @@ Public Class SchematicPresetting
                 End If
             End If
         Next
-
-        
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Dispose()
@@ -164,26 +166,29 @@ Public Class SchematicPresetting
 
     'jika cancel diklik
     Private Sub Cancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel.Click
+
+        'create a document lock and acquire the information from the current drawing editor
+        DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+        'initiate a new connection
+        AcadConnection = New AcadConn
+
+        AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+        Dlock = Application.DocumentManager.MdiActiveDocument.LockDocument
         Try
-            'create a document lock and acquire the information from the current drawing editor
-            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+            Using Dlock
+                Using AcadConnection.myT
+                    'initial setting for opening the connection for read the autocad database
+                    AcadConnection.OpenBlockTableRec()
 
-            'initiate a new connection
-            AcadConnection = New AcadConn
-
-            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-            Using AcadConnection.myT
-                'initial setting for opening the connection for read the autocad database
-                AcadConnection.OpenBlockTableRec()
-
-                If Not (PastEntityColor.Count = 0) Then
-                    RollbackColor(PastEntityColor, AcadConnection.btr)
-                    PastEntityColor.Clear()
-                End If
-                'committing the autocad transaction
-                AcadConnection.myT.Commit()
+                    If Not (PastEntityColor.Count = 0) Then
+                        RollbackColor(PastEntityColor, AcadConnection.btr)
+                        PastEntityColor.Clear()
+                    End If
+                    'committing the autocad transaction
+                    AcadConnection.myT.Commit()
+                End Using
             End Using
-
         Catch ex As Exception
             MsgBox(ex.ToString)
         Finally
@@ -206,18 +211,19 @@ Public Class SchematicPresetting
         Dim SchemCount As New Integer
         Dim LTNothingStat As Boolean = True
 
-        Using Schematic
-            For Each result As IEnumerable(Of Circle) In UI2C
-                AddToSchematicTable(SchemCount, result, Schematic, LTNothingStat)
-                SchemCount = SchemCount + 1
-            Next
-            If LTNothingStat = False And adskClass.AppPreferences.AutoRegSchem = True Then
-                Schematic.ShowDialog()
-            Else
-                Proceed_Click(Nothing, Nothing)
-            End If
+        'Using Schematic
+        For Each result As IEnumerable(Of Circle) In UI2C
+            AddToSchematicTable(SchemCount, result, Schematic, LTNothingStat)
+            SchemCount = SchemCount + 1
+        Next
+        If LTNothingStat = False And adskClass.AppPreferences.AutoRegSchem = True Then
+            Schematic.Show()
+            Schematic.SetTopLevel(True)
+        Else
+            Proceed_Click(Nothing, Nothing)
+        End If
 
-        End Using
+        'End Using
     End Sub
 
     'add new line in Schematic Table

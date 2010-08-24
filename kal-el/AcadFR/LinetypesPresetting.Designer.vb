@@ -25,8 +25,6 @@ Partial Class LinetypesPresetting
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.LinetypesList = New System.Windows.Forms.DataGridView
-        Me.Proceed = New System.Windows.Forms.Button
-        Me.Cancel = New System.Windows.Forms.Button
         Me.Number = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ObjectID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Layer = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -36,6 +34,8 @@ Partial Class LinetypesPresetting
         Me.Hidden = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.Auxiliary = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.Ignore = New System.Windows.Forms.DataGridViewCheckBoxColumn
+        Me.Proceed = New System.Windows.Forms.Button
+        Me.Cancel = New System.Windows.Forms.Button
         CType(Me.LinetypesList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -67,25 +67,6 @@ Partial Class LinetypesPresetting
         Me.LinetypesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.LinetypesList.Size = New System.Drawing.Size(619, 169)
         Me.LinetypesList.TabIndex = 1
-        '
-        'Proceed
-        '
-        Me.Proceed.Enabled = False
-        Me.Proceed.Location = New System.Drawing.Point(475, 187)
-        Me.Proceed.Name = "Proceed"
-        Me.Proceed.Size = New System.Drawing.Size(75, 23)
-        Me.Proceed.TabIndex = 2
-        Me.Proceed.Text = "Proceed >>"
-        Me.Proceed.UseVisualStyleBackColor = True
-        '
-        'Cancel
-        '
-        Me.Cancel.Location = New System.Drawing.Point(556, 187)
-        Me.Cancel.Name = "Cancel"
-        Me.Cancel.Size = New System.Drawing.Size(75, 23)
-        Me.Cancel.TabIndex = 3
-        Me.Cancel.Text = "Cancel"
-        Me.Cancel.UseVisualStyleBackColor = True
         '
         'Number
         '
@@ -146,6 +127,25 @@ Partial Class LinetypesPresetting
         Me.Ignore.Name = "Ignore"
         Me.Ignore.Width = 60
         '
+        'Proceed
+        '
+        Me.Proceed.Enabled = False
+        Me.Proceed.Location = New System.Drawing.Point(475, 187)
+        Me.Proceed.Name = "Proceed"
+        Me.Proceed.Size = New System.Drawing.Size(75, 23)
+        Me.Proceed.TabIndex = 2
+        Me.Proceed.Text = "Proceed >>"
+        Me.Proceed.UseVisualStyleBackColor = True
+        '
+        'Cancel
+        '
+        Me.Cancel.Location = New System.Drawing.Point(556, 187)
+        Me.Cancel.Name = "Cancel"
+        Me.Cancel.Size = New System.Drawing.Size(75, 23)
+        Me.Cancel.TabIndex = 3
+        Me.Cancel.Text = "Cancel"
+        Me.Cancel.UseVisualStyleBackColor = True
+        '
         'LinetypesPresetting
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -158,6 +158,7 @@ Partial Class LinetypesPresetting
         Me.Controls.Add(Me.LinetypesList)
         Me.Name = "LinetypesPresetting"
         Me.Text = "Linetypes Pre-setting"
+        Me.TopMost = True
         CType(Me.LinetypesList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 

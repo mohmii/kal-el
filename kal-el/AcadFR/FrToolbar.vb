@@ -47,9 +47,11 @@ Public Class FrToolbarApp
         Dim tbBut2 As Autodesk.AutoCAD.Interop.AcadToolbarItem = hwTb.AddToolbarButton(2, "Feature Database", "FR - Feature Database", "_loadform ")
         tbBut2.SetBitmaps(ModulePath + "\Images\app3.bmp", ModulePath + "\Images\app3.bmp")
 
-        'Dim tbBut3 As Autodesk.AutoCAD.Interop.AcadToolbarItem = hwTb.AddToolbarButton(3, "Feature Database", "FR - Feature Database", "_tesbreak ")
-        'tbBut3.SetBitmaps(ModulePath + "\Images\app3.bmp", ModulePath + "\Images\app3.bmp")
-        
+        Dim tbBut3 As Autodesk.AutoCAD.Interop.AcadToolbarItem = hwTb.AddToolbarButton(3, "Entity Registration", "FR - Entity Registration", "_regent ")
+        tbBut3.SetBitmaps(ModulePath + "\Images\app4.bmp", ModulePath + "\Images\app4.bmp")
+
+        adskClass.AppPreferences.ReadPreferences()
+
     End Sub
 
     Public Sub Terminate() Implements Autodesk.AutoCAD.Runtime.IExtensionApplication.Terminate
