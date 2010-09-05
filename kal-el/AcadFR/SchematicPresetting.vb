@@ -97,7 +97,7 @@ Public Class SchematicPresetting
                 DBConn.AddToBottomTapLineDatabase(Row)
             ElseIf Row.Cells("Ignore").FormattedValue = True Then
                 If adskClass.AppPreferences.RemoveUEE = True Then
-                    EraseUEE(Row, SelectionCommand.UI2CircListAll)
+                    EraseUEE(Row, adskClass.UI2CircListAll)
                 End If
             End If
         Next

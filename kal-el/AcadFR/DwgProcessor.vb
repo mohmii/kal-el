@@ -12,16 +12,6 @@ Imports FR
 
 Public Class DwgProcessor
 
-    'used for registering new line
-    Public Sub LinePreset()
-
-    End Sub
-
-    'used for registering new schematic
-    Public Sub SchemPreset()
-
-    End Sub
-
     Private PointStatus As Boolean = True
     Private PointCol As Point3dCollection
     Private PointToEdit As Point3d
@@ -191,6 +181,7 @@ Public Class DwgProcessor
 
         End While
     End Sub
+
     'variable for breaking lines
     Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
         If Math.Abs(point1.X - point2.X) <= adskClass.AppPreferences.ToleranceValues _

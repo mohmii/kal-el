@@ -142,11 +142,11 @@ Public Class LinetypesPresetting
                         ElseIf Row.Cells("Auxiliary").FormattedValue = True Then
                             DBConn.AddToAuxiliaryLineDatabase(Row)
                             If adskClass.AppPreferences.RemoveUEE = True Then
-                                EraseUEE(Row, SelectionCommand.UIEntitiesAll)
+                                EraseUEE(Row, adskClass.UIEntitiesAll)
                             End If
                         ElseIf Row.Cells("Ignore").FormattedValue = True Then
                             If adskClass.AppPreferences.RemoveUEE = True Then
-                                EraseUEE(Row, SelectionCommand.UIEntitiesAll)
+                                EraseUEE(Row, adskClass.UIEntitiesAll)
                             End If
                         End If
                     Next
@@ -181,12 +181,12 @@ Public Class LinetypesPresetting
                     If UnessentialEntity.Linetype.ToString.ToLower = "bylayer" Then
                         If TableRow.Cells("Linetype").Value.ToString.ToLower = "null" Then
                             UEEIndex.Add(UIEntAll.IndexOf(UnessentialEntity))
-                            UEEObjIDIndex.Add(SelectionCommand.ObjIDsClassify.IndexOf(UnessentialEntity.ObjectId))
+                            UEEObjIDIndex.Add(adskClass.ObjIDsClassify.IndexOf(UnessentialEntity.ObjectId))
                         End If
                     Else
                         If UnessentialEntity.Linetype.ToString.ToLower = TableRow.Cells("Linetype").Value.ToString.ToLower Then
                             UEEIndex.Add(UIEntAll.IndexOf(UnessentialEntity))
-                            UEEObjIDIndex.Add(SelectionCommand.ObjIDsClassify.IndexOf(UnessentialEntity.ObjectId))
+                            UEEObjIDIndex.Add(adskClass.ObjIDsClassify.IndexOf(UnessentialEntity.ObjectId))
                         End If
                     End If
                 End If
@@ -201,7 +201,7 @@ Public Class LinetypesPresetting
 
             UEEObjIDIndex.Sort()
             For i As Integer = (UEEObjIDIndex.Count - 1) To 0 Step (-1)
-                SelectionCommand.ObjIDsClassify.RemoveAt(UEEObjIDIndex(i))
+                adskClass.ObjIDsClassify.RemoveAt(UEEObjIDIndex(i))
             Next
 
             AcadConnection.myT.Commit()
