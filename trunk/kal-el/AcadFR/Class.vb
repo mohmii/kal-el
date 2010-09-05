@@ -1,8 +1,9 @@
-Imports Autodesk.AutoCAD.Runtime
 Imports Autodesk.AutoCAD.ApplicationServices
-Imports Autodesk.AutoCAD.EditorInput
 Imports Autodesk.AutoCAD.DatabaseServices
+Imports Autodesk.AutoCAD.EditorInput
+Imports Autodesk.AutoCAD.Runtime
 Imports Autodesk.AutoCAD.Geometry
+Imports Autodesk.AutoCAD.Interop
 Imports Autodesk.AutoCAD.Windows
 Imports System.Windows
 Imports System.Math
@@ -112,9 +113,13 @@ Public Class adskClass
     Private TmpSetView As setView
     Private LineTypes As LinetypesPresetting
     Private Schematic As SchematicPresetting
+    Private zoom As AcadApplication
 
     <CommandMethod("regent")> _
     Public Sub RegEnt()
+
+        zoom = Application.AcadApplication
+        zoom.ZoomAll()
         ed = Application.DocumentManager.MdiActiveDocument.Editor
 
         'create filter with only processing the surface define in the preferences
@@ -296,7 +301,7 @@ Public Class adskClass
                     Entity.Erase()
                 Else
                     'add circle, line and arc entities
-                    If DbConnector.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                    If DbConnector.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) And Not (TypeOf (Entity) Is DBText) Then
                         If TypeOf (Entity) Is Circle Then
                             CircEntities.Add(Entity)
                         ElseIf TypeOf (Entity) Is Line Then

@@ -1803,11 +1803,195 @@ Public Class UserControl3
         End If
     End Sub
 
+    Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD1.Click
+        ContextMenuStrip4.Show()
+    End Sub
+
+    Private Sub ByPoints1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints1.Click
+        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D1") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim PointRef1 As New Point3d
+                Dim PointRef2 As New Point3d
+                Dim PrPointResult As PromptPointResult
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown7.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub ByEntity1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity1.Click
+        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D1") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim LineTmp As New Line
+                Dim CorrectSelectionStat As Boolean = False
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
+
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
+
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown7.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
+                                Else
+                                    MsgBox("Please select line entity")
+                                End If
+                            Else
+                                MsgBox("Please select just 1 entity")
+                            End If
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+
+    Private Sub AddD2_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD2.Click
+        ContextMenuStrip5.Show()
+    End Sub
+
+    Private Sub ByPoints2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints2.Click
+        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D2") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim PointRef1 As New Point3d
+                Dim PointRef2 As New Point3d
+                Dim PrPointResult As PromptPointResult
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown8.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub ByEntity2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity2.Click
+        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D2") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim LineTmp As New Line
+                Dim CorrectSelectionStat As Boolean = False
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
+
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
+
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown8.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
+                                Else
+                                    MsgBox("Please select line entity")
+                                End If
+                            Else
+                                MsgBox("Please select just 1 entity")
+                            End If
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+
     Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD3.Click
         ContextMenuStrip3.Show()
     End Sub
 
-    Private Sub ByPoints_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints.Click
+    Private Sub ByPoints3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints3.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
             Try
                 zoom = Application.AcadApplication
@@ -1835,7 +2019,7 @@ Public Class UserControl3
 
                     AcadConnection.myT.Commit()
                 End Using
-                
+
             Catch ex As Exception
                 MsgBox(ex.ToString)
             Finally
@@ -1844,7 +2028,7 @@ Public Class UserControl3
         End If
     End Sub
 
-    Private Sub ByEntity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity.Click
+    Private Sub ByEntity3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity3.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
             Try
                 zoom = Application.AcadApplication
@@ -1855,7 +2039,7 @@ Public Class UserControl3
                 Dim CorrectSelectionStat As Boolean = False
 
                 Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                
+
                 AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
                 Using AcadConnection.myT
 
@@ -1874,6 +2058,190 @@ Public Class UserControl3
                                 If TypeOf Entity Is Line Then
                                     LineTmp = Entity
                                     Me.NumericUpDown9.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
+                                Else
+                                    MsgBox("Please select line entity")
+                                End If
+                            Else
+                                MsgBox("Please select just 1 entity")
+                            End If
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+
+    Private Sub AddD4_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD4.Click
+        ContextMenuStrip6.Show()
+    End Sub
+
+    Private Sub ByPoints4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints4.Click
+        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D4") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim PointRef1 As New Point3d
+                Dim PointRef2 As New Point3d
+                Dim PrPointResult As PromptPointResult
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown10.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub ByEntity4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity4.Click
+        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D4") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim LineTmp As New Line
+                Dim CorrectSelectionStat As Boolean = False
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
+
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
+
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown10.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
+                                Else
+                                    MsgBox("Please select line entity")
+                                End If
+                            Else
+                                MsgBox("Please select just 1 entity")
+                            End If
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+
+    Private Sub AddChamfer_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddChamfer.Click
+        ContextMenuStrip7.Show()
+    End Sub
+
+    Private Sub ByPointsCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsCham.Click
+        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add Chamfer") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim PointRef1 As New Point3d
+                Dim PointRef2 As New Point3d
+                Dim PrPointResult As PromptPointResult
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown5.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub ByEntityCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityCham.Click
+        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add Chamfer") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim LineTmp As New Line
+                Dim CorrectSelectionStat As Boolean = False
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
+
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
+
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown5.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
                                     MsgBox("Please select line entity")
@@ -1916,6 +2284,13 @@ Public Class UserControl3
         Return Sqrt(((point1.X - point2.X) ^ 2) + ((point1.Y - point2.Y) ^ 2))
     End Function
 
+    Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddD3.Click, AddD1.Click, AddD2.Click, AddD4.Click
+
+    End Sub
+
+    Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddD1.Click, AddChamfer.Click
+
+    End Sub
 End Class
 
 
