@@ -1709,7 +1709,44 @@ Public Class UserControl3
         End If
     End Sub
 
+
+    Private Sub RollBackEntitiesColor()
+        Try
+            AcadConnection = New AcadConn
+
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+                    AcadConnection.OpenBlockTableRec()
+                    If Not (PastEntityColor.Count = 0) Then
+                        RollBackColor(PastEntityColor, AcadConnection.btr)
+                        PastEntityColor.Clear()
+                    ElseIf Not (PastEntityColor2.Count = 0) Then
+                        RollBackColor(PastEntityColor2, AcadConnection.btr)
+                        PastEntityColor2.Clear()
+                    End If
+                    AcadConnection.myT.Commit()
+                End Using
+                DrawEditor.UpdateScreen()
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
     Private Sub AddManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddManual.Click
+        'roll back and clear all selection
+        RollBackEntitiesColor()
+        Me.IdentifiedFeature.ClearSelection()
+        Me.UnidentifiedFeature.ClearSelection()
+
         If MsgBox("Please select the feature", MsgBoxStyle.OkCancel, "Add Feature Manually") = MsgBoxResult.Ok Then
             zoom = Application.AcadApplication
             zoom.ZoomAll()
@@ -1719,19 +1756,12 @@ Public Class UserControl3
 
                 Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
                 DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
-                DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
 
                 Using DocLock
                     AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
                     Using AcadConnection.myT
+
                         AcadConnection.OpenBlockTableRec()
-                        If Not (PastEntityColor.Count = 0) Then
-                            RollBackColor(PastEntityColor, AcadConnection.btr)
-                            PastEntityColor.Clear()
-                        ElseIf Not (PastEntityColor2.Count = 0) Then
-                            RollBackColor(PastEntityColor2, AcadConnection.btr)
-                            PastEntityColor2.Clear()
-                        End If
 
                         Dim Check2Database As New DatabaseConn
                         Dim CircEntAdd As New List(Of Circle)
@@ -1793,7 +1823,6 @@ Public Class UserControl3
 
                         AcadConnection.myT.Commit()
                     End Using
-                    DrawEditor.UpdateScreen()
                 End Using
             Catch ex As Exception
                 MsgBox(ex.ToString)
@@ -1804,7 +1833,7 @@ Public Class UserControl3
     End Sub
 
     Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD1.Click
-        ContextMenuStrip4.Show()
+        ContextMenuStrip4.Show(Me.AddD1, Me.AddD1.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints1.Click
@@ -1896,7 +1925,7 @@ Public Class UserControl3
 
 
     Private Sub AddD2_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD2.Click
-        ContextMenuStrip5.Show()
+        ContextMenuStrip5.Show(Me.AddD2, Me.AddD2.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints2.Click
@@ -1988,7 +2017,7 @@ Public Class UserControl3
 
 
     Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD3.Click
-        ContextMenuStrip3.Show()
+        ContextMenuStrip3.Show(Me.AddD3, Me.AddD3.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints3.Click
@@ -2080,7 +2109,7 @@ Public Class UserControl3
 
 
     Private Sub AddD4_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD4.Click
-        ContextMenuStrip6.Show()
+        ContextMenuStrip6.Show(Me.AddD4, Me.AddD4.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints4.Click
@@ -2172,7 +2201,7 @@ Public Class UserControl3
 
 
     Private Sub AddChamfer_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddChamfer.Click
-        ContextMenuStrip7.Show()
+        ContextMenuStrip7.Show(Me.AddChamfer, Me.AddChamfer.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPointsCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsCham.Click
@@ -2262,6 +2291,99 @@ Public Class UserControl3
         End If
     End Sub
 
+
+    Private Sub AddW_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddW.Click
+        ContextMenuStrip8.Show(Me.AddW, Me.AddW.PointToClient(Windows.Forms.Cursor.Position))
+    End Sub
+
+    Private Sub ByPointsW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsW.Click
+        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add W") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim PointRef1 As New Point3d
+                Dim PointRef2 As New Point3d
+                Dim PrPointResult As PromptPointResult
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown3.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+    Private Sub ByEntityW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityW.Click
+        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add W") = MsgBoxResult.Ok Then
+            Try
+                zoom = Application.AcadApplication
+                zoom.ZoomAll()
+
+                AcadConnection = New AcadConn
+                Dim LineTmp As New Line
+                Dim CorrectSelectionStat As Boolean = False
+
+                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
+
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
+
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown3.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
+                                Else
+                                    MsgBox("Please select line entity")
+                                End If
+                            Else
+                                MsgBox("Please select just 1 entity")
+                            End If
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
+                End Using
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
+
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
         If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
             Return False
@@ -2284,13 +2406,6 @@ Public Class UserControl3
         Return Sqrt(((point1.X - point2.X) ^ 2) + ((point1.Y - point2.Y) ^ 2))
     End Function
 
-    Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddD3.Click, AddD1.Click, AddD2.Click, AddD4.Click
-
-    End Sub
-
-    Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddD1.Click, AddChamfer.Click
-
-    End Sub
 End Class
 
 

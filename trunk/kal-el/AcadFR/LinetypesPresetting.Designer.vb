@@ -25,6 +25,8 @@ Partial Class LinetypesPresetting
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.LinetypesList = New System.Windows.Forms.DataGridView
+        Me.Proceed = New System.Windows.Forms.Button
+        Me.Cancel = New System.Windows.Forms.Button
         Me.Number = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.ObjectID = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Layer = New System.Windows.Forms.DataGridViewTextBoxColumn
@@ -34,8 +36,6 @@ Partial Class LinetypesPresetting
         Me.Hidden = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.Auxiliary = New System.Windows.Forms.DataGridViewCheckBoxColumn
         Me.Ignore = New System.Windows.Forms.DataGridViewCheckBoxColumn
-        Me.Proceed = New System.Windows.Forms.Button
-        Me.Cancel = New System.Windows.Forms.Button
         CType(Me.LinetypesList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -68,65 +68,6 @@ Partial Class LinetypesPresetting
         Me.LinetypesList.Size = New System.Drawing.Size(619, 169)
         Me.LinetypesList.TabIndex = 1
         '
-        'Number
-        '
-        Me.Number.HeaderText = "No"
-        Me.Number.Name = "Number"
-        Me.Number.ReadOnly = True
-        Me.Number.Width = 50
-        '
-        'ObjectID
-        '
-        Me.ObjectID.HeaderText = "ObjectID"
-        Me.ObjectID.Name = "ObjectID"
-        Me.ObjectID.Visible = False
-        '
-        'Layer
-        '
-        Me.Layer.HeaderText = "Layer"
-        Me.Layer.Name = "Layer"
-        Me.Layer.ReadOnly = True
-        Me.Layer.Width = 75
-        '
-        'LineType
-        '
-        Me.LineType.HeaderText = "Line Type"
-        Me.LineType.Name = "LineType"
-        Me.LineType.ReadOnly = True
-        Me.LineType.Width = 150
-        '
-        'Color
-        '
-        Me.Color.HeaderText = "Color"
-        Me.Color.Name = "Color"
-        Me.Color.ReadOnly = True
-        '
-        'Solid
-        '
-        Me.Solid.HeaderText = "Solid"
-        Me.Solid.Name = "Solid"
-        Me.Solid.Width = 60
-        '
-        'Hidden
-        '
-        Me.Hidden.HeaderText = "Hidden"
-        Me.Hidden.Name = "Hidden"
-        Me.Hidden.Width = 60
-        '
-        'Auxiliary
-        '
-        Me.Auxiliary.HeaderText = "Auxiliary"
-        Me.Auxiliary.Name = "Auxiliary"
-        Me.Auxiliary.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Auxiliary.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.Auxiliary.Width = 60
-        '
-        'Ignore
-        '
-        Me.Ignore.HeaderText = "Nothing"
-        Me.Ignore.Name = "Ignore"
-        Me.Ignore.Width = 60
-        '
         'Proceed
         '
         Me.Proceed.Enabled = False
@@ -145,6 +86,65 @@ Partial Class LinetypesPresetting
         Me.Cancel.TabIndex = 3
         Me.Cancel.Text = "Cancel"
         Me.Cancel.UseVisualStyleBackColor = True
+        '
+        'Number
+        '
+        Me.Number.HeaderText = "No"
+        Me.Number.Name = "Number"
+        Me.Number.ReadOnly = True
+        Me.Number.Width = 50
+        '
+        'ObjectID
+        '
+        Me.ObjectID.HeaderText = "ObjectID"
+        Me.ObjectID.Name = "ObjectID"
+        Me.ObjectID.Visible = False
+        '
+        'Layer
+        '
+        Me.Layer.HeaderText = "画層"
+        Me.Layer.Name = "Layer"
+        Me.Layer.ReadOnly = True
+        Me.Layer.Width = 75
+        '
+        'LineType
+        '
+        Me.LineType.HeaderText = "線種"
+        Me.LineType.Name = "LineType"
+        Me.LineType.ReadOnly = True
+        Me.LineType.Width = 150
+        '
+        'Color
+        '
+        Me.Color.HeaderText = "色"
+        Me.Color.Name = "Color"
+        Me.Color.ReadOnly = True
+        '
+        'Solid
+        '
+        Me.Solid.HeaderText = "物体線"
+        Me.Solid.Name = "Solid"
+        Me.Solid.Width = 60
+        '
+        'Hidden
+        '
+        Me.Hidden.HeaderText = "隠れ線"
+        Me.Hidden.Name = "Hidden"
+        Me.Hidden.Width = 60
+        '
+        'Auxiliary
+        '
+        Me.Auxiliary.HeaderText = "補助線"
+        Me.Auxiliary.Name = "Auxiliary"
+        Me.Auxiliary.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Auxiliary.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.Auxiliary.Width = 60
+        '
+        'Ignore
+        '
+        Me.Ignore.HeaderText = "不用線"
+        Me.Ignore.Name = "Ignore"
+        Me.Ignore.Width = 60
         '
         'LinetypesPresetting
         '

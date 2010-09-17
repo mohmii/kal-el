@@ -157,7 +157,7 @@ Partial Class SchematicPresetting
         '
         'Ignore
         '
-        Me.Ignore.HeaderText = "Nothing"
+        Me.Ignore.HeaderText = "不用線"
         Me.Ignore.Name = "Ignore"
         Me.Ignore.Width = 50
         '
