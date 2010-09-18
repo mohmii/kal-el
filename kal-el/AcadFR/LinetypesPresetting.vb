@@ -263,12 +263,15 @@ Public Class LinetypesPresetting
             LTCount = LTCount + 1
         Next
 
-        If LTNothingStat = False And adskClass.AppPreferences.AutoRegLine = True Then
-            Linetypes.Show()
-            Linetypes.SetTopLevel(True)
-        Else
-            Proceed_Click(Nothing, Nothing)
-        End If
+        Linetypes.Show()
+        Linetypes.SetTopLevel(True)
+
+        'If LTNothingStat = False And adskClass.AppPreferences.AutoRegLine = True Then
+        '    Linetypes.Show()
+        '    Linetypes.SetTopLevel(True)
+        'Else
+        '    Proceed_Click(Nothing, Nothing)
+        'End If
 
         'End Using
     End Sub
@@ -347,7 +350,7 @@ Public Class LinetypesPresetting
         Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
 
         'create a loop checking for each objectid id autocad database
-        For Each idTmp As Autodesk.AutoCAD.DatabaseServices.ObjectId In BlockTableRecInstances
+        For Each idTmp As ObjectId In BlockTableRecInstances
             'acquire the entity from the object id
             Entity = AcadConnection.myT.GetObject(idTmp, OpenMode.ForWrite)
 
@@ -360,11 +363,11 @@ Public Class LinetypesPresetting
                 PastEntColor.Add(EntityColor)
 
                 'change the color and the lineweight for making the highlights
-                Entity.Color = Autodesk.AutoCAD.Colors.Color.FromColorIndex(ColorMethod.ByColor, 10)
+                Entity.Color = Autodesk.AutoCAD.Colors.Color.FromColorIndex(ColorMethod.ByColor, 30)
 
                 'save the changed entity id
                 TempId = Entity.Id.ToString
-
+                Exit For
             End If
         Next
     End Sub
