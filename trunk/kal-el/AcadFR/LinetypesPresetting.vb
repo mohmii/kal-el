@@ -2,6 +2,7 @@
 Imports Autodesk.AutoCAD.DatabaseServices
 Imports Autodesk.AutoCAD.EditorInput
 Imports Autodesk.AutoCAD.Colors
+Imports Autodesk.AutoCAD.Interop
 Imports FR
 
 Public Class LinetypesPresetting
@@ -342,6 +343,9 @@ Public Class LinetypesPresetting
 
     End Sub
 
+
+    Private zoom As AcadApplication
+
     'method for highlighting the selected entities
     Private Sub HighlightEntity(ByVal ObjectIdTmp As ObjectId, _
                                 ByVal BlockTableRecInstances As BlockTableRecord, _
@@ -364,6 +368,12 @@ Public Class LinetypesPresetting
 
                 'change the color and the lineweight for making the highlights
                 Entity.Color = Autodesk.AutoCAD.Colors.Color.FromColorIndex(ColorMethod.ByColor, 30)
+
+                'zoom entity
+                zoom = Application.AcadApplication
+                Dim Min() As Double = New Double() {Entity.GeomExtents.MinPoint.X - 100, Entity.GeomExtents.MinPoint.Y - 100, 0}
+                Dim Max() As Double = New Double() {Entity.GeomExtents.MaxPoint.X + 100, Entity.GeomExtents.MaxPoint.Y + 100, 0}
+                zoom.ZoomWindow(Min, Max)
 
                 'save the changed entity id
                 TempId = Entity.Id.ToString
