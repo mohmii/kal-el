@@ -2333,7 +2333,9 @@ Public Class UserControl3
                     PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
                     PointRef2 = PrPointResult.Value
 
-                    Me.NumericUpDown3.Value = PointDistance(PointRef1, PointRef2)
+                    If PointDistance(PointRef1, PointRef2) > 0 Then
+                        Me.NumericUpDown3.Value = -1 * PointDistance(PointRef1, PointRef2)
+                    End If
 
                     AcadConnection.myT.Commit()
                 End Using
