@@ -1241,6 +1241,7 @@ Public Class UserControl3
             NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
             NewUpdatedFeature.MiscProp(3) = Me.NumericUpDown5.Value 'chamfer
             NewUpdatedFeature.MiscProp(4) = Me.NumericUpDown6.Value 'quality
+            NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
             NewUpdatedFeature.OriginAndAddition(3) = Me.NumericUpDown7.Value 'D1
             NewUpdatedFeature.OriginAndAddition(4) = Me.NumericUpDown8.Value 'D2
             NewUpdatedFeature.OriginAndAddition(5) = Me.NumericUpDown9.Value 'D3
@@ -1260,12 +1261,12 @@ Public Class UserControl3
                 NewUpdatedFeature.MiscProp(1) = Me.ComboBox2.SelectedItem 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Me.NumericUpDown1.Value 'X
                 NewUpdatedFeature.OriginAndAddition(1) = Me.NumericUpDown2.Value 'Y
-                NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
+                'NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
             Else
                 NewUpdatedFeature.MiscProp(1) = Feature2Update.MiscProp(1) 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Feature2Update.OriginAndAddition(0)
                 NewUpdatedFeature.OriginAndAddition(1) = Feature2Update.OriginAndAddition(1)
-                NewUpdatedFeature.OriginAndAddition(2) = Feature2Update.OriginAndAddition(2)
+                'NewUpdatedFeature.OriginAndAddition(2) = Feature2Update.OriginAndAddition(2)
             End If
 
             'get the polyline feature and the plane location
@@ -1480,27 +1481,38 @@ Public Class UserControl3
         Try
             Select Case FeatureText
                 Case "リーマ穴", "ドリル穴", "底付き穴", "ボーリング穴", "貫通穴" 'Ream, Drill, BlindBore, Boring, ThroughBore
+                    Me.AddD3.Enabled = False
+                    Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = False
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
                 Case "Square Slot", "Square Step", "Blind Slot", "円形溝" 'Ring
+                    Me.AddD3.Enabled = True
+                    Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
                 Case "3-side Pocket", "2-side Pocket", "タップ穴", "ＰＴタップ穴", "段付きボルト穴" 'Tap, Tap PT, SunkBolt
+                    Me.AddD3.Enabled = True
+                    Me.AddD4.Enabled = True
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = True
                     Me.NumericUpDown11.Enabled = False
                 Case "Long Hole"
+                    Me.AddD3.Enabled = True
+                    Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = True
                 Case "Cut Off", "Cutter Path"
+                    Me.AddD3.Enabled = False
+                    Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = False
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
                 Case Else
-                    Me.NumericUpDown7.Enabled = True
+                    Me.AddD3.Enabled = True
+                    Me.AddD4.Enabled = True
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = True
                     Me.NumericUpDown11.Enabled = True
@@ -1650,6 +1662,7 @@ Public Class UserControl3
             'Me.ComboBox1.Items.Add("Not A Feature")
         Else
             FillComboBox1("Mill Candidate")
+
             'Me.ComboBox1.Items.Add("Not A Feature")
             'Me.ComboBox1.Items.Add("Other Feature")
         End If
