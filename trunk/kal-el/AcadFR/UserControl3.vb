@@ -1761,9 +1761,6 @@ Public Class UserControl3
         Me.UnidentifiedFeature.ClearSelection()
 
         If MsgBox("Please select the feature", MsgBoxStyle.OkCancel, "Add Feature Manually") = MsgBoxResult.Ok Then
-            zoom = Application.AcadApplication
-            zoom.ZoomAll()
-
             Try
                 AcadConnection = New AcadConn
 
@@ -1845,16 +1842,14 @@ Public Class UserControl3
         End If
     End Sub
 
+    'prosedur berkaitan dengan add D1
     Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD1.Click
-        ContextMenuStrip4.Show(Me.AddD1, Me.AddD1.PointToClient(Windows.Forms.Cursor.Position))
+        ContextMenuAddD1.Show(Me.AddD1, Me.AddD1.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints1.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D1") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim PointRef1 As New Point3d
                 Dim PointRef2 As New Point3d
@@ -1889,9 +1884,6 @@ Public Class UserControl3
     Private Sub ByEntity1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity1.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D1") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim LineTmp As New Line
                 Dim CorrectSelectionStat As Boolean = False
@@ -1936,17 +1928,14 @@ Public Class UserControl3
         End If
     End Sub
 
-
+    'prosedur berkaitan dengan add D2
     Private Sub AddD2_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD2.Click
-        ContextMenuStrip5.Show(Me.AddD2, Me.AddD2.PointToClient(Windows.Forms.Cursor.Position))
+        ContextMenuAddD2.Show(Me.AddD2, Me.AddD2.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints2.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D2") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim PointRef1 As New Point3d
                 Dim PointRef2 As New Point3d
@@ -1981,9 +1970,6 @@ Public Class UserControl3
     Private Sub ByEntity2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity2.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D2") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim LineTmp As New Line
                 Dim CorrectSelectionStat As Boolean = False
@@ -2028,17 +2014,14 @@ Public Class UserControl3
         End If
     End Sub
 
-
+    'prosedur berkaitan dengan add D3
     Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD3.Click
-        ContextMenuStrip3.Show(Me.AddD3, Me.AddD3.PointToClient(Windows.Forms.Cursor.Position))
+        ContextMenuAddD3.Show(Me.AddD3, Me.AddD3.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints3.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim PointRef1 As New Point3d
                 Dim PointRef2 As New Point3d
@@ -2073,9 +2056,6 @@ Public Class UserControl3
     Private Sub ByEntity3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity3.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim LineTmp As New Line
                 Dim CorrectSelectionStat As Boolean = False
@@ -2120,17 +2100,14 @@ Public Class UserControl3
         End If
     End Sub
 
-
+    'prosedur berkaitan dengan add D4
     Private Sub AddD4_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD4.Click
-        ContextMenuStrip6.Show(Me.AddD4, Me.AddD4.PointToClient(Windows.Forms.Cursor.Position))
+        ContextMenuAddD4.Show(Me.AddD4, Me.AddD4.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPoints4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints4.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D4") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim PointRef1 As New Point3d
                 Dim PointRef2 As New Point3d
@@ -2165,9 +2142,6 @@ Public Class UserControl3
     Private Sub ByEntity4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity4.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D4") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim LineTmp As New Line
                 Dim CorrectSelectionStat As Boolean = False
@@ -2212,17 +2186,14 @@ Public Class UserControl3
         End If
     End Sub
 
-
+    'prosedur berkaitan dengan add chamfer
     Private Sub AddChamfer_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddChamfer.Click
-        ContextMenuStrip7.Show(Me.AddChamfer, Me.AddChamfer.PointToClient(Windows.Forms.Cursor.Position))
+        ContextMenuAddCham.Show(Me.AddChamfer, Me.AddChamfer.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPointsCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsCham.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add Chamfer") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim PointRef1 As New Point3d
                 Dim PointRef2 As New Point3d
@@ -2257,9 +2228,6 @@ Public Class UserControl3
     Private Sub ByEntityCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityCham.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add Chamfer") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim LineTmp As New Line
                 Dim CorrectSelectionStat As Boolean = False
@@ -2304,17 +2272,14 @@ Public Class UserControl3
         End If
     End Sub
 
-
+    'prosedur berkaitan dengan add W
     Private Sub AddW_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddW.Click
-        ContextMenuStrip8.Show(Me.AddW, Me.AddW.PointToClient(Windows.Forms.Cursor.Position))
+        ContextMenuAddW.Show(Me.AddW, Me.AddW.PointToClient(Windows.Forms.Cursor.Position))
     End Sub
 
     Private Sub ByPointsW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsW.Click
         If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add W") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim PointRef1 As New Point3d
                 Dim PointRef2 As New Point3d
@@ -2351,9 +2316,6 @@ Public Class UserControl3
     Private Sub ByEntityW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityW.Click
         If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add W") = MsgBoxResult.Ok Then
             Try
-                zoom = Application.AcadApplication
-                zoom.ZoomAll()
-
                 AcadConnection = New AcadConn
                 Dim LineTmp As New Line
                 Dim CorrectSelectionStat As Boolean = False
@@ -2397,7 +2359,6 @@ Public Class UserControl3
             End Try
         End If
     End Sub
-
 
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
         If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then
