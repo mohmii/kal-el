@@ -1756,634 +1756,729 @@ Public Class UserControl3
         End Try
     End Sub
 
+    'form needed to change focus to drawing
+    Private FormTransition As FormToFocus
+
+    'variable needed for add manual
+    Private Feature As OutputFormat
+
     Private Sub AddManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddManual.Click
         'roll back and clear all selection
         RollBackEntitiesColor()
         Me.IdentifiedFeature.ClearSelection()
         Me.UnidentifiedFeature.ClearSelection()
 
-        If MsgBox("Please select the feature", MsgBoxStyle.OkCancel, "Add Feature Manually") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
+        ContextMenuAddManual.Show(Me.AddManual, Me.AddManual.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
+    End Sub
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+    Private Sub CircleManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CircleManual.Click
+        MsgBox("Currenly Unavailable")
+    End Sub
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+    Private Sub MillingManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MillingManual.Click
+        Try
+            AcadConnection = New AcadConn
 
-                        AcadConnection.OpenBlockTableRec()
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                        Dim Check2Database As New DatabaseConn
-                        Dim CircEntAdd As New List(Of Circle)
-                        Dim LineEntAdd As New List(Of Line)
-                        Dim ArcEntAdd As New List(Of Arc)
-                        Dim AllEntAdd As New List(Of Entity)
-                        Dim PLEntAdd As New List(Of Polyline)
-                        Dim MillProc As New MillingProcessor
-                        Dim MLoop As New List(Of Entity)
-                        Dim GLoop As New List(Of List(Of Entity))
-                        Dim GLoopPts As New List(Of List(Of Point3d))
-                        Dim ViewProc As New ViewProcessor
-                        Dim GetPoints As New GetPoints
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        Check2Database.InitLinesDb()
-                        Check2Database.InitHoleDb()
+                    AcadConnection.OpenBlockTableRec()
 
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
+                    Dim Check2Database As New DatabaseConn
+                    Dim CircEntAdd As New List(Of Circle)
+                    Dim LineEntAdd As New List(Of Line)
+                    Dim ArcEntAdd As New List(Of Arc)
+                    Dim AllEntAdd As New List(Of Entity)
+                    Dim PLEntAdd As New List(Of Polyline)
+                    Dim MillProc As New MillingProcessor
+                    Dim MLoop As New List(Of Entity)
+                    Dim GLoop As New List(Of List(Of Entity))
+                    Dim GLoopPts As New List(Of List(Of Point3d))
+                    Dim ViewProc As New ViewProcessor
+                    Dim GetPoints As New GetPoints
 
+                    Check2Database.InitLinesDb()
+                    Check2Database.InitHoleDb()
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select the feature"
+
+                    res = ed.GetSelection(Opts)
+
+                    If res.Status = PromptStatus.OK Then
+                        SS = res.Value
+                        tempIdArray = SS.GetObjectIds()
+
+                        'classify, bikin loop, masukin ke tabel
+                        For Each id As ObjectId In tempIdArray
+                            Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
+
+                            'add circle, line and arc entities
+                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                                If TypeOf (Entity) Is Circle Then
+                                    CircEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Line Then
+                                    LineEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Arc Then
+                                    ArcEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Polyline Then
+                                    PLEntAdd.Add(Entity)
+                                End If
+                                AllEntAdd.Add(Entity)
+                            End If
+                        Next id
+
+                    End If
+                    MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
+                    If GLoop.Count = 0 And (MLoop.Count >= 4) Then
+                        GLoop.Add(MLoop)
+                        Dim LoopPts As New List(Of Point3d)
+                        Dim GoEnt As New List(Of AllPoints)
+                        Dim UAPts As New List(Of Point3d)
+                        GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
+                        GLoopPts.Add(LoopPts)
+                    End If
+                    ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
+                                                 SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
+                                                 GLoopPts, SelectionCommand.UnIdentifiedCounter)
+
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
+    Private Sub PolylManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PolyManual.Click
+        Try
+            AcadConnection = New AcadConn
+
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    AcadConnection.OpenBlockTableRec()
+
+                    Dim Check2Database As New DatabaseConn
+                    Dim CircEntAdd As New List(Of Circle)
+                    Dim LineEntAdd As New List(Of Line)
+                    Dim ArcEntAdd As New List(Of Arc)
+                    Dim AllEntAdd As New List(Of Entity)
+                    Dim PLEntAdd As New List(Of Polyline)
+
+                    Check2Database.InitLinesDb()
+                    Check2Database.InitHoleDb()
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select the feature"
+
+                    res = ed.GetSelection(Opts)
+
+                    If res.Status = PromptStatus.OK Then
+                        SS = res.Value
+                        tempIdArray = SS.GetObjectIds()
+
+                        'classify, bikin loop, masukin ke tabel
+                        For Each id As ObjectId In tempIdArray
+                            Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
+
+                            'add circle, line and arc entities
+                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                                If TypeOf (Entity) Is Circle Then
+                                    CircEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Line Then
+                                    LineEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Arc Then
+                                    ArcEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Polyline Then
+                                    PLEntAdd.Add(Entity)
+                                End If
+                                AllEntAdd.Add(Entity)
+                            End If
+                        Next id
+
+                        If PLEntAdd.Count <> 0 Then
+                            For Each PolyTemp As Polyline In PLEntAdd
+                                Feature = New OutputFormat
+
+                                Feature.FeatureName = "POLYLINE"
+                                Feature.ObjectId.Add(PolyTemp.ObjectId)
+                                Feature.MiscProp(0) = "POLYLINE"
+                                Feature.MiscProp(1) = setView.viewis
+                                Feature.Pline = PolyTemp
+                                Feature.Planelocation = SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1)
+
+                                If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(PolyTemp) Then
+                                    SelectionCommand.HiddenFeature.Add(Feature)
+                                    SelectionCommand.HiddenEntity.Add(PolyTemp)
+                                Else
+                                    'add to the unidentified feature list
+                                    SelectionCommand.UnIdentifiedFeature.Add(Feature)
+                                    SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
+                                    SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                                    AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                                End If
+                            Next
+                        End If
+                    End If
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
+    'prosedur berkaitan dengan add D1
+    Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD1.Click
+        ContextMenuAddD1.Show(Me.AddD1, Me.AddD1.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
+    End Sub
+
+    Private Sub ByPoints1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints1.Click
+        Try
+            AcadConnection = New AcadConn
+            Dim PointRef1 As New Point3d
+            Dim PointRef2 As New Point3d
+            Dim PrPointResult As PromptPointResult
+
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
+
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
+
+                    Me.NumericUpDown7.Value = PointDistance(PointRef1, PointRef2)
+
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
+    Private Sub ByEntity1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity1.Click
+        Try
+            AcadConnection = New AcadConn
+            Dim LineTmp As New Line
+            Dim CorrectSelectionStat As Boolean = False
+
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select 1 line entity"
+
+                    While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
 
                         If res.Status = PromptStatus.OK Then
                             SS = res.Value
                             tempIdArray = SS.GetObjectIds()
 
-                            'classify, bikin loop, masukin ke tabel
-                            For Each id As ObjectId In tempIdArray
-                                Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
-
-                                'add circle, line and arc entities
-                                If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
-                                    If TypeOf (Entity) Is Circle Then
-                                        CircEntAdd.Add(Entity)
-                                    ElseIf TypeOf (Entity) Is Line Then
-                                        LineEntAdd.Add(Entity)
-                                    ElseIf TypeOf (Entity) Is Arc Then
-                                        ArcEntAdd.Add(Entity)
-                                    ElseIf TypeOf (Entity) Is Polyline Then
-                                        PLEntAdd.Add(Entity)
-                                    End If
-                                    AllEntAdd.Add(Entity)
-                                End If
-                            Next id
-
-                        End If
-                        MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
-                        If GLoop.Count = 0 And (MLoop.Count >= 4) Then
-                            GLoop.Add(MLoop)
-                            Dim LoopPts As New List(Of Point3d)
-                            Dim GoEnt As New List(Of AllPoints)
-                            Dim UAPts As New List(Of Point3d)
-                            GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
-                            GLoopPts.Add(LoopPts)
-                        End If
-                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
-                                                     SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
-                                                     GLoopPts, SelectionCommand.UnIdentifiedCounter)
-
-                        AcadConnection.myT.Commit()
-                    End Using
-                End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
-    End Sub
-
-    'prosedur berkaitan dengan add D1
-    Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD1.Click
-        ContextMenuAddD1.Show(Me.AddD1, Me.AddD1.PointToClient(Windows.Forms.Cursor.Position))
-    End Sub
-
-    Private Sub ByPoints1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints1.Click
-        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D1") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim PointRef1 As New Point3d
-                Dim PointRef2 As New Point3d
-                Dim PrPointResult As PromptPointResult
-
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
-
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
-
-                        'Save the first reference points
-                        PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
-                        PointRef1 = PrPointResult.Value
-
-                        'Save the second reference points
-                        PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
-                        PointRef2 = PrPointResult.Value
-
-                        Me.NumericUpDown7.Value = PointDistance(PointRef1, PointRef2)
-
-                        AcadConnection.myT.Commit()
-                    End Using
-                End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
-    End Sub
-
-    Private Sub ByEntity1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity1.Click
-        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D1") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim LineTmp As New Line
-                Dim CorrectSelectionStat As Boolean = False
-
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
-
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
-
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
-
-                        While CorrectSelectionStat = False
-                            res = ed.GetSelection(Opts)
-
-                            If res.Status = PromptStatus.OK Then
-                                SS = res.Value
-                                tempIdArray = SS.GetObjectIds()
-
-                                If tempIdArray.Length = 1 Then
-                                    Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
-                                    If TypeOf Entity Is Line Then
-                                        LineTmp = Entity
-                                        Me.NumericUpDown7.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
-                                        CorrectSelectionStat = True
-                                    Else
-                                        MsgBox("Please select line entity")
-                                    End If
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown7.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select just 1 entity")
+                                    MsgBox("Please select line entity")
                                 End If
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        End While
-                        AcadConnection.myT.Commit()
-                    End Using
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     'prosedur berkaitan dengan add D2
     Private Sub AddD2_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD2.Click
         ContextMenuAddD2.Show(Me.AddD2, Me.AddD2.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
     End Sub
 
     Private Sub ByPoints2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints2.Click
-        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D2") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim PointRef1 As New Point3d
-                Dim PointRef2 As New Point3d
-                Dim PrPointResult As PromptPointResult
+        Try
+            AcadConnection = New AcadConn
+            Dim PointRef1 As New Point3d
+            Dim PointRef2 As New Point3d
+            Dim PrPointResult As PromptPointResult
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        'Save the first reference points
-                        PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
-                        PointRef1 = PrPointResult.Value
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
 
-                        'Save the second reference points
-                        PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
-                        PointRef2 = PrPointResult.Value
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
 
-                        Me.NumericUpDown8.Value = PointDistance(PointRef1, PointRef2)
+                    Me.NumericUpDown8.Value = PointDistance(PointRef1, PointRef2)
 
-                        AcadConnection.myT.Commit()
-                    End Using
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     Private Sub ByEntity2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity2.Click
-        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D2") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim LineTmp As New Line
-                Dim CorrectSelectionStat As Boolean = False
+        Try
+            AcadConnection = New AcadConn
+            Dim LineTmp As New Line
+            Dim CorrectSelectionStat As Boolean = False
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select 1 line entity"
 
-                        While CorrectSelectionStat = False
-                            res = ed.GetSelection(Opts)
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
 
-                            If res.Status = PromptStatus.OK Then
-                                SS = res.Value
-                                tempIdArray = SS.GetObjectIds()
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
 
-                                If tempIdArray.Length = 1 Then
-                                    Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
-                                    If TypeOf Entity Is Line Then
-                                        LineTmp = Entity
-                                        Me.NumericUpDown8.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
-                                        CorrectSelectionStat = True
-                                    Else
-                                        MsgBox("Please select line entity")
-                                    End If
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown8.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select just 1 entity")
+                                    MsgBox("Please select line entity")
                                 End If
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        End While
-                        AcadConnection.myT.Commit()
-                    End Using
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     'prosedur berkaitan dengan add D3
     Private Sub AddD3_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD3.Click
         ContextMenuAddD3.Show(Me.AddD3, Me.AddD3.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
     End Sub
 
     Private Sub ByPoints3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints3.Click
-        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim PointRef1 As New Point3d
-                Dim PointRef2 As New Point3d
-                Dim PrPointResult As PromptPointResult
+        Try
+            AcadConnection = New AcadConn
+            Dim PointRef1 As New Point3d
+            Dim PointRef2 As New Point3d
+            Dim PrPointResult As PromptPointResult
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        'Save the first reference points
-                        PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
-                        PointRef1 = PrPointResult.Value
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
 
-                        'Save the second reference points
-                        PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
-                        PointRef2 = PrPointResult.Value
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
 
-                        Me.NumericUpDown9.Value = PointDistance(PointRef1, PointRef2)
+                    Me.NumericUpDown9.Value = PointDistance(PointRef1, PointRef2)
 
-                        AcadConnection.myT.Commit()
-                    End Using
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     Private Sub ByEntity3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity3.Click
-        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D3") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim LineTmp As New Line
-                Dim CorrectSelectionStat As Boolean = False
+        Try
+            AcadConnection = New AcadConn
+            Dim LineTmp As New Line
+            Dim CorrectSelectionStat As Boolean = False
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select 1 line entity"
 
-                        While CorrectSelectionStat = False
-                            res = ed.GetSelection(Opts)
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
 
-                            If res.Status = PromptStatus.OK Then
-                                SS = res.Value
-                                tempIdArray = SS.GetObjectIds()
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
 
-                                If tempIdArray.Length = 1 Then
-                                    Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
-                                    If TypeOf Entity Is Line Then
-                                        LineTmp = Entity
-                                        Me.NumericUpDown9.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
-                                        CorrectSelectionStat = True
-                                    Else
-                                        MsgBox("Please select line entity")
-                                    End If
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown9.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select just 1 entity")
+                                    MsgBox("Please select line entity")
                                 End If
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        End While
-                        AcadConnection.myT.Commit()
-                    End Using
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     'prosedur berkaitan dengan add D4
     Private Sub AddD4_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD4.Click
         ContextMenuAddD4.Show(Me.AddD4, Me.AddD4.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
     End Sub
 
     Private Sub ByPoints4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPoints4.Click
-        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add D4") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim PointRef1 As New Point3d
-                Dim PointRef2 As New Point3d
-                Dim PrPointResult As PromptPointResult
+        Try
+            AcadConnection = New AcadConn
+            Dim PointRef1 As New Point3d
+            Dim PointRef2 As New Point3d
+            Dim PrPointResult As PromptPointResult
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        'Save the first reference points
-                        PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
-                        PointRef1 = PrPointResult.Value
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
 
-                        'Save the second reference points
-                        PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
-                        PointRef2 = PrPointResult.Value
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
 
-                        Me.NumericUpDown10.Value = PointDistance(PointRef1, PointRef2)
+                    Me.NumericUpDown10.Value = PointDistance(PointRef1, PointRef2)
 
-                        AcadConnection.myT.Commit()
-                    End Using
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     Private Sub ByEntity4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntity4.Click
-        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add D4") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim LineTmp As New Line
-                Dim CorrectSelectionStat As Boolean = False
+        Try
+            AcadConnection = New AcadConn
+            Dim LineTmp As New Line
+            Dim CorrectSelectionStat As Boolean = False
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select 1 line entity"
 
-                        While CorrectSelectionStat = False
-                            res = ed.GetSelection(Opts)
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
 
-                            If res.Status = PromptStatus.OK Then
-                                SS = res.Value
-                                tempIdArray = SS.GetObjectIds()
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
 
-                                If tempIdArray.Length = 1 Then
-                                    Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
-                                    If TypeOf Entity Is Line Then
-                                        LineTmp = Entity
-                                        Me.NumericUpDown10.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
-                                        CorrectSelectionStat = True
-                                    Else
-                                        MsgBox("Please select line entity")
-                                    End If
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown10.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select just 1 entity")
+                                    MsgBox("Please select line entity")
                                 End If
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        End While
-                        AcadConnection.myT.Commit()
-                    End Using
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     'prosedur berkaitan dengan add chamfer
     Private Sub AddChamfer_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddChamfer.Click
         ContextMenuAddCham.Show(Me.AddChamfer, Me.AddChamfer.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
     End Sub
 
     Private Sub ByPointsCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsCham.Click
-        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add Chamfer") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim PointRef1 As New Point3d
-                Dim PointRef2 As New Point3d
-                Dim PrPointResult As PromptPointResult
+        Try
+            AcadConnection = New AcadConn
+            Dim PointRef1 As New Point3d
+            Dim PointRef2 As New Point3d
+            Dim PrPointResult As PromptPointResult
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        'Save the first reference points
-                        PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
-                        PointRef1 = PrPointResult.Value
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
 
-                        'Save the second reference points
-                        PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
-                        PointRef2 = PrPointResult.Value
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
 
-                        Me.NumericUpDown5.Value = PointDistance(PointRef1, PointRef2)
+                    Me.NumericUpDown5.Value = PointDistance(PointRef1, PointRef2)
 
-                        AcadConnection.myT.Commit()
-                    End Using
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     Private Sub ByEntityCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityCham.Click
-        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add Chamfer") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim LineTmp As New Line
-                Dim CorrectSelectionStat As Boolean = False
+       Try
+            AcadConnection = New AcadConn
+            Dim LineTmp As New Line
+            Dim CorrectSelectionStat As Boolean = False
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select 1 line entity"
 
-                        While CorrectSelectionStat = False
-                            res = ed.GetSelection(Opts)
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
 
-                            If res.Status = PromptStatus.OK Then
-                                SS = res.Value
-                                tempIdArray = SS.GetObjectIds()
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
 
-                                If tempIdArray.Length = 1 Then
-                                    Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
-                                    If TypeOf Entity Is Line Then
-                                        LineTmp = Entity
-                                        Me.NumericUpDown5.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
-                                        CorrectSelectionStat = True
-                                    Else
-                                        MsgBox("Please select line entity")
-                                    End If
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown5.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select just 1 entity")
+                                    MsgBox("Please select line entity")
                                 End If
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        End While
-                        AcadConnection.myT.Commit()
-                    End Using
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     'prosedur berkaitan dengan add W
     Private Sub AddW_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddW.Click
         ContextMenuAddW.Show(Me.AddW, Me.AddW.PointToClient(Windows.Forms.Cursor.Position))
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
     End Sub
 
     Private Sub ByPointsW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByPointsW.Click
-        If MsgBox("Please select two reference points", MsgBoxStyle.OkCancel, "Add W") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim PointRef1 As New Point3d
-                Dim PointRef2 As New Point3d
-                Dim PrPointResult As PromptPointResult
+        Try
+            AcadConnection = New AcadConn
+            Dim PointRef1 As New Point3d
+            Dim PointRef2 As New Point3d
+            Dim PrPointResult As PromptPointResult
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        'Save the first reference points
-                        PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
-                        PointRef1 = PrPointResult.Value
+                    'Save the first reference points
+                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PointRef1 = PrPointResult.Value
 
-                        'Save the second reference points
-                        PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
-                        PointRef2 = PrPointResult.Value
+                    'Save the second reference points
+                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PointRef2 = PrPointResult.Value
 
-                        If PointDistance(PointRef1, PointRef2) > 0 Then
-                            Me.NumericUpDown3.Value = -1 * PointDistance(PointRef1, PointRef2)
-                        End If
+                    If PointDistance(PointRef1, PointRef2) > 0 Then
+                        Me.NumericUpDown3.Value = -1 * PointDistance(PointRef1, PointRef2)
+                    End If
 
-                        AcadConnection.myT.Commit()
-                    End Using
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     Private Sub ByEntityW_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityW.Click
-        If MsgBox("Please select one line entity", MsgBoxStyle.OkCancel, "Add W") = MsgBoxResult.Ok Then
-            Try
-                AcadConnection = New AcadConn
-                Dim LineTmp As New Line
-                Dim CorrectSelectionStat As Boolean = False
+        Try
+            AcadConnection = New AcadConn
+            Dim LineTmp As New Line
+            Dim CorrectSelectionStat As Boolean = False
 
-                Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
-                DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
 
-                Using DocLock
-                    AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
-                    Using AcadConnection.myT
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
 
-                        Opts = New PromptSelectionOptions()
-                        Opts.AllowDuplicates = False
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select 1 line entity"
 
-                        While CorrectSelectionStat = False
-                            res = ed.GetSelection(Opts)
+                    While CorrectSelectionStat = False
+                        res = ed.GetSelection(Opts)
 
-                            If res.Status = PromptStatus.OK Then
-                                SS = res.Value
-                                tempIdArray = SS.GetObjectIds()
+                        If res.Status = PromptStatus.OK Then
+                            SS = res.Value
+                            tempIdArray = SS.GetObjectIds()
 
-                                If tempIdArray.Length = 1 Then
-                                    Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
-                                    If TypeOf Entity Is Line Then
-                                        LineTmp = Entity
-                                        Me.NumericUpDown3.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
-                                        CorrectSelectionStat = True
-                                    Else
-                                        MsgBox("Please select line entity")
-                                    End If
+                            If tempIdArray.Length = 1 Then
+                                Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
+                                If TypeOf Entity Is Line Then
+                                    LineTmp = Entity
+                                    Me.NumericUpDown3.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select just 1 entity")
+                                    MsgBox("Please select line entity")
                                 End If
+                            Else
+                                MsgBox("Please select just 1 entity")
                             End If
-                        End While
-                        AcadConnection.myT.Commit()
-                    End Using
+                        End If
+                    End While
+                    AcadConnection.myT.Commit()
                 End Using
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            Finally
-                AcadConnection.myT.Dispose()
-            End Try
-        End If
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
     End Sub
 
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
@@ -2407,6 +2502,19 @@ Public Class UserControl3
     Private Function PointDistance(ByVal point1 As Point3d, ByVal point2 As Point3d) As Double
         Return Sqrt(((point1.X - point2.X) ^ 2) + ((point1.Y - point2.Y) ^ 2))
     End Function
+
+    Private Sub AddToTable(ByVal FeatureTmp As OutputFormat, ByVal List As System.Data.DataTable, _
+                       ByVal Table As System.Windows.Forms.DataGridView)
+
+        Dim NewRow As DataRow = List.NewRow()
+        NewRow("State") = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\exclamation.png")
+        NewRow("Name") = FeatureTmp.MiscProp(0)
+        NewRow("Surface") = FeatureTmp.MiscProp(1)
+        NewRow("Biner") = "0"
+        NewRow("Object") = FeatureTmp
+
+        List.Rows.Add(NewRow)
+    End Sub
 
 End Class
 
