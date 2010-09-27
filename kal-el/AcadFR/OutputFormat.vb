@@ -42,7 +42,7 @@ Public Class OutputFormat
     Public ObjectId As New List(Of ObjectId) '= New String() {"", ""}
 
     'place for miscellaneous properties {name,surface,orientation,chamfer,quality} for each feature
-    Private Misc() As String = New String() {FeatName, Surface, "2", "0", "0", "-1"}
+    Private Misc() As String = New String() {FeatName, Surface, "0", "0", "0", "2"}
 
     Public Property MiscProp(ByVal index As Integer) As String
         Get
