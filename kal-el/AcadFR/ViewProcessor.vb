@@ -16,7 +16,7 @@ Public Class ViewProcessor
     Public Overloads Sub SingleViewProcessor(ByVal View As ViewProp, ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer)
 
         'initiate the progress bar
-        UserControl3.acedSetStatusBarProgressMeter("Get Features", 0, View.GroupLoop.Count)
+        UserControl3.acedSetStatusBarProgressMeter("Milling Features", 0, View.GroupLoop.Count)
         Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In View.GroupLoop
