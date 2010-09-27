@@ -38,12 +38,12 @@
   <ItemGroup>
     <Reference Include="acdbmgd, Version=16.2.54.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\AutoCAD 2006\acdbmgd.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\AutoCAD 2006\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd, Version=16.2.54.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\AutoCAD 2006\acmgd.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\AutoCAD 2006\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Toolkit, Version=2.8.5.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
@@ -96,6 +96,12 @@
     </Compile>
     <Compile Include="DwgProcessor.vb" />
     <Compile Include="EntityColorList.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GeometryProcessor.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -186,6 +192,10 @@
   <ItemGroup>
     <EmbeddedResource Include="AppPreferencesForm.resx">
       <DependentUpon>AppPreferencesForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LinetypesPresetting.resx">
