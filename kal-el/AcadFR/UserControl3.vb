@@ -1847,9 +1847,6 @@ Public Class UserControl3
 
                         Dim CircProcessor As New CircleProcessor
                         Dim CircMember As New Integer
-                        Dim RefPoint As New Point3d(SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1).RefProp(0), _
-                                                    SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1).RefProp(1), _
-                                                    SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1).RefProp(2))
 
                         'create condition if the group consist of two circle, cause this group _
                         ' will be considered as tap c'bore
@@ -1859,7 +1856,7 @@ Public Class UserControl3
                             Dim Surface As Integer = 3
 
                             CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, _
-                                                          Feature, RefPoint, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1))
+                                                          Feature, SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected)
 
                             'set the current feature to current view
                             RegisterToView(Feature)
@@ -1946,7 +1943,7 @@ Public Class UserControl3
                             GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
                             GLoopPts.Add(LoopPts)
                         End If
-                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
+                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.LastViewSelected, _
                                                      SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
                                                      GLoopPts, SelectionCommand.UnIdentifiedCounter)
                     End If
@@ -2021,7 +2018,7 @@ Public Class UserControl3
                                 Feature.MiscProp(0) = "POLYLINE"
                                 Feature.MiscProp(1) = setView.viewis
                                 Feature.Pline = PolyTemp
-                                Feature.Planelocation = SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1)
+                                Feature.Planelocation = SelectionCommand.LastViewSelected
 
                                 If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(PolyTemp) Then
                                     SelectionCommand.HiddenFeature.Add(Feature)
