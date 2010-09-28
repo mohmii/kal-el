@@ -7,6 +7,7 @@ Imports Autodesk.AutoCAD.Windows
 Imports Autodesk.AutoCAD.Interop
 Imports Autodesk.AutoCAD.Geometry
 
+Imports System.Linq
 Imports System.Math
 Imports System.IO
 Imports System.Text
@@ -1773,8 +1774,107 @@ Public Class UserControl3
         FormTransition.OpenForm(FormTransition)
     End Sub
 
+    Private CheckResult() As String
+
     Private Sub CircleManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CircleManual.Click
-        MsgBox("Currenly Unavailable")
+        Try
+            AcadConnection = New AcadConn
+
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    AcadConnection.OpenBlockTableRec()
+
+                    Dim Check2Database As New DatabaseConn
+                    Dim CircEntAdd As New List(Of Circle)
+                    Dim LineEntAdd As New List(Of Line)
+                    Dim ArcEntAdd As New List(Of Arc)
+                    Dim AllEntAdd As New List(Of Entity)
+                    Dim PLEntAdd As New List(Of Polyline)
+
+                    Check2Database.InitLinesDb()
+                    Check2Database.InitHoleDb()
+
+                    Opts = New PromptSelectionOptions()
+                    Opts.AllowDuplicates = False
+                    Opts.MessageForAdding = "Select the feature"
+
+                    res = ed.GetSelection(Opts)
+
+                    If res.Status = PromptStatus.OK Then
+                        SS = res.Value
+                        tempIdArray = SS.GetObjectIds()
+
+                        'classify, bikin loop, masukin ke tabel
+                        For Each id As ObjectId In tempIdArray
+                            Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
+
+                            'add circle, line and arc entities
+                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                                If TypeOf (Entity) Is Circle Then
+                                    CircEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Line Then
+                                    LineEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Arc Then
+                                    ArcEntAdd.Add(Entity)
+                                ElseIf TypeOf (Entity) Is Polyline Then
+                                    PLEntAdd.Add(Entity)
+                                End If
+                                AllEntAdd.Add(Entity)
+                            End If
+                        Next id
+
+                    End If
+                    If CircEntAdd.Count <> 0 Then
+                        Dim getGroup = From item In CircEntAdd _
+                                           Group item By CircXCenter = item.Center Into GroupMember = Group _
+                                           Select Honor = GroupMember
+
+                        'get the number of group
+                        Dim CircGroupMember As New Integer
+
+
+                        For Each result As IEnumerable(Of Circle) In getGroup
+                            CircGroupMember = CircGroupMember + 1
+                        Next
+
+                        'initiate the supporting variable
+                        CheckResult = Nothing
+
+                        Dim CircProcessor As New CircleProcessor
+                        Dim CircMember As New Integer
+                        Dim RefPoint As New Point3d(SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1).RefProp(0), _
+                                                    SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1).RefProp(1), _
+                                                    SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1).RefProp(2))
+
+                        'create condition if the group consist of two circle, cause this group _
+                        ' will be considered as tap c'bore
+                        For Each result As IEnumerable(Of Circle) In getGroup
+
+                            CircMember = result.Count()
+                            Dim Surface As Integer = 3
+
+                            CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, _
+                                                          Feature, RefPoint, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1))
+
+                            'set the current feature to current view
+                            RegisterToView(Feature)
+                        Next
+
+                    End If
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+        
     End Sub
 
     Private Sub MillingManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MillingManual.Click
@@ -1836,19 +1936,20 @@ Public Class UserControl3
                         Next id
 
                     End If
-                    MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
-                    If GLoop.Count = 0 And (MLoop.Count >= 4) Then
-                        GLoop.Add(MLoop)
-                        Dim LoopPts As New List(Of Point3d)
-                        Dim GoEnt As New List(Of AllPoints)
-                        Dim UAPts As New List(Of Point3d)
-                        GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
-                        GLoopPts.Add(LoopPts)
+                    If LineEntAdd.Count <> 0 Then
+                        MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
+                        If GLoop.Count = 0 And (MLoop.Count >= 4) Then
+                            GLoop.Add(MLoop)
+                            Dim LoopPts As New List(Of Point3d)
+                            Dim GoEnt As New List(Of AllPoints)
+                            Dim UAPts As New List(Of Point3d)
+                            GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
+                            GLoopPts.Add(LoopPts)
+                        End If
+                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
+                                                     SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
+                                                     GLoopPts, SelectionCommand.UnIdentifiedCounter)
                     End If
-                    ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SelectionCommand.ProjectionView.Count - 1), _
-                                                 SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
-                                                 GLoopPts, SelectionCommand.UnIdentifiedCounter)
-
                     AcadConnection.myT.Commit()
                 End Using
             End Using
@@ -2514,6 +2615,16 @@ Public Class UserControl3
         NewRow("Object") = FeatureTmp
 
         List.Rows.Add(NewRow)
+    End Sub
+
+    'assign the feature according to their location
+    Private Sub RegisterToView(ByVal FeatureTmp As OutputFormat)
+
+        For Each view As ViewProp In SelectionCommand.ProjectionView
+            If view.ViewType.Equals(FeatureTmp.MiscProp(1)) Then
+                view.SetFeature(FeatureTmp)
+            End If
+        Next
     End Sub
 
 End Class
