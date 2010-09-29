@@ -437,31 +437,31 @@ Public Class UserControl3
                 JapsFeatureName = "ボーリング穴"
             Case "Square Slot"
                 EngFeatureName = "Square Slot"
-                JapsFeatureName = "Square Slot"
+                JapsFeatureName = "角溝"
             Case "Square Step"
                 EngFeatureName = "Square Step"
-                JapsFeatureName = "Square Step"
+                JapsFeatureName = "角ステップ"
             Case "4-side Pocket"
                 EngFeatureName = "4-side Pocket"
-                JapsFeatureName = "4-side Pocket"
+                JapsFeatureName = "４側ポケット"
             Case "3-side Pocket"
                 EngFeatureName = "3-side Pocket"
-                JapsFeatureName = "3-side Pocket"
+                JapsFeatureName = "３側ポケット"
             Case "2-side Pocket"
                 EngFeatureName = "2-side Pocket"
-                JapsFeatureName = "2-side Pocket"
+                JapsFeatureName = "２側ポケット"
             Case "Long Hole"
                 EngFeatureName = "Long Hole"
-                JapsFeatureName = "Long Hole"
+                JapsFeatureName = "長穴"
             Case "Blind Slot"
                 EngFeatureName = "Blind Slot"
-                JapsFeatureName = "Blind Slot"
+                JapsFeatureName = "止まり溝"
             Case "Cut Off"
                 EngFeatureName = "Cut Off"
-                JapsFeatureName = "Cut Off"
+                JapsFeatureName = "切り取り"
             Case "Cutter Path"
                 EngFeatureName = "Cutter Path"
-                JapsFeatureName = "Cutter Path"
+                JapsFeatureName = "カッターパス"
         End Select
 
         If Me.ComboBox3.Enabled = True Then
@@ -556,7 +556,7 @@ Public Class UserControl3
             Case "タップ穴", "ＰＴタップ穴", "リーマ穴", "段付きボルト穴" 'selected index 0,1,2,6
                 ComboBox3.Enabled = True
                 SearchSM(ComboBox1.SelectedIndex)
-            Case "Cut Off", "Cutter Path"
+            Case "切り取り", "カッターパス" 'cut off, cutter path
                 ComboBox3.Enabled = True
                 ComboBox3.Items.Clear()
                 ComboBox3.Items.Add("CW")
@@ -726,8 +726,8 @@ Public Class UserControl3
                 Else
                     FillComboBox1(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
                 End If
-                FindTheirPicture(SelectedIF(0).FeatureName)
-                GraySelection(SelectedIF(0).FeatureName)
+                FindTheirPicture(SelectedIF(0).MiscProp(0))
+                GraySelection(SelectedIF(0).MiscProp(0))
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
@@ -817,8 +817,8 @@ Public Class UserControl3
                 ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) Then
                     FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
                 End If
-                FindTheirPicture(SelectedUF(0).FeatureName)
-                GraySelection(SelectedUF(0).FeatureName)
+                FindTheirPicture(SelectedUF(0).MiscProp(0))
+                GraySelection(SelectedUF(0).MiscProp(0))
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
@@ -1415,17 +1415,17 @@ Public Class UserControl3
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holering.bmp")
                 Case "ボーリング穴" 'Boring
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holeboring.bmp")
-                Case "Cut Off"
+                Case "切り取り" 'cut off
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutoff.jpg")
-                Case "Cutter Path"
+                Case "カッターパス" 'cutter path
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutterpath.jpg")
-                Case "Square Slot"
+                Case "角溝" ' square slot
                     If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
                     End If
-                Case "Square Step"
+                Case "角ステップ" 'square step
                     If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep2.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
@@ -1435,11 +1435,11 @@ Public Class UserControl3
                     ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep3.bmp")
                     End If
-                Case "4-side Pocket"
+                Case "４側ポケット" '4-side pocket
                     If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\4pocket1.bmp")
                     End If
-                Case "3-side Pocket"
+                Case "３側ポケット" '3-side pocket
                     If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket2.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
@@ -1449,7 +1449,7 @@ Public Class UserControl3
                     ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket3.bmp")
                     End If
-                Case "2-side Pocket"
+                Case "２側ポケット" '2-side pocket
                     If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket1.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
@@ -1459,11 +1459,11 @@ Public Class UserControl3
                     ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket4.bmp")
                     End If
-                Case "Long Hole"
+                Case "長穴" 'long hole
                     If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\lnghole1.bmp")
                     End If
-                Case "Blind Slot"
+                Case "止まり溝" 'blind slot
                     If Me.NumericUpDown4.Value.ToString = "0" Then
                         Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot2.bmp")
                     ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
@@ -1494,7 +1494,7 @@ Public Class UserControl3
                     Me.NumericUpDown9.Enabled = False
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
-                Case "Square Slot", "Square Step", "Blind Slot", "円形溝" 'Ring
+                Case "角溝", "角ステップ", "止まり溝", "円形溝" '"Square Slot", "Square Step", "Blind Slot" Ring
                     Me.AddD1.Enabled = True
                     Me.AddD2.Enabled = True
                     Me.NumericUpDown7.Enabled = True
@@ -1504,7 +1504,7 @@ Public Class UserControl3
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
-                Case "3-side Pocket", "2-side Pocket", "タップ穴", "ＰＴタップ穴", "段付きボルト穴" 'Tap, Tap PT, SunkBolt
+                Case "３側ポケット", "２側ポケット", "タップ穴", "ＰＴタップ穴", "段付きボルト穴" ' "3-side Pocket", "2-side Pocket" Tap, Tap PT, SunkBolt
                     Me.AddD1.Enabled = True
                     Me.AddD2.Enabled = True
                     Me.NumericUpDown7.Enabled = True
@@ -1514,7 +1514,7 @@ Public Class UserControl3
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = True
                     Me.NumericUpDown11.Enabled = False
-                Case "Long Hole"
+                Case "長穴" 'Long Hole
                     Me.AddD1.Enabled = True
                     Me.AddD2.Enabled = True
                     Me.NumericUpDown7.Enabled = True
@@ -1524,7 +1524,7 @@ Public Class UserControl3
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = True
-                Case "Cut Off", "Cutter Path"
+                Case "切り取り", "カッターパス" '"Cut Off", "Cutter Path"
                     Me.AddD1.Enabled = False
                     Me.AddD2.Enabled = False
                     Me.NumericUpDown7.Enabled = False
@@ -1588,48 +1588,48 @@ Public Class UserControl3
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
                And Feat.Item(0).SequenceSolidBound = True Then
-            Me.ComboBox1.Items.Add("Square Slot")
+            Me.ComboBox1.Items.Add("角溝") 'square slot
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
               And Feat.Item(0).SequenceSolidBound = False Then
-            Me.ComboBox1.Items.Add("2-side Pocket")
+            Me.ComboBox1.Items.Add("２側ポケット") '2-side pocket
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 3 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
-            Me.ComboBox1.Items.Add("Square Step")
+            Me.ComboBox1.Items.Add("角ステップ") 'square step
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 3 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 1 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
-            Me.ComboBox1.Items.Add("Square Slot")
+            Me.ComboBox1.Items.Add("角溝") 'square slot
         ElseIf Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 2 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
-            Me.ComboBox1.Items.Add("Square Step")
+            Me.ComboBox1.Items.Add("角ステップ") 'square step
         ElseIf Feat.Item(0).SolidLineCount = 3 And Feat.Item(0).SolidLineInBoundCount = 3 _
                And Feat.Item(0).HiddenLineCount = 1 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
-            Me.ComboBox1.Items.Add("Square Slot")
-            Me.ComboBox1.Items.Add("Square Step")
-            Me.ComboBox1.Items.Add("Blind Slot")
+            Me.ComboBox1.Items.Add("角溝") 'square slot
+            Me.ComboBox1.Items.Add("角ステップ") 'square step
+            Me.ComboBox1.Items.Add("止まり溝") 'blind slot
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
                And Feat.Item(0).SequenceSolidHidden = True Then
-            Me.ComboBox1.Items.Add("Square Slot")
-            Me.ComboBox1.Items.Add("4-side Pocket")
+            Me.ComboBox1.Items.Add("角溝") 'square slot
+            Me.ComboBox1.Items.Add("４側ポケット") '4-side pocket
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 _
                And Feat.Item(0).SequenceSolidHidden = False Then
-            Me.ComboBox1.Items.Add("3-side Pocket")
-            Me.ComboBox1.Items.Add("2-side Pocket")
-            Me.ComboBox1.Items.Add("Long Hole")
+            Me.ComboBox1.Items.Add("３側ポケット") '3-side pocket
+            Me.ComboBox1.Items.Add("２側ポケット") '2-side pocket
+            Me.ComboBox1.Items.Add("長穴") 'long hole
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1637,15 +1637,15 @@ Public Class UserControl3
                Or (Feat.Item(0).SolidLineCount = 0 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 4 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 4) Then
-            Me.ComboBox1.Items.Add("4-side Pocket")
+            Me.ComboBox1.Items.Add("４側ポケット") '4-side pocket
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf Feat.Item(0).SolidLineCount = 1 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 3 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0 Then
-            Me.ComboBox1.Items.Add("4-side Pocket")
-            Me.ComboBox1.Items.Add("3-side Pocket")
-            Me.ComboBox1.Items.Add("Long Hole")
-            Me.ComboBox1.Items.Add("Blind Slot")
+            Me.ComboBox1.Items.Add("４側ポケット") '4-side pocket
+            Me.ComboBox1.Items.Add("３側ポケット") '3-side pocket
+            Me.ComboBox1.Items.Add("長穴") 'long hole
+            Me.ComboBox1.Items.Add("止まり溝") 'blind slot
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1653,13 +1653,13 @@ Public Class UserControl3
                Or (Feat.Item(0).SolidLineCount = 1 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 3 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 2) Then
-            Me.ComboBox1.Items.Add("3-side Pocket")
+            Me.ComboBox1.Items.Add("３側ポケット") '3-side pocket
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 1 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 0) Then
-            Me.ComboBox1.Items.Add("3-side Pocket")
-            Me.ComboBox1.Items.Add("Blind Slot")
+            Me.ComboBox1.Items.Add("３側ポケット") '3-side pocket
+            Me.ComboBox1.Items.Add("止まり溝") 'blind slot
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 4 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1667,7 +1667,7 @@ Public Class UserControl3
                Or (Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 2 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 1) Then
-            Me.ComboBox1.Items.Add("2-side Pocket")
+            Me.ComboBox1.Items.Add("２側ポケット") '2-side pocket
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1675,7 +1675,7 @@ Public Class UserControl3
                Or (Feat.Item(0).SolidLineCount = 0 And Feat.Item(0).SolidLineInBoundCount = 0 _
                And Feat.Item(0).HiddenLineCount = 2 And Feat.Item(0).VirtualLineCount = 0 _
                And Feat.Item(0).SolidArcCount = 0 And Feat.Item(0).HiddenArcCount = 2) Then
-            Me.ComboBox1.Items.Add("Long Hole")
+            Me.ComboBox1.Items.Add("長穴") 'long hole
             'Me.ComboBox1.Items.Add("Not A Feature")
         ElseIf (Feat.Item(0).SolidLineCount = 3 And Feat.Item(0).SolidLineInBoundCount = 1 _
          And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 0 _
@@ -1686,7 +1686,7 @@ Public Class UserControl3
          Or (Feat.Item(0).SolidLineCount = 2 And Feat.Item(0).SolidLineInBoundCount = 0 _
          And Feat.Item(0).HiddenLineCount = 0 And Feat.Item(0).VirtualLineCount = 1 _
          And Feat.Item(0).SolidArcCount = 1 And Feat.Item(0).HiddenArcCount = 0) Then
-            Me.ComboBox1.Items.Add("Blind Slot")
+            Me.ComboBox1.Items.Add("止まり溝") 'blind slot
             'Me.ComboBox1.Items.Add("Not A Feature")
         Else
             FillComboBox1("Mill Candidate")
@@ -1717,19 +1717,20 @@ Public Class UserControl3
 
     Private Sub FillComboBox1(ByVal FeatureText As String)
         Select Case FeatureText
-            Case "Square Slot", "Square Step", "4-side Pocket", "3-side Pocket", "2-side Pocket", "Long Hole", "Blind Slot", "Mill Candidate"
+            'case "Square Slot", "Square Step", "4-side Pocket", "3-side Pocket", "2-side Pocket", "Long Hole", "Blind Slot", "Mill Candidate"
+            Case "角溝", "角ステップ", "４側ポケット", "３側ポケット", "２側ポケット", "長穴", "止まり溝", "Mill Candidate"
                 Me.ComboBox1.Items.Clear()
-                Me.ComboBox1.Items.Add("Square Slot")
-                Me.ComboBox1.Items.Add("Square Step")
-                Me.ComboBox1.Items.Add("4-side Pocket")
-                Me.ComboBox1.Items.Add("3-side Pocket")
-                Me.ComboBox1.Items.Add("2-side Pocket")
-                Me.ComboBox1.Items.Add("Long Hole")
-                Me.ComboBox1.Items.Add("Blind Slot")
-            Case "POLYLINE"
+                Me.ComboBox1.Items.Add("角溝")
+                Me.ComboBox1.Items.Add("角ステップ")
+                Me.ComboBox1.Items.Add("４側ポケット")
+                Me.ComboBox1.Items.Add("３側ポケット")
+                Me.ComboBox1.Items.Add("２側ポケット")
+                Me.ComboBox1.Items.Add("長穴")
+                Me.ComboBox1.Items.Add("止まり溝")
+            Case "ポリライン" 'polynile
                 Me.ComboBox1.Items.Clear()
-                Me.ComboBox1.Items.Add("Cut Off")
-                Me.ComboBox1.Items.Add("Cutter Path")
+                Me.ComboBox1.Items.Add("切り取り") 'cut off
+                Me.ComboBox1.Items.Add("カッターパス") 'cutter path
             Case Else ' "タップ穴", "ＰＴタップ穴", "リーマ穴", "ドリル穴", "底付き穴", "貫通穴", "段付きボルト穴", "円形溝", "ボーリング穴"
                 Me.ComboBox1.Items.Clear()
                 Me.ComboBox1.Items.Add("タップ穴")

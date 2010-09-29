@@ -212,7 +212,7 @@ Public Class ViewProcessor
                 End If
             Next
             Feature.FeatureName = "Square Slot"
-            Feature.MiscProp(0) = "Square Slot"
+            Feature.MiscProp(0) = "角溝"
 
             'Step with D1, D2
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 0 _
@@ -254,7 +254,7 @@ Public Class ViewProcessor
                 Next
             Next
             Feature.FeatureName = "Square Step"
-            Feature.MiscProp(0) = "Square Step"
+            Feature.MiscProp(0) = "角ステップ"
 
             '2-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
@@ -361,7 +361,7 @@ Public Class ViewProcessor
                 End If
             End If
             Feature.FeatureName = "2-side Pocket"
-            Feature.MiscProp(0) = "2-side Pocket"
+            Feature.MiscProp(0) = "２側ポケット"
 
             '3-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -406,7 +406,7 @@ Public Class ViewProcessor
             Next
             D2 = D2 + D4
             Feature.FeatureName = "3-side Pocket"
-            Feature.MiscProp(0) = "3-side Pocket"
+            Feature.MiscProp(0) = "３側ポケット"
 
             '4-side pocket with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -457,7 +457,7 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
             OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
             Feature.FeatureName = "4-side Pocket"
-            Feature.MiscProp(0) = "4-side Pocket"
+            Feature.MiscProp(0) = "４側ポケット"
 
             'long hole with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -498,7 +498,7 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
             OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
             Feature.FeatureName = "Long Hole"
-            Feature.MiscProp(0) = "Long Hole"
+            Feature.MiscProp(0) = "長穴"
 
             'Blind Slot with D1, D2
         ElseIf (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -546,7 +546,7 @@ Public Class ViewProcessor
             Next
             D2 = D2 + TempRad
             Feature.FeatureName = "Blind Slot"
-            Feature.MiscProp(0) = "Blind Slot"
+            Feature.MiscProp(0) = "止まり溝"
 
         ElseIf adskClass.AppPreferences.MultiAnalysis = True Then
             'not main loop of a feature
@@ -659,7 +659,7 @@ Public Class ViewProcessor
                 End If
             Next
             Feature.FeatureName = "Square Slot"
-            Feature.MiscProp(0) = "Square Slot"
+            Feature.MiscProp(0) = "角溝"
 
             'Step with D1, D2
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 3 And Feature.HiddenLineCount = 0 _
@@ -701,7 +701,7 @@ Public Class ViewProcessor
                 Next
             Next
             Feature.FeatureName = "Square Step"
-            Feature.MiscProp(0) = "Square Step"
+            Feature.MiscProp(0) = "角ステップ"
 
             '2-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 0 _
@@ -808,7 +808,7 @@ Public Class ViewProcessor
                 End If
             End If
             Feature.FeatureName = "2-side Pocket"
-            Feature.MiscProp(0) = "2-side Pocket"
+            Feature.MiscProp(0) = "２側ポケット"
 
             '3-side pocket with D1, D2, D4
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -853,7 +853,7 @@ Public Class ViewProcessor
             Next
             D2 = D2 + D4
             Feature.FeatureName = "3-side Pocket"
-            Feature.MiscProp(0) = "3-side Pocket"
+            Feature.MiscProp(0) = "３側ポケット"
 
             '4-side pocket with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -904,7 +904,7 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
             OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
             Feature.FeatureName = "4-side Pocket"
-            Feature.MiscProp(0) = "4-side Pocket"
+            Feature.MiscProp(0) = "４側ポケット"
 
             'long hole with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
@@ -945,7 +945,7 @@ Public Class ViewProcessor
             OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
             OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
             Feature.FeatureName = "Long Hole"
-            Feature.MiscProp(0) = "Long Hole"
+            Feature.MiscProp(0) = "長穴"
 
             'Blind Slot with D1, D2
         ElseIf (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
@@ -993,7 +993,7 @@ Public Class ViewProcessor
             Next
             D2 = D2 + TempRad
             Feature.FeatureName = "Blind Slot"
-            Feature.MiscProp(0) = "Blind Slot"
+            Feature.MiscProp(0) = "止まり溝"
         End If
 
         Feature.MiscProp(2) = Orientation
@@ -1300,7 +1300,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Square Slot"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Slot"
+                            Feature.MiscProp(0) = "角溝"
                             Feature.ListLoop = ListLoopTemp
                             If HLReference = 2 Then
                                 If Orientation = "0" Then
@@ -1407,7 +1407,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Square Slot"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Slot"
+                            Feature.MiscProp(0) = "角溝"
                             Feature.ListLoop = ListLoopTemp
                             If HLCorresponding = 2 Then
                                 If Orientation = "0" Then
@@ -1527,7 +1527,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Square Step"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Step"
+                            Feature.MiscProp(0) = "角ステップ"
                             Feature.ListLoop = ListLoopTemp
                             If HLReference = 1 Then
                                 OriU = -OriU
@@ -1648,7 +1648,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Square Step"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Square Step"
+                            Feature.MiscProp(0) = "角ステップ"
                             Feature.ListLoop = ListLoopTemp
                             If HLCorresponding = 1 Then
                                 OriU = -OriU
@@ -1773,7 +1773,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "4-side Pocket"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "4-side Pocket"
+                            Feature.MiscProp(0) = "４側ポケット"
                             Feature.ListLoop = ListLoopTemp
                             If HAReference = 4 Then
                                 OriU = -OriU
@@ -1889,7 +1889,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "4-side Pocket"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "4-side Pocket"
+                            Feature.MiscProp(0) = "４側ポケット"
                             Feature.ListLoop = ListLoopTemp
                             If HACorresponding = 4 Then
                                 OriU = -OriU
@@ -2005,7 +2005,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "3-side Pocket"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "3-side Pocket"
+                            Feature.MiscProp(0) = "３側ポケット"
                             Feature.ListLoop = ListLoopTemp
                             If HAReference = 2 Then
                                 OriU = -OriU
@@ -2128,7 +2128,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "3-side Pocket"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "3-side Pocket"
+                            Feature.MiscProp(0) = "３側ポケット"
                             Feature.ListLoop = ListLoopTemp
                             If HACorresponding = 2 Then
                                 OriU = -OriU
@@ -2334,7 +2334,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "2-side Pocket"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "2-side Pocket"
+                            Feature.MiscProp(0) = "２側ポケット"
                             Feature.ListLoop = ListLoopTemp
                             If HAReference = 1 Then
                                 OriU = -OriU
@@ -2544,7 +2544,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "2-side Pocket"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "2-side Pocket"
+                            Feature.MiscProp(0) = "２側ポケット"
                             Feature.ListLoop = ListLoopTemp
                             If HACorresponding = 1 Then
                                 OriU = -OriU
@@ -2653,7 +2653,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Long Hole"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Long Hole"
+                            Feature.MiscProp(0) = "長穴"
                             Feature.ListLoop = ListLoopTemp
                             If HLReference = 2 Then
                                 OriU = -OriU
@@ -2754,7 +2754,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Long Hole"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Long Hole"
+                            Feature.MiscProp(0) = "長穴"
                             Feature.ListLoop = ListLoopTemp
                             If HLCorresponding = 2 Then
                                 OriU = -OriU
@@ -2880,7 +2880,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Blind Slot"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Blind Slot"
+                            Feature.MiscProp(0) = "止まり溝"
                             Feature.ListLoop = ListLoopTemp
                             If HLReference = 2 Then
                                 OriU = -OriU
@@ -3011,7 +3011,7 @@ Public Class ViewProcessor
                             Feature.EntityMember = MillingObjectId.Count
                             Feature.FeatureName = "Blind Slot"
                             Feature.ObjectId = MillingObjectId
-                            Feature.MiscProp(0) = "Blind Slot"
+                            Feature.MiscProp(0) = "止まり溝"
                             Feature.ListLoop = ListLoopTemp
                             If HLCorresponding = 2 Then
                                 OriU = -OriU
