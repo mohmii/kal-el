@@ -54,15 +54,14 @@ Public Class ViewProcessor
 
                     Feature.FeatureName = "Mill Candidate"
                     Feature.MiscProp(0) = "Mill Candidate"
+                    Feature.MiscProp(1) = View.ViewType
                     If Feature.HiddenLineCount > 0 Then
-                        Feature.MiscProp(1) = View.ViewType
                         'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                         'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                     Else
                         UnIdentifiedCounter = UnIdentifiedCounter + 1
-                        Feature.MiscProp(1) = View.ViewType
                         UnIdentifiedFeature.Add(Feature)
                         TmpUnidentifiedFeature.Add(Feature)
                         AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
@@ -72,16 +71,14 @@ Public Class ViewProcessor
                 Else
                     If Not Feature.FeatureName = "" Then
                         'set the feature property
-
+                        Feature.MiscProp(1) = View.ViewType
                         If Feature.HiddenLineCount > 0 Then
-                            Feature.MiscProp(1) = View.ViewType
                             'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                             'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                         Else
                             UnIdentifiedCounter = UnIdentifiedCounter + 1
-                            Feature.MiscProp(1) = View.ViewType
                             UnIdentifiedFeature.Add(Feature)
                             TmpUnidentifiedFeature.Add(Feature)
                             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
@@ -105,7 +102,8 @@ Public Class ViewProcessor
     Public Overloads Sub SingleViewProcessor(ByVal GLoop As List(Of List(Of Entity)), ByVal View As ViewProp, _
                                              ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), _
                                              ByVal GLoopPts As List(Of List(Of Point3d)), ByRef UnIdentifiedCounter As Integer)
-
+        Dim Selcom As New SelectionCommand
+        Dim FeatureHidList As New List(Of OutputFormat)
         For Each GroupEntity As List(Of Entity) In GLoop
             MillingObjectId = New List(Of ObjectId)
             Feature = New OutputFormat
@@ -135,17 +133,17 @@ Public Class ViewProcessor
 
             If Not Feature.FeatureName = "" Then
                 'set the feature property
-
+                Feature.MiscProp(1) = View.ViewType
 
                 If Feature.HiddenLineCount > 0 Then
-                    Feature.MiscProp(1) = View.ViewType
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    SelectionCommand.HiddenFeature.Clear()
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, View.ViewType, SelectionCommand.ProjectionView)
                 Else
                     UnIdentifiedCounter = UnIdentifiedCounter + 1
-                    Feature.MiscProp(1) = View.ViewType
                     UnIdentifiedFeature.Add(Feature)
                     TmpUnidentifiedFeature.Add(Feature)
                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
@@ -153,18 +151,18 @@ Public Class ViewProcessor
 
             Else
                 'set the feature property
-
                 Feature.FeatureName = "Mill Candidate"
                 Feature.MiscProp(0) = "Mill Candidate"
+                Feature.MiscProp(1) = View.ViewType
                 If Feature.HiddenLineCount > 0 Then
-                    Feature.MiscProp(1) = View.ViewType
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    SelectionCommand.HiddenFeature.Clear()
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, View.ViewType, SelectionCommand.ProjectionView)
                 Else
                     UnIdentifiedCounter = UnIdentifiedCounter + 1
-                    Feature.MiscProp(1) = View.ViewType
                     UnIdentifiedFeature.Add(Feature)
                     TmpUnidentifiedFeature.Add(Feature)
                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
@@ -186,38 +184,33 @@ Public Class ViewProcessor
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Or _
         (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 2 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Then
+            Dim D2Stat As Boolean = False
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
                 TmpLine = EntityTmp
                 StatOnBound = New Boolean
                 StatOnOrigin = New Boolean
-                For Each LineBB As Line In View.BoundingBox
-                    If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                        PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
-                        StatOnBound = True
-                        If isequal(TmpLine.StartPoint.X, View.BoundProp(0)) = True And isequal(TmpLine.EndPoint.X, View.BoundProp(0)) = True Then
-                            StatOnOrigin = True
-                            Orientation = "0" 'Horizontal
-                        ElseIf isequal(TmpLine.StartPoint.Y, View.BoundProp(1)) = True And isequal(TmpLine.EndPoint.Y, View.BoundProp(1)) = True Then
-                            StatOnOrigin = True
-                            Orientation = "1" 'Vertical
-                        End If
-                        Exit For
-                    End If
-                Next
-                If StatOnBound = True And StatOnOrigin = True And D1 = 0 Then
+                If D2Stat = False Then
+                    D2 = Round(LineLength(TmpLine), 3)
+                    D2Stat = True
+                Else
+                    D2 = Max(D2, Round(LineLength(TmpLine), 3))
+                End If
+
+                If PointOnline(TmpLine.StartPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 And _
+                        PointOnline(TmpLine.EndPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 Then
+                    Orientation = "0" 'Horizontal
                     D1 = Round(LineLength(TmpLine), 3)
                     OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
                     OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
-                ElseIf StatOnBound = False And D2 = 0 Then
-                    D2 = Round(LineLength(TmpLine), 3)
+                ElseIf PointOnline(TmpLine.StartPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 And _
+                    PointOnline(TmpLine.EndPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 Then
+                    Orientation = "1" 'Vertical
+                    D1 = Round(LineLength(TmpLine), 3)
+                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
+                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
                 End If
             Next
-            If Orientation = "0" Then
-                OriU = 0
-            Else
-                OriU = OriU
-            End If
             Feature.FeatureName = "Square Slot"
             Feature.MiscProp(0) = "Square Slot"
 
@@ -367,17 +360,6 @@ Public Class ViewProcessor
                     D2 = Round(DimPos2, 3)
                 End If
             End If
-            If Feature.HiddenLineCount > 0 Then
-                If Orientation = "0" Then
-                    Orientation = "1"
-                ElseIf Orientation = "1" Then
-                    Orientation = "0"
-                ElseIf Orientation = "2" Then
-                    Orientation = "3"
-                ElseIf Orientation = "3" Then
-                    Orientation = "2"
-                End If
-            End If
             Feature.FeatureName = "2-side Pocket"
             Feature.MiscProp(0) = "2-side Pocket"
 
@@ -423,13 +405,6 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + D4
-            If Feature.HiddenLineCount > 0 Then
-                If Orientation = "2" Then
-                    Orientation = "3"
-                ElseIf Orientation = "3" Then
-                    Orientation = "2"
-                End If
-            End If
             Feature.FeatureName = "3-side Pocket"
             Feature.MiscProp(0) = "3-side Pocket"
 
@@ -570,17 +545,6 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + TempRad
-            If Feature.HiddenLineCount > 0 Then
-                If Orientation = "0" Then
-                    Orientation = "1"
-                ElseIf Orientation = "1" Then
-                    Orientation = "0"
-                ElseIf Orientation = "2" Then
-                    Orientation = "3"
-                ElseIf Orientation = "3" Then
-                    Orientation = "2"
-                End If
-            End If
             Feature.FeatureName = "Blind Slot"
             Feature.MiscProp(0) = "Blind Slot"
 
@@ -643,11 +607,6 @@ Public Class ViewProcessor
         End If
 
         Feature.MiscProp(2) = Orientation
-        If Feature.HiddenLineCount > 0 Then
-            OriU = -OriU
-        Else
-            OriU = OriU
-        End If
         Feature.OriginAndAddition(0) = Round(OriU, 3)
         Feature.OriginAndAddition(1) = Round(OriV, 3)
         Feature.OriginAndAddition(2) = Round(OriW, 3)
@@ -672,38 +631,33 @@ Public Class ViewProcessor
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Or _
         (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 2 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Then
+            Dim D2Stat As Boolean = False
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
                 TmpLine = EntityTmp
                 StatOnBound = New Boolean
                 StatOnOrigin = New Boolean
-                For Each LineBB As Line In View.BoundingBox
-                    If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                        PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
-                        StatOnBound = True
-                        If isequal(TmpLine.StartPoint.X, View.BoundProp(0)) = True And isequal(TmpLine.EndPoint.X, View.BoundProp(0)) = True Then
-                            StatOnOrigin = True
-                            Orientation = "0" 'Horizontal
-                        ElseIf isequal(TmpLine.StartPoint.Y, View.BoundProp(1)) = True And isequal(TmpLine.EndPoint.Y, View.BoundProp(1)) = True Then
-                            StatOnOrigin = True
-                            Orientation = "1" 'Vertical
-                        End If
-                        Exit For
-                    End If
-                Next
-                If StatOnBound = True And StatOnOrigin = True And D1 = 0 Then
+                If D2Stat = False Then
+                    D2 = Round(LineLength(TmpLine), 3)
+                    D2Stat = True
+                Else
+                    D2 = Max(D2, Round(LineLength(TmpLine), 3))
+                End If
+
+                If PointOnline(TmpLine.StartPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 And _
+                        PointOnline(TmpLine.EndPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 Then
+                    Orientation = "0" 'Horizontal
                     D1 = Round(LineLength(TmpLine), 3)
                     OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
                     OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
-                ElseIf StatOnBound = False And D2 = 0 Then
-                    D2 = Round(LineLength(TmpLine), 3)
+                ElseIf PointOnline(TmpLine.StartPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 And _
+                    PointOnline(TmpLine.EndPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 Then
+                    Orientation = "1" 'Vertical
+                    D1 = Round(LineLength(TmpLine), 3)
+                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
+                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
                 End If
             Next
-            If Orientation = "0" Then
-                OriU = 0
-            Else
-                OriU = OriU
-            End If
             Feature.FeatureName = "Square Slot"
             Feature.MiscProp(0) = "Square Slot"
 
@@ -853,17 +807,6 @@ Public Class ViewProcessor
                     D2 = Round(DimPos2, 3)
                 End If
             End If
-            If Feature.HiddenLineCount > 0 Then
-                If Orientation = "0" Then
-                    Orientation = "1"
-                ElseIf Orientation = "1" Then
-                    Orientation = "0"
-                ElseIf Orientation = "2" Then
-                    Orientation = "3"
-                ElseIf Orientation = "3" Then
-                    Orientation = "2"
-                End If
-            End If
             Feature.FeatureName = "2-side Pocket"
             Feature.MiscProp(0) = "2-side Pocket"
 
@@ -909,13 +852,6 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + D4
-            If Feature.HiddenLineCount > 0 Then
-                If Orientation = "2" Then
-                    Orientation = "3"
-                ElseIf Orientation = "3" Then
-                    Orientation = "2"
-                End If
-            End If
             Feature.FeatureName = "3-side Pocket"
             Feature.MiscProp(0) = "3-side Pocket"
 
@@ -1056,84 +992,11 @@ Public Class ViewProcessor
                 End If
             Next
             D2 = D2 + TempRad
-            If Feature.HiddenLineCount > 0 Then
-                If Orientation = "0" Then
-                    Orientation = "1"
-                ElseIf Orientation = "1" Then
-                    Orientation = "0"
-                ElseIf Orientation = "2" Then
-                    Orientation = "3"
-                ElseIf Orientation = "3" Then
-                    Orientation = "2"
-                End If
-            End If
             Feature.FeatureName = "Blind Slot"
             Feature.MiscProp(0) = "Blind Slot"
-
-        ElseIf adskClass.AppPreferences.MultiAnalysis = True Then
-            'not main loop of a feature
-            'Slot with D1 dan D3
-            If Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
-            And Feature.VirtualLineCount = 1 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 Then
-                For Each EntityTmp As Entity In GEntity
-                    TmpLine = New Line
-                    TmpLine = EntityTmp
-                    For Each LineBB As Line In View.BoundingBox
-                        If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
-                            D1 = Round(LineLength(TmpLine), 3)
-                            Exit For
-                        ElseIf (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                (PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) Then
-                            D3 = Round(LineLength(TmpLine), 3)
-                            Exit For
-                        End If
-                    Next
-                Next
-
-                '3-side pocket or blind slot with D1, D3
-            ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 1 And Feature.HiddenLineCount = 0 _
-            And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0) Then
-                For Each EntityTmp As Entity In GEntity
-                    If TypeOf EntityTmp Is Line Then
-                        TmpLine = New Line
-                        TmpLine = EntityTmp
-                        For Each LineBB As Line In View.BoundingBox
-                            If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
-                                D1 = Round(LineLength(TmpLine), 3)
-                                If LineBB = View.BoundingBox(0) Then
-                                    Orientation = "1" 'Upper Side
-                                ElseIf LineBB = View.BoundingBox(1) Then
-                                    Orientation = "2" 'Left Side
-                                ElseIf LineBB = View.BoundingBox(2) Then
-                                    Orientation = "0" 'Lower Side
-                                ElseIf LineBB = View.BoundingBox(3) Then
-                                    Orientation = "3" 'Right Side
-                                End If
-                                Exit For
-                            ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                                (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
-                                D3 = Round(LineLength(TmpLine), 3)
-                                Exit For
-                            End If
-                        Next
-                    End If
-                Next
-                D2 = D2 + D4
-            End If
         End If
 
         Feature.MiscProp(2) = Orientation
-        If Feature.HiddenLineCount > 0 Then
-            OriU = -OriU
-        Else
-            OriU = OriU
-        End If
         Feature.OriginAndAddition(0) = Round(OriU, 3)
         Feature.OriginAndAddition(1) = Round(OriV, 3)
         Feature.OriginAndAddition(2) = Round(OriW, 3)

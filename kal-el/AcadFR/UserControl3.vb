@@ -160,7 +160,8 @@ Public Class UserControl3
                         Else
                             fw.Flush()
                             fw.Close()
-                            MsgBox("Saving feature list could not be completed!!", MsgBoxStyle.Information)
+                            '"Saving feature list could not be completed!!"
+                            MsgBox("プロダクトデータの保存が終了しませんでした。", MsgBoxStyle.Information)
                             Exit Sub
                         End If
                     End If
@@ -1484,36 +1485,60 @@ Public Class UserControl3
         Try
             Select Case FeatureText
                 Case "リーマ穴", "ドリル穴", "底付き穴", "ボーリング穴", "貫通穴" 'Ream, Drill, BlindBore, Boring, ThroughBore
+                    Me.AddD1.Enabled = True
+                    Me.AddD2.Enabled = True
+                    Me.NumericUpDown7.Enabled = True
+                    Me.NumericUpDown8.Enabled = True
                     Me.AddD3.Enabled = False
                     Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = False
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
                 Case "Square Slot", "Square Step", "Blind Slot", "円形溝" 'Ring
+                    Me.AddD1.Enabled = True
+                    Me.AddD2.Enabled = True
+                    Me.NumericUpDown7.Enabled = True
+                    Me.NumericUpDown8.Enabled = True
                     Me.AddD3.Enabled = True
                     Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
                 Case "3-side Pocket", "2-side Pocket", "タップ穴", "ＰＴタップ穴", "段付きボルト穴" 'Tap, Tap PT, SunkBolt
+                    Me.AddD1.Enabled = True
+                    Me.AddD2.Enabled = True
+                    Me.NumericUpDown7.Enabled = True
+                    Me.NumericUpDown8.Enabled = True
                     Me.AddD3.Enabled = True
                     Me.AddD4.Enabled = True
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = True
                     Me.NumericUpDown11.Enabled = False
                 Case "Long Hole"
+                    Me.AddD1.Enabled = True
+                    Me.AddD2.Enabled = True
+                    Me.NumericUpDown7.Enabled = True
+                    Me.NumericUpDown8.Enabled = True
                     Me.AddD3.Enabled = True
                     Me.AddD4.Enabled = False
                     Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = True
                 Case "Cut Off", "Cutter Path"
-                    Me.AddD3.Enabled = False
+                    Me.AddD1.Enabled = False
+                    Me.AddD2.Enabled = False
+                    Me.NumericUpDown7.Enabled = False
+                    Me.NumericUpDown8.Enabled = False
+                    Me.AddD3.Enabled = True
                     Me.AddD4.Enabled = False
-                    Me.NumericUpDown9.Enabled = False
+                    Me.NumericUpDown9.Enabled = True
                     Me.NumericUpDown10.Enabled = False
                     Me.NumericUpDown11.Enabled = False
                 Case Else
+                    Me.AddD1.Enabled = True
+                    Me.AddD2.Enabled = True
+                    Me.NumericUpDown7.Enabled = True
+                    Me.NumericUpDown8.Enabled = True
                     Me.AddD3.Enabled = True
                     Me.AddD4.Enabled = True
                     Me.NumericUpDown9.Enabled = True
@@ -1801,7 +1826,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select the feature"
+                    Opts.MessageForAdding = "形状を選ぶ" 'select the feature
 
                     res = ed.GetSelection(Opts)
 
@@ -1905,7 +1930,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select the feature"
+                    Opts.MessageForAdding = "形状を選ぶ" 'select the feature
 
                     res = ed.GetSelection(Opts)
 
@@ -1982,7 +2007,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select the feature"
+                    Opts.MessageForAdding = "形状を選ぶ" 'select the feature
 
                     res = ed.GetSelection(Opts)
 
@@ -2065,11 +2090,11 @@ Public Class UserControl3
                 Using AcadConnection.myT
 
                     'Save the first reference points
-                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("最初の基準点:" + vbNewLine) 'Select first reference point:
                     PointRef1 = PrPointResult.Value
 
                     'Save the second reference points
-                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("２番目の基準点:" + vbNewLine) 'Select second reference point
                     PointRef2 = PrPointResult.Value
 
                     Me.NumericUpDown7.Value = PointDistance(PointRef1, PointRef2)
@@ -2115,10 +2140,10 @@ Public Class UserControl3
                                     Me.NumericUpDown7.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select line entity")
+                                    MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
-                                MsgBox("Please select just 1 entity")
+                                MsgBox("線素を１本だけ") 'Please select just 1 entity
                             End If
                         End If
                     End While
@@ -2154,11 +2179,11 @@ Public Class UserControl3
                 Using AcadConnection.myT
 
                     'Save the first reference points
-                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("最初の基準点:" + vbNewLine) 'Select first reference point:
                     PointRef1 = PrPointResult.Value
 
                     'Save the second reference points
-                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("２番目の基準点:" + vbNewLine) 'Select second reference point
                     PointRef2 = PrPointResult.Value
 
                     Me.NumericUpDown8.Value = PointDistance(PointRef1, PointRef2)
@@ -2204,10 +2229,10 @@ Public Class UserControl3
                                     Me.NumericUpDown8.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select line entity")
+                                    MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
-                                MsgBox("Please select just 1 entity")
+                                MsgBox("線素を１本だけ") 'Please select just 1 entity
                             End If
                         End If
                     End While
@@ -2243,11 +2268,11 @@ Public Class UserControl3
                 Using AcadConnection.myT
 
                     'Save the first reference points
-                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("最初の基準点:" + vbNewLine) 'Select first reference point:
                     PointRef1 = PrPointResult.Value
 
                     'Save the second reference points
-                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("２番目の基準点:" + vbNewLine) 'Select second reference point
                     PointRef2 = PrPointResult.Value
 
                     Me.NumericUpDown9.Value = PointDistance(PointRef1, PointRef2)
@@ -2293,10 +2318,10 @@ Public Class UserControl3
                                     Me.NumericUpDown9.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select line entity")
+                                    MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
-                                MsgBox("Please select just 1 entity")
+                                MsgBox("線素を１本だけ") 'Please select just 1 entity
                             End If
                         End If
                     End While
@@ -2332,11 +2357,11 @@ Public Class UserControl3
                 Using AcadConnection.myT
 
                     'Save the first reference points
-                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("最初の基準点:" + vbNewLine) 'Select first reference point:
                     PointRef1 = PrPointResult.Value
 
                     'Save the second reference points
-                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("２番目の基準点:" + vbNewLine) 'Select second reference point
                     PointRef2 = PrPointResult.Value
 
                     Me.NumericUpDown10.Value = PointDistance(PointRef1, PointRef2)
@@ -2382,10 +2407,10 @@ Public Class UserControl3
                                     Me.NumericUpDown10.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select line entity")
+                                    MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
-                                MsgBox("Please select just 1 entity")
+                                MsgBox("線素を１本だけ") 'Please select just 1 entity
                             End If
                         End If
                     End While
@@ -2421,11 +2446,11 @@ Public Class UserControl3
                 Using AcadConnection.myT
 
                     'Save the first reference points
-                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("最初の基準点:" + vbNewLine) 'Select first reference point:
                     PointRef1 = PrPointResult.Value
 
                     'Save the second reference points
-                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("２番目の基準点:" + vbNewLine) 'Select second reference point
                     PointRef2 = PrPointResult.Value
 
                     Me.NumericUpDown5.Value = PointDistance(PointRef1, PointRef2)
@@ -2471,10 +2496,10 @@ Public Class UserControl3
                                     Me.NumericUpDown5.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select line entity")
+                                    MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
-                                MsgBox("Please select just 1 entity")
+                                MsgBox("線素を１本だけ") 'Please select just 1 entity
                             End If
                         End If
                     End While
@@ -2510,11 +2535,11 @@ Public Class UserControl3
                 Using AcadConnection.myT
 
                     'Save the first reference points
-                    PrPointResult = ed.GetPoint("Please select first reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("最初の基準点:" + vbNewLine) 'Select first reference point:
                     PointRef1 = PrPointResult.Value
 
                     'Save the second reference points
-                    PrPointResult = ed.GetPoint("Please select second reference point:" + vbNewLine)
+                    PrPointResult = ed.GetPoint("２番目の基準点:" + vbNewLine) 'Select second reference point
                     PointRef2 = PrPointResult.Value
 
                     If PointDistance(PointRef1, PointRef2) > 0 Then
@@ -2559,13 +2584,13 @@ Public Class UserControl3
                                 Entity = AcadConnection.myT.GetObject(tempIdArray(0), OpenMode.ForWrite, True)
                                 If TypeOf Entity Is Line Then
                                     LineTmp = Entity
-                                    Me.NumericUpDown3.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
+                                    Me.NumericUpDown3.Value = -1 * PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
                                 Else
-                                    MsgBox("Please select line entity")
+                                    MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
-                                MsgBox("Please select just 1 entity")
+                                MsgBox("線素を１本だけ") 'Please select just 1 entity
                             End If
                         End If
                     End While
