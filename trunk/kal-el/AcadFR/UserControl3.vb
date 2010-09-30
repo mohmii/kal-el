@@ -435,31 +435,31 @@ Public Class UserControl3
             Case "ボーリング穴"
                 EngFeatureName = "Boring"
                 JapsFeatureName = "ボーリング穴"
-            Case "Square Slot"
+            Case "角溝"
                 EngFeatureName = "Square Slot"
                 JapsFeatureName = "角溝"
-            Case "Square Step"
+            Case "角ステップ"
                 EngFeatureName = "Square Step"
                 JapsFeatureName = "角ステップ"
-            Case "4-side Pocket"
+            Case "４側ポケット"
                 EngFeatureName = "4-side Pocket"
                 JapsFeatureName = "４側ポケット"
-            Case "3-side Pocket"
+            Case "３側ポケット"
                 EngFeatureName = "3-side Pocket"
                 JapsFeatureName = "３側ポケット"
-            Case "2-side Pocket"
+            Case "２側ポケット"
                 EngFeatureName = "2-side Pocket"
                 JapsFeatureName = "２側ポケット"
-            Case "Long Hole"
+            Case "長穴"
                 EngFeatureName = "Long Hole"
                 JapsFeatureName = "長穴"
-            Case "Blind Slot"
+            Case "止まり溝"
                 EngFeatureName = "Blind Slot"
                 JapsFeatureName = "止まり溝"
-            Case "Cut Off"
+            Case "切り取り"
                 EngFeatureName = "Cut Off"
                 JapsFeatureName = "切り取り"
-            Case "Cutter Path"
+            Case "カッターパス"
                 EngFeatureName = "Cutter Path"
                 JapsFeatureName = "カッターパス"
         End Select
@@ -1242,7 +1242,7 @@ Public Class UserControl3
 
             'get all the new machining parameters
             SetUpFeatureName(Me.ComboBox1.SelectedItem.ToString, NewUpdatedFeature.FeatureName, NewUpdatedFeature.MiscProp(0))
-            NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
+            'NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
             NewUpdatedFeature.MiscProp(3) = Me.NumericUpDown5.Value 'chamfer
             NewUpdatedFeature.MiscProp(4) = Me.NumericUpDown6.Value 'quality
             NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
@@ -1265,11 +1265,13 @@ Public Class UserControl3
                 NewUpdatedFeature.MiscProp(1) = Me.ComboBox2.SelectedItem 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Me.NumericUpDown1.Value 'X
                 NewUpdatedFeature.OriginAndAddition(1) = Me.NumericUpDown2.Value 'Y
+                NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
                 'NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
             Else
                 NewUpdatedFeature.MiscProp(1) = Feature2Update.MiscProp(1) 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Feature2Update.OriginAndAddition(0)
                 NewUpdatedFeature.OriginAndAddition(1) = Feature2Update.OriginAndAddition(1)
+                NewUpdatedFeature.MiscProp(2) = Feature2Update.MiscProp(2) 'orientation
                 'NewUpdatedFeature.OriginAndAddition(2) = Feature2Update.OriginAndAddition(2)
             End If
 
