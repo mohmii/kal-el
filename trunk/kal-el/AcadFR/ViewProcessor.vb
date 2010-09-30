@@ -201,14 +201,14 @@ Public Class ViewProcessor
                         PointOnline(TmpLine.EndPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 Then
                     Orientation = "0" 'Horizontal
                     D1 = Round(LineLength(TmpLine), 3)
-                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                    OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                 ElseIf PointOnline(TmpLine.StartPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 And _
                     PointOnline(TmpLine.EndPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 Then
                     Orientation = "1" 'Vertical
                     D1 = Round(LineLength(TmpLine), 3)
-                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                    OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                 End If
             Next
             Feature.FeatureName = "Square Slot"
@@ -228,20 +228,20 @@ Public Class ViewProcessor
                         D2 = Round(LineLength(TmpLine), 3)
                         If LineBB = View.BoundingBox(0) Then
                             Orientation = "0" 'Lower Side
-                            OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                         ElseIf LineBB = View.BoundingBox(1) Then
                             Orientation = "3" 'Right Side
-                            OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                         ElseIf LineBB = View.BoundingBox(2) Then
                             Orientation = "1" 'Upper Side
-                            OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                         ElseIf LineBB = View.BoundingBox(3) Then
                             Orientation = "2" 'Left Side
-                            OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                         End If
                         Exit For
                     ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
@@ -317,8 +317,8 @@ Public Class ViewProcessor
             'searching the orientation and origin
             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
                 Orientation = "0" 'Lower Left
-                OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "lower" And Position2 = "left") Then
                     D1 = Round(DimPos1, 3)
                     D2 = Round(DimPos2, 3)
@@ -328,8 +328,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
                 Orientation = "1" 'Lower Right
-                OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "lower" And Position2 = "right") Then
                     D2 = Round(DimPos1, 3)
                     D1 = Round(DimPos2, 3)
@@ -339,8 +339,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
                 Orientation = "3" 'Upper Right
-                OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "upper" And Position2 = "right") Then
                     D1 = Round(DimPos1, 3)
                     D2 = Round(DimPos2, 3)
@@ -350,8 +350,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
                 Orientation = "2" 'Upper Left
-                OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "upper" And Position2 = "left") Then
                     D2 = Round(DimPos1, 3)
                     D1 = Round(DimPos2, 3)
@@ -376,8 +376,8 @@ Public Class ViewProcessor
                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
-                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                             If LineBB = View.BoundingBox(0) Then
                                 Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
@@ -454,8 +454,8 @@ Public Class ViewProcessor
             D2 = D2 + (2 * D4)
             PolygonProcessor.GetArea(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
-            OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
-            OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
+            OriU = Round(Origin.X - View.BoundProp(0) - View.RefProp(0), 3)
+            OriV = Round(Origin.Y - View.BoundProp(1) - View.RefProp(1), 3)
             Feature.FeatureName = "4-side Pocket"
             Feature.MiscProp(0) = "４側ポケット"
 
@@ -495,8 +495,8 @@ Public Class ViewProcessor
             D1 = D1 + D2
             PolygonProcessor.GetArea(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(View.GroupLoopPoints(View.GroupLoop.IndexOf(GEntity)))
-            OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
-            OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
+            OriU = Round(Origin.X - View.BoundProp(0) - View.RefProp(0), 3)
+            OriV = Round(Origin.Y - View.BoundProp(1) - View.RefProp(1), 3)
             Feature.FeatureName = "Long Hole"
             Feature.MiscProp(0) = "長穴"
 
@@ -516,8 +516,8 @@ Public Class ViewProcessor
                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
-                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                             If LineBB = View.BoundingBox(0) Then
                                 Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
@@ -648,14 +648,14 @@ Public Class ViewProcessor
                         PointOnline(TmpLine.EndPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 Then
                     Orientation = "0" 'Horizontal
                     D1 = Round(LineLength(TmpLine), 3)
-                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                    OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                 ElseIf PointOnline(TmpLine.StartPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 And _
                     PointOnline(TmpLine.EndPoint, View.BoundingBox(0).StartPoint, View.BoundingBox(0).EndPoint) = 2 Then
                     Orientation = "1" 'Vertical
                     D1 = Round(LineLength(TmpLine), 3)
-                    OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                    OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                    OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                 End If
             Next
             Feature.FeatureName = "Square Slot"
@@ -675,20 +675,20 @@ Public Class ViewProcessor
                         D2 = Round(LineLength(TmpLine), 3)
                         If LineBB = View.BoundingBox(0) Then
                             Orientation = "0" 'Lower Side
-                            OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                         ElseIf LineBB = View.BoundingBox(1) Then
                             Orientation = "3" 'Right Side
-                            OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                         ElseIf LineBB = View.BoundingBox(2) Then
                             Orientation = "1" 'Upper Side
-                            OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                         ElseIf LineBB = View.BoundingBox(3) Then
                             Orientation = "2" 'Left Side
-                            OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                         End If
                         Exit For
                     ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
@@ -764,8 +764,8 @@ Public Class ViewProcessor
             'searching the orientation and origin
             If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
                 Orientation = "0" 'Lower Left
-                OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "lower" And Position2 = "left") Then
                     D1 = Round(DimPos1, 3)
                     D2 = Round(DimPos2, 3)
@@ -775,8 +775,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
                 Orientation = "1" 'Lower Right
-                OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "lower" And Position2 = "right") Then
                     D2 = Round(DimPos1, 3)
                     D1 = Round(DimPos2, 3)
@@ -786,8 +786,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
                 Orientation = "3" 'Upper Right
-                OriU = View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "upper" And Position2 = "right") Then
                     D1 = Round(DimPos1, 3)
                     D2 = Round(DimPos2, 3)
@@ -797,8 +797,8 @@ Public Class ViewProcessor
                 End If
             ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
                 Orientation = "2" 'Upper Left
-                OriU = View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0)
-                OriV = View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1)
+                OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                 If (Position1 = "upper" And Position2 = "left") Then
                     D2 = Round(DimPos1, 3)
                     D1 = Round(DimPos2, 3)
@@ -823,8 +823,8 @@ Public Class ViewProcessor
                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
-                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                             If LineBB = View.BoundingBox(0) Then
                                 Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then
@@ -901,8 +901,8 @@ Public Class ViewProcessor
             D2 = D2 + (2 * D4)
             PolygonProcessor.GetArea(GLoopPts(GLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(GLoopPts(GLoop.IndexOf(GEntity)))
-            OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
-            OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
+            OriU = Round(Origin.X - View.BoundProp(0) - View.RefProp(0), 3)
+            OriV = Round(Origin.Y - View.BoundProp(1) - View.RefProp(1), 3)
             Feature.FeatureName = "4-side Pocket"
             Feature.MiscProp(0) = "４側ポケット"
 
@@ -942,8 +942,8 @@ Public Class ViewProcessor
             D1 = D1 + D2
             PolygonProcessor.GetArea(GLoopPts(GLoop.IndexOf(GEntity)))
             Origin = PolygonProcessor.GetCentroid(GLoopPts(GLoop.IndexOf(GEntity)))
-            OriU = Origin.X - View.BoundProp(0) - View.RefProp(0)
-            OriV = Origin.Y - View.BoundProp(1) - View.RefProp(1)
+            OriU = Round(Origin.X - View.BoundProp(0) - View.RefProp(0), 3)
+            OriV = Round(Origin.Y - View.BoundProp(1) - View.RefProp(1), 3)
             Feature.FeatureName = "Long Hole"
             Feature.MiscProp(0) = "長穴"
 
@@ -963,8 +963,8 @@ Public Class ViewProcessor
                         If PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
                         PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 Then
                             D1 = Round(LineLength(TmpLine), 3)
-                            OriU = ((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0)
-                            OriV = ((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1)
+                            OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                             If LineBB = View.BoundingBox(0) Then
                                 Orientation = "0" 'Lower Side
                             ElseIf LineBB = View.BoundingBox(1) Then

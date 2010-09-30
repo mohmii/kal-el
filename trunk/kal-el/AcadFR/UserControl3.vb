@@ -721,6 +721,7 @@ Public Class UserControl3
             If SelectedIF.Count = 1 Then
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
+                Me.NumericUpDown4.Enabled = True
                 If String.Equals(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶ") Then
                     SingleView(SelectedIF)
                 Else
@@ -731,6 +732,7 @@ Public Class UserControl3
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
+                Me.NumericUpDown4.Enabled = False
             End If
 
             Try
@@ -811,10 +813,11 @@ Public Class UserControl3
             If SelectedUF.Count = 1 Then
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
+                Me.NumericUpDown4.Enabled = True
                 'single view result
                 If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶ") Then
                     SingleView(SelectedUF)
-                ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶe")) Then
+                ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶ")) Then
                     FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
                 End If
                 FindTheirPicture(SelectedUF(0).MiscProp(0))
@@ -822,6 +825,7 @@ Public Class UserControl3
             Else
                 Me.NumericUpDown1.Enabled = False
                 Me.NumericUpDown2.Enabled = False
+                Me.NumericUpDown4.Enabled = False
             End If
 
             Try
@@ -1729,6 +1733,7 @@ Public Class UserControl3
                 Me.ComboBox1.Items.Add("２側ポケット")
                 Me.ComboBox1.Items.Add("長穴")
                 Me.ComboBox1.Items.Add("止まり溝")
+                Me.ComboBox1.Items.Add("ミリング形状を選ぶ")
             Case "ポリライン" 'polynile
                 Me.ComboBox1.Items.Clear()
                 Me.ComboBox1.Items.Add("切り取り") 'cut off
