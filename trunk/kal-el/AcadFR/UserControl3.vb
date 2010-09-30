@@ -1968,7 +1968,7 @@ Public Class UserControl3
                     End If
                     If LineEntAdd.Count <> 0 Then
                         MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
-                        If GLoop.Count = 0 And (MLoop.Count >= 4) Then
+                        If GLoop.Count = 0 Then 'And (MLoop.Count >= 4)
                             GLoop.Add(MLoop)
                             Dim LoopPts As New List(Of Point3d)
                             Dim GoEnt As New List(Of AllPoints)
