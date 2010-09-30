@@ -78,27 +78,27 @@ Partial Class ProductSize
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(47, 31)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(56, 13)
+        Me.Label2.Size = New System.Drawing.Size(43, 13)
         Me.Label2.TabIndex = 4
-        Me.Label2.Text = "Length (X)"
+        Me.Label2.Text = "長さ (X)"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(47, 57)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(51, 13)
+        Me.Label3.Size = New System.Drawing.Size(35, 13)
         Me.Label3.TabIndex = 5
-        Me.Label3.Text = "Width (Y)"
+        Me.Label3.Text = "幅 (Y)"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(47, 83)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(54, 13)
+        Me.Label4.Size = New System.Drawing.Size(43, 13)
         Me.Label4.TabIndex = 6
-        Me.Label4.Text = "Height (Z)"
+        Me.Label4.Text = "高さ (Z)"
         '
         'Button1
         '
@@ -115,7 +115,7 @@ Partial Class ProductSize
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 23)
         Me.Button2.TabIndex = 8
-        Me.Button2.Text = "Cancel"
+        Me.Button2.Text = "キャンセル"
         Me.Button2.UseVisualStyleBackColor = True
         '
         'ProductSize
