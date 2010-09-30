@@ -53,7 +53,7 @@ Public Class ViewProcessor
                     'set the feature property
 
                     Feature.FeatureName = "Mill Candidate"
-                    Feature.MiscProp(0) = "Mill Candidate"
+                    Feature.MiscProp(0) = "ミリング形状を選ぶ"
                     Feature.MiscProp(1) = View.ViewType
                     If Feature.HiddenLineCount > 0 Then
                         'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
@@ -152,7 +152,7 @@ Public Class ViewProcessor
             Else
                 'set the feature property
                 Feature.FeatureName = "Mill Candidate"
-                Feature.MiscProp(0) = "Mill Candidate"
+                Feature.MiscProp(0) = "ミリング形状を選ぶ"
                 Feature.MiscProp(1) = View.ViewType
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)

@@ -721,7 +721,7 @@ Public Class UserControl3
             If SelectedIF.Count = 1 Then
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
-                If String.Equals(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") Then
+                If String.Equals(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶ") Then
                     SingleView(SelectedIF)
                 Else
                     FillComboBox1(Me.IdentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
@@ -812,9 +812,9 @@ Public Class UserControl3
                 Me.NumericUpDown1.Enabled = True
                 Me.NumericUpDown2.Enabled = True
                 'single view result
-                If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate") Then
+                If String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶ") Then
                     SingleView(SelectedUF)
-                ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "Mill Candidate")) Then
+                ElseIf (Not String.Equals(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value, "ミリング形状を選ぶe")) Then
                     FillComboBox1(Me.UnidentifiedFeature.SelectedRows(0).Cells("Name").Value.ToString)
                 End If
                 FindTheirPicture(SelectedUF(0).MiscProp(0))
@@ -1085,7 +1085,7 @@ Public Class UserControl3
 
     Private Function CheckMillingName(ByVal CB As System.Windows.Forms.ComboBox) As Boolean
         If CB.SelectedItem Is Nothing Then
-            MsgBox("Please select the feature name", MsgBoxStyle.Exclamation)
+            MsgBox("形状名を選ぶ", MsgBoxStyle.Exclamation) 'Please select the feature name
             Return False
         Else
             Return True
@@ -1170,12 +1170,12 @@ Public Class UserControl3
                 If Me.NumericUpDown10.Value = 0 Then 'D4 <= 0
                     Return True
                 Else
-                    MsgBox("D4 value should be 0", MsgBoxStyle.Exclamation)
+                    MsgBox("D4の値は０のはずです", MsgBoxStyle.Exclamation) 'D4 value should be 0
                     Me.NumericUpDown10.Focus()
                     Return False
                 End If
             Else
-                MsgBox("D1, D2, D3 value should be filled", MsgBoxStyle.Exclamation)
+                MsgBox("D1,D2,D3の値を入れてください。", MsgBoxStyle.Exclamation) 'D1, D2, D3 value should be filled
                 Me.NumericUpDown7.Focus()
                 Return False
             End If
@@ -1183,7 +1183,7 @@ Public Class UserControl3
             If (EngName.Equals("Square Slot") Or EngName.Equals("Square Step") Or EngName.Equals("Blind Slot")) And Me.NumericUpDown11.Value = 0 Then
                 Return True
             Else
-                MsgBox("Angle value should be 0", MsgBoxStyle.Exclamation)
+                MsgBox("角度の値は０のはずです", MsgBoxStyle.Exclamation) 'Angle value should be 0
                 Me.NumericUpDown7.Focus()
                 Return False
             End If
@@ -1193,7 +1193,7 @@ Public Class UserControl3
             If Me.NumericUpDown7.Value > 0 And Me.NumericUpDown8.Value > 0 And Me.NumericUpDown9.Value > 0 And Me.NumericUpDown10.Value > 0 Then 'D1,D2,D3,D4 > 0
                 Return True
             Else
-                MsgBox("D1, D2, D3, D4 value should be filled", MsgBoxStyle.Exclamation)
+                MsgBox("D1,D2,D3,D4の値を入れてください", MsgBoxStyle.Exclamation) 'D1, D2, D3, D4 value should be filled
                 Me.NumericUpDown7.Focus()
                 Return False
             End If
@@ -1201,7 +1201,7 @@ Public Class UserControl3
             If (EngName.Equals("2-side Pocket") Or EngName.Equals("3-side Pocket")) And Me.NumericUpDown11.Value = 0 Then
                 Return True
             Else
-                MsgBox("Angle value should be 0", MsgBoxStyle.Exclamation)
+                MsgBox("角度の値は０のはずです", MsgBoxStyle.Exclamation) 'Angle value should be 0
                 Me.NumericUpDown11.Focus()
                 Return False
             End If
@@ -1209,11 +1209,11 @@ Public Class UserControl3
 
         If EngName.Equals("Cut Off") Or EngName.Equals("Cutter Path") Then
             If Me.ComboBox3.SelectedItem = Nothing Then
-                MsgBox("Please select the path direction")
+                MsgBox("切り取り／カッタパスを選ぶ") 'Please select the path direction
                 Me.ComboBox3.BackColor = Drawing.Color.Orange
                 Return False
             ElseIf Me.NumericUpDown9.Value <= 0 Then
-                MsgBox("Please check again D3 parameter")
+                MsgBox("D3の値を確かめる") 'Please check again D3 parameter
                 Me.NumericUpDown9.BackColor = Drawing.Color.Orange
                 Return False
             Else
@@ -1691,7 +1691,7 @@ Public Class UserControl3
             Me.ComboBox1.Items.Add("止まり溝") 'blind slot
             'Me.ComboBox1.Items.Add("Not A Feature")
         Else
-            FillComboBox1("Mill Candidate")
+            FillComboBox1("ミリング形状を選ぶ")
 
             'Me.ComboBox1.Items.Add("Not A Feature")
             'Me.ComboBox1.Items.Add("Other Feature")
@@ -1720,7 +1720,7 @@ Public Class UserControl3
     Private Sub FillComboBox1(ByVal FeatureText As String)
         Select Case FeatureText
             'case "Square Slot", "Square Step", "4-side Pocket", "3-side Pocket", "2-side Pocket", "Long Hole", "Blind Slot", "Mill Candidate"
-            Case "角溝", "角ステップ", "４側ポケット", "３側ポケット", "２側ポケット", "長穴", "止まり溝", "Mill Candidate"
+            Case "角溝", "角ステップ", "４側ポケット", "３側ポケット", "２側ポケット", "長穴", "止まり溝", "ミリング形状を選ぶ"
                 Me.ComboBox1.Items.Clear()
                 Me.ComboBox1.Items.Add("角溝")
                 Me.ComboBox1.Items.Add("角ステップ")
@@ -2043,7 +2043,7 @@ Public Class UserControl3
 
                                 Feature.FeatureName = "POLYLINE"
                                 Feature.ObjectId.Add(PolyTemp.ObjectId)
-                                Feature.MiscProp(0) = "POLYLINE"
+                                Feature.MiscProp(0) = "ポリライン"
                                 Feature.MiscProp(1) = setView.viewis
                                 Feature.Pline = PolyTemp
                                 Feature.Planelocation = SelectionCommand.LastViewSelected
@@ -2127,7 +2127,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select 1 line entity"
+                    Opts.MessageForAdding = "一本の線素を選んでください" 'Select 1 line entity
 
                     While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
@@ -2216,7 +2216,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select 1 line entity"
+                    Opts.MessageForAdding = "一本の線素を選んでください" 'Select 1 line entity
 
                     While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
@@ -2305,7 +2305,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select 1 line entity"
+                    Opts.MessageForAdding = "一本の線素を選んでください" 'Select 1 line entity
 
                     While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
@@ -2394,7 +2394,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select 1 line entity"
+                    Opts.MessageForAdding = "一本の線素を選んでください" 'Select 1 line entity
 
                     While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
@@ -2483,7 +2483,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select 1 line entity"
+                    Opts.MessageForAdding = "一本の線素を選んでください" 'Select 1 line entity
 
                     While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
@@ -2574,7 +2574,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select 1 line entity"
+                    Opts.MessageForAdding = "一本の線素を選んでください" 'Select 1 line entity
 
                     While CorrectSelectionStat = False
                         res = ed.GetSelection(Opts)
