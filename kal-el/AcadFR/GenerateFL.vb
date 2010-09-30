@@ -71,39 +71,39 @@ Public Class GenerateFL
             CodeName = "BORING"
         End If
 
-        If s.MiscProp(0).Contains("Square Slot") Then
+        If s.MiscProp(0).Contains("角溝") Then
             CodeName = "SQRSLOT"
         End If
 
-        If s.MiscProp(0).Contains("Square Step") Then
+        If s.MiscProp(0).Contains("角ステップ") Then
             CodeName = "SQRSTEP"
         End If
 
-        If s.MiscProp(0).Contains("4-side Pocket") Then
+        If s.MiscProp(0).Contains("４側ポケット") Then
             CodeName = "4SPOCKET"
         End If
 
-        If s.MiscProp(0).Contains("3-side Pocket") Then
+        If s.MiscProp(0).Contains("３側ポケット") Then
             CodeName = "3SPOCKET"
         End If
 
-        If s.MiscProp(0).Contains("2-side Pocket") Then
+        If s.MiscProp(0).Contains("２側ポケット") Then
             CodeName = "2SPOCKET"
         End If
 
-        If s.MiscProp(0).Contains("Long Hole") Then
+        If s.MiscProp(0).Contains("長穴") Then
             CodeName = "LNGHOLE"
         End If
 
-        If s.MiscProp(0).Contains("Blind Slot") Then
+        If s.MiscProp(0).Contains("止まり溝") Then
             CodeName = "BLDSLOT"
         End If
 
-        If s.MiscProp(0).Contains("Cut Off") Then
+        If s.MiscProp(0).Contains("切り取り") Then
             CodeName = "CUTOFF"
         End If
 
-        If s.MiscProp(0).Contains("Cutter Path") Then
+        If s.MiscProp(0).Contains("カッターパス") Then
             CodeName = "CUTTERPATH"
         End If
 
