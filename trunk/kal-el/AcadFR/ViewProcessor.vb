@@ -528,10 +528,10 @@ Public Class ViewProcessor
                                 Orientation = "2" 'Left Side
                             End If
                             Exit For
-                        ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                        ElseIf (((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) Or _
+                            ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2))) And D2 = 0 Then
                             D2 = Round(LineLength(TmpLine), 3)
                             Exit For
                         End If
@@ -975,10 +975,10 @@ Public Class ViewProcessor
                                 Orientation = "2" 'Left Side
                             End If
                             Exit For
-                        ElseIf ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
-                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
-                            PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D2 = 0 Then
+                        ElseIf (((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) Or _
+                            ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2))) And D2 = 0 Then
                             D2 = Round(LineLength(TmpLine), 3)
                             Exit For
                         End If
