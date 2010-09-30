@@ -40,7 +40,8 @@ Public Class UserControl3
                 zoom.ZoomAll()
 
                 If remove_Line() = False Then
-                    MsgBox("Object '" & adskClass.TempName & "' Cannot Deleted By Application You must Erased Manual", MsgBoxStyle.Information)
+                    MsgBox("Object '" & adskClass.TempName & "' 外枠の線4本と、設計面の名前を、E(ENTER)で削除してください。", MsgBoxStyle.Information)
+                    'Cannot Deleted By Application You must Erased Manual
                 Else
                     Me.IdentifiedFeature.ClearSelection()
                     Me.UnidentifiedFeature.ClearSelection()
@@ -301,20 +302,19 @@ Public Class UserControl3
 
     'procedure for filling the machining parameter fields
     Private Sub FillInTheBlank(ByVal FeatureList As List(Of OutputFormat))
-
-        If FeatureList(0).MiscProp(0).Contains("ＰＴタップ穴") Then
+        If FeatureList(0).MiscProp(0).Contains("ＰＴタップ穴") Then 'Tap, PT
             Me.ComboBox1.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(0, 6)
             Me.ComboBox3.Enabled = True
             Me.ComboBox3.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(8)
-        ElseIf FeatureList(0).MiscProp(0).Contains("タップ穴") Then
+        ElseIf FeatureList(0).MiscProp(0).Contains("タップ穴") Then 'タップ穴
             Me.ComboBox1.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(0, 4)
             Me.ComboBox3.Enabled = True
             Me.ComboBox3.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(6)
-        ElseIf FeatureList(0).MiscProp(0).Contains("リーマ穴") And FeatureList(0).MiscProp(0).Contains("R-") Then
+        ElseIf FeatureList(0).MiscProp(0).Contains("リーマ穴") And FeatureList(0).MiscProp(0).Contains("R-") Then 'Ream
             Me.ComboBox1.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(0, 4)
             Me.ComboBox3.Enabled = True
             Me.ComboBox3.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(6)
-        ElseIf FeatureList(0).MiscProp(0).Contains("段付きボルト穴") Then
+        ElseIf FeatureList(0).MiscProp(0).Contains("段付きボルト穴") Then 'SunkBolt
             Me.ComboBox1.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(0, 7)
             Me.ComboBox3.Enabled = True
             Me.ComboBox3.Text = LTrim(FeatureList(0).MiscProp(0)).Substring(9)
@@ -516,7 +516,7 @@ Public Class UserControl3
 
                     Opts = New PromptSelectionOptions()
                     Opts.AllowDuplicates = False
-                    Opts.MessageForAdding = "Select the view that need to be erased:"
+                    Opts.MessageForAdding = "アンドウする設計面を選ぶ:" 'Select the view that need to be erased:
                     res = ed.GetSelection(Opts, sfilter)
 
                     If res.Status = PromptStatus.OK Then

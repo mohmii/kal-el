@@ -214,7 +214,7 @@ Partial Class AppPreferencesForm
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "AppPreferencesForm"
-        Me.Text = "FR Preferences"
+        Me.Text = "FRの設定"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.Schematic, System.ComponentModel.ISupportInitialize).EndInit()

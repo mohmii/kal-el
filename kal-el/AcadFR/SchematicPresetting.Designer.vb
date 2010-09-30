@@ -47,7 +47,7 @@ Partial Class SchematicPresetting
         Me.Proceed.Name = "Proceed"
         Me.Proceed.Size = New System.Drawing.Size(75, 23)
         Me.Proceed.TabIndex = 2
-        Me.Proceed.Text = "Proceed >>"
+        Me.Proceed.Text = "次へ >>"
         Me.Proceed.UseVisualStyleBackColor = True
         '
         'Cancel
@@ -56,7 +56,7 @@ Partial Class SchematicPresetting
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(75, 23)
         Me.Cancel.TabIndex = 3
-        Me.Cancel.Text = "Cancel"
+        Me.Cancel.Text = "キャンセル"
         Me.Cancel.UseVisualStyleBackColor = True
         '
         'TapHoleList
