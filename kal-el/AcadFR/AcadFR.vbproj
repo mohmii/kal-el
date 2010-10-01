@@ -95,7 +95,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="DwgProcessor.vb" />
-    <Compile Include="EntityColorList.vb" />
     <Compile Include="Form1.Designer.vb">
       <DependentUpon>Form1.vb</DependentUpon>
     </Compile>
@@ -115,7 +114,6 @@
     <Compile Include="LinetypesPresetting.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoopSet.vb" />
     <Compile Include="MillingProcessor.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -131,7 +129,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerateFL.vb" />
-    <Compile Include="OrganizeList.vb" />
     <Compile Include="SchematicPresetting.Designer.vb">
       <DependentUpon>SchematicPresetting.vb</DependentUpon>
     </Compile>
