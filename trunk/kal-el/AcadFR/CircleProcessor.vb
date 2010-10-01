@@ -247,7 +247,7 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(circle)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
                         Else
                             'add to the unidentified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
@@ -283,7 +283,7 @@ Public Class CircleProcessor
                         SelectionCommand.HiddenFeature.Clear()
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
-                        Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                        Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
                     Else
                         'add to the identified feature list
                         SelectionCommand.UnIdentifiedFeature.Add(Feature)
@@ -325,7 +325,7 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
                         Else
                             'add to the identified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
@@ -359,7 +359,7 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
                         Else
                             'add to the unidentified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
@@ -397,7 +397,7 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(circle)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
                         Else
                             'add to the unidentified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
