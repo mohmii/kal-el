@@ -182,7 +182,8 @@ Public Class DwgProcessor
 
             End While
         Catch ex As Exception
-            MsgBox("Error in breaking line entites, just click ok")
+            'Error in breaking line entities, please break line manually and just click ok
+            'MsgBox("線素の分解でエラーが起こりました。　線素を手動で分解して下さい。")
         End Try
     End Sub
 
