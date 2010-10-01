@@ -1828,6 +1828,7 @@ Public Class UserControl3
                     Dim ArcEntAdd As New List(Of Arc)
                     Dim AllEntAdd As New List(Of Entity)
                     Dim PLEntAdd As New List(Of Polyline)
+                    Dim ManualStat As Boolean = True
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -1847,7 +1848,7 @@ Public Class UserControl3
                             Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
 
                             'add circle, line and arc entities
-                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                            If Check2Database.CheckIfEntity(Entity, ManualStat) = True And Not (TypeOf (Entity) Is DBPoint) Then
                                 If TypeOf (Entity) Is Circle Then
                                     CircEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Line Then
@@ -1870,7 +1871,6 @@ Public Class UserControl3
                         'get the number of group
                         Dim CircGroupMember As New Integer
 
-
                         For Each result As IEnumerable(Of Circle) In getGroup
                             CircGroupMember = CircGroupMember + 1
                         Next
@@ -1888,8 +1888,8 @@ Public Class UserControl3
                             CircMember = result.Count()
                             Dim Surface As Integer = 3
 
-                            CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, _
-                                                          Feature, SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected)
+                            CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
+                                                          SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected, ManualStat)
 
                             'set the current feature to current view
                             RegisterToView(Feature)
@@ -1932,6 +1932,7 @@ Public Class UserControl3
                     Dim GLoopPts As New List(Of List(Of Point3d))
                     Dim ViewProc As New ViewProcessor
                     Dim GetPoints As New GetPoints
+                    Dim ManualStat As Boolean = True
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -1951,7 +1952,7 @@ Public Class UserControl3
                             Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
 
                             'add circle, line and arc entities
-                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                            If Check2Database.CheckIfEntity(Entity, ManualStat) = True And Not (TypeOf (Entity) Is DBPoint) Then
                                 If TypeOf (Entity) Is Circle Then
                                     CircEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Line Then
@@ -2009,6 +2010,7 @@ Public Class UserControl3
                     Dim ArcEntAdd As New List(Of Arc)
                     Dim AllEntAdd As New List(Of Entity)
                     Dim PLEntAdd As New List(Of Polyline)
+                    Dim ManualStat As Boolean = True
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -2028,7 +2030,7 @@ Public Class UserControl3
                             Entity = AcadConnection.myT.GetObject(id, OpenMode.ForWrite, True)
 
                             'add circle, line and arc entities
-                            If Check2Database.CheckIfEntity(Entity) = True And Not (TypeOf (Entity) Is DBPoint) Then
+                            If Check2Database.CheckIfEntity(Entity, ManualStat) = True And Not (TypeOf (Entity) Is DBPoint) Then
                                 If TypeOf (Entity) Is Circle Then
                                     CircEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Line Then
@@ -2043,6 +2045,7 @@ Public Class UserControl3
                         Next id
 
                         If PLEntAdd.Count <> 0 Then
+                            Dim SelCom As New SelectionCommand
                             For Each PolyTemp As Polyline In PLEntAdd
                                 Feature = New OutputFormat
 
@@ -2053,9 +2056,11 @@ Public Class UserControl3
                                 Feature.Pline = PolyTemp
                                 Feature.Planelocation = SelectionCommand.LastViewSelected
 
-                                If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(PolyTemp) Then
+                                If Check2Database.CheckIfEntityHidden(PolyTemp) Then
+                                    SelectionCommand.HiddenFeature.Clear()
                                     SelectionCommand.HiddenFeature.Add(Feature)
                                     SelectionCommand.HiddenEntity.Add(PolyTemp)
+                                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, SelectionCommand.LastViewSelected.ViewType, SelectionCommand.ProjectionView)
                                 Else
                                     'add to the unidentified feature list
                                     SelectionCommand.UnIdentifiedFeature.Add(Feature)

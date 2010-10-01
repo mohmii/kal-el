@@ -219,6 +219,18 @@ Public Class DatabaseConn
         'End If
     End Function
 
+    'check for add feature manually
+    'check if the entity is one of the entity defined in the database
+    Public Function CheckIfEntity(ByVal LineObject As Entity, ByVal ManStat As Boolean) As Boolean
+        If ManStat = True Then
+            If CheckIfEntitySolid(LineObject) = True Or CheckIfEntityHidden(LineObject) = True Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+    End Function
+
     'check if the entity is a solid type in the database
     Public Function CheckIfEntitySolid(ByVal lineObject As Entity) As Boolean
 

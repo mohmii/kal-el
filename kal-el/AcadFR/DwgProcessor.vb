@@ -58,128 +58,132 @@ Public Class DwgProcessor
         iFor = 0
 
         'break point in the middle of the line
-        While PointStatus = True And BreakFailed = False
+        Try
+            While PointStatus = True And BreakFailed = False
 
-            iWhile = iWhile + 1
+                iWhile = iWhile + 1
 
-            PointStatus = False
-            BreakFailed = False
-            AllPoints = New List(Of Point3d)
-            GroupOfEntity = New List(Of AllPoints)
-            UnAdjacentPoints = New List(Of Point3d)
-            GetPoints = New GetPoints
-            EntityIndex = New List(Of Integer)
-            LineIndex = New List(Of Integer)
-            GeometryProcessor = New GeometryProcessor
-            AddedEntities = New List(Of Entity)
-            RemovedEntities = New List(Of Entity)
-            PointToEdit = New Point3d
-            AllSinglePoints = New List(Of Point3d)
-            BreakThisLine = New Line
+                PointStatus = False
+                BreakFailed = False
+                AllPoints = New List(Of Point3d)
+                GroupOfEntity = New List(Of AllPoints)
+                UnAdjacentPoints = New List(Of Point3d)
+                GetPoints = New GetPoints
+                EntityIndex = New List(Of Integer)
+                LineIndex = New List(Of Integer)
+                GeometryProcessor = New GeometryProcessor
+                AddedEntities = New List(Of Entity)
+                RemovedEntities = New List(Of Entity)
+                PointToEdit = New Point3d
+                AllSinglePoints = New List(Of Point3d)
+                BreakThisLine = New Line
 
-            'get all points 
-            GetPoints.UnAdjacentPointExtractor(AllEntities, AllPoints, GroupOfEntity, UnAdjacentPoints)
+                'get all points 
+                GetPoints.UnAdjacentPointExtractor(AllEntities, AllPoints, GroupOfEntity, UnAdjacentPoints)
 
-            iFor = 0
+                iFor = 0
 
-            SelectSinglePoints(AllPoints, AllSinglePoints)
+                SelectSinglePoints(AllPoints, AllSinglePoints)
 
-            UserControl3.acedSetStatusBarProgressMeter("Line Processor", 0, AllSinglePoints.Count)
-            Dim iLoadBar As Integer
+                UserControl3.acedSetStatusBarProgressMeter("Line Processor", 0, AllSinglePoints.Count)
+                Dim iLoadBar As Integer
 
-            For Each PointTmp As Point3d In AllSinglePoints
+                For Each PointTmp As Point3d In AllSinglePoints
 
-                iFor = iFor + 1
+                    iFor = iFor + 1
 
-                For Each EntityTmp As Entity In AllEntities
-                    If TypeOf EntityTmp Is Line Then
-                        BreakThisLine = EntityTmp
-                        If isequalpoint(PointTmp, BreakThisLine.StartPoint) = False _
-                        And isequalpoint(PointTmp, BreakThisLine.EndPoint) = False _
-                        And GeometryProcessor.PointOnline(PointTmp, BreakThisLine.StartPoint, BreakThisLine.EndPoint) = 2 _
-                        And Not RemovedEntities.Contains(EntityTmp) Then
-                            PointCol = New Point3dCollection
-                            EntityToAdd = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(0).Entity
-                            If GeometryProcessor.CheckDifferences(BreakThisLine.StartPoint.X, BreakThisLine.EndPoint.X) = True Then
-                                If GeometryProcessor.CheckDifferences(PointTmp.X, BreakThisLine.StartPoint.X) Then
-                                    BreakAtThisPoint = New Point3d(BreakThisLine.StartPoint.X, PointTmp.Y, PointTmp.Z)
-                                    GeometryProcessor.SplitLine(BreakThisLine, BreakAtThisPoint, AddedEntities, RemovedEntities, _
-                                                                EntityTmp, EntityIndex, AllEntities, LineIndex, LineEntities, _
-                                                                PointToEdit, EntityToAdd)
-                                    PointStatus = True
-                                    BreakFailed = False
-                                    Exit For
+                    For Each EntityTmp As Entity In AllEntities
+                        If TypeOf EntityTmp Is Line Then
+                            BreakThisLine = EntityTmp
+                            If isequalpoint(PointTmp, BreakThisLine.StartPoint) = False _
+                            And isequalpoint(PointTmp, BreakThisLine.EndPoint) = False _
+                            And GeometryProcessor.PointOnline(PointTmp, BreakThisLine.StartPoint, BreakThisLine.EndPoint) = 2 _
+                            And Not RemovedEntities.Contains(EntityTmp) Then
+                                PointCol = New Point3dCollection
+                                EntityToAdd = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(0).Entity
+                                If GeometryProcessor.CheckDifferences(BreakThisLine.StartPoint.X, BreakThisLine.EndPoint.X) = True Then
+                                    If GeometryProcessor.CheckDifferences(PointTmp.X, BreakThisLine.StartPoint.X) Then
+                                        BreakAtThisPoint = New Point3d(BreakThisLine.StartPoint.X, PointTmp.Y, PointTmp.Z)
+                                        GeometryProcessor.SplitLine(BreakThisLine, BreakAtThisPoint, AddedEntities, RemovedEntities, _
+                                                                    EntityTmp, EntityIndex, AllEntities, LineIndex, LineEntities, _
+                                                                    PointToEdit, EntityToAdd)
+                                        PointStatus = True
+                                        BreakFailed = False
+                                        Exit For
+                                    Else
+                                        BreakFailed = True
+                                    End If
+
+                                ElseIf GeometryProcessor.CheckDifferences(BreakThisLine.StartPoint.Y, BreakThisLine.EndPoint.Y) = True Then
+                                    If GeometryProcessor.CheckDifferences(PointTmp.Y, BreakThisLine.StartPoint.Y) Then
+                                        BreakAtThisPoint = New Point3d(PointTmp.X, BreakThisLine.StartPoint.Y, PointTmp.Z)
+                                        GeometryProcessor.SplitLine(BreakThisLine, BreakAtThisPoint, AddedEntities, RemovedEntities, _
+                                                                    EntityTmp, EntityIndex, AllEntities, LineIndex, LineEntities, _
+                                                                    PointToEdit, EntityToAdd)
+                                        PointStatus = True
+                                        BreakFailed = False
+                                        Exit For
+                                    Else
+                                        BreakFailed = True
+                                    End If
                                 Else
-                                    BreakFailed = True
-                                End If
+                                    LineToCheck = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.Item(0).Line
+                                    BreakAtThisPoint = GeometryProcessor.IntersectionPoint(BreakThisLine, LineToCheck)
 
-                            ElseIf GeometryProcessor.CheckDifferences(BreakThisLine.StartPoint.Y, BreakThisLine.EndPoint.Y) = True Then
-                                If GeometryProcessor.CheckDifferences(PointTmp.Y, BreakThisLine.StartPoint.Y) Then
-                                    BreakAtThisPoint = New Point3d(PointTmp.X, BreakThisLine.StartPoint.Y, PointTmp.Z)
-                                    GeometryProcessor.SplitLine(BreakThisLine, BreakAtThisPoint, AddedEntities, RemovedEntities, _
-                                                                EntityTmp, EntityIndex, AllEntities, LineIndex, LineEntities, _
-                                                                PointToEdit, EntityToAdd)
-                                    PointStatus = True
-                                    BreakFailed = False
-                                    Exit For
-                                Else
-                                    BreakFailed = True
-                                End If
-                            Else
-                                LineToCheck = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.Item(0).Line
-                                BreakAtThisPoint = GeometryProcessor.IntersectionPoint(BreakThisLine, LineToCheck)
+                                    If GeometryProcessor.CheckDifferences(PointTmp, BreakAtThisPoint) = True Then
+                                        GeometryProcessor.SplitLine(BreakThisLine, BreakAtThisPoint, AddedEntities, RemovedEntities, _
+                                                                    EntityTmp, EntityIndex, AllEntities, LineIndex, LineEntities, _
+                                                                    BreakAtThisPoint, EntityToAdd)
 
-                                If GeometryProcessor.CheckDifferences(PointTmp, BreakAtThisPoint) = True Then
-                                    GeometryProcessor.SplitLine(BreakThisLine, BreakAtThisPoint, AddedEntities, RemovedEntities, _
-                                                                EntityTmp, EntityIndex, AllEntities, LineIndex, LineEntities, _
-                                                                BreakAtThisPoint, EntityToAdd)
-
-                                    PointStatus = True
-                                    BreakFailed = False
-                                    Exit For
-                                Else
-                                    BreakFailed = True
+                                        PointStatus = True
+                                        BreakFailed = False
+                                        Exit For
+                                    Else
+                                        BreakFailed = True
+                                    End If
                                 End If
                             End If
                         End If
+                    Next
+                    If PointStatus = True Then
+                        Exit For
                     End If
+                    'add the progress bar
+                    iLoadBar = iLoadBar + 1
+                    'System.Threading.Thread.Sleep(1)
+                    UserControl3.acedSetStatusBarProgressMeterPos(iLoadBar)
+                    System.Windows.Forms.Application.DoEvents()
                 Next
+
+                UserControl3.acedRestoreStatusBar()
+
+                'membuang dan menambah jika ada entitas yang di-split serta mengedit 
                 If PointStatus = True Then
-                    Exit For
+                    'membuang entitas yang di-split dan diedit
+                    EntityIndex.Sort()
+                    For i As Integer = (EntityIndex.Count - 1) To 0 Step (-1)
+                        EntityToDel = Transaction.GetObject(AllEntities(EntityIndex(i)).ObjectId, OpenMode.ForWrite, True)
+                        EntityToDel.Erase()
+                        AllEntities.RemoveAt(EntityIndex(i))
+                    Next
+
+                    'membuang garis yang di-split
+                    LineIndex.Sort()
+                    For j As Integer = (LineIndex.Count - 1) To 0 Step (-1)
+                        LineEntities.RemoveAt(LineIndex(j))
+                    Next
+
+                    'menambah entitas hasil split
+                    For k As Integer = 0 To AddedEntities.Count - 1
+                        AllEntities.Add(AddedEntities(k))
+                        LineEntities.Add(AddedEntities(k))
+                    Next
                 End If
-                'add the progress bar
-                iLoadBar = iLoadBar + 1
-                'System.Threading.Thread.Sleep(1)
-                UserControl3.acedSetStatusBarProgressMeterPos(iLoadBar)
-                System.Windows.Forms.Application.DoEvents()
-            Next
 
-            UserControl3.acedRestoreStatusBar()
-
-            'membuang dan menambah jika ada entitas yang di-split serta mengedit 
-            If PointStatus = True Then
-                'membuang entitas yang di-split dan diedit
-                EntityIndex.Sort()
-                For i As Integer = (EntityIndex.Count - 1) To 0 Step (-1)
-                    EntityToDel = Transaction.GetObject(AllEntities(EntityIndex(i)).ObjectId, OpenMode.ForWrite, True)
-                    EntityToDel.Erase()
-                    AllEntities.RemoveAt(EntityIndex(i))
-                Next
-
-                'membuang garis yang di-split
-                LineIndex.Sort()
-                For j As Integer = (LineIndex.Count - 1) To 0 Step (-1)
-                    LineEntities.RemoveAt(LineIndex(j))
-                Next
-
-                'menambah entitas hasil split
-                For k As Integer = 0 To AddedEntities.Count - 1
-                    AllEntities.Add(AddedEntities(k))
-                    LineEntities.Add(AddedEntities(k))
-                Next
-            End If
-
-        End While
+            End While
+        Catch ex As Exception
+            MsgBox("Error in breaking line entites, just click ok")
+        End Try
     End Sub
 
     'variable for breaking lines

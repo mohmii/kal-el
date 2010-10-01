@@ -15,7 +15,8 @@ Public Class CircleProcessor
     Private ListLoopTemp As List(Of List(Of Entity))
     Private LoopTemp As List(Of Entity)
 
-    Public Sub ClassifyCircles(ByVal CircMember As Integer, ByVal Check2Database As DatabaseConn, ByVal result As IEnumerable(Of Circle), ByVal Surface As Integer, _
+    'not manual
+    Public Overloads Sub ClassifyCircles(ByVal CircMember As Integer, ByVal Check2Database As DatabaseConn, ByVal result As IEnumerable(Of Circle), ByVal Surface As Integer, _
                                ByRef Feature As OutputFormat, ByVal RefPoint As Point3d, ByVal ProjectView As ViewProp)
 
         If CircMember = 2 Then
@@ -202,6 +203,211 @@ Public Class CircleProcessor
                         AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                     End If
                 Next
+            End If
+        End If
+    End Sub
+
+
+    'circle manual
+    Public Overloads Sub ClassifyCircles(ByVal CircMember As Integer, ByVal Check2Database As DatabaseConn, ByVal result As IEnumerable(Of Circle), ByVal Surface As Integer, _
+                               ByRef Feature As OutputFormat, ByVal RefPoint As Point3d, ByVal ProjectView As ViewProp, ByVal ManStat As Boolean)
+        If ManStat = True Then
+            Dim Selcom As New SelectionCommand
+            If CircMember = 2 Then
+
+                'continue to identify tap and cbore hole with the fr database
+                CheckResult = Check2Database.CheckDoubleHole(result, Surface)
+
+                'checking the result
+                If IsNothing(CheckResult) Then
+
+                    'loop for each circle in group of circles
+                    For Each circle As Circle In result
+                        'create new unidentified feature
+                        Feature = New OutputFormat
+                        'set the feature property
+                        Feature.EntityMember = CircMember
+                        Feature.FeatureName = "Entity " + SelectionCommand.UnIdentifiedFeature.Count.ToString
+                        Feature.ObjectId.Add(circle.ObjectId)
+                        'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
+                        Feature.MiscProp(0) = FindTheirJapsName("Drill")
+                        Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                        Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
+                        Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
+                        Feature.OriginAndAddition(2) = 0
+                        Feature.OriginAndAddition(3) = Round(circle.Radius * 2, 3)
+                        Feature.OriginAndAddition(4) = 0
+                        Feature.OriginAndAddition(5) = 0
+                        Feature.OriginAndAddition(6) = 0
+                        Feature.OriginAndAddition(7) = 0
+                        ListLoopTemp = New List(Of List(Of Entity))
+                        ListLoopTemp.Add(LoopTemp)
+                        Feature.ListLoop = ListLoopTemp
+                        If Check2Database.CheckIfEntityHidden(circle) Then
+                            SelectionCommand.HiddenFeature.Clear()
+                            SelectionCommand.HiddenFeature.Add(Feature)
+                            SelectionCommand.HiddenEntity.Add(circle)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                        Else
+                            'add to the unidentified feature list
+                            SelectionCommand.UnIdentifiedFeature.Add(Feature)
+                            SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
+                            'OrganizeList.AddListToExisting2(Feature)
+                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                        End If
+                    Next
+                Else
+                    'create new feature for cbore or tap
+                    Feature = New OutputFormat
+                    'set the feature property
+                    Feature.EntityMember = CircMember
+                    Feature.FeatureName = CheckResult(0)
+                    Feature.ObjectId.Add(result.First.ObjectId)
+                    Feature.ObjectId.Add(result.Last.ObjectId)
+                    'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
+                    Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
+                    Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                    Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
+                    Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
+                    Feature.OriginAndAddition(2) = 0
+                    Feature.OriginAndAddition(3) = CheckResult(3)
+                    Feature.OriginAndAddition(4) = CheckResult(4)
+                    Feature.OriginAndAddition(5) = CheckResult(5)
+                    Feature.OriginAndAddition(6) = CheckResult(6)
+                    Feature.OriginAndAddition(7) = 0
+                    ListLoopTemp = New List(Of List(Of Entity))
+                    ListLoopTemp.Add(LoopTemp)
+                    Feature.ListLoop = ListLoopTemp
+                    If Check2Database.CheckBottomTap(result) Then
+                        SelectionCommand.HiddenFeature.Clear()
+                        SelectionCommand.HiddenFeature.Add(Feature)
+                        SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
+                        Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                    Else
+                        'add to the identified feature list
+                        SelectionCommand.UnIdentifiedFeature.Add(Feature)
+                        SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
+                        'OrganizeList.AddListToExisting2(Feature)
+                        SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                        AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                    End If
+                End If
+            Else
+                If CircMember = 1 Then
+                    'check if the group is ream or not
+
+                    If Check2Database.CheckIfReam(result) Then
+                        'set the checkresult to ream
+                        'CheckResult = New String() {"Ream", result.SingleOrDefault.Id.ToString(), ""}
+                        CheckResult = Check2Database.WhichReam(result)
+                        'create new feature
+                        Feature = New OutputFormat
+                        'set the feature property
+                        Feature.EntityMember = CircMember
+                        Feature.FeatureName = CheckResult(0)
+                        Feature.ObjectId.Add(result.FirstOrDefault.ObjectId)
+                        'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
+                        Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
+                        Feature.MiscProp(1) = setView.viewis
+                        Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
+                        Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
+                        Feature.OriginAndAddition(2) = 0
+                        Feature.OriginAndAddition(3) = CheckResult(2)
+                        Feature.OriginAndAddition(4) = CheckResult(3)
+                        Feature.OriginAndAddition(5) = 0
+                        Feature.OriginAndAddition(6) = 0
+                        Feature.OriginAndAddition(7) = 0
+                        ListLoopTemp = New List(Of List(Of Entity))
+                        ListLoopTemp.Add(LoopTemp)
+                        Feature.ListLoop = ListLoopTemp
+                        If Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
+                            SelectionCommand.HiddenFeature.Clear()
+                            SelectionCommand.HiddenFeature.Add(Feature)
+                            SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                        Else
+                            'add to the identified feature list
+                            SelectionCommand.UnIdentifiedFeature.Add(Feature)
+                            SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
+                            'OrganizeList.AddListToExisting2(Feature)
+                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                        End If
+                    Else
+                        'create a new unidentified feature
+                        Feature = New OutputFormat
+                        'set the faeture property
+                        Feature.EntityMember = CircMember
+                        Feature.FeatureName = "Drill"
+                        Feature.ObjectId.Add(result.FirstOrDefault.ObjectId)
+                        'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
+                        Feature.MiscProp(0) = FindTheirJapsName("Drill")
+                        Feature.MiscProp(1) = setView.viewis
+                        Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
+                        Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
+                        Feature.OriginAndAddition(2) = 0
+                        Feature.OriginAndAddition(3) = Round(result.FirstOrDefault.Radius * 2, 3)
+                        Feature.OriginAndAddition(4) = 0
+                        Feature.OriginAndAddition(5) = 0
+                        Feature.OriginAndAddition(6) = 0
+                        Feature.OriginAndAddition(7) = 0
+                        ListLoopTemp = New List(Of List(Of Entity))
+                        ListLoopTemp.Add(LoopTemp)
+                        Feature.ListLoop = ListLoopTemp
+                        If Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
+                            SelectionCommand.HiddenFeature.Clear()
+                            SelectionCommand.HiddenFeature.Add(Feature)
+                            SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                        Else
+                            'add to the unidentified feature list
+                            SelectionCommand.UnIdentifiedFeature.Add(Feature)
+                            SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
+                            'OrganizeList.AddListToExisting2(Feature)
+                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                        End If
+                    End If
+
+                Else
+                    'loop for each circle in group of circles
+                    For Each circle As Circle In result
+                        'create new unidentified feature
+                        Feature = New OutputFormat
+                        'set the feature property
+                        Feature.EntityMember = CircMember
+                        Feature.FeatureName = "Entity " + SelectionCommand.UnIdentifiedFeature.Count.ToString
+                        Feature.ObjectId.Add(circle.ObjectId)
+                        'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
+                        Feature.MiscProp(0) = FindTheirJapsName("Drill")
+                        Feature.MiscProp(1) = setView.viewis
+                        Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
+                        Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
+                        Feature.OriginAndAddition(2) = 0
+                        Feature.OriginAndAddition(3) = Round(circle.Radius * 2, 3)
+                        Feature.OriginAndAddition(4) = 0
+                        Feature.OriginAndAddition(5) = 0
+                        Feature.OriginAndAddition(6) = 0
+                        Feature.OriginAndAddition(7) = 0
+                        ListLoopTemp = New List(Of List(Of Entity))
+                        ListLoopTemp.Add(LoopTemp)
+                        Feature.ListLoop = ListLoopTemp
+                        If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(circle) Then
+                            SelectionCommand.HiddenFeature.Clear()
+                            SelectionCommand.HiddenFeature.Add(Feature)
+                            SelectionCommand.HiddenEntity.Add(circle)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                        Else
+                            'add to the unidentified feature list
+                            SelectionCommand.UnIdentifiedFeature.Add(Feature)
+                            SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
+                            'OrganizeList.AddListToExisting2(Feature)
+                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
+                        End If
+                    Next
+                End If
             End If
         End If
     End Sub
