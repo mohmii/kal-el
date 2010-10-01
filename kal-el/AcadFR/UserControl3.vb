@@ -34,7 +34,8 @@ Public Class UserControl3
     'clear all the feature that listed on machining feature list
     Private Sub Undo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Undo.Click
         Try
-            If MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.OkCancel, "Undo View Recognition") = MsgBoxResult.Ok Then
+            'Undo view recognition
+            If MsgBox("アンドウする投影面を選ぶ.", MsgBoxStyle.OkCancel, "アンドウする設計面を選ぶ") = MsgBoxResult.Ok Then
 
                 zoom = Application.AcadApplication
                 zoom.ZoomAll()
@@ -362,8 +363,8 @@ Public Class UserControl3
     'used for double checking when user want to delete one or several features
     Private Function PromptDeleteResult(ByVal LabelCount As String) As Boolean
         If LabelCount = 1 Then
-            'are you sure you want to permanently delete this feature?"
-            If MsgBox("この形状を完全に削除しますが、よろしいですか？", MsgBoxStyle.OkCancel, "Delete Feature") = MsgBoxResult.Ok Then
+            'are you sure you want to permanently delete this feature?" , Delete Feature
+            If MsgBox("この形状を完全に削除しますが、よろしいですか？", MsgBoxStyle.OkCancel, "形状を削除する") = MsgBoxResult.Ok Then
                 Return True
             Else
                 Return False
@@ -372,7 +373,7 @@ Public Class UserControl3
             Return False
         Else
             If MsgBox("これら " + LabelCount + " 個の形状を完全に削除しますが、よろしいですか？", MsgBoxStyle.OkCancel, _
-                      "Delete Multiple Features") = MsgBoxResult.Ok Then
+                      "複数の形状を削除する") = MsgBoxResult.Ok Then 'Delete Multiple Features
                 Return True
             Else
                 Return False
