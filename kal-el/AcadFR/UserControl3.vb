@@ -2061,7 +2061,8 @@ Public Class UserControl3
                                     SelectionCommand.HiddenFeature.Clear()
                                     SelectionCommand.HiddenFeature.Add(Feature)
                                     SelectionCommand.HiddenEntity.Add(PolyTemp)
-                                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, SelectionCommand.LastViewSelected.ViewType, SelectionCommand.ProjectionView)
+                                    SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.LastViewSelected, _
+                                                          SelectionCommand.LastViewSelected.ViewType, SelectionCommand.ProjectionView)
                                 Else
                                     'add to the unidentified feature list
                                     SelectionCommand.UnIdentifiedFeature.Add(Feature)

@@ -141,7 +141,7 @@ Public Class ViewProcessor
                     SelectionCommand.HiddenFeature.Clear()
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
-                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, View.ViewType, SelectionCommand.ProjectionView)
+                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, View, View.ViewType, SelectionCommand.ProjectionView)
                 Else
                     UnIdentifiedCounter = UnIdentifiedCounter + 1
                     UnIdentifiedFeature.Add(Feature)
@@ -160,7 +160,7 @@ Public Class ViewProcessor
                     SelectionCommand.HiddenFeature.Clear()
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
-                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectView, View.ViewType, SelectionCommand.ProjectionView)
+                    Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, View, View.ViewType, SelectionCommand.ProjectionView)
                 Else
                     UnIdentifiedCounter = UnIdentifiedCounter + 1
                     UnIdentifiedFeature.Add(Feature)
