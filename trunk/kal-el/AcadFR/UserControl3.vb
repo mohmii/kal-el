@@ -16,9 +16,11 @@ Imports System.Runtime.InteropServices
 Public Class UserControl3
     Private uiSetView As setView
     Private zoom As AcadApplication
+    Public Shared ManualStat As Boolean
 
     'works when the add button was being pressed
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddEntity.Click
+        ManualStat = False
         zoom = Application.AcadApplication
         zoom.ZoomAll()
 
@@ -72,7 +74,9 @@ Public Class UserControl3
                             SelectionCommand.ProjectionView.RemoveAt(i)
                         End If
                     Next
-
+                    If adskClass.myPalette.ComboBox2.Items.Count = 0 Then
+                        adskClass.myPalette.AddManual.Enabled = False
+                    End If
                     MakeItBlank()
                 End If
             End If
@@ -698,8 +702,10 @@ Public Class UserControl3
             Me.Label17.Text = "0"                                               'set the selected items counter in Unidentified Table
             Me.Label16.Text = Me.IdentifiedFeature.SelectedRows.Count.ToString  'set the selected items counter in Identified Table
             Me.UnidentifiedFeature.ClearSelection()                             'clear all selection in Unidentified table
+            SelectedUF.Clear()
             Me.Accepted.Enabled = True                                          'enable the Accepted button
             ComboBox3.Enabled = False                                           'enable the feature description combobox
+            'FeatSurfChgedStat = False                                           'initiate false status for surface change
 
             'only happens when selection is empty
             If SelectedIF.Count = 0 Then
@@ -795,8 +801,10 @@ Public Class UserControl3
             Me.Label16.Text = "0"
             Me.Label17.Text = Me.UnidentifiedFeature.SelectedRows.Count.ToString
             Me.IdentifiedFeature.ClearSelection()
+            SelectedIF.Clear()
             Me.Accepted.Enabled = False
             ComboBox3.Enabled = False
+            'FeatSurfChgedStat = False
 
             If SelectedUF.Count = 0 Then
                 zoom = Application.AcadApplication
@@ -1273,6 +1281,9 @@ Public Class UserControl3
                 NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
                 'NewUpdatedFeature.OriginAndAddition(2) = Me.NumericUpDown3.Value 'Z
             Else
+                'If FeatSurfChgedStat = True Then
+                '    Feature2Update = FeatSurfChged(i)
+                'End If
                 NewUpdatedFeature.MiscProp(1) = Feature2Update.MiscProp(1) 'surface
                 NewUpdatedFeature.OriginAndAddition(0) = Feature2Update.OriginAndAddition(0)
                 NewUpdatedFeature.OriginAndAddition(1) = Feature2Update.OriginAndAddition(1)
@@ -1294,7 +1305,7 @@ Public Class UserControl3
             End If
 
             Table2Check.Rows(RowIndex(i)).Cells("Object").Value = NewUpdatedFeature
-
+            'Table2Check.Rows(RowIndex(i)).Cells("Surface").Value = NewUpdatedFeature.MiscProp(1)
             Table2Check.Rows(RowIndex(i)).Cells("State").Value = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\tick.png")
             Table2Check.Rows(RowIndex(i)).Cells("Biner").Value = "1"
         Next
@@ -1796,6 +1807,7 @@ Public Class UserControl3
 
     'variable needed for add manual
     Private Feature As OutputFormat
+    Private uiAddManualSurface As AddManualSurface
 
     Private Sub AddManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddManual.Click
         'roll back and clear all selection
@@ -1803,14 +1815,43 @@ Public Class UserControl3
         Me.IdentifiedFeature.ClearSelection()
         Me.UnidentifiedFeature.ClearSelection()
 
-        ContextMenuAddManual.Show(Me.AddManual, Me.AddManual.PointToClient(Windows.Forms.Cursor.Position))
+        uiAddManualSurface = New AddManualSurface
+
+        ManualStat = True
+
+        Using uiAddManualSurface
+            uiAddManualSurface.ShowDialog()
+        End Using
+
+        'ContextMenuAddManual.Show(Me.AddManual, Me.AddManual.PointToClient(Windows.Forms.Cursor.Position))
         FormTransition = New FormToFocus
         FormTransition.OpenForm(FormTransition)
+
+        If AddManualSurface.CBHole = True Then
+            AddCircleManual()
+        ElseIf AddManualSurface.CBMill = True Then
+            AddMillingManual()
+        ElseIf AddManualSurface.CBPoly = True Then
+            AddPolyManual()
+        End If
+
     End Sub
 
     Private CheckResult() As String
 
-    Private Sub CircleManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CircleManual.Click
+    'Private Sub CircleManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CircleManual.Click
+    '    AddCircleManual()
+    'End Sub
+
+    'Private Sub MillingManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MillingManual.Click
+    '    AddMillingManual()
+    'End Sub
+
+    'Private Sub PolylManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PolyManual.Click
+    '    AddPolyManual()
+    'End Sub
+
+    Private Sub AddCircleManual()
         Try
             AcadConnection = New AcadConn
 
@@ -1830,6 +1871,7 @@ Public Class UserControl3
                     Dim AllEntAdd As New List(Of Entity)
                     Dim PLEntAdd As New List(Of Polyline)
                     Dim ManualStat As Boolean = True
+                    Dim SurfaceIndex As New Integer
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -1864,6 +1906,17 @@ Public Class UserControl3
                         Next id
 
                     End If
+
+                    'find the selected projection view
+                    Dim i As New Integer
+                    For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                        If Surface.ViewType.ToLower = AddManualSurface.SelSurfMan.ToLower Then
+                            SurfaceIndex = i
+                            Exit For
+                        End If
+                        i = i + 1
+                    Next
+
                     If CircEntAdd.Count <> 0 Then
                         Dim getGroup = From item In CircEntAdd _
                                            Group item By CircXCenter = item.Center Into GroupMember = Group _
@@ -1888,16 +1941,17 @@ Public Class UserControl3
 
                             CircMember = result.Count()
                             Dim Surface As Integer = 3
-
                             CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
-                                                          SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected, ManualStat)
+                                                          SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint, SelectionCommand.ProjectionView(SurfaceIndex), ManualStat)
+
+                            'CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
+                            '                              SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected, ManualStat)
 
                             'set the current feature to current view
                             RegisterToView(Feature)
                         Next
-
                     End If
-                    AcadConnection.myT.Commit()
+                        AcadConnection.myT.Commit()
                 End Using
             End Using
         Catch ex As Exception
@@ -1905,10 +1959,9 @@ Public Class UserControl3
         Finally
             AcadConnection.myT.Dispose()
         End Try
-        
     End Sub
 
-    Private Sub MillingManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MillingManual.Click
+    Private Sub AddMillingManual()
         Try
             AcadConnection = New AcadConn
 
@@ -1934,6 +1987,7 @@ Public Class UserControl3
                     Dim ViewProc As New ViewProcessor
                     Dim GetPoints As New GetPoints
                     Dim ManualStat As Boolean = True
+                    Dim SurfaceIndex As New Integer
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -1968,6 +2022,17 @@ Public Class UserControl3
                         Next id
 
                     End If
+
+                    'find the selected projection view
+                    Dim i As New Integer
+                    For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                        If Surface.ViewType.ToLower = AddManualSurface.SelSurfMan.ToLower Then
+                            SurfaceIndex = i
+                            Exit For
+                        End If
+                        i = i + 1
+                    Next
+
                     If LineEntAdd.Count <> 0 Then
                         MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
                         If GLoop.Count = 0 Then 'And (MLoop.Count >= 4)
@@ -1978,7 +2043,10 @@ Public Class UserControl3
                             GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
                             GLoopPts.Add(LoopPts)
                         End If
-                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.LastViewSelected, _
+                        'ViewProc.SingleViewProcessor(GLoop, SelectionCommand.LastViewSelected, _
+                        '                             SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
+                        '                             GLoopPts, SelectionCommand.UnIdentifiedCounter)
+                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SurfaceIndex), _
                                                      SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
                                                      GLoopPts, SelectionCommand.UnIdentifiedCounter)
                     End If
@@ -1990,9 +2058,10 @@ Public Class UserControl3
         Finally
             AcadConnection.myT.Dispose()
         End Try
+
     End Sub
 
-    Private Sub PolylManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PolyManual.Click
+    Private Sub AddPolyManual()
         Try
             AcadConnection = New AcadConn
 
@@ -2012,6 +2081,7 @@ Public Class UserControl3
                     Dim AllEntAdd As New List(Of Entity)
                     Dim PLEntAdd As New List(Of Polyline)
                     Dim ManualStat As Boolean = True
+                    Dim SurfaceIndex As New Integer
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -2045,6 +2115,16 @@ Public Class UserControl3
                             End If
                         Next id
 
+                        'find the selected projection view
+                        Dim i As New Integer
+                        For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                            If Surface.ViewType.ToLower = AddManualSurface.SelSurfMan.ToLower Then
+                                SurfaceIndex = i
+                                Exit For
+                            End If
+                            i = i + 1
+                        Next
+
                         If PLEntAdd.Count <> 0 Then
                             Dim SelCom As New SelectionCommand
                             For Each PolyTemp As Polyline In PLEntAdd
@@ -2053,16 +2133,20 @@ Public Class UserControl3
                                 Feature.FeatureName = "POLYLINE"
                                 Feature.ObjectId.Add(PolyTemp.ObjectId)
                                 Feature.MiscProp(0) = "ポリライン"
-                                Feature.MiscProp(1) = setView.viewis
+                                'Feature.MiscProp(1) = setView.viewis
+                                Feature.MiscProp(1) = AddManualSurface.SelSurfMan
                                 Feature.Pline = PolyTemp
-                                Feature.Planelocation = SelectionCommand.LastViewSelected
+                                'Feature.Planelocation = SelectionCommand.LastViewSelected
+                                Feature.Planelocation = SelectionCommand.ProjectionView(SurfaceIndex)
 
                                 If Check2Database.CheckIfEntityHidden(PolyTemp) Then
                                     SelectionCommand.HiddenFeature.Clear()
                                     SelectionCommand.HiddenFeature.Add(Feature)
                                     SelectionCommand.HiddenEntity.Add(PolyTemp)
-                                    SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.LastViewSelected, _
-                                                          SelectionCommand.LastViewSelected.ViewType, SelectionCommand.ProjectionView)
+                                    SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectionView(SurfaceIndex), _
+                                                          SelectionCommand.ProjectionView(SurfaceIndex).ViewType, SelectionCommand.ProjectionView)
+                                    'SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.LastViewSelected, _
+                                    '                      SelectionCommand.LastViewSelected.ViewType, SelectionCommand.ProjectionView)
                                 Else
                                     'add to the unidentified feature list
                                     SelectionCommand.UnIdentifiedFeature.Add(Feature)
@@ -2618,6 +2702,60 @@ Public Class UserControl3
             AcadConnection.myT.Dispose()
         End Try
     End Sub
+
+    'Private FeatSurfChged As List(Of OutputFormat)
+    'Private FeatSurfChgedStat As Boolean
+
+    ''change feature surface for add feature manually
+    'Private Sub ComboBox2_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox2.SelectionChangeCommitted
+    '    Dim ViewProc As New ViewProcessor
+    '    Dim LoopPts As New List(Of Point3d)
+    '    Dim GoEnt As New List(Of AllPoints)
+    '    Dim UAPts As New List(Of Point3d)
+    '    Dim GLoopPts As New List(Of List(Of Point3d))
+    '    Dim GetPoints As New GetPoints
+    '    Dim SurfaceIndex As New Integer
+
+    '    For Each Surface As ViewProp In SelectionCommand.ProjectionView
+    '        Dim i As New Integer
+    '        If Surface.ViewType.ToLower = ComboBox2.SelectedItem.ToString.ToLower Then
+    '            SurfaceIndex = i
+    '            Exit For
+    '        End If
+    '        i = i + 1
+    '    Next
+
+    '    FeatSurfChged = New List(Of OutputFormat)
+    '    FeatSurfChgedStat = True
+
+    '    If Me.SelectedIF.Count > 0 Then
+    '        For i As Integer = 0 To Me.SelectedIF.Count - 1
+    '            FeatSurfChged.Add(SelectedIF(i))
+    '            GetPoints.UnAdjacentPointExtractor(FeatSurfChged(i).ListLoop(0), LoopPts, GoEnt, UAPts)
+    '            GLoopPts.Add(LoopPts)
+    '            ViewProc.SingleViewProcessor(FeatSurfChged(i).ListLoop, SelectionCommand.ProjectionView(SurfaceIndex), _
+    '                                        GLoopPts, FeatSurfChged(i))
+    '            'ViewProc.SingleViewProp(FeatSurfChged(i), FeatSurfChged(i).ListLoop(0), SelectionCommand.ProjectionView(SurfaceIndex), GLoopPts, FeatSurfChged(i).ListLoop)
+    '            'FeatSurfChged(i).MiscProp(1) = ComboBox2.SelectedItem.ToString
+    '            FindTheirPicture(FeatSurfChged(i).MiscProp(0))
+    '            GraySelection(FeatSurfChged(i).MiscProp(0))
+    '        Next
+    '        FillInTheBlank(FeatSurfChged)
+    '    ElseIf Me.SelectedUF.Count = 1 Then
+    '        For i As Integer = 0 To Me.SelectedUF.Count - 1
+    '            FeatSurfChged.Add(SelectedUF(i))
+    '            GetPoints.UnAdjacentPointExtractor(FeatSurfChged(i).ListLoop(0), LoopPts, GoEnt, UAPts)
+    '            GLoopPts.Add(LoopPts)
+    '            ViewProc.SingleViewProcessor(FeatSurfChged(i).ListLoop, SelectionCommand.ProjectionView(SurfaceIndex), _
+    '                                        GLoopPts, FeatSurfChged(i))
+    '            'ViewProc.SingleViewProp(FeatSurfChged(i), FeatSurfChged(i).ListLoop(0), SelectionCommand.ProjectionView(SurfaceIndex), GLoopPts, FeatSurfChged(i).ListLoop)
+    '            'FeatSurfChged(i).MiscProp(1) = ComboBox2.SelectedItem.ToString
+    '            FindTheirPicture(FeatSurfChged(i).MiscProp(0))
+    '            GraySelection(FeatSurfChged(i).MiscProp(0))
+    '        Next
+    '        FillInTheBlank(FeatSurfChged)
+    '    End If
+    'End Sub
 
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
         If Math.Abs(x - y) > adskClass.AppPreferences.ToleranceValues Then

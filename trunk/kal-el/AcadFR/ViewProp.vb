@@ -65,6 +65,18 @@ Public Class ViewProp
         End Set
     End Property
 
+    'get and set the actualreference point
+    Private RefPointAct As Point3d
+
+    Public Overloads Property ActRefPoint() As Point3d
+        Get
+            Return RefPointAct
+        End Get
+        Set(ByVal value As Point3d)
+            RefPointAct = value
+        End Set
+    End Property
+
     'variable and method for accessing viewtag (Reference or Corressponding)
     Private ViewID As String
     Public Property ViewTag() As String
