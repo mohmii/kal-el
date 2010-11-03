@@ -88,6 +88,9 @@ Public Class ViewProcessor
                     End If
                 End If
             End If
+            'set the current feature to current view
+            RegisterToView(Feature)
+
             'add the progress bar
             i = i + 1
             'System.Threading.Thread.Sleep(1)
@@ -168,8 +171,45 @@ Public Class ViewProcessor
                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                 End If
             End If
+            'set the current feature to current view
+            RegisterToView(Feature)
         Next
     End Sub
+
+    'add feature manual method changed surface
+    'Public Overloads Sub SingleViewProcessor(ByVal GLoop As List(Of List(Of Entity)), ByVal View As ViewProp, _
+    '                                         ByVal GLoopPts As List(Of List(Of Point3d)), ByRef ChangedFeat As OutputFormat)
+    '    For Each GroupEntity As List(Of Entity) In GLoop
+    '        MillingObjectId = New List(Of ObjectId)
+    '        Feature = New OutputFormat
+    '        ListLoopTemp = New List(Of List(Of Entity))
+
+    '        'add to the unidentified feature list
+    '        For Each EntityTmp As Entity In GroupEntity
+    '            MillingObjectId.Add(EntityTmp.ObjectId)
+    '        Next
+
+    '        CountEntity(GroupEntity, View, SolLine, SolLineBound, VirtuLine, HidLine, SolArc, HidArc, SeqBound, SeqHid)
+
+    '        ListLoopTemp.Add(GroupEntity)
+    '        Feature.EntityMember = MillingObjectId.Count
+    '        Feature.ObjectId = MillingObjectId
+    '        Feature.ListLoop = ListLoopTemp
+    '        Feature.SolidLineCount = SolLine
+    '        Feature.SolidLineInBoundCount = SolLineBound
+    '        Feature.VirtualLineCount = VirtuLine
+    '        Feature.HiddenLineCount = HidLine
+    '        Feature.SolidArcCount = SolArc
+    '        Feature.HiddenArcCount = HidArc
+    '        Feature.SequenceSolidBound = SeqBound
+    '        Feature.SequenceSolidHidden = SeqHid
+    '        SingleViewProp(Feature, GroupEntity, View, GLoopPts, GLoop)
+    '        Feature.MiscProp(1) = View.ViewType
+    '        ChangedFeat = Feature
+    ''set the current feature to current view
+    '        RegisterToView(Feature)
+    '    Next
+    'End Sub
 
     'method for regular single view
     Public Overloads Sub SingleViewProp(ByRef Feature As OutputFormat, ByVal GEntity As List(Of Entity), ByVal View As ViewProp)
@@ -3334,5 +3374,15 @@ Public Class ViewProcessor
                 Return Nothing
         End Select
     End Function
+
+    'assign the feature according to their location
+    Private Sub RegisterToView(ByVal FeatureTmp As OutputFormat)
+
+        For Each view As ViewProp In SelectionCommand.ProjectionView
+            If view.ViewType.Equals(FeatureTmp.MiscProp(1)) Then
+                view.SetFeature(FeatureTmp)
+            End If
+        Next
+    End Sub
 
 End Class
