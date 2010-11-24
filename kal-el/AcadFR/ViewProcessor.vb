@@ -83,13 +83,12 @@ Public Class ViewProcessor
                             TmpUnidentifiedFeature.Add(Feature)
                             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                         End If
-
-
                     End If
                 End If
+                'set the current feature to current view
+                RegisterToView(Feature)
             End If
-            'set the current feature to current view
-            RegisterToView(Feature)
+            
 
             'add the progress bar
             i = i + 1
@@ -224,17 +223,17 @@ Public Class ViewProcessor
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Or _
         (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 2 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Then
-            Dim D2Stat As Boolean = False
+            Dim DHor, DVer As New Double
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
                 TmpLine = EntityTmp
                 StatOnBound = New Boolean
                 StatOnOrigin = New Boolean
-                If D2Stat = False Then
-                    D2 = Round(LineLength(TmpLine), 3)
-                    D2Stat = True
+
+                If isequal(TmpLine.StartPoint.X, TmpLine.EndPoint.X) = True Then
+                    DVer = Round(LineLength(TmpLine), 3)
                 Else
-                    D2 = Max(D2, Round(LineLength(TmpLine), 3))
+                    DHor = Round(LineLength(TmpLine), 3)
                 End If
 
                 If PointOnline(TmpLine.StartPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 And _
@@ -251,6 +250,11 @@ Public Class ViewProcessor
                     OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                 End If
             Next
+            If Orientation = "1" Then
+                D2 = DVer
+            Else
+                D2 = DHor
+            End If
             Feature.FeatureName = "Square Slot"
             Feature.MiscProp(0) = "角溝"
 
@@ -284,10 +288,10 @@ Public Class ViewProcessor
                             OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                         End If
                         Exit For
-                    ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
-                    Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = False _
-                    Or (isequalpoint(TmpLine.EndPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.EndPoint)) = False _
-                    Or (isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = False)) And D1 = 0 Then
+                    ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) _
+                    Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) _
+                    Or (isequalpoint(TmpLine.EndPoint, LineBB.StartPoint) = True And PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) _
+                    Or (isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = True And PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D1 = 0 Then
                         D1 = Round(LineLength(TmpLine), 3)
                         Exit For
                     End If
@@ -671,17 +675,17 @@ Public Class ViewProcessor
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Or _
         (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 2 And Feature.HiddenLineCount = 2 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 0 And Feature.SequenceSolidBound = True) Then
-            Dim D2Stat As Boolean = False
+            Dim DHor, DVer As New Double
             For Each EntityTmp As Entity In GEntity
                 TmpLine = New Line
                 TmpLine = EntityTmp
                 StatOnBound = New Boolean
                 StatOnOrigin = New Boolean
-                If D2Stat = False Then
-                    D2 = Round(LineLength(TmpLine), 3)
-                    D2Stat = True
+
+                If isequal(TmpLine.StartPoint.X, TmpLine.EndPoint.X) = True Then
+                    DVer = Round(LineLength(TmpLine), 3)
                 Else
-                    D2 = Max(D2, Round(LineLength(TmpLine), 3))
+                    DHor = Round(LineLength(TmpLine), 3)
                 End If
 
                 If PointOnline(TmpLine.StartPoint, View.BoundingBox(3).StartPoint, View.BoundingBox(3).EndPoint) = 2 And _
@@ -698,6 +702,11 @@ Public Class ViewProcessor
                     OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
                 End If
             Next
+            If Orientation = "1" Then
+                D2 = DVer
+            Else
+                D2 = DHor
+            End If
             Feature.FeatureName = "Square Slot"
             Feature.MiscProp(0) = "角溝"
 
@@ -731,10 +740,10 @@ Public Class ViewProcessor
                             OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
                         End If
                         Exit For
-                    ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = False) _
-                    Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.EndPoint, LineBB.StartPoint)) = False _
-                    Or (isequalpoint(TmpLine.EndPoint, LineBB.StartPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.EndPoint)) = False _
-                    Or (isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = True And isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = False)) And D1 = 0 Then
+                    ElseIf ((isequalpoint(TmpLine.StartPoint, LineBB.StartPoint) = True And PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) _
+                    Or (isequalpoint(TmpLine.StartPoint, LineBB.EndPoint) = True And PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) _
+                    Or (isequalpoint(TmpLine.EndPoint, LineBB.StartPoint) = True And PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2) _
+                    Or (isequalpoint(TmpLine.EndPoint, LineBB.EndPoint) = True And PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) And D1 = 0 Then
                         D1 = Round(LineLength(TmpLine), 3)
                         Exit For
                     End If
