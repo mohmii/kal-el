@@ -1982,6 +1982,7 @@ Public Class UserControl3
                     Dim PLEntAdd As New List(Of Polyline)
                     Dim MillProc As New MillingProcessor
                     Dim MLoop As New List(Of Entity)
+                    Dim MLoopPts As New List(Of Point3d)
                     Dim GLoop As New List(Of List(Of Entity))
                     Dim GLoopPts As New List(Of List(Of Point3d))
                     Dim ViewProc As New ViewProcessor
@@ -2034,14 +2035,10 @@ Public Class UserControl3
                     Next
 
                     If LineEntAdd.Count <> 0 Then
-                        MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop)
+                        MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop, MLoopPts)
                         If GLoop.Count = 0 Then 'And (MLoop.Count >= 4)
                             GLoop.Add(MLoop)
-                            Dim LoopPts As New List(Of Point3d)
-                            Dim GoEnt As New List(Of AllPoints)
-                            Dim UAPts As New List(Of Point3d)
-                            GetPoints.UnAdjacentPointExtractor(MLoop, LoopPts, GoEnt, UAPts)
-                            GLoopPts.Add(LoopPts)
+                            GLoopPts.Add(MLoopPts)
                         End If
                         'ViewProc.SingleViewProcessor(GLoop, SelectionCommand.LastViewSelected, _
                         '                             SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
