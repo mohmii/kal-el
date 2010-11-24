@@ -564,8 +564,8 @@ Public Class UserControl3
             Case "切り取り", "カッターパス" 'cut off, cutter path
                 ComboBox3.Enabled = True
                 ComboBox3.Items.Clear()
-                ComboBox3.Items.Add("CW")
-                ComboBox3.Items.Add("CCW")
+                ComboBox3.Items.Add("時計回り") 'CW
+                ComboBox3.Items.Add("反時計回り") 'CCW
             Case Else
                 ComboBox3.Enabled = False
         End Select
