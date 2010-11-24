@@ -149,7 +149,7 @@ Public Class MillingProcessor
     End Sub
 
     Public Sub LoopFinder(ByVal Entities As List(Of Entity), ByRef GroupLoop As List(Of List(Of Entity)), _
-                          ByRef GroupLoopPoints As List(Of List(Of Point3d)), ByRef MainLoop As List(Of Entity))
+                          ByRef GroupLoopPoints As List(Of List(Of Point3d)), ByRef MainLoop As List(Of Entity), ByRef MainLoopPts As List(Of Point3d))
 
         GetPoints = New GetPoints
         AllPoints = New List(Of Point3d)
@@ -175,6 +175,7 @@ Public Class MillingProcessor
 
         'search main loop
         CheckMainLoop(SearchLeftCornerPoint(AllPoints), MainLoop)
+        MainLoopPts = MainLoopPoint
 
         'create a new group of loop for this current view
 
