@@ -11,6 +11,7 @@ Public Class SchematicPresetting
     Private DBConn As DatabaseConn
     Private ProceedStat As Boolean
     Private Dlock As DocumentLock
+    Private preclass As New adskClass
 
     'setiap isi sel di klik
     Private Sub TapHoleList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles TapHoleList.CellContentClick
@@ -76,6 +77,27 @@ Public Class SchematicPresetting
                     End If
                     'committing the autocad transaction
                     AcadConnection.myT.Commit()
+
+                    'masukin ke database
+                    DBConn = New DatabaseConn
+                    For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
+                        If Row.Cells("TopSurface").FormattedValue = True Then
+                            'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
+                            'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database top tap
+                            DBConn.AddToTopTapLineDatabase(Row)
+                        ElseIf Row.Cells("BottomSurface").FormattedValue = True Then
+                            'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
+                            'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database bottom tap
+                            DBConn.AddToBottomTapLineDatabase(Row)
+                        ElseIf Row.Cells("Ignore").FormattedValue = True Then
+                            If adskClass.AppPreferences.RemoveUEE = True Then
+                                EraseUEE(Row, adskClass.UI2CircListAll)
+                            End If
+                        End If
+                    Next
+
+                    Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                    Me.Dispose()
                 End Using
             End Using
         Catch ex As Exception
@@ -85,26 +107,11 @@ Public Class SchematicPresetting
             AcadConnection.myT.Dispose()
         End Try
 
-        'masukin ke database
-        DBConn = New DatabaseConn
-        For Each Row As System.Windows.Forms.DataGridViewRow In Me.TapHoleList.Rows
-            If Row.Cells("TopSurface").FormattedValue = True Then
-                'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
-                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database top tap
-                DBConn.AddToTopTapLineDatabase(Row)
-            ElseIf Row.Cells("BottomSurface").FormattedValue = True Then
-                'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
-                'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database bottom tap
-                DBConn.AddToBottomTapLineDatabase(Row)
-            ElseIf Row.Cells("Ignore").FormattedValue = True Then
-                If adskClass.AppPreferences.RemoveUEE = True Then
-                    EraseUEE(Row, adskClass.UI2CircListAll)
-                End If
-            End If
-        Next
-
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Dispose()
+        'breaking line
+        'If adskClass.AppPreferences.DrawPP = True Then
+        'DwgPreprocessor = New DwgProcessor
+        'DwgPreprocessor.StartPreProcessing(AllEntities, LineEntities, AcConnector.myT)
+        'End If
     End Sub
 
     'method for erasing unessential entities
@@ -199,6 +206,11 @@ Public Class SchematicPresetting
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Dispose()
+        'breaking line
+        'If adskClass.AppPreferences.DrawPP = True Then
+        'DwgPreprocessor = New DwgProcessor
+        'DwgPreprocessor.StartPreProcessing(AllEntities, LineEntities, AcConnector.myT)
+        'End If
     End Sub
 
     'hilangkan selection ketika diload
