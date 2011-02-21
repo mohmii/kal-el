@@ -9,7 +9,7 @@ Public Class LinetypesPresetting
 
     Private ProceedStat As Boolean
     Private DBConn As DatabaseConn
-
+    Private preclass As New adskClass
     'setiap isi sel di klik
     Private Sub LinetypesList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles LinetypesList.CellContentClick
         CheckProceed()
@@ -162,6 +162,7 @@ Public Class LinetypesPresetting
             DrawEditor.UpdateScreen()
             AcadConnection.myT.Dispose()
         End Try
+        preclass.SchemProc()
     End Sub
 
     'method for erasing unessential entities
@@ -245,6 +246,7 @@ Public Class LinetypesPresetting
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Dispose()
+        preclass.SchemProc()
     End Sub
 
     'hilangkan selection ketika diload
