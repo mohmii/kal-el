@@ -54,6 +54,47 @@ Public Class SchematicPresetting
         End If
     End Sub
 
+    Private Sub TapHoleList_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TapHoleList.SelectionChanged
+        'highlight jika row dipilih
+        If Me.TapHoleList.Focused = True Then
+
+            'create a document lock and acquire the information from the current drawing editor
+            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+            'initiate a new connection
+            AcadConnection = New AcadConn
+
+            AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+            Dlock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            Try
+                Using Dlock
+                    Using AcadConnection.myT
+                        'initial setting for opening the connection for read the autocad database
+                        AcadConnection.OpenBlockTableRec()
+
+                        'dummy variable for preventing clearing the current highlighted entity/entities
+                        TempId = Nothing
+
+                        'roleback each precious selected entities to their default color
+                        RollbackColor(PastEntityColor, AcadConnection.btr)
+
+                        PastEntityColor = New List(Of InitialColor)
+
+                        HighlightEntity(TapHoleList.SelectedRows(0).Cells("ObjectID").Value, AcadConnection.btr, PastEntityColor)
+
+                        'committing the autocad transaction
+                        AcadConnection.myT.Commit()
+                    End Using
+                End Using
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            Finally
+                DrawEditor.UpdateScreen()
+                AcadConnection.myT.Dispose()
+            End Try
+        End If
+    End Sub
+
     Private Sub Proceed_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Proceed.Click
         'balikin ke warna original
 
@@ -107,11 +148,8 @@ Public Class SchematicPresetting
             AcadConnection.myT.Dispose()
         End Try
 
-        'breaking line
-        'If adskClass.AppPreferences.DrawPP = True Then
-        'DwgPreprocessor = New DwgProcessor
-        'DwgPreprocessor.StartPreProcessing(AllEntities, LineEntities, AcConnector.myT)
-        'End If
+        'lanjut ke cek duplikasi entitas setelah klik proceed
+        preclass.EntityProcessing()
     End Sub
 
     'method for erasing unessential entities
@@ -206,11 +244,9 @@ Public Class SchematicPresetting
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Dispose()
-        'breaking line
-        'If adskClass.AppPreferences.DrawPP = True Then
-        'DwgPreprocessor = New DwgProcessor
-        'DwgPreprocessor.StartPreProcessing(AllEntities, LineEntities, AcConnector.myT)
-        'End If
+
+        'lanjut ke cek duplikasi entitas setelah klik cancel
+        preclass.EntityProcessing()
     End Sub
 
     'hilangkan selection ketika diload
@@ -233,14 +269,6 @@ Public Class SchematicPresetting
         Schematic.Show()
         Schematic.SetTopLevel(True)
 
-        'If LTNothingStat = False And adskClass.AppPreferences.AutoRegSchem = True Then
-        '    Schematic.Show()
-        '    Schematic.SetTopLevel(True)
-        'Else
-        '    Proceed_Click(Nothing, Nothing)
-        'End If
-
-        'End Using
     End Sub
 
     'add new line in Schematic Table
