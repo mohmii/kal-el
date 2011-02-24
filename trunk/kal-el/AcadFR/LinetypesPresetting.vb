@@ -10,6 +10,8 @@ Public Class LinetypesPresetting
     Private ProceedStat As Boolean
     Private DBConn As DatabaseConn
     Private preclass As New adskClass
+    Private DLock As DocumentLock
+
     'setiap isi sel di klik
     Private Sub LinetypesList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles LinetypesList.CellContentClick
         CheckProceed()
@@ -63,7 +65,6 @@ Public Class LinetypesPresetting
         End If
     End Sub
 
-    Private DLock As DocumentLock
 
     Private Sub LinetypesList_SelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LinetypesList.SelectionChanged
         'highlight jika row dipilih
@@ -162,6 +163,8 @@ Public Class LinetypesPresetting
             DrawEditor.UpdateScreen()
             AcadConnection.myT.Dispose()
         End Try
+
+        'lanjut ke schematic setelah klik proceed
         preclass.SchemProc()
     End Sub
 
@@ -246,6 +249,8 @@ Public Class LinetypesPresetting
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Dispose()
+
+        'lanjut ke schematic setelah klik cancel
         preclass.SchemProc()
     End Sub
 
@@ -265,18 +270,9 @@ Public Class LinetypesPresetting
             AddToLinetypesTable(LTCount, Ent, Linetypes, LTNothingStat)
             LTCount = LTCount + 1
         Next
-
         Linetypes.Show()
         Linetypes.SetTopLevel(True)
 
-        'If LTNothingStat = False And adskClass.AppPreferences.AutoRegLine = True Then
-        '    Linetypes.Show()
-        '    Linetypes.SetTopLevel(True)
-        'Else
-        '    Proceed_Click(Nothing, Nothing)
-        'End If
-
-        'End Using
     End Sub
 
     'add new line in LinetypesTable
