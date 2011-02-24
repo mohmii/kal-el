@@ -23,12 +23,9 @@ Partial Class UserControl3
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UserControl3))
         Me.KryptonHeaderGroup1 = New ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup
         Me.ButtonSpecHeaderGroup1 = New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup
@@ -167,7 +164,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox6)
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox5)
-        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(170, 355)
+        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(274, 350)
         Me.KryptonHeaderGroup1.TabIndex = 0
         Me.KryptonHeaderGroup1.Text = "加工特徴のリスト"
         Me.KryptonHeaderGroup1.ValuesPrimary.Description = ""
@@ -198,7 +195,7 @@ Partial Class UserControl3
         Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox6.Location = New System.Drawing.Point(0, 180)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(168, 142)
+        Me.GroupBox6.Size = New System.Drawing.Size(272, 142)
         Me.GroupBox6.TabIndex = 0
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "その他の形状"
@@ -227,40 +224,40 @@ Partial Class UserControl3
         Me.UnidentifiedFeature.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.UnidentifiedFeature.BackgroundColor = System.Drawing.SystemColors.HighlightText
         Me.UnidentifiedFeature.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.UnidentifiedFeature.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.UnidentifiedFeature.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.UnidentifiedFeature.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.UnidentifiedFeature.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.UnidentifiedFeature.DefaultCellStyle = DataGridViewCellStyle8
         Me.UnidentifiedFeature.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.UnidentifiedFeature.EnableHeadersVisualStyles = False
         Me.UnidentifiedFeature.Location = New System.Drawing.Point(83, 33)
         Me.UnidentifiedFeature.Name = "UnidentifiedFeature"
         Me.UnidentifiedFeature.ReadOnly = True
         Me.UnidentifiedFeature.RightToLeft = System.Windows.Forms.RightToLeft.No
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.UnidentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.UnidentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
         Me.UnidentifiedFeature.RowHeadersVisible = False
         Me.UnidentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.UnidentifiedFeature.Size = New System.Drawing.Size(79, 103)
+        Me.UnidentifiedFeature.Size = New System.Drawing.Size(183, 103)
         Me.UnidentifiedFeature.TabIndex = 0
         Me.UnidentifiedFeature.TabStop = False
         '
@@ -271,7 +268,7 @@ Partial Class UserControl3
         Me.Label17.BackColor = System.Drawing.SystemColors.HighlightText
         Me.Label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(126, 10)
+        Me.Label17.Location = New System.Drawing.Point(230, 10)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(36, 20)
         Me.Label17.TabIndex = 0
@@ -282,7 +279,7 @@ Partial Class UserControl3
         '
         Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(60, 13)
+        Me.Label15.Location = New System.Drawing.Point(164, 13)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(60, 14)
         Me.Label15.TabIndex = 0
@@ -329,7 +326,7 @@ Partial Class UserControl3
         Me.GroupBox5.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox5.Margin = New System.Windows.Forms.Padding(3, 8, 3, 3)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(168, 180)
+        Me.GroupBox5.Size = New System.Drawing.Size(272, 180)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "認識できた形状"
@@ -358,40 +355,16 @@ Partial Class UserControl3
         Me.IdentifiedFeature.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.IdentifiedFeature.BackgroundColor = System.Drawing.SystemColors.HighlightText
         Me.IdentifiedFeature.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.IdentifiedFeature.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.IdentifiedFeature.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.IdentifiedFeature.DefaultCellStyle = DataGridViewCellStyle5
         Me.IdentifiedFeature.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.IdentifiedFeature.EnableHeadersVisualStyles = False
         Me.IdentifiedFeature.Location = New System.Drawing.Point(83, 34)
         Me.IdentifiedFeature.Name = "IdentifiedFeature"
         Me.IdentifiedFeature.ReadOnly = True
         Me.IdentifiedFeature.RightToLeft = System.Windows.Forms.RightToLeft.No
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.IdentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.IdentifiedFeature.RowHeadersVisible = False
         Me.IdentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.IdentifiedFeature.Size = New System.Drawing.Size(79, 140)
+        Me.IdentifiedFeature.Size = New System.Drawing.Size(183, 140)
         Me.IdentifiedFeature.TabIndex = 0
         Me.IdentifiedFeature.TabStop = False
         '
@@ -402,7 +375,7 @@ Partial Class UserControl3
         Me.Label16.BackColor = System.Drawing.SystemColors.HighlightText
         Me.Label16.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(126, 11)
+        Me.Label16.Location = New System.Drawing.Point(230, 11)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(36, 20)
         Me.Label16.TabIndex = 0
@@ -413,7 +386,7 @@ Partial Class UserControl3
         '
         Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(60, 14)
+        Me.Label14.Location = New System.Drawing.Point(164, 14)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(60, 15)
         Me.Label14.TabIndex = 0
@@ -473,32 +446,32 @@ Partial Class UserControl3
         '
         'ContextMenuStrip1
         '
-        Me.ContextMenuStrip1.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.ContextMenuStrip1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ZoomStripMenuItem1, Me.HighlightStripMenuItem1, Me.ToolStripSeparator1, Me.DeleteStripMenuItem1})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(195, 76)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(180, 76)
         '
         'ZoomStripMenuItem1
         '
         Me.ZoomStripMenuItem1.Name = "ZoomStripMenuItem1"
-        Me.ZoomStripMenuItem1.Size = New System.Drawing.Size(194, 22)
+        Me.ZoomStripMenuItem1.Size = New System.Drawing.Size(179, 22)
         Me.ZoomStripMenuItem1.Text = "クローズアップ"
         '
         'HighlightStripMenuItem1
         '
         Me.HighlightStripMenuItem1.Name = "HighlightStripMenuItem1"
-        Me.HighlightStripMenuItem1.Size = New System.Drawing.Size(194, 22)
+        Me.HighlightStripMenuItem1.Size = New System.Drawing.Size(179, 22)
         Me.HighlightStripMenuItem1.Text = "同じ形状のグループ化"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(191, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(176, 6)
         '
         'DeleteStripMenuItem1
         '
         Me.DeleteStripMenuItem1.Name = "DeleteStripMenuItem1"
-        Me.DeleteStripMenuItem1.Size = New System.Drawing.Size(194, 22)
+        Me.DeleteStripMenuItem1.Size = New System.Drawing.Size(179, 22)
         Me.DeleteStripMenuItem1.Text = "削除"
         '
         'KryptonHeaderGroup2
@@ -507,7 +480,7 @@ Partial Class UserControl3
         Me.KryptonHeaderGroup2.ButtonSpecs.AddRange(New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup() {Me.ButtonSpecHeaderGroup2})
         Me.KryptonHeaderGroup2.Dock = System.Windows.Forms.DockStyle.Top
         Me.KryptonHeaderGroup2.HeaderVisibleSecondary = False
-        Me.KryptonHeaderGroup2.Location = New System.Drawing.Point(0, 355)
+        Me.KryptonHeaderGroup2.Location = New System.Drawing.Point(0, 350)
         Me.KryptonHeaderGroup2.Name = "KryptonHeaderGroup2"
         Me.KryptonHeaderGroup2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue
         '
@@ -515,7 +488,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox4)
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox2)
-        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(170, 524)
+        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(274, 519)
         Me.KryptonHeaderGroup2.TabIndex = 0
         Me.KryptonHeaderGroup2.Text = "データ"
         Me.KryptonHeaderGroup2.ValuesPrimary.Description = ""
@@ -541,7 +514,7 @@ Partial Class UserControl3
         Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox4.Location = New System.Drawing.Point(0, 317)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(168, 174)
+        Me.GroupBox4.Size = New System.Drawing.Size(272, 174)
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "説明図"
@@ -554,7 +527,7 @@ Partial Class UserControl3
         Me.PictureBox1.Location = New System.Drawing.Point(5, 16)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(8)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(157, 153)
+        Me.PictureBox1.Size = New System.Drawing.Size(261, 153)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 10
         Me.PictureBox1.TabStop = False
@@ -601,16 +574,16 @@ Partial Class UserControl3
         Me.GroupBox2.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(3, 8, 8, 3)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(168, 317)
+        Me.GroupBox2.Size = New System.Drawing.Size(272, 317)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         '
         'AddChamfer
         '
         Me.AddChamfer.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddChamfer.Location = New System.Drawing.Point(59, 80)
+        Me.AddChamfer.Location = New System.Drawing.Point(56, 80)
         Me.AddChamfer.Name = "AddChamfer"
-        Me.AddChamfer.Size = New System.Drawing.Size(44, 26)
+        Me.AddChamfer.Size = New System.Drawing.Size(40, 26)
         Me.AddChamfer.TabIndex = 14
         Me.AddChamfer.Text = "チャンファ幅追加"
         Me.ToolTip1.SetToolTip(Me.AddChamfer, "Add Chamfer")
@@ -619,7 +592,7 @@ Partial Class UserControl3
         'AddW
         '
         Me.AddW.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddW.Location = New System.Drawing.Point(9, 173)
+        Me.AddW.Location = New System.Drawing.Point(7, 173)
         Me.AddW.Name = "AddW"
         Me.AddW.Size = New System.Drawing.Size(68, 20)
         Me.AddW.TabIndex = 14
@@ -629,7 +602,7 @@ Partial Class UserControl3
         '
         'AddD1
         '
-        Me.AddD1.Location = New System.Drawing.Point(9, 199)
+        Me.AddD1.Location = New System.Drawing.Point(7, 199)
         Me.AddD1.Name = "AddD1"
         Me.AddD1.Size = New System.Drawing.Size(67, 19)
         Me.AddD1.TabIndex = 14
@@ -639,7 +612,7 @@ Partial Class UserControl3
         '
         'AddD2
         '
-        Me.AddD2.Location = New System.Drawing.Point(9, 222)
+        Me.AddD2.Location = New System.Drawing.Point(7, 222)
         Me.AddD2.Name = "AddD2"
         Me.AddD2.Size = New System.Drawing.Size(68, 19)
         Me.AddD2.TabIndex = 14
@@ -649,7 +622,7 @@ Partial Class UserControl3
         '
         'AddD4
         '
-        Me.AddD4.Location = New System.Drawing.Point(8, 264)
+        Me.AddD4.Location = New System.Drawing.Point(6, 264)
         Me.AddD4.Name = "AddD4"
         Me.AddD4.Size = New System.Drawing.Size(68, 20)
         Me.AddD4.TabIndex = 14
@@ -659,7 +632,7 @@ Partial Class UserControl3
         '
         'AddD3
         '
-        Me.AddD3.Location = New System.Drawing.Point(8, 243)
+        Me.AddD3.Location = New System.Drawing.Point(6, 243)
         Me.AddD3.Name = "AddD3"
         Me.AddD3.Size = New System.Drawing.Size(68, 19)
         Me.AddD3.TabIndex = 14
@@ -669,7 +642,7 @@ Partial Class UserControl3
         '
         'Update1
         '
-        Me.Update1.Location = New System.Drawing.Point(9, 124)
+        Me.Update1.Location = New System.Drawing.Point(7, 124)
         Me.Update1.Name = "Update1"
         Me.Update1.Size = New System.Drawing.Size(68, 48)
         Me.Update1.TabIndex = 0
@@ -683,7 +656,7 @@ Partial Class UserControl3
         Me.Label13.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(68, 290)
+        Me.Label13.Location = New System.Drawing.Point(65, 290)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(31, 13)
         Me.Label13.TabIndex = 0
@@ -694,7 +667,7 @@ Partial Class UserControl3
         Me.Label3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(80, 176)
+        Me.Label3.Location = New System.Drawing.Point(76, 176)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(18, 13)
         Me.Label3.TabIndex = 0
@@ -705,7 +678,7 @@ Partial Class UserControl3
         Me.Label12.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(78, 268)
+        Me.Label12.Location = New System.Drawing.Point(75, 268)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(21, 13)
         Me.Label12.TabIndex = 0
@@ -716,17 +689,19 @@ Partial Class UserControl3
         Me.ComboBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ComboBox1.ContextMenuStrip = Me.ContextMenuStrip2
+        Me.ComboBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
         Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.ItemHeight = 13
         Me.ComboBox1.Items.AddRange(New Object() {"タップ穴", "ＰＴタップ穴", "リーマ穴", "ドリル穴", "底付き穴", "貫通穴", "段付きボルト穴", "円形溝", "ボーリング穴"})
-        Me.ComboBox1.Location = New System.Drawing.Point(105, 18)
+        Me.ComboBox1.Location = New System.Drawing.Point(97, 18)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(15, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(107, 21)
         Me.ComboBox1.TabIndex = 10
         '
         'ContextMenuStrip2
         '
         Me.ContextMenuStrip2.DropShadowEnabled = False
-        Me.ContextMenuStrip2.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.ContextMenuStrip2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
         Me.ContextMenuStrip2.Name = "ContextMenuStrip1"
         Me.ContextMenuStrip2.ShowItemToolTips = False
         Me.ContextMenuStrip2.Size = New System.Drawing.Size(61, 4)
@@ -737,7 +712,7 @@ Partial Class UserControl3
         Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(78, 246)
+        Me.Label11.Location = New System.Drawing.Point(75, 246)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(21, 13)
         Me.Label11.TabIndex = 0
@@ -748,7 +723,7 @@ Partial Class UserControl3
         Me.Label2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(81, 154)
+        Me.Label2.Location = New System.Drawing.Point(78, 154)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(14, 13)
         Me.Label2.TabIndex = 0
@@ -759,7 +734,7 @@ Partial Class UserControl3
         Me.Label10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(78, 224)
+        Me.Label10.Location = New System.Drawing.Point(75, 224)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(21, 13)
         Me.Label10.TabIndex = 0
@@ -769,10 +744,11 @@ Partial Class UserControl3
         '
         Me.ComboBox3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ComboBox3.Enabled = False
+        Me.ComboBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Location = New System.Drawing.Point(115, 18)
+        Me.ComboBox3.Location = New System.Drawing.Point(201, 18)
         Me.ComboBox3.Name = "ComboBox3"
-        Me.ComboBox3.Size = New System.Drawing.Size(47, 21)
+        Me.ComboBox3.Size = New System.Drawing.Size(65, 21)
         Me.ComboBox3.TabIndex = 11
         '
         'Label9
@@ -780,7 +756,7 @@ Partial Class UserControl3
         Me.Label9.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(78, 202)
+        Me.Label9.Location = New System.Drawing.Point(75, 202)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(21, 13)
         Me.Label9.TabIndex = 0
@@ -791,7 +767,7 @@ Partial Class UserControl3
         Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(81, 132)
+        Me.Label1.Location = New System.Drawing.Point(78, 132)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(15, 13)
         Me.Label1.TabIndex = 0
@@ -804,42 +780,42 @@ Partial Class UserControl3
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ComboBox2.Enabled = False
         Me.ComboBox2.FormattingEnabled = True
-        Me.ComboBox2.Location = New System.Drawing.Point(105, 40)
+        Me.ComboBox2.Location = New System.Drawing.Point(97, 40)
         Me.ComboBox2.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)
         Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(57, 21)
+        Me.ComboBox2.Size = New System.Drawing.Size(169, 21)
         Me.ComboBox2.TabIndex = 12
         '
         'NumericUpDown4
         '
         Me.NumericUpDown4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NumericUpDown4.Location = New System.Drawing.Point(105, 62)
+        Me.NumericUpDown4.Location = New System.Drawing.Point(97, 62)
         Me.NumericUpDown4.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown4.Name = "NumericUpDown4"
-        Me.NumericUpDown4.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown4.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown4.TabIndex = 2
         '
         'NumericUpDown5
         '
         Me.NumericUpDown5.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NumericUpDown5.Location = New System.Drawing.Point(105, 83)
+        Me.NumericUpDown5.Location = New System.Drawing.Point(97, 83)
         Me.NumericUpDown5.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown5.Name = "NumericUpDown5"
-        Me.NumericUpDown5.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown5.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown5.TabIndex = 3
         '
         'NumericUpDown6
         '
         Me.NumericUpDown6.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.NumericUpDown6.Location = New System.Drawing.Point(105, 104)
+        Me.NumericUpDown6.Location = New System.Drawing.Point(97, 104)
         Me.NumericUpDown6.Margin = New System.Windows.Forms.Padding(3, 3, 3, 1)
         Me.NumericUpDown6.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown6.Name = "NumericUpDown6"
-        Me.NumericUpDown6.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown6.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown6.TabIndex = 4
         '
         'NumericUpDown1
@@ -847,12 +823,12 @@ Partial Class UserControl3
         Me.NumericUpDown1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown1.DecimalPlaces = 3
-        Me.NumericUpDown1.Location = New System.Drawing.Point(105, 130)
+        Me.NumericUpDown1.Location = New System.Drawing.Point(97, 130)
         Me.NumericUpDown1.Margin = New System.Windows.Forms.Padding(3, 5, 3, 1)
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown1.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown1.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown1.TabIndex = 5
         '
         'NumericUpDown2
@@ -860,12 +836,12 @@ Partial Class UserControl3
         Me.NumericUpDown2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown2.DecimalPlaces = 3
-        Me.NumericUpDown2.Location = New System.Drawing.Point(105, 152)
+        Me.NumericUpDown2.Location = New System.Drawing.Point(97, 152)
         Me.NumericUpDown2.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown2.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown2.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown2.Name = "NumericUpDown2"
-        Me.NumericUpDown2.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown2.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown2.TabIndex = 6
         '
         'NumericUpDown3
@@ -873,12 +849,12 @@ Partial Class UserControl3
         Me.NumericUpDown3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown3.DecimalPlaces = 3
-        Me.NumericUpDown3.Location = New System.Drawing.Point(105, 174)
+        Me.NumericUpDown3.Location = New System.Drawing.Point(97, 174)
         Me.NumericUpDown3.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown3.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown3.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown3.Name = "NumericUpDown3"
-        Me.NumericUpDown3.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown3.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown3.TabIndex = 7
         '
         'NumericUpDown7
@@ -886,11 +862,11 @@ Partial Class UserControl3
         Me.NumericUpDown7.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown7.DecimalPlaces = 3
-        Me.NumericUpDown7.Location = New System.Drawing.Point(105, 200)
+        Me.NumericUpDown7.Location = New System.Drawing.Point(97, 200)
         Me.NumericUpDown7.Margin = New System.Windows.Forms.Padding(3, 5, 3, 1)
         Me.NumericUpDown7.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown7.Name = "NumericUpDown7"
-        Me.NumericUpDown7.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown7.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown7.TabIndex = 8
         '
         'NumericUpDown8
@@ -899,11 +875,11 @@ Partial Class UserControl3
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown8.Cursor = System.Windows.Forms.Cursors.Default
         Me.NumericUpDown8.DecimalPlaces = 3
-        Me.NumericUpDown8.Location = New System.Drawing.Point(105, 222)
+        Me.NumericUpDown8.Location = New System.Drawing.Point(97, 222)
         Me.NumericUpDown8.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown8.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown8.Name = "NumericUpDown8"
-        Me.NumericUpDown8.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown8.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown8.TabIndex = 9
         '
         'NumericUpDown9
@@ -911,11 +887,11 @@ Partial Class UserControl3
         Me.NumericUpDown9.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown9.DecimalPlaces = 3
-        Me.NumericUpDown9.Location = New System.Drawing.Point(105, 244)
+        Me.NumericUpDown9.Location = New System.Drawing.Point(97, 244)
         Me.NumericUpDown9.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown9.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown9.Name = "NumericUpDown9"
-        Me.NumericUpDown9.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown9.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown9.TabIndex = 10
         '
         'NumericUpDown10
@@ -923,11 +899,11 @@ Partial Class UserControl3
         Me.NumericUpDown10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown10.DecimalPlaces = 3
-        Me.NumericUpDown10.Location = New System.Drawing.Point(105, 266)
+        Me.NumericUpDown10.Location = New System.Drawing.Point(97, 266)
         Me.NumericUpDown10.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown10.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
-        Me.NumericUpDown10.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown10.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown10.TabIndex = 11
         '
         'NumericUpDown11
@@ -935,11 +911,11 @@ Partial Class UserControl3
         Me.NumericUpDown11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.NumericUpDown11.DecimalPlaces = 3
-        Me.NumericUpDown11.Location = New System.Drawing.Point(105, 288)
+        Me.NumericUpDown11.Location = New System.Drawing.Point(97, 288)
         Me.NumericUpDown11.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
-        Me.NumericUpDown11.Size = New System.Drawing.Size(57, 20)
+        Me.NumericUpDown11.Size = New System.Drawing.Size(169, 20)
         Me.NumericUpDown11.TabIndex = 13
         '
         'Label8
@@ -947,7 +923,7 @@ Partial Class UserControl3
         Me.Label8.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(9, 86)
+        Me.Label8.Location = New System.Drawing.Point(7, 86)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(51, 13)
         Me.Label8.TabIndex = 0
@@ -958,7 +934,7 @@ Partial Class UserControl3
         Me.Label7.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(9, 66)
+        Me.Label7.Location = New System.Drawing.Point(7, 66)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(31, 13)
         Me.Label7.TabIndex = 0
@@ -969,7 +945,7 @@ Partial Class UserControl3
         Me.Label6.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(9, 108)
+        Me.Label6.Location = New System.Drawing.Point(7, 108)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(65, 13)
         Me.Label6.TabIndex = 0
@@ -980,7 +956,7 @@ Partial Class UserControl3
         Me.Label5.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(9, 43)
+        Me.Label5.Location = New System.Drawing.Point(7, 43)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(43, 13)
         Me.Label5.TabIndex = 0
@@ -991,7 +967,7 @@ Partial Class UserControl3
         Me.Label4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(9, 21)
+        Me.Label4.Location = New System.Drawing.Point(7, 21)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(43, 13)
         Me.Label4.TabIndex = 0
@@ -1001,7 +977,7 @@ Partial Class UserControl3
         '
         Me.version.AutoSize = True
         Me.version.Dock = System.Windows.Forms.DockStyle.Top
-        Me.version.Location = New System.Drawing.Point(0, 879)
+        Me.version.Location = New System.Drawing.Point(0, 869)
         Me.version.Name = "version"
         Me.version.Size = New System.Drawing.Size(0, 13)
         Me.version.TabIndex = 2
@@ -1011,132 +987,132 @@ Partial Class UserControl3
         '
         Me.ContextMenuAddD3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints3, Me.ByEntity3})
         Me.ContextMenuAddD3.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD3.Size = New System.Drawing.Size(147, 48)
+        Me.ContextMenuAddD3.Size = New System.Drawing.Size(140, 48)
         '
         'ByPoints3
         '
         Me.ByPoints3.Name = "ByPoints3"
-        Me.ByPoints3.Size = New System.Drawing.Size(146, 22)
+        Me.ByPoints3.Size = New System.Drawing.Size(139, 22)
         Me.ByPoints3.Text = "By two points"
         '
         'ByEntity3
         '
         Me.ByEntity3.Name = "ByEntity3"
-        Me.ByEntity3.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntity3.Size = New System.Drawing.Size(139, 22)
         Me.ByEntity3.Text = "By one entity"
         '
         'ContextMenuAddD1
         '
         Me.ContextMenuAddD1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints1, Me.ByEntity1})
         Me.ContextMenuAddD1.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD1.Size = New System.Drawing.Size(147, 48)
+        Me.ContextMenuAddD1.Size = New System.Drawing.Size(140, 48)
         '
         'ByPoints1
         '
         Me.ByPoints1.Name = "ByPoints1"
-        Me.ByPoints1.Size = New System.Drawing.Size(146, 22)
+        Me.ByPoints1.Size = New System.Drawing.Size(139, 22)
         Me.ByPoints1.Text = "By two points"
         '
         'ByEntity1
         '
         Me.ByEntity1.Name = "ByEntity1"
-        Me.ByEntity1.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntity1.Size = New System.Drawing.Size(139, 22)
         Me.ByEntity1.Text = "By one entity"
         '
         'ContextMenuAddD2
         '
         Me.ContextMenuAddD2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints2, Me.ByEntity2})
         Me.ContextMenuAddD2.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD2.Size = New System.Drawing.Size(147, 48)
+        Me.ContextMenuAddD2.Size = New System.Drawing.Size(140, 48)
         '
         'ByPoints2
         '
         Me.ByPoints2.Name = "ByPoints2"
-        Me.ByPoints2.Size = New System.Drawing.Size(146, 22)
+        Me.ByPoints2.Size = New System.Drawing.Size(139, 22)
         Me.ByPoints2.Text = "By two points"
         '
         'ByEntity2
         '
         Me.ByEntity2.Name = "ByEntity2"
-        Me.ByEntity2.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntity2.Size = New System.Drawing.Size(139, 22)
         Me.ByEntity2.Text = "By one entity"
         '
         'ContextMenuAddD4
         '
         Me.ContextMenuAddD4.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints4, Me.ByEntity4})
         Me.ContextMenuAddD4.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD4.Size = New System.Drawing.Size(147, 48)
+        Me.ContextMenuAddD4.Size = New System.Drawing.Size(140, 48)
         '
         'ByPoints4
         '
         Me.ByPoints4.Name = "ByPoints4"
-        Me.ByPoints4.Size = New System.Drawing.Size(146, 22)
+        Me.ByPoints4.Size = New System.Drawing.Size(139, 22)
         Me.ByPoints4.Text = "By two points"
         '
         'ByEntity4
         '
         Me.ByEntity4.Name = "ByEntity4"
-        Me.ByEntity4.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntity4.Size = New System.Drawing.Size(139, 22)
         Me.ByEntity4.Text = "By one entity"
         '
         'ContextMenuAddCham
         '
         Me.ContextMenuAddCham.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPointsCham, Me.ByEntityCham})
         Me.ContextMenuAddCham.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddCham.Size = New System.Drawing.Size(147, 48)
+        Me.ContextMenuAddCham.Size = New System.Drawing.Size(140, 48)
         '
         'ByPointsCham
         '
         Me.ByPointsCham.Name = "ByPointsCham"
-        Me.ByPointsCham.Size = New System.Drawing.Size(146, 22)
+        Me.ByPointsCham.Size = New System.Drawing.Size(139, 22)
         Me.ByPointsCham.Text = "By two points"
         '
         'ByEntityCham
         '
         Me.ByEntityCham.Name = "ByEntityCham"
-        Me.ByEntityCham.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntityCham.Size = New System.Drawing.Size(139, 22)
         Me.ByEntityCham.Text = "By one entity"
         '
         'ContextMenuAddW
         '
         Me.ContextMenuAddW.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPointsW, Me.ByEntityW})
         Me.ContextMenuAddW.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddW.Size = New System.Drawing.Size(147, 48)
+        Me.ContextMenuAddW.Size = New System.Drawing.Size(140, 48)
         '
         'ByPointsW
         '
         Me.ByPointsW.Name = "ByPointsW"
-        Me.ByPointsW.Size = New System.Drawing.Size(146, 22)
+        Me.ByPointsW.Size = New System.Drawing.Size(139, 22)
         Me.ByPointsW.Text = "By two points"
         '
         'ByEntityW
         '
         Me.ByEntityW.Name = "ByEntityW"
-        Me.ByEntityW.Size = New System.Drawing.Size(146, 22)
+        Me.ByEntityW.Size = New System.Drawing.Size(139, 22)
         Me.ByEntityW.Text = "By one entity"
         '
         'ContextMenuAddManual
         '
         Me.ContextMenuAddManual.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CircleManual, Me.MillingManual, Me.PolyManual})
         Me.ContextMenuAddManual.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddManual.Size = New System.Drawing.Size(147, 70)
+        Me.ContextMenuAddManual.Size = New System.Drawing.Size(131, 70)
         '
         'CircleManual
         '
         Me.CircleManual.Name = "CircleManual"
-        Me.CircleManual.Size = New System.Drawing.Size(146, 22)
+        Me.CircleManual.Size = New System.Drawing.Size(130, 22)
         Me.CircleManual.Text = "穴形状"
         '
         'MillingManual
         '
         Me.MillingManual.Name = "MillingManual"
-        Me.MillingManual.Size = New System.Drawing.Size(146, 22)
+        Me.MillingManual.Size = New System.Drawing.Size(130, 22)
         Me.MillingManual.Text = "ミリング形状"
         '
         'PolyManual
         '
         Me.PolyManual.Name = "PolyManual"
-        Me.PolyManual.Size = New System.Drawing.Size(146, 22)
+        Me.PolyManual.Size = New System.Drawing.Size(130, 22)
         Me.PolyManual.Text = "ポリライン"
         '
         'UserControl3
@@ -1149,7 +1125,7 @@ Partial Class UserControl3
         Me.Controls.Add(Me.KryptonHeaderGroup2)
         Me.Controls.Add(Me.KryptonHeaderGroup1)
         Me.Name = "UserControl3"
-        Me.Size = New System.Drawing.Size(170, 893)
+        Me.Size = New System.Drawing.Size(274, 893)
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.KryptonHeaderGroup1.Panel.ResumeLayout(False)
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1243,7 +1219,6 @@ Partial Class UserControl3
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents Label16 As System.Windows.Forms.Label
-    Friend WithEvents IdentifiedFeature As System.Windows.Forms.DataGridView
     Friend WithEvents UnidentifiedFeature As System.Windows.Forms.DataGridView
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents version As System.Windows.Forms.Label
@@ -1276,5 +1251,6 @@ Partial Class UserControl3
     Friend WithEvents CircleManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MillingManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents PolyManual As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents IdentifiedFeature As System.Windows.Forms.DataGridView
 
 End Class
