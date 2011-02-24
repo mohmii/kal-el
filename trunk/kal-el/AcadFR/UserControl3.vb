@@ -1749,7 +1749,7 @@ Public Class UserControl3
                 Me.ComboBox1.Items.Add("２側ポケット")
                 Me.ComboBox1.Items.Add("長穴")
                 Me.ComboBox1.Items.Add("止まり溝")
-                Me.ComboBox1.Items.Add("ミリング形状を選ぶ")
+                'Me.ComboBox1.Items.Add("ミリング形状を選ぶ")
             Case "ポリライン" 'polynile
                 Me.ComboBox1.Items.Clear()
                 Me.ComboBox1.Items.Add("切り取り") 'cut off
