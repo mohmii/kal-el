@@ -893,13 +893,15 @@ Public Class UserControl3
         If e.Button.Equals(Forms.MouseButtons.Right) And e.Clicks.Equals(1) Then
             If Me.Label16.Text <> "0" Then
                 Me.IdentifiedFeature.ContextMenuStrip = ContextMenuStrip1
-                If Me.Label16.Text = "1" Then
-                    Me.ContextMenuStrip1.Items(0).Enabled = True
-                    Me.ContextMenuStrip1.Items(1).Enabled = True
-                Else
-                    Me.ContextMenuStrip1.Items(0).Enabled = False
-                    Me.ContextMenuStrip1.Items(1).Enabled = False
-                End If
+                'If Me.Label16.Text = "1" Then
+                '    Me.ContextMenuStrip1.Items(0).Enabled = True
+                '    Me.ContextMenuStrip1.Items(1).Enabled = True
+                'Else
+                '    Me.ContextMenuStrip1.Items(0).Enabled = False
+                '    Me.ContextMenuStrip1.Items(1).Enabled = False
+                'End If
+                Me.ContextMenuStrip1.Items(0).Enabled = True
+                Me.ContextMenuStrip1.Items(1).Enabled = True
             End If
         Else
             Me.IdentifiedFeature.ContextMenuStrip = Nothing
@@ -911,13 +913,15 @@ Public Class UserControl3
         If e.Button.Equals(Forms.MouseButtons.Right) And e.Clicks.Equals(1) Then
             If Me.Label17.Text <> "0" Then
                 Me.UnidentifiedFeature.ContextMenuStrip = ContextMenuStrip1
-                If Me.Label17.Text = "1" Then
-                    Me.ContextMenuStrip1.Items(0).Enabled = True
-                    Me.ContextMenuStrip1.Items(1).Enabled = True
-                Else
-                    Me.ContextMenuStrip1.Items(0).Enabled = False
-                    Me.ContextMenuStrip1.Items(1).Enabled = False
-                End If
+                'If Me.Label17.Text = "1" Then
+                '    Me.ContextMenuStrip1.Items(0).Enabled = True
+                '    Me.ContextMenuStrip1.Items(1).Enabled = True
+                'Else
+                '    Me.ContextMenuStrip1.Items(0).Enabled = False
+                '    Me.ContextMenuStrip1.Items(1).Enabled = False
+                'End If
+                Me.ContextMenuStrip1.Items(0).Enabled = True
+                Me.ContextMenuStrip1.Items(1).Enabled = True
             End If
         Else
             Me.UnidentifiedFeature.ContextMenuStrip = Nothing
