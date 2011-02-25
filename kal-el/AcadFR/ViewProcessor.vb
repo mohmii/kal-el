@@ -103,7 +103,7 @@ Public Class ViewProcessor
     'add feature manual method
     Public Overloads Sub SingleViewProcessor(ByVal GLoop As List(Of List(Of Entity)), ByVal View As ViewProp, _
                                              ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), _
-                                             ByVal GLoopPts As List(Of List(Of Point3d)), ByRef UnIdentifiedCounter As Integer)
+                                             ByVal GLoopPts As List(Of List(Of Point3d)), ByRef FeatCount As Integer)
         Dim Selcom As New SelectionCommand
         Dim FeatureHidList As New List(Of OutputFormat)
         For Each GroupEntity As List(Of Entity) In GLoop
@@ -145,7 +145,7 @@ Public Class ViewProcessor
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                     Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, View, View.ViewType, SelectionCommand.ProjectionView)
                 Else
-                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+                    FeatCount = FeatCount + 1
                     UnIdentifiedFeature.Add(Feature)
                     TmpUnidentifiedFeature.Add(Feature)
                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
@@ -164,7 +164,7 @@ Public Class ViewProcessor
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                     Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, View, View.ViewType, SelectionCommand.ProjectionView)
                 Else
-                    UnIdentifiedCounter = UnIdentifiedCounter + 1
+                    FeatCount = FeatCount + 1
                     UnIdentifiedFeature.Add(Feature)
                     TmpUnidentifiedFeature.Add(Feature)
                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)

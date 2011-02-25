@@ -1878,6 +1878,7 @@ Public Class UserControl3
                     Dim PLEntAdd As New List(Of Polyline)
                     Dim ManualStat As Boolean = True
                     Dim SurfaceIndex As New Integer
+                    Dim FeatCount As New Integer
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -1948,7 +1949,8 @@ Public Class UserControl3
                             CircMember = result.Count()
                             Dim Surface As Integer = 3
                             CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
-                                                          SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint, SelectionCommand.ProjectionView(SurfaceIndex), ManualStat)
+                                                          SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint, _
+                                                          SelectionCommand.ProjectionView(SurfaceIndex), ManualStat, FeatCount)
 
                             'CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
                             '                              SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected, ManualStat)
@@ -1957,7 +1959,13 @@ Public Class UserControl3
                             RegisterToView(Feature)
                         Next
                     End If
-                        AcadConnection.myT.Commit()
+                    AcadConnection.myT.Commit()
+
+                    adskClass.myPalette.IdentifiedFeature.ClearSelection()
+                    adskClass.myPalette.UnidentifiedFeature.ClearSelection()
+                    adskClass.myPalette.MakeItBlank()
+
+                    MsgBox(FeatCount.ToString + "  その他の形状のリストに追加される形状")
                 End Using
             End Using
         Catch ex As Exception
@@ -1995,6 +2003,7 @@ Public Class UserControl3
                     Dim GetPoints As New GetPoints
                     Dim ManualStat As Boolean = True
                     Dim SurfaceIndex As New Integer
+                    Dim FeatCount As New Integer
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -2051,9 +2060,15 @@ Public Class UserControl3
                         '                             GLoopPts, SelectionCommand.UnIdentifiedCounter)
                         ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SurfaceIndex), _
                                                      SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
-                                                     GLoopPts, SelectionCommand.UnIdentifiedCounter)
+                                                     GLoopPts, FeatCount)
                     End If
                     AcadConnection.myT.Commit()
+
+                    adskClass.myPalette.IdentifiedFeature.ClearSelection()
+                    adskClass.myPalette.UnidentifiedFeature.ClearSelection()
+                    adskClass.myPalette.MakeItBlank()
+
+                    MsgBox(FeatCount.ToString + "  その他の形状のリストに追加される形状")
                 End Using
             End Using
         Catch ex As Exception
@@ -2090,6 +2105,7 @@ Public Class UserControl3
                     Dim GLoopPts As New List(Of List(Of Point3d))
                     Dim ManualStat As Boolean = True
                     Dim SurfaceIndex As New Integer
+                    Dim FeatCount As New Integer
 
                     Check2Database.InitLinesDb()
                     Check2Database.InitHoleDb()
@@ -2196,7 +2212,8 @@ Public Class UserControl3
                                     'add to the unidentified feature list
                                     SelectionCommand.UnIdentifiedFeature.Add(Feature)
                                     SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
-                                    SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                                    'SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                                    FeatCount = FeatCount + 1
                                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                                 End If
                             Next
@@ -2204,6 +2221,12 @@ Public Class UserControl3
                         End If
                     End If
                     AcadConnection.myT.Commit()
+
+                    adskClass.myPalette.IdentifiedFeature.ClearSelection()
+                    adskClass.myPalette.UnidentifiedFeature.ClearSelection()
+                    adskClass.myPalette.MakeItBlank()
+
+                    MsgBox(FeatCount.ToString + "  その他の形状のリストに追加される形状")
                 End Using
             End Using
         Catch ex As Exception
