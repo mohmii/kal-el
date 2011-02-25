@@ -210,7 +210,7 @@ Public Class CircleProcessor
 
     'circle manual
     Public Overloads Sub ClassifyCircles(ByVal CircMember As Integer, ByVal Check2Database As DatabaseConn, ByVal result As IEnumerable(Of Circle), ByVal Surface As Integer, _
-                               ByRef Feature As OutputFormat, ByVal RefPoint As Point3d, ByVal ProjectView As ViewProp, ByVal ManStat As Boolean)
+                               ByRef Feature As OutputFormat, ByVal RefPoint As Point3d, ByVal ProjectView As ViewProp, ByVal ManStat As Boolean, ByRef FeatCount As Integer)
         If ManStat = True Then
             Dim Selcom As New SelectionCommand
             If CircMember = 2 Then
@@ -247,13 +247,14 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(circle)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView, FeatCount)
                         Else
                             'add to the unidentified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
                             SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
                             'OrganizeList.AddListToExisting2(Feature)
-                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            'SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            FeatCount = FeatCount + 1
                             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                         End If
                     Next
@@ -283,13 +284,14 @@ Public Class CircleProcessor
                         SelectionCommand.HiddenFeature.Clear()
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
-                        Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                        Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView, FeatCount)
                     Else
                         'add to the identified feature list
                         SelectionCommand.UnIdentifiedFeature.Add(Feature)
                         SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
                         'OrganizeList.AddListToExisting2(Feature)
-                        SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                        'SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                        FeatCount = FeatCount + 1
                         AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                     End If
                 End If
@@ -325,13 +327,14 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView, FeatCount)
                         Else
                             'add to the identified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
                             SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
                             'OrganizeList.AddListToExisting2(Feature)
-                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            'SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            FeatCount = FeatCount + 1
                             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                         End If
                     Else
@@ -359,13 +362,14 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView, FeatCount)
                         Else
                             'add to the unidentified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
                             SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
                             'OrganizeList.AddListToExisting2(Feature)
-                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            'SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            FeatCount = FeatCount + 1
                             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                         End If
                     End If
@@ -397,13 +401,14 @@ Public Class CircleProcessor
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(circle)
-                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView)
+                            Selcom.HiddenInitiate(SelectionCommand.HiddenFeature, ProjectView, ProjectView.ViewType, SelectionCommand.ProjectionView, FeatCount)
                         Else
                             'add to the unidentified feature list
                             SelectionCommand.UnIdentifiedFeature.Add(Feature)
                             SelectionCommand.TmpUnidentifiedFeature.Add(Feature)
                             'OrganizeList.AddListToExisting2(Feature)
-                            SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            'SelectionCommand.UnIdentifiedCounter = SelectionCommand.UnIdentifiedCounter + 1
+                            FeatCount = FeatCount + 1
                             AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                         End If
                     Next
