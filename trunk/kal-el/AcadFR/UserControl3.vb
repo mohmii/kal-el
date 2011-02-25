@@ -2077,12 +2077,17 @@ Public Class UserControl3
 
                     AcadConnection.OpenBlockTableRec()
 
+                    Dim MillProc As New MillingProcessor
                     Dim Check2Database As New DatabaseConn
                     Dim CircEntAdd As New List(Of Circle)
                     Dim LineEntAdd As New List(Of Line)
                     Dim ArcEntAdd As New List(Of Arc)
                     Dim AllEntAdd As New List(Of Entity)
                     Dim PLEntAdd As New List(Of Polyline)
+                    Dim MLoop As New List(Of Entity)
+                    Dim MLoopPts As New List(Of Point3d)
+                    Dim GLoop As New List(Of List(Of Entity))
+                    Dim GLoopPts As New List(Of List(Of Point3d))
                     Dim ManualStat As Boolean = True
                     Dim SurfaceIndex As New Integer
 
@@ -2128,7 +2133,44 @@ Public Class UserControl3
                             i = i + 1
                         Next
 
+                        If LineEntAdd.Count <> 0 Or ArcEntAdd.Count <> 0 Then
+                            MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop, MLoopPts)
+                        End If
+
+                        Dim Poly As Polyline
+                        Poly = New Polyline()
+
+                        i = 0
+                        For Each vertice As Point3d In MLoopPts
+                            Poly.AddVertexAt(Poly.NumberOfVertices, New Point2d(vertice.X, vertice.Y), BulgeValue(MLoop(i), vertice), 0, 0)
+                            i = i + 1
+                        Next
+
+                        'set the polyline properties similar to the selected entities
+                        Poly.Closed = True
+                        Poly.Layer = MLoop(0).Layer
+                        Poly.ColorIndex = MLoop(0).ColorIndex
+                        Poly.Linetype = MLoop(0).Linetype
+
+                        'remove the selected entities
+                        For Each Id2Check As ObjectId In tempIdArray
+                            For Each Id As ObjectId In AcadConnection.btr
+                                Entity = AcadConnection.myT.GetObject(Id, OpenMode.ForRead)
+                                If Entity.ObjectId.Equals(Id2Check) Then
+                                    Entity.UpgradeOpen()
+                                    Entity.Erase()
+                                End If
+                            Next
+                        Next
+
+                        AcadConnection.btr.UpgradeOpen()
+                        AcadConnection.btr.AppendEntity(Poly)
+                        AcadConnection.myT.AddNewlyCreatedDBObject(Poly, True)
+
+                        PLEntAdd.Add(Poly)
+
                         If PLEntAdd.Count <> 0 Then
+
                             Dim SelCom As New SelectionCommand
                             For Each PolyTemp As Polyline In PLEntAdd
                                 Feature = New OutputFormat
@@ -2158,6 +2200,7 @@ Public Class UserControl3
                                     AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                                 End If
                             Next
+                            Me.UnidentifiedFeature.ClearSelection()
                         End If
                     End If
                     AcadConnection.myT.Commit()
@@ -2169,6 +2212,34 @@ Public Class UserControl3
             AcadConnection.myT.Dispose()
         End Try
     End Sub
+
+    'calculate the bulge value
+    Private Function BulgeValue(ByVal PolyEntity As Entity, ByVal Pnt As Point3d) As Double
+        If TypeOf (PolyEntity) Is Line Then
+            Return 0 'if line then bulge should be 0
+        ElseIf TypeOf (PolyEntity) Is Arc Then
+            Dim ArcTmp As Arc
+            Dim newstart As Double
+            Dim bulge As Double
+            ArcTmp = New Arc
+            ArcTmp = PolyEntity
+            If (ArcTmp.StartAngle > ArcTmp.EndAngle) Then
+                newstart = ArcTmp.StartAngle - 8 * Math.Atan(1)
+            Else
+                newstart = ArcTmp.StartAngle
+            End If
+
+            bulge = Math.Tan((ArcTmp.EndAngle - newstart) / 4)
+
+            If isequal(ArcTmp.EndPoint.X, Pnt.X) And isequal(ArcTmp.EndPoint.Y, Pnt.Y) Then
+                Return -1 * bulge
+            Else
+                Return bulge
+            End If
+
+        End If
+
+    End Function
 
     'prosedur berkaitan dengan add D1
     Private Sub AddD1_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddD1.Click
