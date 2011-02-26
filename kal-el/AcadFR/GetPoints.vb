@@ -37,8 +37,8 @@ Public Class GetPoints
         For Each EntityTmp As Entity In AllEntity
             If TypeOf EntityTmp Is Line Then
                 LineTrans = EntityTmp
-                TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 5), Round(LineTrans.StartPoint.Y, 5), Round(LineTrans.StartPoint.Z, 5))
-                TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 5), Round(LineTrans.EndPoint.Y, 5), Round(LineTrans.EndPoint.Z, 5))
+                TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 3), Round(LineTrans.StartPoint.Y, 3), Round(LineTrans.StartPoint.Z, 3))
+                TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 3), Round(LineTrans.EndPoint.Y, 3), Round(LineTrans.EndPoint.Z, 3))
 
                 'TempStartPoint = New Point3d(LineTrans.StartPoint.X, LineTrans.StartPoint.Y, LineTrans.StartPoint.Z)
                 'TempEndPoint = New Point3d(LineTrans.EndPoint.X, LineTrans.EndPoint.Y, LineTrans.EndPoint.Z)
@@ -87,8 +87,8 @@ Public Class GetPoints
 
             ElseIf TypeOf EntityTmp Is Arc Then
                 ArcTrans = EntityTmp
-                TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 5), Round(ArcTrans.StartPoint.Y, 5), Round(ArcTrans.StartPoint.Z, 5))
-                TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 5), Round(ArcTrans.EndPoint.Y, 5), Round(ArcTrans.EndPoint.Z, 5))
+                TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 3), Round(ArcTrans.StartPoint.Y, 3), Round(ArcTrans.StartPoint.Z, 3))
+                TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 3), Round(ArcTrans.EndPoint.Y, 3), Round(ArcTrans.EndPoint.Z, 3))
 
                 'TempStartPoint = New Point3d(ArcTrans.StartPoint.X, ArcTrans.StartPoint.Y, ArcTrans.StartPoint.Z)
                 'TempEndPoint = New Point3d(ArcTrans.EndPoint.X, ArcTrans.EndPoint.Y, ArcTrans.EndPoint.Z)
@@ -144,8 +144,8 @@ Public Class GetPoints
                 For Each EntityTmp As Entity In AllEntity
                     If TypeOf EntityTmp Is Line Then
                         LineTrans = EntityTmp
-                        TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 5), Round(LineTrans.StartPoint.Y, 5), Round(LineTrans.StartPoint.Z, 5))
-                        TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 5), Round(LineTrans.EndPoint.Y, 5), Round(LineTrans.EndPoint.Z, 5))
+                        TempStartPoint = New Point3d(Round(LineTrans.StartPoint.X, 3), Round(LineTrans.StartPoint.Y, 3), Round(LineTrans.StartPoint.Z, 3))
+                        TempEndPoint = New Point3d(Round(LineTrans.EndPoint.X, 3), Round(LineTrans.EndPoint.Y, 3), Round(LineTrans.EndPoint.Z, 3))
 
                         'TempStartPoint = New Point3d(LineTrans.StartPoint.X, LineTrans.StartPoint.Y, LineTrans.StartPoint.Z)
                         'TempEndPoint = New Point3d(LineTrans.EndPoint.X, LineTrans.EndPoint.Y, LineTrans.EndPoint.Z)
@@ -157,8 +157,8 @@ Public Class GetPoints
                         End If
                     ElseIf TypeOf EntityTmp Is Arc Then
                         ArcTrans = EntityTmp
-                        TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 5), Round(ArcTrans.StartPoint.Y, 5), Round(ArcTrans.StartPoint.Z, 5))
-                        TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 5), Round(ArcTrans.EndPoint.Y, 5), Round(ArcTrans.EndPoint.Z, 5))
+                        TempStartPoint = New Point3d(Round(ArcTrans.StartPoint.X, 3), Round(ArcTrans.StartPoint.Y, 3), Round(ArcTrans.StartPoint.Z, 3))
+                        TempEndPoint = New Point3d(Round(ArcTrans.EndPoint.X, 3), Round(ArcTrans.EndPoint.Y, 3), Round(ArcTrans.EndPoint.Z, 3))
 
                         'TempStartPoint = New Point3d(ArcTrans.StartPoint.X, ArcTrans.StartPoint.Y, ArcTrans.StartPoint.Z)
                         'TempEndPoint = New Point3d(ArcTrans.EndPoint.X, ArcTrans.EndPoint.Y, ArcTrans.EndPoint.Z)
