@@ -38,6 +38,7 @@ Public Class CircleProcessor
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName("Drill")
                     Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
@@ -72,6 +73,7 @@ Public Class CircleProcessor
                 'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                 Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
                 Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                Feature.SurfaceName = Feature.MiscProp(1)
                 Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                 Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                 Feature.OriginAndAddition(2) = 0
@@ -112,6 +114,7 @@ Public Class CircleProcessor
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
                     Feature.MiscProp(1) = setView.viewis
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
@@ -144,6 +147,7 @@ Public Class CircleProcessor
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName("Drill")
                     Feature.MiscProp(1) = setView.viewis
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
@@ -180,6 +184,7 @@ Public Class CircleProcessor
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName("Drill")
                     Feature.MiscProp(1) = setView.viewis
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
@@ -232,6 +237,7 @@ Public Class CircleProcessor
                         'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                         Feature.MiscProp(0) = FindTheirJapsName("Drill")
                         Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                        Feature.SurfaceName = Feature.MiscProp(1)
                         Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
                         Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
                         Feature.OriginAndAddition(2) = 0
@@ -269,6 +275,7 @@ Public Class CircleProcessor
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
                     Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
@@ -312,6 +319,7 @@ Public Class CircleProcessor
                         'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                         Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
                         Feature.MiscProp(1) = setView.viewis
+                        Feature.SurfaceName = Feature.MiscProp(1)
                         Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                         Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                         Feature.OriginAndAddition(2) = 0
@@ -347,6 +355,7 @@ Public Class CircleProcessor
                         'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                         Feature.MiscProp(0) = FindTheirJapsName("Drill")
                         Feature.MiscProp(1) = setView.viewis
+                        Feature.SurfaceName = Feature.MiscProp(1)
                         Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                         Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                         Feature.OriginAndAddition(2) = 0
@@ -386,6 +395,7 @@ Public Class CircleProcessor
                         'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                         Feature.MiscProp(0) = FindTheirJapsName("Drill")
                         Feature.MiscProp(1) = setView.viewis
+                        Feature.SurfaceName = Feature.MiscProp(1)
                         Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
                         Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
                         Feature.OriginAndAddition(2) = 0

@@ -127,7 +127,7 @@ Partial Class AddManualSurface
         Me.Controls.Add(Me.GroupBox1)
         Me.Name = "AddManualSurface"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "AddManualSurface"
+        Me.Text = "形状追加認識"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)

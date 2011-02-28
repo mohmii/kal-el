@@ -55,6 +55,7 @@ Public Class ViewProcessor
                     Feature.FeatureName = "Mill Candidate"
                     Feature.MiscProp(0) = "ミリング形状を選ぶ"
                     Feature.MiscProp(1) = View.ViewType
+                    Feature.SurfaceName = View.ViewType
                     If Feature.HiddenLineCount > 0 Then
                         'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                         'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -72,6 +73,7 @@ Public Class ViewProcessor
                     If Not Feature.FeatureName = "" Then
                         'set the feature property
                         Feature.MiscProp(1) = View.ViewType
+                        Feature.SurfaceName = View.ViewType
                         If Feature.HiddenLineCount > 0 Then
                             'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                             'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -136,6 +138,7 @@ Public Class ViewProcessor
             If Not Feature.FeatureName = "" Then
                 'set the feature property
                 Feature.MiscProp(1) = View.ViewType
+                Feature.SurfaceName = View.ViewType
 
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
@@ -156,6 +159,7 @@ Public Class ViewProcessor
                 Feature.FeatureName = "Mill Candidate"
                 Feature.MiscProp(0) = "ミリング形状を選ぶ"
                 Feature.MiscProp(1) = View.ViewType
+                Feature.SurfaceName = View.ViewType
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -204,6 +208,7 @@ Public Class ViewProcessor
     '        Feature.SequenceSolidHidden = SeqHid
     '        SingleViewProp(Feature, GroupEntity, View, GLoopPts, GLoop)
     '        Feature.MiscProp(1) = View.ViewType
+    'Feature.SurfaceName = View.ViewType
     '        ChangedFeat = Feature
     ''set the current feature to current view
     '        RegisterToView(Feature)

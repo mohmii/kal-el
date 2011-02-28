@@ -46,7 +46,8 @@ Partial Class UserControl3
         Me.SaveList = New System.Windows.Forms.Button
         Me.AddEntity = New System.Windows.Forms.Button
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ZoomStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ZoomBySurfaceMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.ZoomByFeatureMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.HighlightStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.DeleteStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
@@ -164,7 +165,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox6)
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox5)
-        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(300, 350)
+        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(266, 355)
         Me.KryptonHeaderGroup1.TabIndex = 0
         Me.KryptonHeaderGroup1.Text = "加工特徴のリスト"
         Me.KryptonHeaderGroup1.ValuesPrimary.Description = ""
@@ -195,7 +196,7 @@ Partial Class UserControl3
         Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox6.Location = New System.Drawing.Point(0, 180)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(298, 142)
+        Me.GroupBox6.Size = New System.Drawing.Size(264, 142)
         Me.GroupBox6.TabIndex = 0
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "その他の形状"
@@ -257,7 +258,7 @@ Partial Class UserControl3
         Me.UnidentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
         Me.UnidentifiedFeature.RowHeadersVisible = False
         Me.UnidentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.UnidentifiedFeature.Size = New System.Drawing.Size(185, 103)
+        Me.UnidentifiedFeature.Size = New System.Drawing.Size(151, 103)
         Me.UnidentifiedFeature.TabIndex = 0
         Me.UnidentifiedFeature.TabStop = False
         '
@@ -268,7 +269,7 @@ Partial Class UserControl3
         Me.Label17.BackColor = System.Drawing.SystemColors.HighlightText
         Me.Label17.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(256, 10)
+        Me.Label17.Location = New System.Drawing.Point(222, 10)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(36, 20)
         Me.Label17.TabIndex = 0
@@ -279,7 +280,7 @@ Partial Class UserControl3
         '
         Me.Label15.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label15.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(190, 13)
+        Me.Label15.Location = New System.Drawing.Point(156, 13)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(60, 14)
         Me.Label15.TabIndex = 0
@@ -326,7 +327,7 @@ Partial Class UserControl3
         Me.GroupBox5.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox5.Margin = New System.Windows.Forms.Padding(3, 8, 3, 3)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(298, 180)
+        Me.GroupBox5.Size = New System.Drawing.Size(264, 180)
         Me.GroupBox5.TabIndex = 0
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "認識できた形状"
@@ -364,7 +365,7 @@ Partial Class UserControl3
         Me.IdentifiedFeature.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.IdentifiedFeature.RowHeadersVisible = False
         Me.IdentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.IdentifiedFeature.Size = New System.Drawing.Size(185, 140)
+        Me.IdentifiedFeature.Size = New System.Drawing.Size(151, 140)
         Me.IdentifiedFeature.TabIndex = 0
         Me.IdentifiedFeature.TabStop = False
         '
@@ -375,7 +376,7 @@ Partial Class UserControl3
         Me.Label16.BackColor = System.Drawing.SystemColors.HighlightText
         Me.Label16.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(256, 11)
+        Me.Label16.Location = New System.Drawing.Point(222, 11)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(36, 20)
         Me.Label16.TabIndex = 0
@@ -386,7 +387,7 @@ Partial Class UserControl3
         '
         Me.Label14.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(190, 14)
+        Me.Label14.Location = New System.Drawing.Point(156, 14)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(60, 15)
         Me.Label14.TabIndex = 0
@@ -447,15 +448,21 @@ Partial Class UserControl3
         'ContextMenuStrip1
         '
         Me.ContextMenuStrip1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ZoomStripMenuItem1, Me.HighlightStripMenuItem1, Me.ToolStripSeparator1, Me.DeleteStripMenuItem1})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ZoomBySurfaceMenuItem1, Me.ZoomByFeatureMenuItem1, Me.HighlightStripMenuItem1, Me.ToolStripSeparator1, Me.DeleteStripMenuItem1})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(180, 76)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(180, 98)
         '
-        'ZoomStripMenuItem1
+        'ZoomBySurfaceMenuItem1
         '
-        Me.ZoomStripMenuItem1.Name = "ZoomStripMenuItem1"
-        Me.ZoomStripMenuItem1.Size = New System.Drawing.Size(179, 22)
-        Me.ZoomStripMenuItem1.Text = "クローズアップ"
+        Me.ZoomBySurfaceMenuItem1.Name = "ZoomBySurfaceMenuItem1"
+        Me.ZoomBySurfaceMenuItem1.Size = New System.Drawing.Size(179, 22)
+        Me.ZoomBySurfaceMenuItem1.Text = "面をクローズアップ"
+        '
+        'ZoomByFeatureMenuItem1
+        '
+        Me.ZoomByFeatureMenuItem1.Name = "ZoomByFeatureMenuItem1"
+        Me.ZoomByFeatureMenuItem1.Size = New System.Drawing.Size(179, 22)
+        Me.ZoomByFeatureMenuItem1.Text = "形状をクローズアップ"
         '
         'HighlightStripMenuItem1
         '
@@ -480,7 +487,7 @@ Partial Class UserControl3
         Me.KryptonHeaderGroup2.ButtonSpecs.AddRange(New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup() {Me.ButtonSpecHeaderGroup2})
         Me.KryptonHeaderGroup2.Dock = System.Windows.Forms.DockStyle.Top
         Me.KryptonHeaderGroup2.HeaderVisibleSecondary = False
-        Me.KryptonHeaderGroup2.Location = New System.Drawing.Point(0, 350)
+        Me.KryptonHeaderGroup2.Location = New System.Drawing.Point(0, 355)
         Me.KryptonHeaderGroup2.Name = "KryptonHeaderGroup2"
         Me.KryptonHeaderGroup2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue
         '
@@ -488,7 +495,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox4)
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox2)
-        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(300, 519)
+        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(266, 524)
         Me.KryptonHeaderGroup2.TabIndex = 0
         Me.KryptonHeaderGroup2.Text = "データ"
         Me.KryptonHeaderGroup2.ValuesPrimary.Description = ""
@@ -514,7 +521,7 @@ Partial Class UserControl3
         Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox4.Location = New System.Drawing.Point(0, 317)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(298, 174)
+        Me.GroupBox4.Size = New System.Drawing.Size(264, 174)
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "説明図"
@@ -527,7 +534,7 @@ Partial Class UserControl3
         Me.PictureBox1.Location = New System.Drawing.Point(5, 16)
         Me.PictureBox1.Margin = New System.Windows.Forms.Padding(8)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(287, 153)
+        Me.PictureBox1.Size = New System.Drawing.Size(253, 153)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 10
         Me.PictureBox1.TabStop = False
@@ -574,7 +581,7 @@ Partial Class UserControl3
         Me.GroupBox2.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox2.Margin = New System.Windows.Forms.Padding(3, 8, 8, 3)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(298, 317)
+        Me.GroupBox2.Size = New System.Drawing.Size(264, 317)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
         '
@@ -695,7 +702,7 @@ Partial Class UserControl3
         Me.ComboBox1.Items.AddRange(New Object() {"タップ穴", "ＰＴタップ穴", "リーマ穴", "ドリル穴", "底付き穴", "貫通穴", "段付きボルト穴", "円形溝", "ボーリング穴"})
         Me.ComboBox1.Location = New System.Drawing.Point(107, 18)
         Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(81, 21)
+        Me.ComboBox1.Size = New System.Drawing.Size(47, 21)
         Me.ComboBox1.TabIndex = 10
         '
         'ContextMenuStrip2
@@ -746,7 +753,7 @@ Partial Class UserControl3
         Me.ComboBox3.Enabled = False
         Me.ComboBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
         Me.ComboBox3.FormattingEnabled = True
-        Me.ComboBox3.Location = New System.Drawing.Point(194, 18)
+        Me.ComboBox3.Location = New System.Drawing.Point(160, 18)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(98, 21)
         Me.ComboBox3.TabIndex = 11
@@ -783,7 +790,7 @@ Partial Class UserControl3
         Me.ComboBox2.Location = New System.Drawing.Point(107, 40)
         Me.ComboBox2.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)
         Me.ComboBox2.Name = "ComboBox2"
-        Me.ComboBox2.Size = New System.Drawing.Size(185, 21)
+        Me.ComboBox2.Size = New System.Drawing.Size(151, 21)
         Me.ComboBox2.TabIndex = 12
         '
         'NumericUpDown4
@@ -794,7 +801,7 @@ Partial Class UserControl3
         Me.NumericUpDown4.Margin = New System.Windows.Forms.Padding(3, 1, 3, 3)
         Me.NumericUpDown4.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown4.Name = "NumericUpDown4"
-        Me.NumericUpDown4.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown4.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown4.TabIndex = 2
         '
         'NumericUpDown5
@@ -804,7 +811,7 @@ Partial Class UserControl3
         Me.NumericUpDown5.Location = New System.Drawing.Point(107, 83)
         Me.NumericUpDown5.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown5.Name = "NumericUpDown5"
-        Me.NumericUpDown5.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown5.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown5.TabIndex = 3
         '
         'NumericUpDown6
@@ -815,7 +822,7 @@ Partial Class UserControl3
         Me.NumericUpDown6.Margin = New System.Windows.Forms.Padding(3, 3, 3, 1)
         Me.NumericUpDown6.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
         Me.NumericUpDown6.Name = "NumericUpDown6"
-        Me.NumericUpDown6.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown6.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown6.TabIndex = 4
         '
         'NumericUpDown1
@@ -828,7 +835,7 @@ Partial Class UserControl3
         Me.NumericUpDown1.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown1.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown1.Name = "NumericUpDown1"
-        Me.NumericUpDown1.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown1.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown1.TabIndex = 5
         '
         'NumericUpDown2
@@ -841,7 +848,7 @@ Partial Class UserControl3
         Me.NumericUpDown2.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown2.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown2.Name = "NumericUpDown2"
-        Me.NumericUpDown2.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown2.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown2.TabIndex = 6
         '
         'NumericUpDown3
@@ -854,7 +861,7 @@ Partial Class UserControl3
         Me.NumericUpDown3.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown3.Minimum = New Decimal(New Integer() {10000, 0, 0, -2147483648})
         Me.NumericUpDown3.Name = "NumericUpDown3"
-        Me.NumericUpDown3.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown3.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown3.TabIndex = 7
         '
         'NumericUpDown7
@@ -866,7 +873,7 @@ Partial Class UserControl3
         Me.NumericUpDown7.Margin = New System.Windows.Forms.Padding(3, 5, 3, 1)
         Me.NumericUpDown7.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown7.Name = "NumericUpDown7"
-        Me.NumericUpDown7.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown7.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown7.TabIndex = 8
         '
         'NumericUpDown8
@@ -879,7 +886,7 @@ Partial Class UserControl3
         Me.NumericUpDown8.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown8.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown8.Name = "NumericUpDown8"
-        Me.NumericUpDown8.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown8.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown8.TabIndex = 9
         '
         'NumericUpDown9
@@ -891,7 +898,7 @@ Partial Class UserControl3
         Me.NumericUpDown9.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown9.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown9.Name = "NumericUpDown9"
-        Me.NumericUpDown9.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown9.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown9.TabIndex = 10
         '
         'NumericUpDown10
@@ -903,7 +910,7 @@ Partial Class UserControl3
         Me.NumericUpDown10.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown10.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown10.Name = "NumericUpDown10"
-        Me.NumericUpDown10.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown10.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown10.TabIndex = 11
         '
         'NumericUpDown11
@@ -915,7 +922,7 @@ Partial Class UserControl3
         Me.NumericUpDown11.Margin = New System.Windows.Forms.Padding(3, 1, 3, 1)
         Me.NumericUpDown11.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
         Me.NumericUpDown11.Name = "NumericUpDown11"
-        Me.NumericUpDown11.Size = New System.Drawing.Size(185, 20)
+        Me.NumericUpDown11.Size = New System.Drawing.Size(151, 20)
         Me.NumericUpDown11.TabIndex = 13
         '
         'Label8
@@ -977,7 +984,7 @@ Partial Class UserControl3
         '
         Me.version.AutoSize = True
         Me.version.Dock = System.Windows.Forms.DockStyle.Top
-        Me.version.Location = New System.Drawing.Point(0, 869)
+        Me.version.Location = New System.Drawing.Point(0, 879)
         Me.version.Name = "version"
         Me.version.Size = New System.Drawing.Size(0, 13)
         Me.version.TabIndex = 2
@@ -987,132 +994,132 @@ Partial Class UserControl3
         '
         Me.ContextMenuAddD3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints3, Me.ByEntity3})
         Me.ContextMenuAddD3.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD3.Size = New System.Drawing.Size(140, 48)
+        Me.ContextMenuAddD3.Size = New System.Drawing.Size(147, 48)
         '
         'ByPoints3
         '
         Me.ByPoints3.Name = "ByPoints3"
-        Me.ByPoints3.Size = New System.Drawing.Size(139, 22)
+        Me.ByPoints3.Size = New System.Drawing.Size(146, 22)
         Me.ByPoints3.Text = "By two points"
         '
         'ByEntity3
         '
         Me.ByEntity3.Name = "ByEntity3"
-        Me.ByEntity3.Size = New System.Drawing.Size(139, 22)
+        Me.ByEntity3.Size = New System.Drawing.Size(146, 22)
         Me.ByEntity3.Text = "By one entity"
         '
         'ContextMenuAddD1
         '
         Me.ContextMenuAddD1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints1, Me.ByEntity1})
         Me.ContextMenuAddD1.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD1.Size = New System.Drawing.Size(140, 48)
+        Me.ContextMenuAddD1.Size = New System.Drawing.Size(147, 48)
         '
         'ByPoints1
         '
         Me.ByPoints1.Name = "ByPoints1"
-        Me.ByPoints1.Size = New System.Drawing.Size(139, 22)
+        Me.ByPoints1.Size = New System.Drawing.Size(146, 22)
         Me.ByPoints1.Text = "By two points"
         '
         'ByEntity1
         '
         Me.ByEntity1.Name = "ByEntity1"
-        Me.ByEntity1.Size = New System.Drawing.Size(139, 22)
+        Me.ByEntity1.Size = New System.Drawing.Size(146, 22)
         Me.ByEntity1.Text = "By one entity"
         '
         'ContextMenuAddD2
         '
         Me.ContextMenuAddD2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints2, Me.ByEntity2})
         Me.ContextMenuAddD2.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD2.Size = New System.Drawing.Size(140, 48)
+        Me.ContextMenuAddD2.Size = New System.Drawing.Size(147, 48)
         '
         'ByPoints2
         '
         Me.ByPoints2.Name = "ByPoints2"
-        Me.ByPoints2.Size = New System.Drawing.Size(139, 22)
+        Me.ByPoints2.Size = New System.Drawing.Size(146, 22)
         Me.ByPoints2.Text = "By two points"
         '
         'ByEntity2
         '
         Me.ByEntity2.Name = "ByEntity2"
-        Me.ByEntity2.Size = New System.Drawing.Size(139, 22)
+        Me.ByEntity2.Size = New System.Drawing.Size(146, 22)
         Me.ByEntity2.Text = "By one entity"
         '
         'ContextMenuAddD4
         '
         Me.ContextMenuAddD4.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints4, Me.ByEntity4})
         Me.ContextMenuAddD4.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD4.Size = New System.Drawing.Size(140, 48)
+        Me.ContextMenuAddD4.Size = New System.Drawing.Size(147, 48)
         '
         'ByPoints4
         '
         Me.ByPoints4.Name = "ByPoints4"
-        Me.ByPoints4.Size = New System.Drawing.Size(139, 22)
+        Me.ByPoints4.Size = New System.Drawing.Size(146, 22)
         Me.ByPoints4.Text = "By two points"
         '
         'ByEntity4
         '
         Me.ByEntity4.Name = "ByEntity4"
-        Me.ByEntity4.Size = New System.Drawing.Size(139, 22)
+        Me.ByEntity4.Size = New System.Drawing.Size(146, 22)
         Me.ByEntity4.Text = "By one entity"
         '
         'ContextMenuAddCham
         '
         Me.ContextMenuAddCham.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPointsCham, Me.ByEntityCham})
         Me.ContextMenuAddCham.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddCham.Size = New System.Drawing.Size(140, 48)
+        Me.ContextMenuAddCham.Size = New System.Drawing.Size(147, 48)
         '
         'ByPointsCham
         '
         Me.ByPointsCham.Name = "ByPointsCham"
-        Me.ByPointsCham.Size = New System.Drawing.Size(139, 22)
+        Me.ByPointsCham.Size = New System.Drawing.Size(146, 22)
         Me.ByPointsCham.Text = "By two points"
         '
         'ByEntityCham
         '
         Me.ByEntityCham.Name = "ByEntityCham"
-        Me.ByEntityCham.Size = New System.Drawing.Size(139, 22)
+        Me.ByEntityCham.Size = New System.Drawing.Size(146, 22)
         Me.ByEntityCham.Text = "By one entity"
         '
         'ContextMenuAddW
         '
         Me.ContextMenuAddW.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPointsW, Me.ByEntityW})
         Me.ContextMenuAddW.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddW.Size = New System.Drawing.Size(140, 48)
+        Me.ContextMenuAddW.Size = New System.Drawing.Size(147, 48)
         '
         'ByPointsW
         '
         Me.ByPointsW.Name = "ByPointsW"
-        Me.ByPointsW.Size = New System.Drawing.Size(139, 22)
+        Me.ByPointsW.Size = New System.Drawing.Size(146, 22)
         Me.ByPointsW.Text = "By two points"
         '
         'ByEntityW
         '
         Me.ByEntityW.Name = "ByEntityW"
-        Me.ByEntityW.Size = New System.Drawing.Size(139, 22)
+        Me.ByEntityW.Size = New System.Drawing.Size(146, 22)
         Me.ByEntityW.Text = "By one entity"
         '
         'ContextMenuAddManual
         '
         Me.ContextMenuAddManual.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CircleManual, Me.MillingManual, Me.PolyManual})
         Me.ContextMenuAddManual.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddManual.Size = New System.Drawing.Size(131, 70)
+        Me.ContextMenuAddManual.Size = New System.Drawing.Size(147, 70)
         '
         'CircleManual
         '
         Me.CircleManual.Name = "CircleManual"
-        Me.CircleManual.Size = New System.Drawing.Size(130, 22)
+        Me.CircleManual.Size = New System.Drawing.Size(146, 22)
         Me.CircleManual.Text = "穴形状"
         '
         'MillingManual
         '
         Me.MillingManual.Name = "MillingManual"
-        Me.MillingManual.Size = New System.Drawing.Size(130, 22)
+        Me.MillingManual.Size = New System.Drawing.Size(146, 22)
         Me.MillingManual.Text = "ミリング形状"
         '
         'PolyManual
         '
         Me.PolyManual.Name = "PolyManual"
-        Me.PolyManual.Size = New System.Drawing.Size(130, 22)
+        Me.PolyManual.Size = New System.Drawing.Size(146, 22)
         Me.PolyManual.Text = "ポリライン"
         '
         'UserControl3
@@ -1125,7 +1132,7 @@ Partial Class UserControl3
         Me.Controls.Add(Me.KryptonHeaderGroup2)
         Me.Controls.Add(Me.KryptonHeaderGroup1)
         Me.Name = "UserControl3"
-        Me.Size = New System.Drawing.Size(300, 893)
+        Me.Size = New System.Drawing.Size(266, 893)
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).EndInit()
         Me.KryptonHeaderGroup1.Panel.ResumeLayout(False)
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1211,7 +1218,7 @@ Partial Class UserControl3
     Friend WithEvents HighlightStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents DeleteStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ZoomStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ZoomBySurfaceMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ContextMenuStrip2 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents ComboBox3 As System.Windows.Forms.ComboBox
@@ -1252,5 +1259,6 @@ Partial Class UserControl3
     Friend WithEvents MillingManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents PolyManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents IdentifiedFeature As System.Windows.Forms.DataGridView
+    Friend WithEvents ZoomByFeatureMenuItem1 As System.Windows.Forms.ToolStripMenuItem
 
 End Class

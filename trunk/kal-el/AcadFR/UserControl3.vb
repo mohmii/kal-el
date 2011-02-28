@@ -485,14 +485,45 @@ Public Class UserControl3
         End If
     End Sub
 
-    Private Sub ZoomWindow(ByVal point As ViewProp)
+    Private Sub ZoomSurface(ByVal point As ViewProp)
         Dim Min() As Double = New Double() {point.BoundProp(0) - 25, point.BoundProp(1) - 25, 0}
         Dim Max() As Double = New Double() {point.BoundProp(2) + 25, point.BoundProp(3) + 50, 0}
         zoom.ZoomWindow(Min, Max)
     End Sub
 
-    Private AcadConnection As AcadConn
+    Private Sub ZoomFeature(ByVal EntityList As List(Of Entity))
+        Dim MinX As Double = EntityList(0).GeomExtents.MinPoint.X
+        Dim MinY As Double = EntityList(0).GeomExtents.MinPoint.Y
+        Dim MaxX As Double = EntityList(0).GeomExtents.MaxPoint.X
+        Dim MaxY As Double = EntityList(0).GeomExtents.MaxPoint.Y
 
+        For Each EntityTemp As Entity In EntityList
+            'search the bounding box maximum points
+            If MaxX < EntityTemp.GeomExtents.MaxPoint.X Then
+                MaxX = Round(EntityTemp.GeomExtents.MaxPoint.X, 5)
+            End If
+
+            If MaxY < EntityTemp.GeomExtents.MaxPoint.Y Then
+                MaxY = Round(EntityTemp.GeomExtents.MaxPoint.Y, 5)
+            End If
+
+            'search the bounding box minimum points
+            If EntityTemp.GeomExtents.MinPoint.X < MinX Then
+                MinX = Round(EntityTemp.GeomExtents.MinPoint.X, 5)
+            End If
+
+            If EntityTemp.GeomExtents.MinPoint.Y < MinY Then
+                MinY = Round(EntityTemp.GeomExtents.MinPoint.Y, 5)
+            End If
+        Next
+
+        Dim Min() As Double = New Double() {MinX - 100, MinY - 100, 0}
+        Dim Max() As Double = New Double() {MaxX + 100, MaxY + 100, 0}
+
+        zoom.ZoomWindow(Min, Max)
+    End Sub
+
+    Private AcadConnection As AcadConn
     Private HoleFeatProperties As UserControl2
     Private tes As System.Windows.Forms.ToolStripItem
 
@@ -928,7 +959,7 @@ Public Class UserControl3
         End If
     End Sub
 
-    Private Sub ZoomStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ZoomStripMenuItem1.Click
+    Private Sub ZoomBySurfaceMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ZoomBySurfaceMenuItem1.Click
         If Me.Label16.Text <> "0" Then
             StartZooming(Me.IdentifiedFeature.SelectedRows(0))
         End If
@@ -938,8 +969,19 @@ Public Class UserControl3
         End If
     End Sub
 
+    Private Sub ZoomByFeatureMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ZoomByFeatureMenuItem1.Click
+        If Me.Label16.Text <> "0" Then
+            StartFeatureZooming(Me.IdentifiedFeature.SelectedRows(0))
+        End If
+
+        If Me.Label17.Text <> "0" Then
+            StartFeatureZooming(Me.UnidentifiedFeature.SelectedRows(0))
+        End If
+    End Sub
+
     Private Feature2Zoom As OutputFormat
 
+    'for view zooming
     Private Sub StartZooming(ByVal SelectedRow As System.Windows.Forms.DataGridViewRow)
         Try
             zoom = Application.AcadApplication
@@ -962,12 +1004,52 @@ Public Class UserControl3
                             Dim obj As DBObject
                             obj = AcadConnection.myT.GetObject(idTmp, OpenMode.ForRead)
                             For Each i As ViewProp In SelectionCommand.ProjectionView
-                                If String.Equals(i.ViewType, Feature2Zoom.MiscProp(1)) Then
-                                    ZoomWindow(i)
+                                If String.Equals(i.ViewType, Feature2Zoom.SurfaceName) Then
+                                    ZoomSurface(i)
+                                    Exit For
                                 End If
                             Next
                         End If
                     Next
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+            DrawEditor.UpdateScreen()
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
+    'for feature
+    Private Sub StartFeatureZooming(ByVal SelectedRow As System.Windows.Forms.DataGridViewRow)
+        Dim EntListToZoom As New List(Of Entity)
+        Try
+            zoom = Application.AcadApplication
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+            DrawEditor = Application.DocumentManager.MdiActiveDocument.Editor
+
+            Feature2Zoom = New OutputFormat
+            AcadConnection = New AcadConn
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+                    AcadConnection.OpenBlockTableRec()
+                    Feature2Zoom = SelectedRow.Cells("Object").Value
+                    For Each idTmp As ObjectId In AcadConnection.btr
+                        'acquire the entity from the object id
+                        Entity = AcadConnection.myT.GetObject(idTmp, OpenMode.ForRead)
+                        'test if the entity id were the as entity id in the selected item
+                        For i As Integer = 0 To Feature2Zoom.ObjectId.Count - 1
+                            If Entity.ObjectId = Feature2Zoom.ObjectId(i) Then
+                                EntListToZoom.Add(Entity)
+                                Exit For
+                            End If
+                        Next
+                    Next
+                    ZoomFeature(EntListToZoom)
                     AcadConnection.myT.Commit()
                 End Using
             End Using
