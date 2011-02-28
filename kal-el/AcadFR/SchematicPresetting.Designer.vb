@@ -98,41 +98,41 @@ Partial Class SchematicPresetting
         '
         'HoleLayer
         '
-        Me.HoleLayer.HeaderText = "Hole Layer"
+        Me.HoleLayer.HeaderText = "穴の画層"
         Me.HoleLayer.Name = "HoleLayer"
         Me.HoleLayer.ReadOnly = True
         Me.HoleLayer.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         '
         'HoleLineType
         '
-        Me.HoleLineType.HeaderText = "Hole Line Type"
+        Me.HoleLineType.HeaderText = "穴の線種"
         Me.HoleLineType.Name = "HoleLineType"
         Me.HoleLineType.ReadOnly = True
         Me.HoleLineType.Width = 120
         '
         'HoleColor
         '
-        Me.HoleColor.HeaderText = "Hole Color"
+        Me.HoleColor.HeaderText = "穴の色"
         Me.HoleColor.Name = "HoleColor"
         Me.HoleColor.ReadOnly = True
         '
         'UnderholeLayer
         '
-        Me.UnderholeLayer.HeaderText = "Underhole Layer"
+        Me.UnderholeLayer.HeaderText = "下穴の画層"
         Me.UnderholeLayer.Name = "UnderholeLayer"
         Me.UnderholeLayer.ReadOnly = True
         Me.UnderholeLayer.Width = 120
         '
         'UnderholeLineType
         '
-        Me.UnderholeLineType.HeaderText = "Underhole Line Type"
+        Me.UnderholeLineType.HeaderText = "下穴の線種"
         Me.UnderholeLineType.Name = "UnderholeLineType"
         Me.UnderholeLineType.ReadOnly = True
         Me.UnderholeLineType.Width = 150
         '
         'UnderholeColor
         '
-        Me.UnderholeColor.HeaderText = "Underhole Color"
+        Me.UnderholeColor.HeaderText = "下穴の色"
         Me.UnderholeColor.Name = "UnderholeColor"
         Me.UnderholeColor.ReadOnly = True
         Me.UnderholeColor.Width = 120
@@ -145,13 +145,13 @@ Partial Class SchematicPresetting
         '
         'TopSurface
         '
-        Me.TopSurface.HeaderText = "Top"
+        Me.TopSurface.HeaderText = "表て面"
         Me.TopSurface.Name = "TopSurface"
         Me.TopSurface.Width = 50
         '
         'BottomSurface
         '
-        Me.BottomSurface.HeaderText = "Bottom"
+        Me.BottomSurface.HeaderText = "隠れ面"
         Me.BottomSurface.Name = "BottomSurface"
         Me.BottomSurface.Width = 50
         '
@@ -172,7 +172,7 @@ Partial Class SchematicPresetting
         Me.Controls.Add(Me.Cancel)
         Me.Controls.Add(Me.Proceed)
         Me.Name = "SchematicPresetting"
-        Me.Text = "Tap Hole Schematic Pre-setting"
+        Me.Text = "タップ穴記号の設定"
         Me.TopMost = True
         CType(Me.TapHoleList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
