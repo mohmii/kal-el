@@ -22,6 +22,13 @@ Public Class MillingProcessor
     Private UnAdjacentPoints As List(Of Point3d)
     Private LowerLeftCorner As Point3d
 
+    'get all points from a group of entities
+    Public ReadOnly Property GetAllPoints() As List(Of Point3d)
+        Get
+            Return AllPoints
+        End Get
+    End Property
+
     Public Function SearchLeftCornerPoint(ByVal PointCollection As List(Of Point3d))
         Dim PointComparerX, PointComparerY As New Double
         PointComparerX = PointCollection(0).X
@@ -148,7 +155,114 @@ Public Class MillingProcessor
 
     End Sub
 
-    Public Sub LoopFinder(ByVal Entities As List(Of Entity), ByRef GroupLoop As List(Of List(Of Entity)), _
+    Public Sub CheckPolyLoop(ByVal PointTmp As Point3d, ByRef MainLoop As List(Of Entity))
+        'check the point status for the stopping rule
+        While EndPoint <> PointTmp
+            If EndPointHasBeenReach = False Then
+
+                'only set for the first time enter
+                If EndPoint.X = 0 And EndPoint.Y = 0 Then
+                    EndPoint = PointTmp
+                    MainLoopPoint.Add(PointTmp)
+                    FirstTimeEnter = True
+                Else
+                    FirstTimeEnter = False
+                    For Each EntityTmp As EntityProp In GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList
+                        If (EntityTmp.Line.ObjectId = PreviousEntity.ObjectId) Or _
+                        (EntityTmp.Arc.ObjectId = PreviousEntity.ObjectId) Then
+                            AngleConverter = EntityTmp.Angle
+                        End If
+                    Next
+                End If
+
+                'make several local temporary place for angle and line-point index for define the next path
+                AngleInitiateStatus = False
+                GetLinePathStatus = False
+
+                'check for each line contain the point
+                For Each EntityTmp As EntityProp In GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList
+                    If FirstTimeEnter = True Then
+                        If AngleInitiateStatus = False Then
+                            AngleTmp = EntityTmp.Angle
+                            AngleInitiateStatus = True
+                        End If
+                        'selecting the smalles line angle for the next path
+                        If EntityTmp.Angle <= AngleTmp Then
+                            AngleTmp = EntityTmp.Angle
+                            EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                            GetLinePathStatus = True
+                        End If
+                    ElseIf FirstTimeEnter = False And GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.Count = 2 Then
+                        If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) _
+                        And (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) Then
+                            EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                            GetLinePathStatus = True
+                        End If
+                    Else
+                        If (PreviousEntity.ObjectId <> EntityTmp.Line.ObjectId) _
+                        And (PreviousEntity.ObjectId <> EntityTmp.Arc.ObjectId) Then
+                            AngleTmpConversion = EntityTmp.Angle - AngleConverter
+                            If AngleTmpConversion < 0 Then
+                                AngleTmpConversion = AngleTmpConversion + 360
+                            End If
+                            If AngleInitiateStatus = False Then
+                                AngleTmp = AngleTmpConversion
+                                AngleInitiateStatus = True
+                            End If
+                            'selecting the smallest line magnitude for the next path
+                            If AngleTmpConversion <= AngleTmp Then
+                                AngleTmp = AngleTmpConversion
+                                EntityPathIndex = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.IndexOf(EntityTmp)
+                                GetLinePathStatus = True
+                            End If
+                        End If
+                    End If
+                Next
+
+                If GetLinePathStatus = True Then
+                    'add the line path to the group
+
+                    'for line type
+                    If GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).Arc.ObjectId.IsNull = True Then
+                        MainLoop.Add(GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).Line)
+                        'MainLoopPoint.Add(PointTmp)
+                        PreviousEntity = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).Line
+                        'select the opposite point from the current point in the selected line path
+                        If GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).StartPoint = PointTmp Then
+                            PointPathIndex = AllPoints.IndexOf(GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).EndPoint)
+                        Else
+                            PointPathIndex = AllPoints.IndexOf(GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).StartPoint)
+                        End If
+
+                        'for arc type
+                    ElseIf GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).Arc.ObjectId.IsNull = False Then
+                        MainLoop.Add(GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).Arc)
+                        'MainLoopPoint.Add(PointTmp)
+                        PreviousEntity = GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).Arc
+                        'select the opposite point from the current point in the selected line path
+                        If GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).StartPoint = PointTmp Then
+                            PointPathIndex = AllPoints.IndexOf(GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).EndPoint)
+                        Else
+                            PointPathIndex = AllPoints.IndexOf(GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList(EntityPathIndex).StartPoint)
+                        End If
+                    End If
+                    PointTmp = AllPoints(PointPathIndex)
+                    MainLoopPoint.Add(PointTmp)
+                    'iterate path for the next point recursively
+                    CheckPolyLoop(PointTmp, MainLoop)
+                Else
+                    Exit While
+                End If
+            Else
+                Exit Sub
+            End If
+        End While
+
+        EndPointHasBeenReach = True
+
+    End Sub
+
+    Public Overloads Sub LoopFinder(ByVal Entities As List(Of Entity), ByRef GroupLoop As List(Of List(Of Entity)), _
                           ByRef GroupLoopPoints As List(Of List(Of Point3d)), ByRef MainLoop As List(Of Entity), ByRef MainLoopPts As List(Of Point3d))
 
         GetPoints = New GetPoints
@@ -204,6 +318,69 @@ Public Class MillingProcessor
         Next
 
         UserControl3.acedRestoreStatusBar()
+    End Sub
+
+    'polyline loop finder
+    Public Overloads Sub LoopFinder(ByVal Entities As List(Of Entity), ByRef MainLoop As List(Of Entity), ByRef MainLoopPts As List(Of Point3d))
+
+        GetPoints = New GetPoints
+        AllPoints = New List(Of Point3d)
+        GroupOfEntity = New List(Of AllPoints)
+        UnAdjacentPoints = New List(Of Point3d)
+
+        'filtering the unadjacents point
+        GetPoints.UnAdjacentPointExtractor(Entities, AllPoints, GroupOfEntity, UnAdjacentPoints)
+
+        'define a new variables for the end point
+        EndPoint = New Point3d 'used for stopping rule
+        PreviousEntity = Nothing
+
+        AngleTmp = New Double
+        EntityPathIndex = New Integer
+        PointPathIndex = New Integer
+        AngleInitiateStatus = New Boolean
+        GetLinePathStatus = New Boolean
+        AngleConverter = New Double
+        AngleTmpConversion = New Double
+        EndPointHasBeenReach = False
+        MainLoopPoint = New List(Of Point3d)
+
+        Dim LineTmp As Line
+        Dim ArcTmp As Arc
+        Dim StartPoint As Point3d
+        Dim i As Integer
+        StartPoint = New Point3d
+
+        'search the start point
+        For Each PointTmp As Point3d In AllPoints
+            i = New Integer
+            For Each Entity As Entity In Entities
+                If TypeOf (Entity) Is Line Then
+
+                    LineTmp = Entity
+                    If isequalpoint(LineTmp.StartPoint, PointTmp) Or _
+                    isequalpoint(LineTmp.EndPoint, PointTmp) Then
+                        i = i + 1
+                    End If
+                ElseIf TypeOf (Entity) Is Arc Then
+
+                    ArcTmp = Entity
+                    If isequalpoint(ArcTmp.StartPoint, PointTmp) Or _
+                    isequalpoint(ArcTmp.EndPoint, PointTmp) Then
+                        i = i + 1
+                    End If
+                End If
+            Next
+            If i = 1 Then
+                StartPoint = PointTmp
+                Exit For
+            End If
+        Next
+
+        'search main loop
+        CheckPolyLoop(StartPoint, MainLoop)
+        MainLoopPts = MainLoopPoint
+
     End Sub
 
     Private EndPoint, RootPathPoint, LastPointAttempt As Point3d
@@ -465,6 +642,16 @@ Public Class MillingProcessor
 
         Return True
 
+    End Function
+
+    Private Function isequalpoint(ByVal point1 As Point3d, ByVal point2 As Point3d) As Boolean
+        If Math.Abs(point1.X - point2.X) <= adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Y - point2.Y) <= adskClass.AppPreferences.ToleranceValues _
+        And Math.Abs(point1.Z - point2.Z) <= adskClass.AppPreferences.ToleranceValues Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
 End Class
