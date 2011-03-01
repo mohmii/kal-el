@@ -2208,9 +2208,8 @@ Public Class UserControl3
 
                             'add circle, line and arc entities
                             If Check2Database.CheckIfEntity(Entity, ManualStat) = True And Not (TypeOf (Entity) Is DBPoint) Then
-                                If TypeOf (Entity) Is Circle Then
-                                    CircEntAdd.Add(Entity)
-                                ElseIf TypeOf (Entity) Is Line Then
+                                
+                                If TypeOf (Entity) Is Line Then
                                     LineEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Arc Then
                                     ArcEntAdd.Add(Entity)
@@ -2218,7 +2217,7 @@ Public Class UserControl3
                                     PLEntAdd.Add(Entity)
                                 End If
 
-                                If Not (TypeOf (Entity) Is Circle) Then
+                                If Not TypeOf (Entity) Is Circle Then
                                     AllEntAdd.Add(Entity)
                                 End If
                             End If
@@ -2274,10 +2273,10 @@ Public Class UserControl3
                             Poly.Linetype = MLoop(0).Linetype
 
                             'remove the selected entities
-                            For Each Id2Check As ObjectId In tempIdArray
+                            For Each Entity2Check As Entity In AllEntAdd
                                 For Each Id As ObjectId In AcadConnection.btr
                                     Entity = AcadConnection.myT.GetObject(Id, OpenMode.ForRead)
-                                    If Entity.ObjectId.Equals(Id2Check) Then
+                                    If Entity.ObjectId.Equals(Entity2Check.ObjectId) Then
                                         Entity.UpgradeOpen()
                                         Entity.Erase()
                                     End If
