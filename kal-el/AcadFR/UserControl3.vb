@@ -2217,7 +2217,10 @@ Public Class UserControl3
                                 ElseIf TypeOf (Entity) Is Polyline Then
                                     PLEntAdd.Add(Entity)
                                 End If
-                                AllEntAdd.Add(Entity)
+
+                                If Not (TypeOf (Entity) Is Circle) Then
+                                    AllEntAdd.Add(Entity)
+                                End If
                             End If
                         Next id
 
@@ -2231,41 +2234,62 @@ Public Class UserControl3
                             i = i + 1
                         Next
 
-                        If LineEntAdd.Count <> 0 Or ArcEntAdd.Count <> 0 Then
-                            MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop, MLoopPts)
-                        End If
-
                         Dim Poly As Polyline
                         Poly = New Polyline()
 
-                        i = 0
-                        For Each vertice As Point3d In MLoopPts
-                            Poly.AddVertexAt(Poly.NumberOfVertices, New Point2d(vertice.X, vertice.Y), BulgeValue(MLoop(i), vertice), 0, 0)
-                            i = i + 1
-                        Next
+                        If LineEntAdd.Count <> 0 Or ArcEntAdd.Count <> 0 Then
+                            MillProc.LoopFinder(AllEntAdd, MLoop, MLoopPts)
 
-                        'set the polyline properties similar to the selected entities
-                        Poly.Closed = True
-                        Poly.Layer = MLoop(0).Layer
-                        Poly.ColorIndex = MLoop(0).ColorIndex
-                        Poly.Linetype = MLoop(0).Linetype
+                            Poly.Closed = False
 
-                        'remove the selected entities
-                        For Each Id2Check As ObjectId In tempIdArray
-                            For Each Id As ObjectId In AcadConnection.btr
-                                Entity = AcadConnection.myT.GetObject(Id, OpenMode.ForRead)
-                                If Entity.ObjectId.Equals(Id2Check) Then
-                                    Entity.UpgradeOpen()
-                                    Entity.Erase()
+                            If AllEntAdd.Count > MLoop.Count Then
+                                MLoop = New List(Of Entity)
+                                MLoopPts = New List(Of Point3d)
+                                GLoop = New List(Of List(Of Entity))
+                                GLoopPts = New List(Of List(Of Point3d))
+                                MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop, MLoopPts)
+
+                                Poly.Closed = True
+                            End If
+
+                            i = 0
+                            For Each vertice As Point3d In MLoopPts
+                                If Poly.Closed = False Then
+                                    If i = MLoopPts.Count - 1 Then
+                                        Poly.AddVertexAt(Poly.NumberOfVertices, New Point2d(vertice.X, vertice.Y), 0, 0, 0)
+                                    Else
+                                        Poly.AddVertexAt(Poly.NumberOfVertices, New Point2d(vertice.X, vertice.Y), BulgeValue(MLoop(i), vertice), 0, 0)
+                                    End If
+                                Else
+                                    Poly.AddVertexAt(Poly.NumberOfVertices, New Point2d(vertice.X, vertice.Y), BulgeValue(MLoop(i), vertice), 0, 0)
                                 End If
+
+                                i = i + 1
                             Next
-                        Next
 
-                        AcadConnection.btr.UpgradeOpen()
-                        AcadConnection.btr.AppendEntity(Poly)
-                        AcadConnection.myT.AddNewlyCreatedDBObject(Poly, True)
+                            'set the polyline properties similar to the selected entities
 
-                        PLEntAdd.Add(Poly)
+                            Poly.Layer = MLoop(0).Layer
+                            Poly.ColorIndex = MLoop(0).ColorIndex
+                            Poly.Linetype = MLoop(0).Linetype
+
+                            'remove the selected entities
+                            For Each Id2Check As ObjectId In tempIdArray
+                                For Each Id As ObjectId In AcadConnection.btr
+                                    Entity = AcadConnection.myT.GetObject(Id, OpenMode.ForRead)
+                                    If Entity.ObjectId.Equals(Id2Check) Then
+                                        Entity.UpgradeOpen()
+                                        Entity.Erase()
+                                    End If
+                                Next
+                            Next
+
+                            AcadConnection.btr.UpgradeOpen()
+                            AcadConnection.btr.AppendEntity(Poly)
+                            AcadConnection.myT.AddNewlyCreatedDBObject(Poly, True)
+
+                            PLEntAdd.Add(Poly)
+                        End If
 
                         If PLEntAdd.Count <> 0 Then
 
