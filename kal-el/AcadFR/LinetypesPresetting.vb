@@ -284,6 +284,7 @@ Public Class LinetypesPresetting
         Table.LinetypesList.Rows(Count).Cells("ObjectID").Value = AddedEnt.ObjectId
         Table.LinetypesList.Rows(Count).Cells("Number").Value = Count + 1
         Table.LinetypesList.Rows(Count).Cells("Layer").Value = AddedEnt.Layer.ToString
+        Table.LinetypesList.Rows(Count).Cells("Ignore").Value = False
 
         If AddedEnt.Linetype.ToString.ToLower = "bylayer" Then
             Table.LinetypesList.Rows(Count).Cells("Linetype").Value = "NULL"
@@ -291,7 +292,7 @@ Public Class LinetypesPresetting
             Table.LinetypesList.Rows(Count).Cells("Linetype").Value = AddedEnt.Linetype.ToString.ToUpper
             Table.LinetypesList.Rows(Count).Cells("Ignore").Value = True
             Table.LinetypesList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
-            Table.LinetypesList.Rows(Count).ReadOnly = True
+            'Table.LinetypesList.Rows(Count).ReadOnly = True
         Else
             Table.LinetypesList.Rows(Count).Cells("Linetype").Value = AddedEnt.Linetype.ToString
         End If

@@ -130,10 +130,10 @@ Public Class SchematicPresetting
                             'masukkan Row.Cells("HoleLayer").Value , Row.Cells("HoleLineType").Value , Row.Cells("HoleColor").Value 
                             'masukkan Row.Cells("UnderholeLayer").Value , Row.Cells("UnderholeLineType").Value , Row.Cells("UnderholeColor").Value ke database bottom tap
                             DBConn.AddToBottomTapLineDatabase(Row)
-                        ElseIf Row.Cells("Ignore").FormattedValue = True Then
-                            If adskClass.AppPreferences.RemoveUEE = True Then
-                                EraseUEE(Row, adskClass.UI2CircListAll)
-                            End If
+                            'ElseIf Row.Cells("Ignore").FormattedValue = True Then
+                            '    If adskClass.AppPreferences.RemoveUEE = True Then
+                            '        EraseUEE(Row, adskClass.UI2CircListAll)
+                            '    End If
                         End If
                     Next
 
@@ -284,13 +284,14 @@ Public Class SchematicPresetting
         Table.TapHoleList.Rows(Count).Cells("ObjectID").Value = ObjectIDList
         Table.TapHoleList.Rows(Count).Cells("Number").Value = Count + 1
         Table.TapHoleList.Rows(Count).Cells("HoleLayer").Value = AddedResult(0).Layer.ToString
+        Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
 
         If AddedResult(0).Linetype.ToString.ToLower = "bylayer" Then
             Table.TapHoleList.Rows(Count).Cells("HoleLineType").Value = "NULL"
         ElseIf AddedResult(0).Linetype.ToString.ToLower = "byblock" Then
             Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
             Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
-            Table.TapHoleList.Rows(Count).ReadOnly = True
+            'Table.TapHoleList.Rows(Count).ReadOnly = True
         Else
             Table.TapHoleList.Rows(Count).Cells("HoleLineType").Value = AddedResult(0).Linetype.ToString
         End If
@@ -298,10 +299,10 @@ Public Class SchematicPresetting
         If AddedResult(0).Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedResult(0).Color.ColorNameForDisplay.ToLower = "byblock" Then
             Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
             Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
-            Table.TapHoleList.Rows(Count).ReadOnly = True
+            'Table.TapHoleList.Rows(Count).ReadOnly = True
         Else
             Table.TapHoleList.Rows(Count).Cells("HoleColor").Value = AddedResult(0).Color.ColorNameForDisplay.ToUpper
-            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
+            'Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
         End If
 
         Table.TapHoleList.Rows(Count).Cells("UnderholeLayer").Value = AddedResult(1).Layer.ToString
@@ -311,7 +312,7 @@ Public Class SchematicPresetting
         ElseIf AddedResult(1).Linetype.ToString.ToLower = "byblock" Then
             Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
             Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
-            Table.TapHoleList.Rows(Count).ReadOnly = True
+            'Table.TapHoleList.Rows(Count).ReadOnly = True
         Else
             Table.TapHoleList.Rows(Count).Cells("UnderholeLineType").Value = AddedResult(1).Linetype.ToString
         End If
@@ -319,10 +320,10 @@ Public Class SchematicPresetting
         If AddedResult(1).Color.ColorNameForDisplay.ToLower = "bylayer" Or AddedResult(1).Color.ColorNameForDisplay.ToLower = "byblock" Then
             Table.TapHoleList.Rows(Count).Cells("Ignore").Value = True
             Table.TapHoleList.Rows(Count).DefaultCellStyle.BackColor = Drawing.Color.Gold
-            Table.TapHoleList.Rows(Count).ReadOnly = True
+            'Table.TapHoleList.Rows(Count).ReadOnly = True
         Else
             Table.TapHoleList.Rows(Count).Cells("UnderholeColor").Value = AddedResult(1).Color.ColorNameForDisplay.ToUpper
-            Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
+            'Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False
         End If
 
         If Table.TapHoleList.Rows(Count).Cells("Ignore").Value = False Then
