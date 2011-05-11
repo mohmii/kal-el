@@ -1099,7 +1099,10 @@ Public Class UserControl3
             Feature2Compare = Row.Cells("Object").Value
             If Feature2Highlight.MiscProp(0).Equals(Feature2Compare.MiscProp(0)) And _
             Feature2Highlight.MiscProp(1).Equals(Feature2Compare.MiscProp(1)) And _
-            Feature2Highlight.OriginAndAddition(3).Equals(Feature2Compare.OriginAndAddition(3)) Then
+            Feature2Highlight.OriginAndAddition(3).Equals(Feature2Compare.OriginAndAddition(3)) And _
+            Feature2Highlight.OriginAndAddition(4).Equals(Feature2Compare.OriginAndAddition(4)) And _
+            Feature2Highlight.OriginAndAddition(6).Equals(Feature2Compare.OriginAndAddition(6)) And _
+            Feature2Highlight.OriginAndAddition(7).Equals(Feature2Compare.OriginAndAddition(7)) Then
                 Row.Selected = True
             End If
 
