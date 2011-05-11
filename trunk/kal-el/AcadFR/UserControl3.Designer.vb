@@ -165,7 +165,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox6)
         Me.KryptonHeaderGroup1.Panel.Controls.Add(Me.GroupBox5)
-        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(308, 350)
+        Me.KryptonHeaderGroup1.Size = New System.Drawing.Size(308, 355)
         Me.KryptonHeaderGroup1.TabIndex = 0
         Me.KryptonHeaderGroup1.Text = "加工特徴のリスト"
         Me.KryptonHeaderGroup1.ValuesPrimary.Description = ""
@@ -487,7 +487,7 @@ Partial Class UserControl3
         Me.KryptonHeaderGroup2.ButtonSpecs.AddRange(New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup() {Me.ButtonSpecHeaderGroup2})
         Me.KryptonHeaderGroup2.Dock = System.Windows.Forms.DockStyle.Top
         Me.KryptonHeaderGroup2.HeaderVisibleSecondary = False
-        Me.KryptonHeaderGroup2.Location = New System.Drawing.Point(0, 350)
+        Me.KryptonHeaderGroup2.Location = New System.Drawing.Point(0, 355)
         Me.KryptonHeaderGroup2.Name = "KryptonHeaderGroup2"
         Me.KryptonHeaderGroup2.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.SparkleBlue
         '
@@ -495,7 +495,7 @@ Partial Class UserControl3
         '
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox4)
         Me.KryptonHeaderGroup2.Panel.Controls.Add(Me.GroupBox2)
-        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(308, 519)
+        Me.KryptonHeaderGroup2.Size = New System.Drawing.Size(308, 524)
         Me.KryptonHeaderGroup2.TabIndex = 0
         Me.KryptonHeaderGroup2.Text = "データ"
         Me.KryptonHeaderGroup2.ValuesPrimary.Description = ""
@@ -984,7 +984,7 @@ Partial Class UserControl3
         '
         Me.version.AutoSize = True
         Me.version.Dock = System.Windows.Forms.DockStyle.Top
-        Me.version.Location = New System.Drawing.Point(0, 869)
+        Me.version.Location = New System.Drawing.Point(0, 879)
         Me.version.Name = "version"
         Me.version.Size = New System.Drawing.Size(0, 13)
         Me.version.TabIndex = 2
@@ -994,132 +994,132 @@ Partial Class UserControl3
         '
         Me.ContextMenuAddD3.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints3, Me.ByEntity3})
         Me.ContextMenuAddD3.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD3.Size = New System.Drawing.Size(129, 48)
+        Me.ContextMenuAddD3.Size = New System.Drawing.Size(135, 48)
         '
         'ByPoints3
         '
         Me.ByPoints3.Name = "ByPoints3"
-        Me.ByPoints3.Size = New System.Drawing.Size(128, 22)
+        Me.ByPoints3.Size = New System.Drawing.Size(134, 22)
         Me.ByPoints3.Text = "２点で指定"
         '
         'ByEntity3
         '
         Me.ByEntity3.Name = "ByEntity3"
-        Me.ByEntity3.Size = New System.Drawing.Size(128, 22)
+        Me.ByEntity3.Size = New System.Drawing.Size(134, 22)
         Me.ByEntity3.Text = "１本の線素"
         '
         'ContextMenuAddD1
         '
         Me.ContextMenuAddD1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints1, Me.ByEntity1})
         Me.ContextMenuAddD1.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD1.Size = New System.Drawing.Size(129, 48)
+        Me.ContextMenuAddD1.Size = New System.Drawing.Size(135, 48)
         '
         'ByPoints1
         '
         Me.ByPoints1.Name = "ByPoints1"
-        Me.ByPoints1.Size = New System.Drawing.Size(128, 22)
+        Me.ByPoints1.Size = New System.Drawing.Size(134, 22)
         Me.ByPoints1.Text = "２点で指定"
         '
         'ByEntity1
         '
         Me.ByEntity1.Name = "ByEntity1"
-        Me.ByEntity1.Size = New System.Drawing.Size(128, 22)
+        Me.ByEntity1.Size = New System.Drawing.Size(134, 22)
         Me.ByEntity1.Text = "１本の線素"
         '
         'ContextMenuAddD2
         '
         Me.ContextMenuAddD2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints2, Me.ByEntity2})
         Me.ContextMenuAddD2.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD2.Size = New System.Drawing.Size(129, 48)
+        Me.ContextMenuAddD2.Size = New System.Drawing.Size(135, 48)
         '
         'ByPoints2
         '
         Me.ByPoints2.Name = "ByPoints2"
-        Me.ByPoints2.Size = New System.Drawing.Size(128, 22)
+        Me.ByPoints2.Size = New System.Drawing.Size(134, 22)
         Me.ByPoints2.Text = "２点で指定"
         '
         'ByEntity2
         '
         Me.ByEntity2.Name = "ByEntity2"
-        Me.ByEntity2.Size = New System.Drawing.Size(128, 22)
+        Me.ByEntity2.Size = New System.Drawing.Size(134, 22)
         Me.ByEntity2.Text = "１本の線素"
         '
         'ContextMenuAddD4
         '
         Me.ContextMenuAddD4.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoints4, Me.ByEntity4})
         Me.ContextMenuAddD4.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddD4.Size = New System.Drawing.Size(129, 48)
+        Me.ContextMenuAddD4.Size = New System.Drawing.Size(135, 48)
         '
         'ByPoints4
         '
         Me.ByPoints4.Name = "ByPoints4"
-        Me.ByPoints4.Size = New System.Drawing.Size(128, 22)
+        Me.ByPoints4.Size = New System.Drawing.Size(134, 22)
         Me.ByPoints4.Text = "２点で指定"
         '
         'ByEntity4
         '
         Me.ByEntity4.Name = "ByEntity4"
-        Me.ByEntity4.Size = New System.Drawing.Size(128, 22)
+        Me.ByEntity4.Size = New System.Drawing.Size(134, 22)
         Me.ByEntity4.Text = "１本の線素"
         '
         'ContextMenuAddCham
         '
         Me.ContextMenuAddCham.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPointsCham, Me.ByEntityCham})
         Me.ContextMenuAddCham.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddCham.Size = New System.Drawing.Size(129, 48)
+        Me.ContextMenuAddCham.Size = New System.Drawing.Size(135, 48)
         '
         'ByPointsCham
         '
         Me.ByPointsCham.Name = "ByPointsCham"
-        Me.ByPointsCham.Size = New System.Drawing.Size(128, 22)
+        Me.ByPointsCham.Size = New System.Drawing.Size(134, 22)
         Me.ByPointsCham.Text = "２点で指定"
         '
         'ByEntityCham
         '
         Me.ByEntityCham.Name = "ByEntityCham"
-        Me.ByEntityCham.Size = New System.Drawing.Size(128, 22)
+        Me.ByEntityCham.Size = New System.Drawing.Size(134, 22)
         Me.ByEntityCham.Text = "１本の線素"
         '
         'ContextMenuAddW
         '
         Me.ContextMenuAddW.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPointsW, Me.ByEntityW})
         Me.ContextMenuAddW.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddW.Size = New System.Drawing.Size(129, 48)
+        Me.ContextMenuAddW.Size = New System.Drawing.Size(135, 48)
         '
         'ByPointsW
         '
         Me.ByPointsW.Name = "ByPointsW"
-        Me.ByPointsW.Size = New System.Drawing.Size(128, 22)
+        Me.ByPointsW.Size = New System.Drawing.Size(134, 22)
         Me.ByPointsW.Text = "２点で指定"
         '
         'ByEntityW
         '
         Me.ByEntityW.Name = "ByEntityW"
-        Me.ByEntityW.Size = New System.Drawing.Size(128, 22)
+        Me.ByEntityW.Size = New System.Drawing.Size(134, 22)
         Me.ByEntityW.Text = "１本の線素"
         '
         'ContextMenuAddManual
         '
         Me.ContextMenuAddManual.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CircleManual, Me.MillingManual, Me.PolyManual})
         Me.ContextMenuAddManual.Name = "ContextMenuStrip3"
-        Me.ContextMenuAddManual.Size = New System.Drawing.Size(131, 70)
+        Me.ContextMenuAddManual.Size = New System.Drawing.Size(147, 70)
         '
         'CircleManual
         '
         Me.CircleManual.Name = "CircleManual"
-        Me.CircleManual.Size = New System.Drawing.Size(130, 22)
+        Me.CircleManual.Size = New System.Drawing.Size(146, 22)
         Me.CircleManual.Text = "穴形状"
         '
         'MillingManual
         '
         Me.MillingManual.Name = "MillingManual"
-        Me.MillingManual.Size = New System.Drawing.Size(130, 22)
+        Me.MillingManual.Size = New System.Drawing.Size(146, 22)
         Me.MillingManual.Text = "ミリング形状"
         '
         'PolyManual
         '
         Me.PolyManual.Name = "PolyManual"
-        Me.PolyManual.Size = New System.Drawing.Size(130, 22)
+        Me.PolyManual.Size = New System.Drawing.Size(146, 22)
         Me.PolyManual.Text = "ポリライン"
         '
         'UserControl3
@@ -1128,11 +1128,9 @@ Partial Class UserControl3
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.AutoSize = True
         Me.Controls.Add(Me.version)
         Me.Controls.Add(Me.KryptonHeaderGroup2)
         Me.Controls.Add(Me.KryptonHeaderGroup1)
-        Me.MinimumSize = New System.Drawing.Size(300, 893)
         Me.Name = "UserControl3"
         Me.Size = New System.Drawing.Size(308, 893)
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).EndInit()

@@ -1493,6 +1493,7 @@ Public Class UserControl3
     End Sub
 
     Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
+        ComboBox3.ResetText()
         FindTheirPicture(Me.ComboBox1.SelectedItem.ToString)
         GraySelection(Me.ComboBox1.SelectedItem.ToString)
     End Sub
@@ -1504,84 +1505,83 @@ Public Class UserControl3
 
     Private Sub FindTheirPicture(ByVal FeatureText As String)
         Try
-            Select Case FeatureText
-                Case "タップ穴", "ＰＴタップ穴" 'Tap and Tap PT
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holetap.bmp")
-                Case "リーマ穴" 'Ream
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holereamer.bmp")
-                Case "ドリル穴" 'Drill
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holedrill.bmp")
-                Case "底付き穴" 'BlindBore
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holebldbore.bmp")
-                Case "貫通穴" 'ThroughBore
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holethrbore.bmp")
-                Case "段付きボルト穴" 'SunkBolt
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holesnkbolt.bmp")
-                Case "円形溝" 'Ring
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holering.bmp")
-                Case "ボーリング穴" 'Boring
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holeboring.bmp")
-                Case "切り取り" 'cut off
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutoff.jpg")
-                Case "カッターパス" 'cutter path
-                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutterpath.jpg")
-                Case "角溝" ' square slot
-                    If Me.NumericUpDown4.Value.ToString = "0" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
-                    End If
-                Case "角ステップ" 'square step
-                    If Me.NumericUpDown4.Value.ToString = "0" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep2.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep4.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep3.bmp")
-                    End If
-                Case "４側ポケット" '4-side pocket
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\4pocket1.bmp")
-                    End If
-                Case "３側ポケット" '3-side pocket
-                    If Me.NumericUpDown4.Value.ToString = "0" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket2.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket4.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket3.bmp")
-                    End If
-                Case "２側ポケット" '2-side pocket
-                    If Me.NumericUpDown4.Value.ToString = "0" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket2.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket3.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket4.bmp")
-                    End If
-                Case "長穴" 'long hole
-                    If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\lnghole1.bmp")
-                    End If
-                Case "止まり溝" 'blind slot
-                    If Me.NumericUpDown4.Value.ToString = "0" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot2.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot4.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot1.bmp")
-                    ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
-                        Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
-                    End If
-                Case Else
-                    Me.PictureBox1.Image = Nothing
-            End Select
+            If FeatureText.Contains("タップ穴") Or FeatureText.Contains("ＰＴタップ穴") Then 'Tap and Tap PT
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holetap.bmp")
+            ElseIf FeatureText.Contains("リーマ穴") Then 'Ream
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holereamer.bmp")
+            ElseIf FeatureText.Contains("ドリル穴") Then 'Drill
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holedrill.bmp")
+            ElseIf FeatureText.Contains("底付き穴") Then 'BlindBore
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holebldbore.bmp")
+            ElseIf FeatureText.Contains("貫通穴") Then 'ThroughBore
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holethrbore.bmp")
+            ElseIf FeatureText.Contains("段付きボルト穴") Then 'SunkBolt
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holesnkbolt.bmp")
+            ElseIf FeatureText.Contains("円形溝") Then 'Ring
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holering.bmp")
+            ElseIf FeatureText.Contains("ボーリング穴") Then 'Boring
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\holeboring.bmp")
+            ElseIf FeatureText.Contains("切り取り") Then 'cut off
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutoff.jpg")
+            ElseIf FeatureText.Contains("カッターパス") Then 'cutter path
+                Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\cutterpath.jpg")
+            ElseIf FeatureText.Contains("角溝") Then ' square slot
+                If Me.NumericUpDown4.Value.ToString = "0" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot1.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrslot2.bmp")
+                End If
+            ElseIf FeatureText.Contains("角ステップ") Then 'square step
+                If Me.NumericUpDown4.Value.ToString = "0" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep2.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep4.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep1.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep3.bmp")
+                End If
+            ElseIf FeatureText.Contains("４側ポケット") Then '4-side pocket
+                If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\4pocket1.bmp")
+                End If
+            ElseIf FeatureText.Contains("３側ポケット") Then '3-side pocket
+                If Me.NumericUpDown4.Value.ToString = "0" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket2.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket4.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket1.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\3pocket3.bmp")
+                End If
+            ElseIf FeatureText.Contains("２側ポケット") Then '2-side pocket
+                If Me.NumericUpDown4.Value.ToString = "0" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket1.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket2.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket3.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket4.bmp")
+                End If
+            ElseIf FeatureText.Contains("長穴") Then 'long hole
+                If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\lnghole1.bmp")
+                End If
+            ElseIf FeatureText.Contains("止まり溝") Then 'blind slot
+                If Me.NumericUpDown4.Value.ToString = "0" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot2.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "1" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot4.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "2" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot1.bmp")
+                ElseIf Me.NumericUpDown4.Value.ToString = "3" Then
+                    Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\bldslot3.bmp")
+                End If
+            Else
+                Me.PictureBox1.Image = Nothing
+            End If
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -1589,68 +1589,86 @@ Public Class UserControl3
 
     Private Sub GraySelection(ByVal FeatureText As String)
         Try
-            Select Case FeatureText
-                Case "リーマ穴", "ドリル穴", "底付き穴", "ボーリング穴", "貫通穴" 'Ream, Drill, BlindBore, Boring, ThroughBore
-                    Me.AddD1.Enabled = True
-                    Me.AddD2.Enabled = True
-                    Me.NumericUpDown7.Enabled = True
-                    Me.NumericUpDown8.Enabled = True
-                    Me.AddD3.Enabled = False
-                    Me.AddD4.Enabled = False
-                    Me.NumericUpDown9.Enabled = False
-                    Me.NumericUpDown10.Enabled = False
-                    Me.NumericUpDown11.Enabled = False
-                Case "角溝", "角ステップ", "止まり溝", "円形溝" '"Square Slot", "Square Step", "Blind Slot" Ring
-                    Me.AddD1.Enabled = True
-                    Me.AddD2.Enabled = True
-                    Me.NumericUpDown7.Enabled = True
-                    Me.NumericUpDown8.Enabled = True
-                    Me.AddD3.Enabled = True
-                    Me.AddD4.Enabled = False
-                    Me.NumericUpDown9.Enabled = True
-                    Me.NumericUpDown10.Enabled = False
-                    Me.NumericUpDown11.Enabled = False
-                Case "３側ポケット", "２側ポケット", "タップ穴", "ＰＴタップ穴", "段付きボルト穴" ' "3-side Pocket", "2-side Pocket" Tap, Tap PT, SunkBolt
-                    Me.AddD1.Enabled = True
-                    Me.AddD2.Enabled = True
-                    Me.NumericUpDown7.Enabled = True
-                    Me.NumericUpDown8.Enabled = True
-                    Me.AddD3.Enabled = True
-                    Me.AddD4.Enabled = True
-                    Me.NumericUpDown9.Enabled = True
-                    Me.NumericUpDown10.Enabled = True
-                    Me.NumericUpDown11.Enabled = False
-                Case "長穴" 'Long Hole
-                    Me.AddD1.Enabled = True
-                    Me.AddD2.Enabled = True
-                    Me.NumericUpDown7.Enabled = True
-                    Me.NumericUpDown8.Enabled = True
-                    Me.AddD3.Enabled = True
-                    Me.AddD4.Enabled = False
-                    Me.NumericUpDown9.Enabled = True
-                    Me.NumericUpDown10.Enabled = False
-                    Me.NumericUpDown11.Enabled = True
-                Case "切り取り", "カッターパス" '"Cut Off", "Cutter Path"
-                    Me.AddD1.Enabled = False
-                    Me.AddD2.Enabled = False
-                    Me.NumericUpDown7.Enabled = False
-                    Me.NumericUpDown8.Enabled = False
-                    Me.AddD3.Enabled = True
-                    Me.AddD4.Enabled = False
-                    Me.NumericUpDown9.Enabled = True
-                    Me.NumericUpDown10.Enabled = False
-                    Me.NumericUpDown11.Enabled = False
-                Case Else
-                    Me.AddD1.Enabled = True
-                    Me.AddD2.Enabled = True
-                    Me.NumericUpDown7.Enabled = True
-                    Me.NumericUpDown8.Enabled = True
-                    Me.AddD3.Enabled = True
-                    Me.AddD4.Enabled = True
-                    Me.NumericUpDown9.Enabled = True
-                    Me.NumericUpDown10.Enabled = True
-                    Me.NumericUpDown11.Enabled = True
-            End Select
+            If FeatureText.Contains("リーマ穴") Or FeatureText.Contains("ドリル穴") Or FeatureText.Contains("底付き穴") _
+            Or FeatureText.Contains("ボーリング穴") Or FeatureText.Contains("貫通穴") Then
+                'Ream, Drill, BlindBore, Boring, ThroughBore
+                Me.AddD1.Enabled = True
+                Me.AddD2.Enabled = True
+                Me.NumericUpDown7.Enabled = True
+                Me.NumericUpDown8.Enabled = True
+                Me.AddD3.Enabled = False
+                Me.AddD4.Enabled = False
+                Me.NumericUpDown9.Enabled = False
+                Me.NumericUpDown10.Enabled = False
+                Me.NumericUpDown11.Enabled = False
+                Me.NumericUpDown9.Value = Nothing
+                Me.NumericUpDown10.Value = Nothing
+                Me.NumericUpDown11.Value = Nothing
+            ElseIf FeatureText.Contains("角溝") Or FeatureText.Contains("角ステップ") _
+            Or FeatureText.Contains("止まり溝") Or FeatureText.Contains("円形溝") Then
+                '"Square Slot", "Square Step", "Blind Slot" Ring
+                Me.AddD1.Enabled = True
+                Me.AddD2.Enabled = True
+                Me.NumericUpDown7.Enabled = True
+                Me.NumericUpDown8.Enabled = True
+                Me.AddD3.Enabled = True
+                Me.AddD4.Enabled = False
+                Me.NumericUpDown9.Enabled = True
+                Me.NumericUpDown10.Enabled = False
+                Me.NumericUpDown11.Enabled = False
+                Me.NumericUpDown10.Value = Nothing
+                Me.NumericUpDown11.Value = Nothing
+            ElseIf FeatureText.Contains("３側ポケット") Or FeatureText.Contains("２側ポケット") Or FeatureText.Contains("タップ穴") _
+            Or FeatureText.Contains("ＰＴタップ穴") Or FeatureText.Contains("段付きボルト穴") Then
+                ' "3-side Pocket", "2-side Pocket" Tap, Tap PT, SunkBolt
+                Me.AddD1.Enabled = True
+                Me.AddD2.Enabled = True
+                Me.NumericUpDown7.Enabled = True
+                Me.NumericUpDown8.Enabled = True
+                Me.AddD3.Enabled = True
+                Me.AddD4.Enabled = True
+                Me.NumericUpDown9.Enabled = True
+                Me.NumericUpDown10.Enabled = True
+                Me.NumericUpDown11.Enabled = False
+                Me.NumericUpDown11.Value = Nothing
+            ElseIf FeatureText.Contains("長穴") Then
+                'Long Hole
+                Me.AddD1.Enabled = True
+                Me.AddD2.Enabled = True
+                Me.NumericUpDown7.Enabled = True
+                Me.NumericUpDown8.Enabled = True
+                Me.AddD3.Enabled = True
+                Me.AddD4.Enabled = False
+                Me.NumericUpDown9.Enabled = True
+                Me.NumericUpDown10.Enabled = False
+                Me.NumericUpDown11.Enabled = True
+                Me.NumericUpDown10.Value = Nothing
+            ElseIf FeatureText.Contains("切り取り") Or FeatureText.Contains("カッターパス") Then
+                '"Cut Off", "Cutter Path"
+                Me.AddD1.Enabled = False
+                Me.AddD2.Enabled = False
+                Me.NumericUpDown7.Enabled = False
+                Me.NumericUpDown8.Enabled = False
+                Me.AddD3.Enabled = True
+                Me.AddD4.Enabled = False
+                Me.NumericUpDown9.Enabled = True
+                Me.NumericUpDown10.Enabled = False
+                Me.NumericUpDown11.Enabled = False
+                Me.NumericUpDown7.Value = Nothing
+                Me.NumericUpDown8.Value = Nothing
+                Me.NumericUpDown10.Value = Nothing
+                Me.NumericUpDown11.Value = Nothing
+            Else
+                Me.AddD1.Enabled = True
+                Me.AddD2.Enabled = True
+                Me.NumericUpDown7.Enabled = True
+                Me.NumericUpDown8.Enabled = True
+                Me.AddD3.Enabled = True
+                Me.AddD4.Enabled = True
+                Me.NumericUpDown9.Enabled = True
+                Me.NumericUpDown10.Enabled = True
+                Me.NumericUpDown11.Enabled = True
+            End If
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
