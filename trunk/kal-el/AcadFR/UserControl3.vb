@@ -2835,6 +2835,51 @@ Public Class UserControl3
         End Try
     End Sub
 
+    'prosedur berkaitan dengan add origin UV
+    Private Sub AddUV_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddUV.Click
+        FormTransition = New FormToFocus
+        FormTransition.OpenForm(FormTransition)
+        Try
+            AcadConnection = New AcadConn
+            Dim OriPoint As New Point3d
+            Dim PrPointResult As PromptPointResult
+            Dim SurfaceIndex As New Integer
+
+            Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
+            DocLock = Application.DocumentManager.MdiActiveDocument.LockDocument
+
+            Using DocLock
+                AcadConnection.StartTransaction(Application.DocumentManager.MdiActiveDocument.Database)
+                Using AcadConnection.myT
+
+                    'Save the feature origin points
+                    PrPointResult = ed.GetPoint("Select the origin:" + vbNewLine) 'Select first reference point:
+                    OriPoint = PrPointResult.Value
+
+                    'find the selected projection view
+                    Dim i As New Integer
+                    For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                        If Surface.ViewType.ToLower = ComboBox2.Text.ToLower Then
+                            SurfaceIndex = i
+                            Exit For
+                        End If
+                        i = i + 1
+                    Next
+
+
+                    Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                    Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+
+                    AcadConnection.myT.Commit()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            AcadConnection.myT.Dispose()
+        End Try
+    End Sub
+
     'prosedur berkaitan dengan add W
     Private Sub AddW_Click(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles AddW.Click
         ContextMenuAddW.Show(Me.AddW, Me.AddW.PointToClient(Windows.Forms.Cursor.Position))

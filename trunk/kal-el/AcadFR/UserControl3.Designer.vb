@@ -23,9 +23,9 @@ Partial Class UserControl3
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(UserControl3))
         Me.KryptonHeaderGroup1 = New ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup
         Me.ButtonSpecHeaderGroup1 = New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup
@@ -57,6 +57,7 @@ Partial Class UserControl3
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.AddChamfer = New System.Windows.Forms.Button
+        Me.AddUV = New System.Windows.Forms.Button
         Me.AddW = New System.Windows.Forms.Button
         Me.AddD1 = New System.Windows.Forms.Button
         Me.AddD2 = New System.Windows.Forms.Button
@@ -115,6 +116,8 @@ Partial Class UserControl3
         Me.CircleManual = New System.Windows.Forms.ToolStripMenuItem
         Me.MillingManual = New System.Windows.Forms.ToolStripMenuItem
         Me.PolyManual = New System.Windows.Forms.ToolStripMenuItem
+        Me.ContextMenuAddUV = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ByPoint = New System.Windows.Forms.ToolStripMenuItem
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.KryptonHeaderGroup1.Panel.SuspendLayout()
@@ -149,6 +152,7 @@ Partial Class UserControl3
         Me.ContextMenuAddCham.SuspendLayout()
         Me.ContextMenuAddW.SuspendLayout()
         Me.ContextMenuAddManual.SuspendLayout()
+        Me.ContextMenuAddUV.SuspendLayout()
         Me.SuspendLayout()
         '
         'KryptonHeaderGroup1
@@ -225,37 +229,37 @@ Partial Class UserControl3
         Me.UnidentifiedFeature.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.UnidentifiedFeature.BackgroundColor = System.Drawing.SystemColors.HighlightText
         Me.UnidentifiedFeature.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.UnidentifiedFeature.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.UnidentifiedFeature.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.UnidentifiedFeature.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.UnidentifiedFeature.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.UnidentifiedFeature.DefaultCellStyle = DataGridViewCellStyle5
         Me.UnidentifiedFeature.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.UnidentifiedFeature.EnableHeadersVisualStyles = False
         Me.UnidentifiedFeature.Location = New System.Drawing.Point(107, 33)
         Me.UnidentifiedFeature.Name = "UnidentifiedFeature"
         Me.UnidentifiedFeature.ReadOnly = True
         Me.UnidentifiedFeature.RightToLeft = System.Windows.Forms.RightToLeft.No
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.UnidentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.UnidentifiedFeature.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.UnidentifiedFeature.RowHeadersVisible = False
         Me.UnidentifiedFeature.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.UnidentifiedFeature.Size = New System.Drawing.Size(193, 103)
@@ -544,6 +548,7 @@ Partial Class UserControl3
         Me.GroupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.GroupBox2.BackColor = System.Drawing.Color.Silver
         Me.GroupBox2.Controls.Add(Me.AddChamfer)
+        Me.GroupBox2.Controls.Add(Me.AddUV)
         Me.GroupBox2.Controls.Add(Me.AddW)
         Me.GroupBox2.Controls.Add(Me.AddD1)
         Me.GroupBox2.Controls.Add(Me.AddD2)
@@ -596,10 +601,20 @@ Partial Class UserControl3
         Me.ToolTip1.SetToolTip(Me.AddChamfer, "Add Chamfer")
         Me.AddChamfer.UseVisualStyleBackColor = True
         '
+        'AddUV
+        '
+        Me.AddUV.Font = New System.Drawing.Font("Microsoft Sans Serif", 7.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AddUV.Location = New System.Drawing.Point(44, 124)
+        Me.AddUV.Name = "AddUV"
+        Me.AddUV.Size = New System.Drawing.Size(35, 50)
+        Me.AddUV.TabIndex = 14
+        Me.AddUV.Text = "追加 U, V"
+        Me.AddUV.UseVisualStyleBackColor = True
+        '
         'AddW
         '
         Me.AddW.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddW.Location = New System.Drawing.Point(11, 173)
+        Me.AddW.Location = New System.Drawing.Point(11, 174)
         Me.AddW.Name = "AddW"
         Me.AddW.Size = New System.Drawing.Size(68, 20)
         Me.AddW.TabIndex = 14
@@ -609,9 +624,9 @@ Partial Class UserControl3
         '
         'AddD1
         '
-        Me.AddD1.Location = New System.Drawing.Point(11, 199)
+        Me.AddD1.Location = New System.Drawing.Point(11, 200)
         Me.AddD1.Name = "AddD1"
-        Me.AddD1.Size = New System.Drawing.Size(68, 19)
+        Me.AddD1.Size = New System.Drawing.Size(68, 20)
         Me.AddD1.TabIndex = 14
         Me.AddD1.Text = "追加 D1"
         Me.ToolTip1.SetToolTip(Me.AddD1, "Add D1")
@@ -621,7 +636,7 @@ Partial Class UserControl3
         '
         Me.AddD2.Location = New System.Drawing.Point(11, 222)
         Me.AddD2.Name = "AddD2"
-        Me.AddD2.Size = New System.Drawing.Size(68, 19)
+        Me.AddD2.Size = New System.Drawing.Size(68, 20)
         Me.AddD2.TabIndex = 14
         Me.AddD2.Text = "追加 D2"
         Me.ToolTip1.SetToolTip(Me.AddD2, "Add D2")
@@ -629,9 +644,9 @@ Partial Class UserControl3
         '
         'AddD4
         '
-        Me.AddD4.Location = New System.Drawing.Point(11, 264)
+        Me.AddD4.Location = New System.Drawing.Point(11, 266)
         Me.AddD4.Name = "AddD4"
-        Me.AddD4.Size = New System.Drawing.Size(65, 20)
+        Me.AddD4.Size = New System.Drawing.Size(68, 20)
         Me.AddD4.TabIndex = 14
         Me.AddD4.Text = "追加 D4"
         Me.ToolTip1.SetToolTip(Me.AddD4, "Add D4")
@@ -639,9 +654,9 @@ Partial Class UserControl3
         '
         'AddD3
         '
-        Me.AddD3.Location = New System.Drawing.Point(11, 243)
+        Me.AddD3.Location = New System.Drawing.Point(11, 244)
         Me.AddD3.Name = "AddD3"
-        Me.AddD3.Size = New System.Drawing.Size(68, 19)
+        Me.AddD3.Size = New System.Drawing.Size(68, 20)
         Me.AddD3.TabIndex = 14
         Me.AddD3.Text = "追加 D3"
         Me.ToolTip1.SetToolTip(Me.AddD3, "Add D3")
@@ -651,7 +666,7 @@ Partial Class UserControl3
         '
         Me.Update1.Location = New System.Drawing.Point(11, 124)
         Me.Update1.Name = "Update1"
-        Me.Update1.Size = New System.Drawing.Size(68, 48)
+        Me.Update1.Size = New System.Drawing.Size(30, 50)
         Me.Update1.TabIndex = 0
         Me.Update1.TabStop = False
         Me.Update1.Text = "変更"
@@ -1122,6 +1137,18 @@ Partial Class UserControl3
         Me.PolyManual.Size = New System.Drawing.Size(146, 22)
         Me.PolyManual.Text = "ポリライン"
         '
+        'ContextMenuAddUV
+        '
+        Me.ContextMenuAddUV.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ByPoint})
+        Me.ContextMenuAddUV.Name = "ContextMenuStrip3"
+        Me.ContextMenuAddUV.Size = New System.Drawing.Size(129, 26)
+        '
+        'ByPoint
+        '
+        Me.ByPoint.Name = "ByPoint"
+        Me.ByPoint.Size = New System.Drawing.Size(128, 22)
+        Me.ByPoint.Text = "1点で指定"
+        '
         'UserControl3
         '
         Me.AllowDrop = True
@@ -1168,6 +1195,7 @@ Partial Class UserControl3
         Me.ContextMenuAddCham.ResumeLayout(False)
         Me.ContextMenuAddW.ResumeLayout(False)
         Me.ContextMenuAddManual.ResumeLayout(False)
+        Me.ContextMenuAddUV.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1260,5 +1288,8 @@ Partial Class UserControl3
     Friend WithEvents PolyManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents IdentifiedFeature As System.Windows.Forms.DataGridView
     Friend WithEvents ZoomByFeatureMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AddUV As System.Windows.Forms.Button
+    Friend WithEvents ContextMenuAddUV As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents ByPoint As System.Windows.Forms.ToolStripMenuItem
 
 End Class
