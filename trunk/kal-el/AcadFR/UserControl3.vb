@@ -2702,6 +2702,7 @@ Public Class UserControl3
         Try
             AcadConnection = New AcadConn
             Dim LineTmp As New Line
+            Dim ArcTmp As New Arc
             Dim CorrectSelectionStat As Boolean = False
 
             Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
@@ -2728,8 +2729,11 @@ Public Class UserControl3
                                     LineTmp = Entity
                                     Me.NumericUpDown10.Value = PointDistance(LineTmp.StartPoint, LineTmp.EndPoint)
                                     CorrectSelectionStat = True
-                                Else
-                                    MsgBox("線素を選ぶ") 'please select line entity
+                                ElseIf TypeOf Entity Is Arc Then
+                                    ArcTmp = Entity
+                                    Me.NumericUpDown10.Value = Round(ArcTmp.Radius, 3)
+                                    CorrectSelectionStat = True
+                                    'MsgBox("線素を選ぶ") 'please select line entity
                                 End If
                             Else
                                 MsgBox("線素を１本だけ") 'Please select just 1 entity
@@ -2866,9 +2870,14 @@ Public Class UserControl3
                         i = i + 1
                     Next
 
-
-                    Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                    Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                    'temporary solution
+                    If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
+                        Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                        Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                    Else
+                        Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                        Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                    End If
 
                     AcadConnection.myT.Commit()
                 End Using
