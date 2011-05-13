@@ -37,11 +37,11 @@ Public Class CircleProcessor
                     Feature.ObjectId.Add(circle.ObjectId)
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName("Drill")
-                    Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
-                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
+                    Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(3) = Round(circle.Radius * 2, 3)
                     Feature.OriginAndAddition(4) = 0
                     Feature.OriginAndAddition(5) = 0
@@ -72,11 +72,11 @@ Public Class CircleProcessor
                 Feature.ObjectId.Add(result.Last.ObjectId)
                 'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                 Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
-                Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
-                Feature.SurfaceName = Feature.MiscProp(1)
                 Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                 Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                 Feature.OriginAndAddition(2) = 0
+                Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                Feature.SurfaceName = Feature.MiscProp(1)
                 Feature.OriginAndAddition(3) = CheckResult(3)
                 Feature.OriginAndAddition(4) = CheckResult(4)
                 Feature.OriginAndAddition(5) = CheckResult(5)
@@ -236,11 +236,11 @@ Public Class CircleProcessor
                         Feature.ObjectId.Add(circle.ObjectId)
                         'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                         Feature.MiscProp(0) = FindTheirJapsName("Drill")
-                        Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
-                        Feature.SurfaceName = Feature.MiscProp(1)
                         Feature.OriginAndAddition(0) = SetXPosition(circle.Center.X, RefPoint.X, ProjectView)
                         Feature.OriginAndAddition(1) = SetYPosition(circle.Center.Y, RefPoint.Y, ProjectView)
                         Feature.OriginAndAddition(2) = 0
+                        Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                        Feature.SurfaceName = Feature.MiscProp(1)
                         Feature.OriginAndAddition(3) = Round(circle.Radius * 2, 3)
                         Feature.OriginAndAddition(4) = 0
                         Feature.OriginAndAddition(5) = 0
@@ -274,11 +274,11 @@ Public Class CircleProcessor
                     Feature.ObjectId.Add(result.Last.ObjectId)
                     'Feature.SurfaceName = FindTheirEngViewName(setView.viewis)
                     Feature.MiscProp(0) = FindTheirJapsName(CheckResult(0))
-                    Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
-                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(0) = SetXPosition(result.FirstOrDefault.Center.X, RefPoint.X, ProjectView)
                     Feature.OriginAndAddition(1) = SetYPosition(result.FirstOrDefault.Center.Y, RefPoint.Y, ProjectView)
                     Feature.OriginAndAddition(2) = 0
+                    Feature.MiscProp(1) = CheckTheSurface(setView.viewis, Surface)
+                    Feature.SurfaceName = Feature.MiscProp(1)
                     Feature.OriginAndAddition(3) = CheckResult(3)
                     Feature.OriginAndAddition(4) = CheckResult(4)
                     Feature.OriginAndAddition(5) = CheckResult(5)
@@ -455,11 +455,12 @@ Public Class CircleProcessor
 
     'check the surface name
     Private Function CheckTheSurface(ByVal SurfaceName As String, ByVal SurfaceIndex As Integer) As String
-        If SurfaceIndex = 2 Then
-            Return SearchOppositeSurf(SurfaceName)
-        Else
-            Return SurfaceName
-        End If
+        Return SurfaceName
+        'If SurfaceIndex = 2 Then
+        '    Return SearchOppositeSurf(SurfaceName)
+        'Else
+        '    Return SurfaceName
+        'End If
     End Function
 
     'search the surface if the linetype is define as a hidden line type
@@ -487,18 +488,18 @@ Public Class CircleProcessor
     'setting x coordinate for hole feature
     Private Function SetXPosition(ByVal a As Double, ByVal XReferencePoint As Double, ByVal view As ViewProp) As Double
         TempCoordinate = New Double
-
         TempCoordinate = Round(a - XReferencePoint, 3)
 
         'convert coordinate only for bottom view
         If view.ViewType.ToLower.Equals("bottom") Then
-            If TempCoordinate < 0 Then
-                TempCoordinate = view.BoundProp(4) - Abs(TempCoordinate)
-            Else
-                TempCoordinate = TempCoordinate - view.BoundProp(4)
-            End If
-
+            'If TempCoordinate < 0 Then
+            '    TempCoordinate = view.BoundProp(4) - Abs(TempCoordinate)
+            'Else
+            '    TempCoordinate = TempCoordinate - view.BoundProp(4)
+            'End If
+            TempCoordinate = Round((TempCoordinate + XReferencePoint) - (view.BoundProp(0) + (view.BoundProp(2) - XReferencePoint)), 3)
             'TempCoordinate = -1 * TempCoordinate
+
         End If
 
         Return TempCoordinate
@@ -508,16 +509,16 @@ Public Class CircleProcessor
     'setting y coordinate for hole feature
     Private Function SetYPosition(ByVal a As Double, ByVal YReferencePoint As Double, ByVal view As ViewProp) As Double
         TempCoordinate = New Double
-
         TempCoordinate = Round(a - YReferencePoint, 3)
 
         'convert coordinate only for bottom view
         If view.ViewType.ToLower.Equals("bottom") Then
-            If TempCoordinate < 0 Then
-                TempCoordinate = view.BoundProp(5) - Abs(TempCoordinate)
-            Else
-                TempCoordinate = TempCoordinate - view.BoundProp(5)
-            End If
+            'If TempCoordinate < 0 Then
+            '    TempCoordinate = view.BoundProp(5) - Abs(TempCoordinate)
+            'Else
+            '    TempCoordinate = TempCoordinate - view.BoundProp(5)
+            'End If
+            TempCoordinate = Round((TempCoordinate + YReferencePoint) - (view.BoundProp(1) + (view.BoundProp(3) - YReferencePoint)), 3)
 
             'TempCoordinate = -1 * TempCoordinate
         End If

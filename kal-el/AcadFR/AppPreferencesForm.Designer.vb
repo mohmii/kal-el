@@ -130,6 +130,7 @@ Partial Class AppPreferencesForm
         'Cancel
         '
         Me.Cancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel.Location = New System.Drawing.Point(151, 240)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(76, 23)
@@ -198,8 +199,10 @@ Partial Class AppPreferencesForm
         '
         'AppPreferencesForm
         '
+        Me.AcceptButton = Me.Save
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Cancel
         Me.ClientSize = New System.Drawing.Size(237, 275)
         Me.Controls.Add(Me.MultiAnalysis)
         Me.Controls.Add(Me.AutoRegScheme)

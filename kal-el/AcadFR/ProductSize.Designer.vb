@@ -120,8 +120,10 @@ Partial Class ProductSize
         '
         'ProductSize
         '
+        Me.AcceptButton = Me.Button1
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Button2
         Me.ClientSize = New System.Drawing.Size(252, 153)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)

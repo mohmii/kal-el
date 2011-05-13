@@ -117,8 +117,10 @@ Partial Class AddManualSurface
         '
         'AddManualSurface
         '
+        Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(236, 196)
         Me.Controls.Add(Me.RadioButton1)
         Me.Controls.Add(Me.surfacetype)
