@@ -52,6 +52,7 @@ Partial Class SchematicPresetting
         '
         'Cancel
         '
+        Me.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel.Location = New System.Drawing.Point(821, 181)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(75, 23)
@@ -163,10 +164,12 @@ Partial Class SchematicPresetting
         '
         'SchematicPresetting
         '
+        Me.AcceptButton = Me.Proceed
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.CancelButton = Me.Cancel
         Me.ClientSize = New System.Drawing.Size(904, 213)
         Me.Controls.Add(Me.TapHoleList)
         Me.Controls.Add(Me.Cancel)

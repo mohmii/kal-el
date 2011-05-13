@@ -184,11 +184,14 @@ Public Class GenerateFL
                             SetProd.Height1.Value = ProdSize(2)
                             SetProd.ShowDialog()
 
-                            If SetProd.DialogResult = Forms.DialogResult.OK And SetProd.Length1.Value <> 0 _
-                            And SetProd.Width1.Value <> 0 And SetProd.Height1.Value <> 0 Then
+                            If SetProd.DialogResult = Forms.DialogResult.OK And CDbl(SetProd.Length1.Value) <> 0 _
+                            And CDbl(SetProd.Width1.Value) <> 0 And CDbl(SetProd.Height1.Value) <> 0 Then
                                 ProdSize(0) = SetProd.Length1.Value
                                 Status = True
-                            ElseIf SetProd.DialogResult = Forms.DialogResult.Cancel Then
+                                'ElseIf SetProd.DialogResult = Forms.DialogResult.Cancel Then
+                                '    Status = False
+                                '    Exit Sub
+                            Else
                                 Status = False
                                 Exit Sub
                             End If
@@ -206,11 +209,14 @@ Public Class GenerateFL
                             SetProd.Height1.Value = ProdSize(2)
                             SetProd.ShowDialog()
 
-                            If SetProd.DialogResult = Forms.DialogResult.OK And SetProd.Length1.Value <> 0 _
-                            And SetProd.Width1.Value <> 0 And SetProd.Height1.Value <> 0 Then
+                            If SetProd.DialogResult = Forms.DialogResult.OK And CDbl(SetProd.Length1.Value) <> 0 _
+                            And CDbl(SetProd.Width1.Value) <> 0 And CDbl(SetProd.Height1.Value) <> 0 Then
                                 ProdSize(1) = SetProd.Width1.Value
                                 Status = True
-                            ElseIf SetProd.DialogResult = Forms.DialogResult.Cancel Then
+                                'ElseIf SetProd.DialogResult = Forms.DialogResult.Cancel Then
+                                '    Status = False
+                                '    Exit Sub
+                            Else
                                 Status = False
                                 Exit Sub
                             End If
@@ -228,11 +234,14 @@ Public Class GenerateFL
                             SetProd.Height1.Value = ProdSize(2)
                             SetProd.ShowDialog()
 
-                            If SetProd.DialogResult = Forms.DialogResult.OK And SetProd.Length1.Value <> 0 _
-                           And SetProd.Width1.Value <> 0 And SetProd.Height1.Value <> 0 Then
+                            If SetProd.DialogResult = Forms.DialogResult.OK And CDbl(SetProd.Length1.Value) <> 0 _
+                           And CDbl(SetProd.Width1.Value) <> 0 And CDbl(SetProd.Height1.Value) <> 0 Then
                                 ProdSize(2) = SetProd.Height1.Value
                                 Status = True
-                            ElseIf SetProd.DialogResult = Forms.DialogResult.Cancel Then
+                                'ElseIf SetProd.DialogResult = Forms.DialogResult.Cancel Then
+                                '    Status = False
+                                '    Exit Sub
+                            Else
                                 Status = False
                                 Exit Sub
                             End If

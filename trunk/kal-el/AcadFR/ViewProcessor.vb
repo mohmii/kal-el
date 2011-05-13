@@ -46,16 +46,16 @@ Public Class ViewProcessor
                 Feature.HiddenArcCount = HidArc
                 Feature.SequenceSolidBound = SeqBound
                 Feature.SequenceSolidHidden = SeqHid
+                Feature.MiscProp(1) = View.ViewType
+                Feature.SurfaceName = View.ViewType
 
                 SingleViewProp(Feature, GroupEntity, View)
 
                 If adskClass.AppPreferences.MultiAnalysis = True Then
                     'set the feature property
-
                     Feature.FeatureName = "Mill Candidate"
                     Feature.MiscProp(0) = "ミリング形状を選ぶ"
-                    Feature.MiscProp(1) = View.ViewType
-                    Feature.SurfaceName = View.ViewType
+                    
                     If Feature.HiddenLineCount > 0 Then
                         'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                         'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -71,9 +71,6 @@ Public Class ViewProcessor
                     
                 Else
                     If Not Feature.FeatureName = "" Then
-                        'set the feature property
-                        Feature.MiscProp(1) = View.ViewType
-                        Feature.SurfaceName = View.ViewType
                         If Feature.HiddenLineCount > 0 Then
                             'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                             'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -132,14 +129,12 @@ Public Class ViewProcessor
             Feature.HiddenArcCount = HidArc
             Feature.SequenceSolidBound = SeqBound
             Feature.SequenceSolidHidden = SeqHid
+            Feature.MiscProp(1) = View.ViewType
+            Feature.SurfaceName = View.ViewType
+
             SingleViewProp(Feature, GroupEntity, View, GLoopPts, GLoop)
 
-
             If Not Feature.FeatureName = "" Then
-                'set the feature property
-                Feature.MiscProp(1) = View.ViewType
-                Feature.SurfaceName = View.ViewType
-
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -158,8 +153,7 @@ Public Class ViewProcessor
                 'set the feature property
                 Feature.FeatureName = "Mill Candidate"
                 Feature.MiscProp(0) = "ミリング形状を選ぶ"
-                Feature.MiscProp(1) = View.ViewType
-                Feature.SurfaceName = View.ViewType
+                
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -655,6 +649,12 @@ Public Class ViewProcessor
             End If
         End If
 
+        'convert special for bottom
+        If Feature.MiscProp(1).ToLower.Equals("bottom") Then
+            OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
+            OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
+        End If
+
         Feature.MiscProp(2) = Orientation
         Feature.OriginAndAddition(0) = Round(OriU, 3)
         Feature.OriginAndAddition(1) = Round(OriV, 3)
@@ -1048,6 +1048,12 @@ Public Class ViewProcessor
             D2 = D2 + TempRad
             Feature.FeatureName = "Blind Slot"
             Feature.MiscProp(0) = "止まり溝"
+        End If
+
+        'convert special for bottom
+        If Feature.MiscProp(1).ToLower.Equals("bottom") Then
+            OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
+            OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
         End If
 
         Feature.MiscProp(2) = Orientation
