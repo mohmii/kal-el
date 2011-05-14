@@ -157,7 +157,6 @@ Partial Class UserControl3
         '
         'KryptonHeaderGroup1
         '
-        Me.KryptonHeaderGroup1.AutoSize = True
         Me.KryptonHeaderGroup1.ButtonSpecs.AddRange(New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup() {Me.ButtonSpecHeaderGroup1})
         Me.KryptonHeaderGroup1.Dock = System.Windows.Forms.DockStyle.Top
         Me.KryptonHeaderGroup1.HeaderVisibleSecondary = False
@@ -487,7 +486,6 @@ Partial Class UserControl3
         '
         'KryptonHeaderGroup2
         '
-        Me.KryptonHeaderGroup2.AutoSize = True
         Me.KryptonHeaderGroup2.ButtonSpecs.AddRange(New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup() {Me.ButtonSpecHeaderGroup2})
         Me.KryptonHeaderGroup2.Dock = System.Windows.Forms.DockStyle.Top
         Me.KryptonHeaderGroup2.HeaderVisibleSecondary = False
