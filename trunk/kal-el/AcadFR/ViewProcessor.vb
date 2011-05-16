@@ -173,42 +173,6 @@ Public Class ViewProcessor
         Next
     End Sub
 
-    'add feature manual method changed surface
-    'Public Overloads Sub SingleViewProcessor(ByVal GLoop As List(Of List(Of Entity)), ByVal View As ViewProp, _
-    '                                         ByVal GLoopPts As List(Of List(Of Point3d)), ByRef ChangedFeat As OutputFormat)
-    '    For Each GroupEntity As List(Of Entity) In GLoop
-    '        MillingObjectId = New List(Of ObjectId)
-    '        Feature = New OutputFormat
-    '        ListLoopTemp = New List(Of List(Of Entity))
-
-    '        'add to the unidentified feature list
-    '        For Each EntityTmp As Entity In GroupEntity
-    '            MillingObjectId.Add(EntityTmp.ObjectId)
-    '        Next
-
-    '        CountEntity(GroupEntity, View, SolLine, SolLineBound, VirtuLine, HidLine, SolArc, HidArc, SeqBound, SeqHid)
-
-    '        ListLoopTemp.Add(GroupEntity)
-    '        Feature.EntityMember = MillingObjectId.Count
-    '        Feature.ObjectId = MillingObjectId
-    '        Feature.ListLoop = ListLoopTemp
-    '        Feature.SolidLineCount = SolLine
-    '        Feature.SolidLineInBoundCount = SolLineBound
-    '        Feature.VirtualLineCount = VirtuLine
-    '        Feature.HiddenLineCount = HidLine
-    '        Feature.SolidArcCount = SolArc
-    '        Feature.HiddenArcCount = HidArc
-    '        Feature.SequenceSolidBound = SeqBound
-    '        Feature.SequenceSolidHidden = SeqHid
-    '        SingleViewProp(Feature, GroupEntity, View, GLoopPts, GLoop)
-    '        Feature.MiscProp(1) = View.ViewType
-    'Feature.SurfaceName = View.ViewType
-    '        ChangedFeat = Feature
-    ''set the current feature to current view
-    '        RegisterToView(Feature)
-    '    Next
-    'End Sub
-
     'method for regular single view
     Public Overloads Sub SingleViewProp(ByRef Feature As OutputFormat, ByVal GEntity As List(Of Entity), ByVal View As ViewProp)
         Dim D1, D2, D3, D4, OriU, OriV, OriW, Angle As New Double
@@ -650,10 +614,10 @@ Public Class ViewProcessor
         End If
 
         'convert special for bottom
-        If Feature.MiscProp(1).ToLower.Equals("bottom") Then
-            OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
-            OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
-        End If
+        'If Feature.MiscProp(1).ToLower.Equals("bottom") Then
+        '    OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
+        '    OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
+        'End If
 
         Feature.MiscProp(2) = Orientation
         Feature.OriginAndAddition(0) = Round(OriU, 3)
@@ -1051,10 +1015,10 @@ Public Class ViewProcessor
         End If
 
         'convert special for bottom
-        If Feature.MiscProp(1).ToLower.Equals("bottom") Then
-            OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
-            OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
-        End If
+        'If Feature.MiscProp(1).ToLower.Equals("bottom") Then
+        '    OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
+        '    OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
+        'End If
 
         Feature.MiscProp(2) = Orientation
         Feature.OriginAndAddition(0) = Round(OriU, 3)
