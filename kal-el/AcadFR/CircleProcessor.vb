@@ -491,16 +491,11 @@ Public Class CircleProcessor
         TempCoordinate = Round(a - XReferencePoint, 3)
 
         'convert coordinate only for bottom view
-        If view.ViewType.ToLower.Equals("bottom") Then
-            'If TempCoordinate < 0 Then
-            '    TempCoordinate = view.BoundProp(4) - Abs(TempCoordinate)
-            'Else
-            '    TempCoordinate = TempCoordinate - view.BoundProp(4)
-            'End If
-            TempCoordinate = Round((TempCoordinate + XReferencePoint) - (view.BoundProp(0) + (view.BoundProp(2) - XReferencePoint)), 3)
-            'TempCoordinate = -1 * TempCoordinate
+        'If view.ViewType.ToLower.Equals("bottom") Then
+        '    TempCoordinate = Round((TempCoordinate + XReferencePoint) - (view.BoundProp(0) + (view.BoundProp(2) - XReferencePoint)), 3)
+        '    'TempCoordinate = -1 * TempCoordinate
 
-        End If
+        'End If
 
         Return TempCoordinate
 
@@ -512,16 +507,11 @@ Public Class CircleProcessor
         TempCoordinate = Round(a - YReferencePoint, 3)
 
         'convert coordinate only for bottom view
-        If view.ViewType.ToLower.Equals("bottom") Then
-            'If TempCoordinate < 0 Then
-            '    TempCoordinate = view.BoundProp(5) - Abs(TempCoordinate)
-            'Else
-            '    TempCoordinate = TempCoordinate - view.BoundProp(5)
-            'End If
-            TempCoordinate = Round((TempCoordinate + YReferencePoint) - (view.BoundProp(1) + (view.BoundProp(3) - YReferencePoint)), 3)
+        'If view.ViewType.ToLower.Equals("bottom") Then
+        '    TempCoordinate = Round((TempCoordinate + YReferencePoint) - (view.BoundProp(1) + (view.BoundProp(3) - YReferencePoint)), 3)
 
-            'TempCoordinate = -1 * TempCoordinate
-        End If
+        '    'TempCoordinate = -1 * TempCoordinate
+        'End If
 
         Return TempCoordinate
 

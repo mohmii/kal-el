@@ -1357,6 +1357,8 @@ Public Class UserControl3
             'get the current binded feature from the selected rows
             Feature2Update = New OutputFormat
             Feature2Update = Table2Check.Rows(RowIndex(i)).Cells("Object").Value
+            NewUpdatedFeature.EntityMember = Feature2Update.EntityMember
+            NewUpdatedFeature.ListLoop = Feature2Update.ListLoop
 
             For Each ObjectIdTmp As ObjectId In Feature2Update.ObjectId
                 NewUpdatedFeature.ObjectId.Add(ObjectIdTmp)
@@ -1497,13 +1499,30 @@ Public Class UserControl3
 
     Private Sub ComboBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox1.SelectedIndexChanged
         ComboBox3.ResetText()
+        NumericUpDown4.Value = 0
+        NumericUpDown5.Value = 0
+        NumericUpDown6.Value = 0
         FindTheirPicture(Me.ComboBox1.SelectedItem.ToString)
         GraySelection(Me.ComboBox1.SelectedItem.ToString)
+
+        If SelectedIF.Count = 1 Then
+            AutoDimensionChange(Me.ComboBox1.SelectedItem.ToString, Me.NumericUpDown4.Value.ToString, SelectedIF)
+        ElseIf SelectedUF.Count = 1 Then
+            AutoDimensionChange(Me.ComboBox1.SelectedItem.ToString, Me.NumericUpDown4.Value.ToString, SelectedUF)
+        End If
+
     End Sub
 
     Private Sub Orientation_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NumericUpDown4.ValueChanged
         FindTheirPicture(Me.ComboBox1.SelectedItem.ToString)
         GraySelection(Me.ComboBox1.SelectedItem.ToString)
+
+        If SelectedIF.Count = 1 Then
+            AutoDimensionChange(Me.ComboBox1.SelectedItem.ToString, Me.NumericUpDown4.Value.ToString, SelectedIF)
+        ElseIf SelectedUF.Count = 1 Then
+            AutoDimensionChange(Me.ComboBox1.SelectedItem.ToString, Me.NumericUpDown4.Value.ToString, SelectedUF)
+        End If
+
     End Sub
 
     Private Sub FindTheirPicture(ByVal FeatureText As String)
@@ -1545,7 +1564,7 @@ Public Class UserControl3
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\sqrstep3.bmp")
                 End If
             ElseIf FeatureText.Contains("４側ポケット") Then '4-side pocket
-                If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                If Me.NumericUpDown4.Value.ToString = "0" Then
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\4pocket1.bmp")
                 End If
             ElseIf FeatureText.Contains("３側ポケット") Then '3-side pocket
@@ -1569,7 +1588,7 @@ Public Class UserControl3
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\2pocket4.bmp")
                 End If
             ElseIf FeatureText.Contains("長穴") Then 'long hole
-                If Me.NumericUpDown4.Value.ToString = "0" Or Me.NumericUpDown4.Value.ToString = "1" Then
+                If Me.NumericUpDown4.Value.ToString = "0" Then
                     Me.PictureBox1.Image = System.Drawing.Image.FromFile(FrToolbarApp.ModulePath + "\Images\lnghole1.bmp")
                 End If
             ElseIf FeatureText.Contains("止まり溝") Then 'blind slot
@@ -2871,7 +2890,7 @@ Public Class UserControl3
                     Next
 
                     'temporary solution
-                    If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
+                    If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then 'artinya permukaan itu belum di add tp udh ada (hidden)
                         Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
                         Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
                     Else
@@ -3077,6 +3096,269 @@ Public Class UserControl3
                 view.SetFeature(FeatureTmp)
             End If
         Next
+    End Sub
+
+    'fungsi melihat orientasi horizontal/vertikal garis
+    Private Function LineOrientation(ByVal LineTemp As Line)
+        If isequal(LineTemp.StartPoint.Y, LineTemp.EndPoint.Y) = True Then
+            Return 0
+        ElseIf isequal(LineTemp.StartPoint.X, LineTemp.EndPoint.X) = True Then
+            Return 1
+        Else
+            Return 2
+        End If
+    End Function
+
+    'line lenght function
+    Private Function LineLength(ByVal LineToCheck As Line)
+        Return Sqrt(((LineToCheck.StartPoint.X - LineToCheck.EndPoint.X) ^ 2) + ((LineToCheck.StartPoint.Y - LineToCheck.EndPoint.Y) ^ 2))
+    End Function
+
+    'mencari D1, D3 D4 dan D5 (angle) secara otomatis ketika pilihan fitur atau orientasi milling berubah
+    Private Sub AutoDimensionChange(ByVal FeatureText As String, ByVal OriText As String, ByRef SelFeat As List(Of OutputFormat))
+        Try
+            Dim TmpLine As Line
+            Dim TmpArc As Arc
+            Dim D1Temp As New Double
+            Dim D2Temp As New Double
+            Dim D4Temp As New Double
+            Dim D5Temp As New Double
+            Dim ChangeStat As Boolean = False
+
+            If SelFeat.Count = 1 Then
+                If FeatureText.Contains("角溝") Then ' square slot
+                    If OriText = "0" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            TmpLine = New Line
+                            TmpLine = EntityTmp
+                            If LineOrientation(TmpLine) = 0 Then
+                                D2Temp = Max(D2Temp, LineLength(TmpLine))
+                            ElseIf LineOrientation(TmpLine) = 1 Then
+                                D1Temp = Max(D1Temp, LineLength(TmpLine))
+                            End If
+                        Next
+                    ElseIf OriText = "1" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            TmpLine = New Line
+                            TmpLine = EntityTmp
+                            If LineOrientation(TmpLine) = 0 Then
+                                D1Temp = Max(D1Temp, LineLength(TmpLine))
+                            ElseIf LineOrientation(TmpLine) = 1 Then
+                                D2Temp = Max(D2Temp, LineLength(TmpLine))
+                            End If
+                        Next
+                    End If
+                    ChangeStat = True
+                ElseIf FeatureText.Contains("角ステップ") Then 'square step
+                    If OriText = "0" Or OriText = "1" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            TmpLine = New Line
+                            TmpLine = EntityTmp
+                            If LineOrientation(TmpLine) = 0 Then
+                                D2Temp = Max(D2Temp, LineLength(TmpLine))
+                            ElseIf LineOrientation(TmpLine) = 1 Then
+                                D1Temp = Max(D1Temp, LineLength(TmpLine))
+                            End If
+                        Next
+                    ElseIf OriText = "2" Or OriText = "3" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            TmpLine = New Line
+                            TmpLine = EntityTmp
+                            If LineOrientation(TmpLine) = 0 Then
+                                D1Temp = Max(D1Temp, LineLength(TmpLine))
+                            ElseIf LineOrientation(TmpLine) = 1 Then
+                                D2Temp = Max(D2Temp, LineLength(TmpLine))
+                            End If
+                        Next
+                    End If
+                    ChangeStat = True
+                ElseIf FeatureText.Contains("４側ポケット") Then '4-side pocket
+                    If OriText = "0" Then
+                        Dim AngleTmp As New Double
+                        Dim InitialStat As Boolean = True
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                AngleTmp = Atan2(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y, TmpLine.EndPoint.X - TmpLine.StartPoint.X) * (180 / PI)
+                                If AngleTmp < 0 Then
+                                    AngleTmp = AngleTmp + 360
+                                End If
+                                If (AngleTmp >= 0 And AngleTmp < 90) Or (AngleTmp >= 180 And AngleTmp < 270) Then
+                                    D1Temp = Round(LineLength(TmpLine), 3)
+                                    If (AngleTmp >= 180 And AngleTmp < 270) Then
+                                        AngleTmp = AngleTmp - 180
+                                    End If
+                                ElseIf (AngleTmp >= 90 And AngleTmp < 180) Or (AngleTmp >= 270 And AngleTmp < 360) Then
+                                    D2Temp = Round(LineLength(TmpLine), 3)
+                                    If (AngleTmp >= 270 And AngleTmp < 360) Then
+                                        AngleTmp = AngleTmp - 180
+                                    End If
+                                End If
+
+                                If InitialStat = True Then
+                                    D5Temp = AngleTmp
+                                    InitialStat = False
+                                Else
+                                    D5Temp = Min(D5Temp, AngleTmp)
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                D4Temp = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                        D1Temp = D1Temp + (2 * D4Temp)
+                        D2Temp = D2Temp + (2 * D4Temp)
+                    End If
+                    ChangeStat = True
+                ElseIf FeatureText.Contains("３側ポケット") Then '3-side pocket
+                    If OriText = "0" Or OriText = "1" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                If LineOrientation(TmpLine) = 0 Then
+                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                ElseIf LineOrientation(TmpLine) = 1 Then
+                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                D4Temp = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                    ElseIf OriText = "2" Or OriText = "3" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                If LineOrientation(TmpLine) = 0 Then
+                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                ElseIf LineOrientation(TmpLine) = 1 Then
+                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                D4Temp = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                    End If
+                    D2Temp = D2Temp + D4Temp
+                    ChangeStat = True
+                ElseIf FeatureText.Contains("２側ポケット") Then '2-side pocket
+                    If OriText = "0" Or OriText = "3" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                If LineOrientation(TmpLine) = 0 Then
+                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                ElseIf LineOrientation(TmpLine) = 1 Then
+                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                D4Temp = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                    ElseIf OriText = "1" Or OriText = "2" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                If LineOrientation(TmpLine) = 0 Then
+                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                ElseIf LineOrientation(TmpLine) = 1 Then
+                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                D4Temp = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                    End If
+                    ChangeStat = True
+                ElseIf FeatureText.Contains("長穴") Then 'long hole
+                    If OriText = "0" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                D1Temp = Round(LineLength(TmpLine), 3)
+                                D5Temp = Atan2(Abs(TmpLine.EndPoint.Y - TmpLine.StartPoint.Y), Abs(TmpLine.EndPoint.X - TmpLine.StartPoint.X)) * (180 / PI)
+
+                                If D5Temp < 0 Then
+                                    D5Temp = D5Temp + 360
+                                End If
+
+                                If D5Temp >= 180 Then
+                                    D5Temp = D5Temp - 180
+                                End If
+
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                D2Temp = 2 * Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                        D1Temp = D1Temp + D2Temp
+                    End If
+                    ChangeStat = True
+                ElseIf FeatureText.Contains("止まり溝") Then 'blind slot
+                    Dim TempRad As New Double
+                    If OriText = "0" Or OriText = "1" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                If LineOrientation(TmpLine) = 0 Then
+                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                ElseIf LineOrientation(TmpLine) = 1 Then
+                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                TempRad = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                    ElseIf OriText = "2" Or OriText = "3" Then
+                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                            If TypeOf EntityTmp Is Line Then
+                                TmpLine = New Line
+                                TmpLine = EntityTmp
+                                If LineOrientation(TmpLine) = 0 Then
+                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                ElseIf LineOrientation(TmpLine) = 1 Then
+                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                End If
+                            ElseIf TypeOf EntityTmp Is Arc Then
+                                TmpArc = New Arc
+                                TmpArc = EntityTmp
+                                TempRad = Round(TmpArc.Radius, 3)
+                            End If
+                        Next
+                    End If
+                    D2Temp = D2Temp + TempRad
+                    ChangeStat = True
+                End If
+            End If
+
+            If ChangeStat = True Then
+                Me.NumericUpDown7.Value = Round(D1Temp, 3)
+                Me.NumericUpDown8.Value = Round(D2Temp, 3)
+                Me.NumericUpDown10.Value = Round(D4Temp, 3)
+                Me.NumericUpDown11.Value = Round(D5Temp, 3)
+            End If
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
     End Sub
 
 End Class
