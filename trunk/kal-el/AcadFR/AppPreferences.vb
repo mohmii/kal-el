@@ -33,7 +33,7 @@ Public Class AppPreferences
                     pref.Add(TmpFileRead.ReadLine)
                 End While
 
-                If pref.Count = 8 Then
+                If pref.Count = 10 Then
                     WorkSpaceDir = pref(0)
                     RegLine = pref(1)
                     RegSchem = pref(2)
@@ -42,6 +42,8 @@ Public Class AppPreferences
                     PreProc = pref(5)
                     TolValue = pref(6)
                     Schema = pref(7)
+                    HoleDiam = pref(8)
+                    UnderholeDiam = pref(9)
                 End If
 
                 TmpFileRead.Close()
@@ -64,12 +66,13 @@ Public Class AppPreferences
         TmpFileWrite.WriteLine(PreProc.ToString)
         TmpFileWrite.WriteLine(TolValue.ToString)
         TmpFileWrite.WriteLine(Schema.ToString)
+        TmpFileWrite.WriteLine(HoleDiam.ToString)
+        TmpFileWrite.WriteLine(UnderholeDiam.ToString)
         TmpFileWrite.Flush()
         TmpFileWrite.Close()
-
     End Sub
 
-    Private SystemDrive, PathString, WorkSpaceDir, TolValue, Schema As String
+    Private SystemDrive, PathString, WorkSpaceDir, TolValue, Schema, HoleDiam, UnderholeDiam As String
 
     Public Sub SetWorkSpaceDir()
         SystemDrive = System.Environment.GetEnvironmentVariable("systemdrive")
@@ -104,6 +107,24 @@ Public Class AppPreferences
         End Get
         Set(ByVal value As Double)
             Schema = Round(value, 2).ToString
+        End Set
+    End Property
+
+    Public Property HoleTolerance() As Double
+        Get
+            Return HoleDiam
+        End Get
+        Set(ByVal value As Double)
+            HoleDiam = Round(value, 2).ToString
+        End Set
+    End Property
+
+    Public Property UnderholeTolerance() As Double
+        Get
+            Return UnderholeDiam
+        End Get
+        Set(ByVal value As Double)
+            UnderholeDiam = Round(value, 2).ToString
         End Set
     End Property
 

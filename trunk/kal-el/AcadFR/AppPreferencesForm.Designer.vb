@@ -25,6 +25,10 @@ Partial Class AppPreferencesForm
         Me.Label1 = New System.Windows.Forms.Label
         Me.Button1 = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.UnderholeDiaTol = New System.Windows.Forms.NumericUpDown
+        Me.HoleDiaTol = New System.Windows.Forms.NumericUpDown
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.Label4 = New System.Windows.Forms.Label
         Me.Schematic = New System.Windows.Forms.NumericUpDown
         Me.Label3 = New System.Windows.Forms.Label
         Me.Tolerance = New System.Windows.Forms.NumericUpDown
@@ -38,6 +42,8 @@ Partial Class AppPreferencesForm
         Me.MultiAnalysis = New System.Windows.Forms.CheckBox
         Me.RemoveEntities = New System.Windows.Forms.CheckBox
         Me.GroupBox1.SuspendLayout()
+        CType(Me.UnderholeDiaTol, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.HoleDiaTol, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Schematic, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Tolerance, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -54,7 +60,7 @@ Partial Class AppPreferencesForm
         'Button1
         '
         Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Location = New System.Drawing.Point(201, 23)
+        Me.Button1.Location = New System.Drawing.Point(229, 23)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(24, 23)
         Me.Button1.TabIndex = 2
@@ -65,16 +71,62 @@ Partial Class AppPreferencesForm
         '
         Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.Controls.Add(Me.UnderholeDiaTol)
+        Me.GroupBox1.Controls.Add(Me.HoleDiaTol)
+        Me.GroupBox1.Controls.Add(Me.Label5)
+        Me.GroupBox1.Controls.Add(Me.Label4)
         Me.GroupBox1.Controls.Add(Me.Schematic)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.Tolerance)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 168)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(220, 62)
+        Me.GroupBox1.Size = New System.Drawing.Size(248, 96)
         Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "許容値"
+        '
+        'UnderholeDiaTol
+        '
+        Me.UnderholeDiaTol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UnderholeDiaTol.DecimalPlaces = 2
+        Me.UnderholeDiaTol.Enabled = False
+        Me.UnderholeDiaTol.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.UnderholeDiaTol.Location = New System.Drawing.Point(191, 71)
+        Me.UnderholeDiaTol.Name = "UnderholeDiaTol"
+        Me.UnderholeDiaTol.Size = New System.Drawing.Size(51, 20)
+        Me.UnderholeDiaTol.TabIndex = 3
+        Me.UnderholeDiaTol.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+        '
+        'HoleDiaTol
+        '
+        Me.HoleDiaTol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.HoleDiaTol.DecimalPlaces = 2
+        Me.HoleDiaTol.Enabled = False
+        Me.HoleDiaTol.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.HoleDiaTol.Location = New System.Drawing.Point(191, 52)
+        Me.HoleDiaTol.Name = "HoleDiaTol"
+        Me.HoleDiaTol.Size = New System.Drawing.Size(51, 20)
+        Me.HoleDiaTol.TabIndex = 3
+        Me.HoleDiaTol.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(6, 73)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(94, 13)
+        Me.Label5.TabIndex = 2
+        Me.Label5.Text = "下穴直径許容値:"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(6, 54)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(82, 13)
+        Me.Label4.TabIndex = 2
+        Me.Label4.Text = "穴直径許容値:"
         '
         'Schematic
         '
@@ -82,19 +134,20 @@ Partial Class AppPreferencesForm
         Me.Schematic.DecimalPlaces = 2
         Me.Schematic.Enabled = False
         Me.Schematic.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
-        Me.Schematic.Location = New System.Drawing.Point(163, 33)
+        Me.Schematic.Location = New System.Drawing.Point(191, 33)
         Me.Schematic.Name = "Schematic"
         Me.Schematic.Size = New System.Drawing.Size(51, 20)
         Me.Schematic.TabIndex = 3
+        Me.Schematic.Value = New Decimal(New Integer() {1, 0, 0, 131072})
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(6, 35)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(58, 13)
+        Me.Label3.Size = New System.Drawing.Size(82, 13)
         Me.Label3.TabIndex = 2
-        Me.Label3.Text = "形状記号:"
+        Me.Label3.Text = "穴直径許容値:"
         '
         'Tolerance
         '
@@ -102,10 +155,11 @@ Partial Class AppPreferencesForm
         Me.Tolerance.DecimalPlaces = 2
         Me.Tolerance.Enabled = False
         Me.Tolerance.Increment = New Decimal(New Integer() {1, 0, 0, 131072})
-        Me.Tolerance.Location = New System.Drawing.Point(163, 14)
+        Me.Tolerance.Location = New System.Drawing.Point(191, 14)
         Me.Tolerance.Name = "Tolerance"
         Me.Tolerance.Size = New System.Drawing.Size(51, 20)
         Me.Tolerance.TabIndex = 1
+        Me.Tolerance.Value = New Decimal(New Integer() {1, 0, 0, 131072})
         '
         'Label2
         '
@@ -120,7 +174,7 @@ Partial Class AppPreferencesForm
         'Save
         '
         Me.Save.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Save.Location = New System.Drawing.Point(71, 240)
+        Me.Save.Location = New System.Drawing.Point(99, 278)
         Me.Save.Name = "Save"
         Me.Save.Size = New System.Drawing.Size(74, 23)
         Me.Save.TabIndex = 4
@@ -131,7 +185,7 @@ Partial Class AppPreferencesForm
         '
         Me.Cancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel.Location = New System.Drawing.Point(151, 240)
+        Me.Cancel.Location = New System.Drawing.Point(179, 278)
         Me.Cancel.Name = "Cancel"
         Me.Cancel.Size = New System.Drawing.Size(76, 23)
         Me.Cancel.TabIndex = 5
@@ -144,7 +198,7 @@ Partial Class AppPreferencesForm
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Directory.Location = New System.Drawing.Point(12, 25)
         Me.Directory.Name = "Directory"
-        Me.Directory.Size = New System.Drawing.Size(183, 20)
+        Me.Directory.Size = New System.Drawing.Size(211, 20)
         Me.Directory.TabIndex = 6
         '
         'PreProcess
@@ -203,7 +257,7 @@ Partial Class AppPreferencesForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel
-        Me.ClientSize = New System.Drawing.Size(237, 275)
+        Me.ClientSize = New System.Drawing.Size(265, 317)
         Me.Controls.Add(Me.MultiAnalysis)
         Me.Controls.Add(Me.AutoRegScheme)
         Me.Controls.Add(Me.AutoRegLine)
@@ -215,11 +269,12 @@ Partial Class AppPreferencesForm
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label1)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "AppPreferencesForm"
         Me.Text = "FRの設定"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        CType(Me.UnderholeDiaTol, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.HoleDiaTol, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Schematic, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Tolerance, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -241,4 +296,8 @@ Partial Class AppPreferencesForm
     Friend WithEvents AutoRegScheme As System.Windows.Forms.CheckBox
     Friend WithEvents MultiAnalysis As System.Windows.Forms.CheckBox
     Friend WithEvents RemoveEntities As System.Windows.Forms.CheckBox
+    Friend WithEvents UnderholeDiaTol As System.Windows.Forms.NumericUpDown
+    Friend WithEvents HoleDiaTol As System.Windows.Forms.NumericUpDown
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 End Class

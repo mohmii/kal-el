@@ -43,17 +43,37 @@ Public Class AppPreferencesForm
                 Me.Tolerance.Value = 0.01
             End If
 
+            If Me.Schematic.Value = 0 Then
+                Me.Schematic.Value = 0.01
+            End If
+
+            If Me.HoleDiaTol.Value = 0 Then
+                Me.HoleDiaTol.Value = 0.01
+            End If
+
+            If Me.UnderholeDiaTol.Value = 0 Then
+                Me.UnderholeDiaTol.Value = 0.01
+            End If
+
             AppPreferences.ToleranceValues = Me.Tolerance.Value
             AppPreferences.SchematicSymbol = Me.Schematic.Value
+            AppPreferences.HoleTolerance = Me.HoleDiaTol.Value
+            AppPreferences.UnderholeTolerance = Me.UnderholeDiaTol.Value
 
             adskClass.AppPreferences.ToleranceValues = Me.Tolerance.Value
             adskClass.AppPreferences.SchematicSymbol = Me.Schematic.Value
+            adskClass.AppPreferences.HoleTolerance = Me.HoleDiaTol.Value
+            adskClass.AppPreferences.UnderholeTolerance = Me.UnderholeDiaTol.Value
         Else
             AppPreferences.ToleranceValues = 0.01
-            AppPreferences.SchematicSymbol = 0
+            AppPreferences.SchematicSymbol = 0.01
+            AppPreferences.HoleTolerance = 0.01
+            AppPreferences.UnderholeTolerance = 0.01
 
             adskClass.AppPreferences.ToleranceValues = 0.01
-            adskClass.AppPreferences.SchematicSymbol = 0
+            adskClass.AppPreferences.SchematicSymbol = 0.01
+            adskClass.AppPreferences.HoleTolerance = 0.01
+            adskClass.AppPreferences.UnderholeTolerance = 0.01
         End If
 
         AppPreferences.SetWorkSpaceDir()
@@ -71,6 +91,8 @@ Public Class AppPreferencesForm
             Me.PreProcess.Checked = AppPreferences.DrawPP
             Me.Tolerance.Value = AppPreferences.ToleranceValues
             Me.Schematic.Value = AppPreferences.SchematicSymbol
+            Me.HoleDiaTol.Value = AppPreferences.HoleTolerance
+            Me.UnderholeDiaTol.Value = AppPreferences.UnderholeTolerance
         End If
     End Sub
 
@@ -79,10 +101,14 @@ Public Class AppPreferencesForm
         If Me.PreProcess.CheckState = 1 Then
             Me.Tolerance.Enabled = True
             Me.Schematic.Enabled = True
+            Me.HoleDiaTol.Enabled = True
+            Me.UnderholeDiaTol.Enabled = True
         End If
         If Me.PreProcess.CheckState = 0 Then
             Me.Tolerance.Enabled = False
             Me.Schematic.Enabled = False
+            Me.HoleDiaTol.Enabled = False
+            Me.UnderholeDiaTol.Enabled = False
         End If
     End Sub
 End Class
