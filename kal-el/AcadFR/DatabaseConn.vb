@@ -367,17 +367,44 @@ Public Class DatabaseConn
 
     'function for checking the floating point variabel
     Private Function isequal(ByVal x As Double, ByVal y As Double) As Boolean
-        If Math.Abs(x - y) > 0.1 Then
-            Return False
-        Else
+        If Math.Abs(x - y) <= adskClass.AppPreferences.ToleranceValues Then
             Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    'function for checking hole dimension to database whether within tolerance or not
+    Private Function isequalHole(ByVal x As Double, ByVal y As Double) As Boolean
+        If Math.Abs(x - y) <= adskClass.AppPreferences.HoleTolerance Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    'function for checking underhole dimension to database whether within tolerance or not
+    Private Function isequalUnderhole(ByVal x As Double, ByVal y As Double) As Boolean
+        If Math.Abs(x - y) <= adskClass.AppPreferences.UnderholeTolerance Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    'function for checking single circle diameter to database whether within tolerance or not
+    Private Function isequalSingleCircle(ByVal x As Double, ByVal y As Double) As Boolean
+        If Math.Abs(x - y) <= adskClass.AppPreferences.SchematicSymbol Then
+            Return True
+        Else
+            Return False
         End If
     End Function
 
     Public Function CheckIfReam(ByVal Result As IEnumerable(Of Circle)) As Boolean
 
         Dim query = (From ReamItem In ReamData _
-            Where (isequal(ReamItem.Diameter, (Result.SingleOrDefault.Radius * 2)) = True) _
+            Where (isequalSingleCircle(ReamItem.Diameter, (Result.SingleOrDefault.Radius * 2)) = True) _
             Select ReamItem).ToList()
         TmpReamData = query
 
@@ -392,7 +419,7 @@ Public Class DatabaseConn
     Public Function WhichReam(ByVal Result As IEnumerable(Of Circle)) As String()
 
         Dim query = (From ReamItem In ReamData _
-            Where (isequal(ReamItem.Diameter, (Result.SingleOrDefault.Radius * 2)) = True) _
+            Where (isequalSingleCircle(ReamItem.Diameter, (Result.SingleOrDefault.Radius * 2)) = True) _
             Select ReamItem).ToList()
         TmpReamData = query
 
@@ -447,16 +474,16 @@ Public Class DatabaseConn
 
             'checking in tap database
             Dim query = (From TapItem In TapData _
-                        Where (isequal(TapItem.TapDiameter, (Result.Last.Radius * 2)) = True And _
-                        isequal(TapItem.UnHoleDiameter, (Result.First.Radius * 2)) = True) _
+                        Where (isequalHole(TapItem.TapDiameter, (Result.Last.Radius * 2)) = True And _
+                        isequalUnderhole(TapItem.UnHoleDiameter, (Result.First.Radius * 2)) = True) _
                         Select TapItem).ToList()
             TmpTapData = query
 
             If TmpTapData.Count = 0 Then
                 'if there is no match, continue searching in cbore database
                 Dim nextquery = (From CBoreItem In CBoreData _
-                        Where (isequal(CBoreItem.Diameter, (Result.Last.Radius * 2)) = True And _
-                        isequal(CBoreItem.InnerDiameter, (Result.First.Radius * 2)) = True) _
+                        Where (isequalHole(CBoreItem.Diameter, (Result.Last.Radius * 2)) = True And _
+                        isequalUnderhole(CBoreItem.InnerDiameter, (Result.First.Radius * 2)) = True) _
                         Select CBoreItem).ToList()
                 TmpCBoreData = nextquery
 
@@ -478,8 +505,8 @@ Public Class DatabaseConn
         Else
             'from this to next were the same process like the previous process
             Dim query = (From TapItem In TapData _
-                        Where (isequal(TapItem.TapDiameter, (Result.First.Radius * 2)) = True And _
-                        isequal(TapItem.UnHoleDiameter, (Result.Last.Radius * 2)) = True) _
+                        Where (isequalHole(TapItem.TapDiameter, (Result.First.Radius * 2)) = True And _
+                        isequalUnderhole(TapItem.UnHoleDiameter, (Result.Last.Radius * 2)) = True) _
                         Select TapItem).ToList()
 
             TmpTapData = query
@@ -487,8 +514,8 @@ Public Class DatabaseConn
             If TmpTapData.Count = 0 Then
 
                 Dim nextquery = (From CBoreItem In CBoreData _
-                        Where (isequal(CBoreItem.Diameter, (Result.First.Radius * 2)) = True And _
-                        isequal(CBoreItem.InnerDiameter, (Result.Last.Radius * 2)) = True) _
+                        Where (isequalHole(CBoreItem.Diameter, (Result.First.Radius * 2)) = True And _
+                        isequalUnderhole(CBoreItem.InnerDiameter, (Result.Last.Radius * 2)) = True) _
                         Select CBoreItem).ToList()
 
                 TmpCBoreData = nextquery
