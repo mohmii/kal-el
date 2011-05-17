@@ -1332,7 +1332,6 @@ Public Class UserControl3
 
     Private Sub StartUpdate(ByVal Table2Check As System.Windows.Forms.DataGridView)
         RowIndex = New List(Of Integer)         'set new field for selected row indexes
-
         'get all the selected indexes
         For Each Rows As System.Windows.Forms.DataGridViewRow In Table2Check.SelectedRows
             RowIndex.Add(Rows.Index)
@@ -1342,6 +1341,7 @@ Public Class UserControl3
         For i As Integer = 0 To RowIndex.Count - 1
             NewUpdatedFeature = New OutputFormat    'set new field for the new machining parameter
 
+            NewUpdatedFeature = Table2Check.Rows(RowIndex(i)).Cells("Object").Value
             'get all the new machining parameters
             SetUpFeatureName(Me.ComboBox1.SelectedItem.ToString, NewUpdatedFeature.FeatureName, NewUpdatedFeature.MiscProp(0))
             'NewUpdatedFeature.MiscProp(2) = Me.NumericUpDown4.Value 'orientation
@@ -1357,12 +1357,12 @@ Public Class UserControl3
             'get the current binded feature from the selected rows
             Feature2Update = New OutputFormat
             Feature2Update = Table2Check.Rows(RowIndex(i)).Cells("Object").Value
-            NewUpdatedFeature.EntityMember = Feature2Update.EntityMember
-            NewUpdatedFeature.ListLoop = Feature2Update.ListLoop
+            'NewUpdatedFeature.EntityMember = Feature2Update.EntityMember
+            'NewUpdatedFeature.ListLoop = Feature2Update.ListLoop
 
-            For Each ObjectIdTmp As ObjectId In Feature2Update.ObjectId
-                NewUpdatedFeature.ObjectId.Add(ObjectIdTmp)
-            Next
+            'For Each ObjectIdTmp As ObjectId In Feature2Update.ObjectId
+            '    NewUpdatedFeature.ObjectId.Add(ObjectIdTmp)
+            'Next
 
             'get the unique parameter only for the X and Y location
             If RowIndex.Count = 1 Then
@@ -2890,12 +2890,50 @@ Public Class UserControl3
                     Next
 
                     'temporary solution
-                    If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then 'artinya permukaan itu belum di add tp udh ada (hidden)
-                        Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                        Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
-                    Else
-                        Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                        Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                    If SelectedUF.Count = 1 Then
+                        If SelectedUF(0).HiddenStatus = False Then
+                            'visible surface
+                            Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                            Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                        Else
+                            'hidden surface
+                            If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
+                                'artinya permukaan itu sudah di add user
+                                'harusnya pake yg change feat coordinate
+                                Dim OppSurfaceIdx As New Integer
+                                For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                                    If Surface.ViewType.ToLower = SearchOppositeSurf(ComboBox2.Text.ToLower).ToLower Then
+                                        OppSurfaceIdx = i
+                                        Exit For
+                                    End If
+                                    i = i + 1
+                                Next
+                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.Y, 3)
+                            Else
+                                'artinya permukaan itu belum di add user
+                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            End If
+                        End If
+                    ElseIf SelectedIF.Count = 1 Then
+                        If SelectedIF(0).HiddenStatus = False Then
+                            'visible surface
+                            Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                            Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                        Else
+                            'hidden surface
+                            If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
+                                'artinya permukaan itu sudah di add user
+                                'harusnya pake yg change feat coordinate
+                                'Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                'Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            Else
+                                'artinya permukaan itu belum di add user
+                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            End If
+                        End If
                     End If
 
                     AcadConnection.myT.Commit()
@@ -3360,6 +3398,24 @@ Public Class UserControl3
             MsgBox(ex.ToString)
         End Try
     End Sub
+    Private Function SearchOppositeSurf(ByVal Surface As String) As String
+        Select Case Surface.ToLower
+            Case "front"
+                Return "BACK"
+            Case "back"
+                Return "FRONT"
+            Case "top"
+                Return "BOTTOM"
+            Case "bottom"
+                Return "TOP"
+            Case "left"
+                Return "RIGHT"
+            Case "right"
+                Return "LEFT"
+            Case Else
+                Return Nothing
+        End Select
+    End Function
 
 End Class
 

@@ -207,4 +207,16 @@ Public Class OutputFormat
         End Set
     End Property
 
+    'status for hidden feature
+    'status for Solid-SolidInBound Combination
+    Private HidStat As Boolean
+    Public Property HiddenStatus() As Boolean
+        Get
+            Return HidStat
+        End Get
+        Set(ByVal value As Boolean)
+            HidStat = value
+        End Set
+    End Property
+
 End Class

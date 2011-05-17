@@ -56,9 +56,10 @@ Public Class ViewProcessor
                     Feature.FeatureName = "Mill Candidate"
                     Feature.MiscProp(0) = "ミリング形状を選ぶ"
                     
-                    If Feature.HiddenLineCount > 0 Then
+                    If Feature.HiddenLineCount > 0 And setView.CBHidden = True Then
                         'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                         'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                        Feature.HiddenStatus = True
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                     Else
@@ -71,9 +72,10 @@ Public Class ViewProcessor
                     
                 Else
                     If Not Feature.FeatureName = "" Then
-                        If Feature.HiddenLineCount > 0 Then
+                        If Feature.HiddenLineCount > 0 And setView.CBHidden = True Then
                             'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                             'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                            Feature.HiddenStatus = True
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                         Else
@@ -138,6 +140,7 @@ Public Class ViewProcessor
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    Feature.HiddenStatus = True
                     SelectionCommand.HiddenFeature.Clear()
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
@@ -157,6 +160,7 @@ Public Class ViewProcessor
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
+                    Feature.HiddenStatus = True
                     SelectionCommand.HiddenFeature.Clear()
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))

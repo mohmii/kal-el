@@ -51,6 +51,7 @@ Public Class CircleProcessor
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(circle) Then
+                        Feature.HiddenStatus = True
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(circle)
                     Else
@@ -86,6 +87,7 @@ Public Class CircleProcessor
                 ListLoopTemp.Add(LoopTemp)
                 Feature.ListLoop = ListLoopTemp
                 If setView.CBHidden = True And Check2Database.CheckBottomTap(result) Then
+                    Feature.HiddenStatus = True
                     SelectionCommand.HiddenFeature.Add(Feature)
                     SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
                 Else
@@ -127,6 +129,7 @@ Public Class CircleProcessor
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
+                        Feature.HiddenStatus = True
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
                     Else
@@ -160,6 +163,7 @@ Public Class CircleProcessor
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
+                        Feature.HiddenStatus = True
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
                     Else
@@ -197,6 +201,7 @@ Public Class CircleProcessor
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(circle) Then
+                        Feature.HiddenStatus = True
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(circle)
                     Else
@@ -250,6 +255,7 @@ Public Class CircleProcessor
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(circle) Then
+                            Feature.HiddenStatus = True
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(circle)
@@ -288,6 +294,7 @@ Public Class CircleProcessor
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If Check2Database.CheckBottomTap(result) Then
+                        Feature.HiddenStatus = True
                         SelectionCommand.HiddenFeature.Clear()
                         SelectionCommand.HiddenFeature.Add(Feature)
                         SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
@@ -332,6 +339,7 @@ Public Class CircleProcessor
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
+                            Feature.HiddenStatus = True
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
@@ -368,6 +376,7 @@ Public Class CircleProcessor
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
+                            Feature.HiddenStatus = True
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(result.FirstOrDefault)
@@ -407,7 +416,8 @@ Public Class CircleProcessor
                         ListLoopTemp = New List(Of List(Of Entity))
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
-                        If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(circle) Then
+                        If Check2Database.CheckIfEntityHidden(circle) Then
+                            Feature.HiddenStatus = True
                             SelectionCommand.HiddenFeature.Clear()
                             SelectionCommand.HiddenFeature.Add(Feature)
                             SelectionCommand.HiddenEntity.Add(circle)
