@@ -49,6 +49,8 @@ Public Class DwgProcessor
         Next
     End Sub
 
+    Private ProgBar As ProgressForm
+
     'used for pre-pocessing drawing
     Public Sub StartPreProcessing(ByRef AllEntities As List(Of Entity), ByRef LineEntities As List(Of Line), _
                                   ByVal Transaction As Transaction)
@@ -56,7 +58,9 @@ Public Class DwgProcessor
         PointStatus = True
         iWhile = 0
         iFor = 0
-
+        Dim ProgBarStat As Boolean = False
+        ProgBar = New ProgressForm
+        ProgBar.Text = "ミリング形状処理中" 'Processing Milling Fatures
         'break point in the middle of the line
         Try
             While PointStatus = True And BreakFailed = False
@@ -86,12 +90,24 @@ Public Class DwgProcessor
                 SelectSinglePoints(AllPoints, AllSinglePoints)
 
                 UserControl3.acedSetStatusBarProgressMeter("Line Processor", 0, AllSinglePoints.Count)
+                ProgBar.ProgressBar1.Maximum = AllSinglePoints.Count
+                
+                If ProgBarStat = False Then
+                    ProgBar.Show()
+                    ProgBarStat = True
+                End If
+
+                ProgBar.ProgressBar1.Value = 0
+                System.Windows.Forms.Application.DoEvents()
+
                 Dim iLoadBar As Integer
 
                 For Each PointTmp As Point3d In AllSinglePoints
 
                     iFor = iFor + 1
-
+                    ProgBar.ProgressBar1.Value = iLoadBar + 1
+                    ProgBar.Label1.Text = Round(((ProgBar.ProgressBar1.Value / AllSinglePoints.Count) * 100), 0).ToString
+                    System.Windows.Forms.Application.DoEvents()
                     For Each EntityTmp As Entity In AllEntities
                         If TypeOf EntityTmp Is Line Then
                             BreakThisLine = EntityTmp
@@ -150,11 +166,14 @@ Public Class DwgProcessor
                     End If
                     'add the progress bar
                     iLoadBar = iLoadBar + 1
+
                     'System.Threading.Thread.Sleep(1)
                     UserControl3.acedSetStatusBarProgressMeterPos(iLoadBar)
                     System.Windows.Forms.Application.DoEvents()
                 Next
-
+                ProgBar.ProgressBar1.Value = AllSinglePoints.Count
+                ProgBar.Label1.Text = "100"
+                System.Windows.Forms.Application.DoEvents()
                 UserControl3.acedRestoreStatusBar()
 
                 'membuang dan menambah jika ada entitas yang di-split serta mengedit 
@@ -182,9 +201,18 @@ Public Class DwgProcessor
 
             End While
         Catch ex As Exception
+            ProgBar.ProgressBar1.Value = AllSinglePoints.Count
+            ProgBar.Label1.Text = "100"
+            System.Windows.Forms.Application.DoEvents()
+            ProgBar.Close()
+            ProgBar.Dispose()
             'Error in breaking line entities, please break line manually and just click ok
             'MsgBox("線素の分解でエラーが起こりました。　線素を手動で分解して下さい。")
         End Try
+        ProgBar.ProgressBar1.Value = AllSinglePoints.Count
+        ProgBar.Label1.Text = "100"
+        ProgBar.Close()
+        ProgBar.Dispose()
     End Sub
 
     'variable for breaking lines

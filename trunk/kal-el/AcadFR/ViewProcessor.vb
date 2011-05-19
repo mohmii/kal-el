@@ -3,6 +3,7 @@ Imports Autodesk.AutoCAD.Geometry
 Imports System.Math
 Imports FR
 
+
 Public Class ViewProcessor
     Private Check2Database As DatabaseConn
     Private MillingObjectId As List(Of ObjectId)
@@ -11,12 +12,20 @@ Public Class ViewProcessor
     Private Feature As OutputFormat
     Private SeqBound, SeqHid As Boolean
     Private SolLine, SolLineBound, VirtuLine, HidLine, SolArc, HidArc As Integer
+    Private ProgBar As ProgressForm
 
     'regular method
     Public Overloads Sub SingleViewProcessor(ByVal View As ViewProp, ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer)
 
         'initiate the progress bar
         UserControl3.acedSetStatusBarProgressMeter("Milling Features", 0, View.GroupLoop.Count)
+        ProgBar = New ProgressForm
+        ProgBar.Text = "ミリング形状処理中" 'Processing Milling Fatures
+        ProgBar.ProgressBar1.Maximum = View.GroupLoop.Count
+        ProgBar.Show()
+        ProgBar.ProgressBar1.Value = 0
+        System.Windows.Forms.Application.DoEvents()
+
         Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In View.GroupLoop
@@ -93,12 +102,17 @@ Public Class ViewProcessor
 
             'add the progress bar
             i = i + 1
+            ProgBar.ProgressBar1.Value = i
+            ProgBar.Label1.Text = Round(((i / View.GroupLoop.Count) * 100), 0).ToString
+
             'System.Threading.Thread.Sleep(1)
             UserControl3.acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
 
         UserControl3.acedRestoreStatusBar()
+        ProgBar.Close()
+        ProgBar.Dispose()
     End Sub
 
     'add feature manual method
@@ -107,6 +121,7 @@ Public Class ViewProcessor
                                              ByVal GLoopPts As List(Of List(Of Point3d)), ByRef FeatCount As Integer)
         Dim Selcom As New SelectionCommand
         Dim FeatureHidList As New List(Of OutputFormat)
+
         For Each GroupEntity As List(Of Entity) In GLoop
             MillingObjectId = New List(Of ObjectId)
             Feature = New OutputFormat
@@ -156,7 +171,7 @@ Public Class ViewProcessor
                 'set the feature property
                 Feature.FeatureName = "Mill Candidate"
                 Feature.MiscProp(0) = "ミリング形状を選ぶ"
-                
+
                 If Feature.HiddenLineCount > 0 Then
                     'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                     'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -632,6 +647,10 @@ Public Class ViewProcessor
         Feature.OriginAndAddition(5) = D3
         Feature.OriginAndAddition(6) = D4
         Feature.OriginAndAddition(7) = Angle
+
+        If View.DoubleMirrorStat = True Then
+            DoubleMirrorConversion(Feature)
+        End If
     End Sub
 
     'method for added manual single view
@@ -1018,12 +1037,6 @@ Public Class ViewProcessor
             Feature.MiscProp(0) = "止まり溝"
         End If
 
-        'convert special for bottom
-        'If Feature.MiscProp(1).ToLower.Equals("bottom") Then
-        '    OriU = Round((OriU + View.ActRefPoint.X) - (View.BoundProp(0) + (View.BoundProp(2) - View.ActRefPoint.X)), 3)
-        '    OriV = Round((OriV + View.ActRefPoint.Y) - (View.BoundProp(1) + (View.BoundProp(3) - View.ActRefPoint.Y)), 3)
-        'End If
-
         Feature.MiscProp(2) = Orientation
         Feature.OriginAndAddition(0) = Round(OriU, 3)
         Feature.OriginAndAddition(1) = Round(OriV, 3)
@@ -1033,8 +1046,65 @@ Public Class ViewProcessor
         Feature.OriginAndAddition(5) = D3
         Feature.OriginAndAddition(6) = D4
         Feature.OriginAndAddition(7) = Angle
+
+        If View.DoubleMirrorStat = True Then
+            DoubleMirrorConversion(Feature)
+        End If
     End Sub
 
+    'Prosedur untuk double mirror milling
+    Private Sub DoubleMirrorConversion(ByRef Feature As OutputFormat)
+        Dim TempCoordinateX, TempCoordinateY As Double
+        TempCoordinateX = New Double
+        TempCoordinateY = New Double
+
+        'for U / x coordinate
+        TempCoordinateX = -1 * Feature.OriginAndAddition(0)
+        'for V / y coordinate
+        TempCoordinateX = -1 * Feature.OriginAndAddition(1)
+
+        If Feature.FeatureName = "Square Slot" And Feature.MiscProp(2) = "0" Then
+            TempCoordinateX = TempCoordinateX - Feature.OriginAndAddition(4)
+        ElseIf Feature.FeatureName = "Square Slot" And Feature.MiscProp(2) = "1" Then
+            TempCoordinateY = TempCoordinateY - Feature.OriginAndAddition(4)
+        ElseIf Feature.FeatureName = "Square Step" And Feature.MiscProp(2) = "0" Then
+            Feature.MiscProp(2) = "1"
+        ElseIf Feature.FeatureName = "Square Step" And Feature.MiscProp(2) = "1" Then
+            Feature.MiscProp(2) = "0"
+        ElseIf Feature.FeatureName = "Square Step" And Feature.MiscProp(2) = "2" Then
+            Feature.MiscProp(2) = "3"
+        ElseIf Feature.FeatureName = "Square Step" And Feature.MiscProp(2) = "3" Then
+            Feature.MiscProp(2) = "2"
+        ElseIf Feature.FeatureName = "Blind Slot" And Feature.MiscProp(2) = "0" Then
+            Feature.MiscProp(2) = "1"
+        ElseIf Feature.FeatureName = "Blind Slot" And Feature.MiscProp(2) = "1" Then
+            Feature.MiscProp(2) = "0"
+        ElseIf Feature.FeatureName = "Blind Slot" And Feature.MiscProp(2) = "2" Then
+            Feature.MiscProp(2) = "3"
+        ElseIf Feature.FeatureName = "Blind Slot" And Feature.MiscProp(2) = "3" Then
+            Feature.MiscProp(2) = "2"
+        ElseIf Feature.FeatureName = "3-side Pocket" And Feature.MiscProp(2) = "0" Then
+            Feature.MiscProp(2) = "1"
+        ElseIf Feature.FeatureName = "3-side Pocket" And Feature.MiscProp(2) = "1" Then
+            Feature.MiscProp(2) = "0"
+        ElseIf Feature.FeatureName = "3-side Pocket" And Feature.MiscProp(2) = "2" Then
+            Feature.MiscProp(2) = "3"
+        ElseIf Feature.FeatureName = "3-side Pocket" And Feature.MiscProp(2) = "3" Then
+            Feature.MiscProp(2) = "2"
+        ElseIf Feature.FeatureName = "2-side Pocket" And Feature.MiscProp(2) = "0" Then
+            Feature.MiscProp(2) = "2"
+        ElseIf Feature.FeatureName = "2-side Pocket" And Feature.MiscProp(2) = "1" Then
+            Feature.MiscProp(2) = "3"
+        ElseIf Feature.FeatureName = "2-side Pocket" And Feature.MiscProp(2) = "2" Then
+            Feature.MiscProp(2) = "0"
+        ElseIf Feature.FeatureName = "2-side Pocket" And Feature.MiscProp(2) = "3" Then
+            Feature.MiscProp(2) = "1"
+        End If
+
+        Feature.OriginAndAddition(0) = TempCoordinateX
+        Feature.OriginAndAddition(1) = TempCoordinateY
+
+    End Sub
 
     Public Sub MultipleViewProcessor(ByVal ListView As List(Of ViewProp), ByVal ViewNum As Integer, ByRef UnIdentifiedFeature As List(Of OutputFormat), _
                                      ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer, ByRef IdentifiedFeature As List(Of OutputFormat), _

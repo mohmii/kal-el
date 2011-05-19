@@ -191,4 +191,15 @@ Public Class ViewProp
         End Set
     End Property
 
+    'status for indicating which process is being used to generating the view
+    Private DMstatus As Boolean = False
+    Public Property DoubleMirrorStat() As Boolean
+        Get
+            Return DMstatus
+        End Get
+        Set(ByVal value As Boolean)
+            DMstatus = value
+        End Set
+    End Property
+
 End Class
