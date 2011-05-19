@@ -262,6 +262,8 @@ Public Class MillingProcessor
 
     End Sub
 
+    Private ProgBar As ProgressForm
+
     Public Overloads Sub LoopFinder(ByVal Entities As List(Of Entity), ByRef GroupLoop As List(Of List(Of Entity)), _
                           ByRef GroupLoopPoints As List(Of List(Of Point3d)), ByRef MainLoop As List(Of Entity), ByRef MainLoopPts As List(Of Point3d))
 
@@ -297,6 +299,12 @@ Public Class MillingProcessor
 
         'initiate the progress bar
         UserControl3.acedSetStatusBarProgressMeter("Loop Finding", 0, UnAdjacentPoints.Count)
+        ProgBar = New ProgressForm
+        ProgBar.Text = "ミリング形状処理中" 'Processing Milling Fatures
+        ProgBar.ProgressBar1.Maximum = UnAdjacentPoints.Count
+        ProgBar.Show()
+        ProgBar.ProgressBar1.Value = 0
+        System.Windows.Forms.Application.DoEvents()
         Dim i As Integer
 
         'searching loop from each unadjacent points
@@ -312,12 +320,17 @@ Public Class MillingProcessor
 
             'add the progress bar
             i = i + 1
+            ProgBar.ProgressBar1.Value = i
+            ProgBar.Label1.Text = Round(((i / UnAdjacentPoints.Count) * 100), 0).ToString
+
             'System.Threading.Thread.Sleep(1)
             UserControl3.acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
 
         UserControl3.acedRestoreStatusBar()
+        ProgBar.Close()
+        ProgBar.Dispose()
     End Sub
 
     'polyline loop finder

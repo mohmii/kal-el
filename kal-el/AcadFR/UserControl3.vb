@@ -1966,19 +1966,8 @@ Public Class UserControl3
     End Sub
 
     Private CheckResult() As String
-
-    'Private Sub CircleManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CircleManual.Click
-    '    AddCircleManual()
-    'End Sub
-
-    'Private Sub MillingManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MillingManual.Click
-    '    AddMillingManual()
-    'End Sub
-
-    'Private Sub PolylManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PolyManual.Click
-    '    AddPolyManual()
-    'End Sub
-
+    Private SelCom As SelectionCommand
+    Private ViewAddManual As ViewProp
     Private Sub AddCircleManual()
         Try
             AcadConnection = New AcadConn
@@ -2046,6 +2035,15 @@ Public Class UserControl3
                         i = i + 1
                     Next
 
+                    SelCom = New SelectionCommand
+                    ViewAddManual = New ViewProp
+
+                    ViewAddManual = SelectionCommand.ProjectionView(SurfaceIndex)
+
+                    If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = True Then
+                        SelCom.SetRefPointDoubleMirror(ViewAddManual)
+                    End If
+
                     If CircEntAdd.Count <> 0 Then
                         Dim getGroup = From item In CircEntAdd _
                                            Group item By CircXCenter = item.Center Into GroupMember = Group _
@@ -2071,8 +2069,7 @@ Public Class UserControl3
                             CircMember = result.Count()
                             Dim Surface As Integer = 3
                             CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
-                                                          SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint, _
-                                                          SelectionCommand.ProjectionView(SurfaceIndex), ManualStat, FeatCount)
+                                                          ViewAddManual.ActRefPoint, ViewAddManual, ManualStat, FeatCount)
 
                             'CircProcessor.ClassifyCircles(CircMember, Check2Database, result, Surface, Feature, _
                             '                              SelectionCommand.LastRefPoint, SelectionCommand.LastViewSelected, ManualStat)
@@ -2171,6 +2168,15 @@ Public Class UserControl3
                         i = i + 1
                     Next
 
+                    SelCom = New SelectionCommand
+                    ViewAddManual = New ViewProp
+
+                    ViewAddManual = SelectionCommand.ProjectionView(SurfaceIndex)
+
+                    If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = True Then
+                        SelCom.SetRefPointDoubleMirror(ViewAddManual)
+                    End If
+
                     If LineEntAdd.Count <> 0 Then
                         MillProc.LoopFinder(AllEntAdd, GLoop, GLoopPts, MLoop, MLoopPts)
                         If GLoop.Count = 0 Then 'And (MLoop.Count >= 4)
@@ -2180,9 +2186,8 @@ Public Class UserControl3
                         'ViewProc.SingleViewProcessor(GLoop, SelectionCommand.LastViewSelected, _
                         '                             SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
                         '                             GLoopPts, SelectionCommand.UnIdentifiedCounter)
-                        ViewProc.SingleViewProcessor(GLoop, SelectionCommand.ProjectionView(SurfaceIndex), _
-                                                     SelectionCommand.UnIdentifiedFeature, SelectionCommand.TmpUnidentifiedFeature, _
-                                                     GLoopPts, FeatCount)
+                        ViewProc.SingleViewProcessor(GLoop, ViewAddManual, SelectionCommand.UnIdentifiedFeature, _
+                                                     SelectionCommand.TmpUnidentifiedFeature, GLoopPts, FeatCount)
                     End If
                     AcadConnection.myT.Commit()
 
@@ -2273,6 +2278,15 @@ Public Class UserControl3
                             i = i + 1
                         Next
 
+                        SelCom = New SelectionCommand
+                        ViewAddManual = New ViewProp
+
+                        ViewAddManual = SelectionCommand.ProjectionView(SurfaceIndex)
+
+                        If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = True Then
+                            SelCom.SetRefPointDoubleMirror(ViewAddManual)
+                        End If
+
                         Dim Poly As Polyline
                         Poly = New Polyline()
 
@@ -2343,14 +2357,14 @@ Public Class UserControl3
                                 Feature.MiscProp(1) = AddManualSurface.SelSurfMan
                                 Feature.Pline = PolyTemp
                                 'Feature.Planelocation = SelectionCommand.LastViewSelected
-                                Feature.Planelocation = SelectionCommand.ProjectionView(SurfaceIndex)
+                                Feature.Planelocation = ViewAddManual
 
                                 If Check2Database.CheckIfEntityHidden(PolyTemp) Then
                                     SelectionCommand.HiddenFeature.Clear()
                                     SelectionCommand.HiddenFeature.Add(Feature)
                                     SelectionCommand.HiddenEntity.Add(PolyTemp)
-                                    SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.ProjectionView(SurfaceIndex), _
-                                                          SelectionCommand.ProjectionView(SurfaceIndex).ViewType, SelectionCommand.ProjectionView)
+                                    SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, ViewAddManual, _
+                                                          ViewAddManual.ViewType, SelectionCommand.ProjectionView)
                                     'SelCom.HiddenInitiate(SelectionCommand.HiddenFeature, SelectionCommand.LastViewSelected, _
                                     '                      SelectionCommand.LastViewSelected.ViewType, SelectionCommand.ProjectionView)
                                 Else
@@ -2889,50 +2903,99 @@ Public Class UserControl3
                         i = i + 1
                     Next
 
-                    'temporary solution
                     If SelectedUF.Count = 1 Then
                         If SelectedUF(0).HiddenStatus = False Then
                             'visible surface
-                            Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                            Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = False Then
+                                Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            Else
+                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = -Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            End If
                         Else
                             'hidden surface
-                            If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
-                                'artinya permukaan itu sudah di add user
-                                'harusnya pake yg change feat coordinate
-                                Dim OppSurfaceIdx As New Integer
-                                For Each Surface As ViewProp In SelectionCommand.ProjectionView
-                                    If Surface.ViewType.ToLower = SearchOppositeSurf(ComboBox2.Text.ToLower).ToLower Then
-                                        OppSurfaceIdx = i
-                                        Exit For
-                                    End If
-                                    i = i + 1
-                                Next
-                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.X, 3)
-                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.Y, 3)
+
+                            'cari index opposite surface
+                            Dim OppSurfaceIdx As New Integer
+                            i = New Integer
+                            For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                                If Surface.ViewType.ToLower = SearchOppositeSurf(ComboBox2.Text.ToLower).ToLower Then
+                                    OppSurfaceIdx = i
+                                    Exit For
+                                End If
+                                i = i + 1
+                            Next
+
+                            Dim TempX As New Double
+                            Dim TempY As New Double
+
+                            'untuk permukaan yang belum di add user
+                            If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = False Then
+                                TempX = -Round(OriPoint.X - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.X, 3)
+                                TempY = Round(OriPoint.Y - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.Y, 3)
                             Else
-                                'artinya permukaan itu belum di add user
-                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                                TempX = Round(OriPoint.X - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.X, 3)
+                                TempY = -Round(OriPoint.Y - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.Y, 3)
                             End If
+
+                            'jika permukaan itu sudah di add user
+                            If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
+                                'change feat coordinate
+                                SelCom = New SelectionCommand
+                                SelCom.ChangeFeatCoordinate(SelectionCommand.ProjectionView(SurfaceIndex), SelectionCommand.ProjectionView(OppSurfaceIdx), TempX, TempY)
+                            End If
+
+                            Me.NumericUpDown1.Value = TempX
+                            Me.NumericUpDown2.Value = TempY
+
                         End If
                     ElseIf SelectedIF.Count = 1 Then
                         If SelectedIF(0).HiddenStatus = False Then
                             'visible surface
-                            Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                            Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            If ViewAddManual.DoubleMirrorStat = False Then
+                                Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            Else
+                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
+                                Me.NumericUpDown2.Value = -Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                            End If
                         Else
                             'hidden surface
-                            If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
-                                'artinya permukaan itu sudah di add user
-                                'harusnya pake yg change feat coordinate
-                                'Me.NumericUpDown1.Value = Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                                'Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+
+                            'cari index opposite surface
+                            Dim OppSurfaceIdx As New Integer
+                            i = New Integer
+                            For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                                If Surface.ViewType.ToLower = SearchOppositeSurf(ComboBox2.Text.ToLower).ToLower Then
+                                    OppSurfaceIdx = i
+                                    Exit For
+                                End If
+                                i = i + 1
+                            Next
+
+                            Dim TempX As New Double
+                            Dim TempY As New Double
+
+                            'untuk permukaan yang belum di add user
+                            If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = False Then
+                                TempX = -Round(OriPoint.X - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.X, 3)
+                                TempY = Round(OriPoint.Y - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.Y, 3)
                             Else
-                                'artinya permukaan itu belum di add user
-                                Me.NumericUpDown1.Value = -Round(OriPoint.X - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.X, 3)
-                                Me.NumericUpDown2.Value = Round(OriPoint.Y - SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint.Y, 3)
+                                TempX = Round(OriPoint.X - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.X, 3)
+                                TempY = -Round(OriPoint.Y - SelectionCommand.ProjectionView(OppSurfaceIdx).ActRefPoint.Y, 3)
                             End If
+
+                            'jika permukaan itu sudah di add user
+                            If SelectionCommand.ProjectionView(SurfaceIndex).GenerationStat = True Then
+                                'change feat coordinate
+                                SelCom = New SelectionCommand
+                                SelCom.ChangeFeatCoordinate(SelectionCommand.ProjectionView(SurfaceIndex), SelectionCommand.ProjectionView(OppSurfaceIdx), TempX, TempY)
+                            End If
+
+                            Me.NumericUpDown1.Value = TempX
+                            Me.NumericUpDown2.Value = TempY
+
                         End If
                     End If
 

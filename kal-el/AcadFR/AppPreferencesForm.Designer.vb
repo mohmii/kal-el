@@ -96,7 +96,7 @@ Partial Class AppPreferencesForm
         Me.UnderholeDiaTol.Name = "UnderholeDiaTol"
         Me.UnderholeDiaTol.Size = New System.Drawing.Size(51, 20)
         Me.UnderholeDiaTol.TabIndex = 3
-        Me.UnderholeDiaTol.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.UnderholeDiaTol.Value = New Decimal(New Integer() {5, 0, 0, 65536})
         '
         'HoleDiaTol
         '
@@ -108,16 +108,16 @@ Partial Class AppPreferencesForm
         Me.HoleDiaTol.Name = "HoleDiaTol"
         Me.HoleDiaTol.Size = New System.Drawing.Size(51, 20)
         Me.HoleDiaTol.TabIndex = 3
-        Me.HoleDiaTol.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.HoleDiaTol.Value = New Decimal(New Integer() {1, 0, 0, 65536})
         '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(6, 73)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(94, 13)
+        Me.Label5.Size = New System.Drawing.Size(106, 13)
         Me.Label5.TabIndex = 2
-        Me.Label5.Text = "下穴直径許容値:"
+        Me.Label5.Text = "タップ下穴径許容値:"
         '
         'Label4
         '
@@ -126,7 +126,7 @@ Partial Class AppPreferencesForm
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(82, 13)
         Me.Label4.TabIndex = 2
-        Me.Label4.Text = "穴直径許容値:"
+        Me.Label4.Text = "タップ径許容値:"
         '
         'Schematic
         '
@@ -138,16 +138,16 @@ Partial Class AppPreferencesForm
         Me.Schematic.Name = "Schematic"
         Me.Schematic.Size = New System.Drawing.Size(51, 20)
         Me.Schematic.TabIndex = 3
-        Me.Schematic.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.Schematic.Value = New Decimal(New Integer() {1, 0, 0, 65536})
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(6, 35)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(82, 13)
+        Me.Label3.Size = New System.Drawing.Size(94, 13)
         Me.Label3.TabIndex = 2
-        Me.Label3.Text = "穴直径許容値:"
+        Me.Label3.Text = "単独穴径許容値:"
         '
         'Tolerance
         '
@@ -159,7 +159,7 @@ Partial Class AppPreferencesForm
         Me.Tolerance.Name = "Tolerance"
         Me.Tolerance.Size = New System.Drawing.Size(51, 20)
         Me.Tolerance.TabIndex = 1
-        Me.Tolerance.Value = New Decimal(New Integer() {1, 0, 0, 131072})
+        Me.Tolerance.Value = New Decimal(New Integer() {1, 0, 0, 65536})
         '
         'Label2
         '
@@ -204,6 +204,8 @@ Partial Class AppPreferencesForm
         'PreProcess
         '
         Me.PreProcess.AutoSize = True
+        Me.PreProcess.Checked = True
+        Me.PreProcess.CheckState = System.Windows.Forms.CheckState.Checked
         Me.PreProcess.Location = New System.Drawing.Point(12, 145)
         Me.PreProcess.Name = "PreProcess"
         Me.PreProcess.Size = New System.Drawing.Size(108, 17)
@@ -214,6 +216,8 @@ Partial Class AppPreferencesForm
         'AutoRegLine
         '
         Me.AutoRegLine.AutoSize = True
+        Me.AutoRegLine.Checked = True
+        Me.AutoRegLine.CheckState = System.Windows.Forms.CheckState.Checked
         Me.AutoRegLine.Location = New System.Drawing.Point(12, 52)
         Me.AutoRegLine.Name = "AutoRegLine"
         Me.AutoRegLine.Size = New System.Drawing.Size(154, 17)
@@ -224,6 +228,8 @@ Partial Class AppPreferencesForm
         'AutoRegScheme
         '
         Me.AutoRegScheme.AutoSize = True
+        Me.AutoRegScheme.Checked = True
+        Me.AutoRegScheme.CheckState = System.Windows.Forms.CheckState.Checked
         Me.AutoRegScheme.Location = New System.Drawing.Point(12, 75)
         Me.AutoRegScheme.Name = "AutoRegScheme"
         Me.AutoRegScheme.Size = New System.Drawing.Size(178, 17)
@@ -244,6 +250,8 @@ Partial Class AppPreferencesForm
         'RemoveEntities
         '
         Me.RemoveEntities.AutoSize = True
+        Me.RemoveEntities.Checked = True
+        Me.RemoveEntities.CheckState = System.Windows.Forms.CheckState.Checked
         Me.RemoveEntities.Location = New System.Drawing.Point(12, 121)
         Me.RemoveEntities.Name = "RemoveEntities"
         Me.RemoveEntities.Size = New System.Drawing.Size(108, 17)

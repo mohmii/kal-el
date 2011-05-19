@@ -223,6 +223,7 @@ Public Class CircleProcessor
                                ByRef Feature As OutputFormat, ByVal RefPoint As Point3d, ByVal ProjectView As ViewProp, ByVal ManStat As Boolean, ByRef FeatCount As Integer)
         If ManStat = True Then
             Dim Selcom As New SelectionCommand
+
             If CircMember = 2 Then
 
                 'continue to identify tap and cbore hole with the fr database
@@ -500,12 +501,10 @@ Public Class CircleProcessor
         TempCoordinate = New Double
         TempCoordinate = Round(a - XReferencePoint, 3)
 
-        'convert coordinate only for bottom view
-        'If view.ViewType.ToLower.Equals("bottom") Then
-        '    TempCoordinate = Round((TempCoordinate + XReferencePoint) - (view.BoundProp(0) + (view.BoundProp(2) - XReferencePoint)), 3)
-        '    'TempCoordinate = -1 * TempCoordinate
-
-        'End If
+        'convert for double mirror
+        If view.DoubleMirrorStat = True Then
+            TempCoordinate = -TempCoordinate
+        End If
 
         Return TempCoordinate
 
@@ -516,12 +515,10 @@ Public Class CircleProcessor
         TempCoordinate = New Double
         TempCoordinate = Round(a - YReferencePoint, 3)
 
-        'convert coordinate only for bottom view
-        'If view.ViewType.ToLower.Equals("bottom") Then
-        '    TempCoordinate = Round((TempCoordinate + YReferencePoint) - (view.BoundProp(1) + (view.BoundProp(3) - YReferencePoint)), 3)
-
-        '    'TempCoordinate = -1 * TempCoordinate
-        'End If
+        'convert for double mirror
+        If view.DoubleMirrorStat = True Then
+            TempCoordinate = -TempCoordinate
+        End If
 
         Return TempCoordinate
 
