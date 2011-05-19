@@ -262,6 +262,15 @@ Public Class MillingProcessor
 
     End Sub
 
+    'collect only single point
+    Private Sub SelectSinglePoints(ByVal Points As List(Of Point3d), ByRef AllSinglePoints As List(Of Point3d))
+        For Each PointTmp As Point3d In Points
+            If GroupOfEntity(AllPoints.IndexOf(PointTmp)).EntityList.Count = 1 Then
+                AllSinglePoints.Add(PointTmp)
+            End If
+        Next
+    End Sub
+
     Private ProgBar As ProgressForm
 
     Public Overloads Sub LoopFinder(ByVal Entities As List(Of Entity), ByRef GroupLoop As List(Of List(Of Entity)), _
@@ -290,7 +299,18 @@ Public Class MillingProcessor
         MainLoopPoint = New List(Of Point3d)
 
         'search main loop
-        CheckMainLoop(SearchLeftCornerPoint(AllPoints), MainLoop)
+        If UserControl3.ManualStat = False Then
+            CheckMainLoop(SearchLeftCornerPoint(AllPoints), MainLoop)
+        Else
+            Dim AllSinglePoints As New List(Of Point3d)
+            SelectSinglePoints(AllPoints, AllSinglePoints)
+            If AllSinglePoints.Count > 0 Then
+                CheckMainLoop(AllSinglePoints(0), MainLoop)
+            Else
+                CheckMainLoop(SearchLeftCornerPoint(AllPoints), MainLoop)
+            End If
+        End If
+
         MainLoopPts = MainLoopPoint
 
         'create a new group of loop for this current view

@@ -896,6 +896,61 @@ Public Class ViewProcessor
             Feature.FeatureName = "3-side Pocket"
             Feature.MiscProp(0) = "３側ポケット"
 
+            '3-side pocket cutted
+        ElseIf (Feature.SolidLineCount = 3 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 2 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 0 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 3 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 2) Then
+            Dim OnBoundStat As Boolean
+            For Each EntityTmp As Entity In GEntity
+                If TypeOf EntityTmp Is Line Then
+                    TmpLine = New Line
+                    TmpLine = EntityTmp
+                    OnBoundStat = False
+                    For Each LineBB As Line In View.BoundingBox
+                        If ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                            (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                            PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
+                            D2 = Round(LineLength(TmpLine), 3)
+                            If LineBB = View.BoundingBox(0) Then
+                                Orientation = "0" 'Lower Side
+                                OriV = Round(((LineBB.StartPoint.Y + LineBB.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
+                            ElseIf LineBB = View.BoundingBox(1) Then
+                                Orientation = "3" 'Right Side
+                                OriU = Round(((LineBB.StartPoint.X + LineBB.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            ElseIf LineBB = View.BoundingBox(2) Then
+                                Orientation = "1" 'Upper Side
+                                OriV = Round(((LineBB.StartPoint.Y + LineBB.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
+                            ElseIf LineBB = View.BoundingBox(3) Then
+                                Orientation = "2" 'Left Side
+                                OriU = Round(((LineBB.StartPoint.X + LineBB.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                            End If
+                            OnBoundStat = True
+                            Exit For
+                        End If
+                    Next
+                    If OnBoundStat = False Then
+                        D1 = Round(LineLength(TmpLine), 3)
+                        If LineOrientation(TmpLine) = 0 Then
+                            OriU = Round(((TmpLine.StartPoint.X + TmpLine.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                        ElseIf LineOrientation(TmpLine) = 1 Then
+                            OriV = Round(((TmpLine.StartPoint.Y + TmpLine.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
+                        End If
+                    End If
+                ElseIf TypeOf EntityTmp Is Arc Then
+                    TmpArc = New Arc
+                    TmpArc = EntityTmp
+                    If D4 = 0 Then
+                        D4 = Round(TmpArc.Radius, 3)
+                    End If
+                End If
+            Next
+            D1 = D1 + (2 * D4)
+            D2 = D2 + D4
+            Feature.FeatureName = "3-side Pocket"
+            Feature.MiscProp(0) = "３側ポケット"
+
             '4-side pocket with D1, D2, D4, angle
         ElseIf (Feature.SolidLineCount = 4 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
         And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 4 And Feature.HiddenArcCount = 0) Or _
@@ -1035,6 +1090,180 @@ Public Class ViewProcessor
             D2 = D2 + TempRad
             Feature.FeatureName = "Blind Slot"
             Feature.MiscProp(0) = "止まり溝"
+
+            '2 side pocket cutted / Blind Slot cutted
+        ElseIf (Feature.SolidLineCount = 2 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 0 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 1 And Feature.HiddenArcCount = 0) Or _
+        (Feature.SolidLineCount = 0 And Feature.SolidLineInBoundCount = 0 And Feature.HiddenLineCount = 2 _
+        And Feature.VirtualLineCount = 0 And Feature.SolidArcCount = 0 And Feature.HiddenArcCount = 1) Then
+            Dim BldSlotStat As New Boolean
+
+            For Each EntityTmp As Entity In GEntity
+                If TypeOf EntityTmp Is Arc Then
+                    TmpArc = New Arc
+                    TmpArc = EntityTmp
+                    If Round(Abs(TmpArc.StartAngle - TmpArc.EndAngle), 3) = 90 Then
+                        BldSlotStat = False
+                    ElseIf Round(Abs(TmpArc.StartAngle - TmpArc.EndAngle), 3) = 180 Then
+                        BldSlotStat = True
+                    End If
+                End If
+            Next
+
+            If BldSlotStat = False Then '2 side pocket cutted
+                Dim Position1 As String = Nothing
+                Dim Position2 As String = Nothing
+                Dim DimPos1, DimPos2 As New Double
+                For Each EntityTmp As Entity In GEntity
+                    If TypeOf EntityTmp Is Line Then
+                        TmpLine = New Line
+                        TmpLine = EntityTmp
+                        For Each LineBB As Line In View.BoundingBox
+                            If ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2) Or _
+                                (PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2)) Then
+                                If LineBB = View.BoundingBox(0) Then
+                                    If IsNothing(Position1) Then
+                                        Position1 = "lower"
+                                        DimPos1 = LineLength(TmpLine)
+                                    Else
+                                        Position2 = "lower"
+                                        DimPos2 = LineLength(TmpLine)
+                                    End If
+                                ElseIf LineBB = View.BoundingBox(1) Then
+                                    If IsNothing(Position1) Then
+                                        Position1 = "right"
+                                        DimPos1 = LineLength(TmpLine)
+                                    Else
+                                        Position2 = "right"
+                                        DimPos2 = LineLength(TmpLine)
+                                    End If
+                                ElseIf LineBB = View.BoundingBox(2) Then
+                                    If IsNothing(Position1) Then
+                                        Position1 = "upper"
+                                        DimPos1 = LineLength(TmpLine)
+                                    Else
+                                        Position2 = "upper"
+                                        DimPos2 = LineLength(TmpLine)
+                                    End If
+                                ElseIf LineBB = View.BoundingBox(3) Then
+                                    If IsNothing(Position1) Then
+                                        Position1 = "left"
+                                        DimPos1 = LineLength(TmpLine)
+                                    Else
+                                        Position2 = "left"
+                                        DimPos2 = LineLength(TmpLine)
+                                    End If
+                                End If
+                                Exit For
+                            End If
+                        Next
+                    ElseIf TypeOf EntityTmp Is Arc Then
+                        TmpArc = New Arc
+                        TmpArc = EntityTmp
+                        D4 = Round(TmpArc.Radius, 3)
+                    End If
+                Next
+
+                'searching the orientation and origin
+                If (Position1 = "lower" And Position2 = "left") Or (Position1 = "left" And Position2 = "lower") Then
+                    Orientation = "0" 'Lower Left
+                    OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
+                    If (Position1 = "lower" And Position2 = "left") Then
+                        D1 = Round(DimPos2, 3) + D4
+                        D2 = Round(DimPos1, 3) + D4
+                    Else
+                        D2 = Round(DimPos2, 3) + D4
+                        D1 = Round(DimPos1, 3) + D4
+                    End If
+                ElseIf (Position1 = "lower" And Position2 = "right") Or (Position1 = "right" And Position2 = "lower") Then
+                    Orientation = "1" 'Lower Right
+                    OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(View.BoundProp(1) - View.BoundProp(1) - View.RefProp(1), 3)
+                    If (Position1 = "lower" And Position2 = "right") Then
+                        D2 = Round(DimPos2, 3) + D4
+                        D1 = Round(DimPos1, 3) + D4
+                    Else
+                        D1 = Round(DimPos2, 3)
+                        D2 = Round(DimPos1, 3)
+                    End If
+                ElseIf (Position1 = "upper" And Position2 = "right") Or (Position1 = "right" And Position2 = "upper") Then
+                    Orientation = "3" 'Upper Right
+                    OriU = Round(View.BoundProp(2) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
+                    If (Position1 = "upper" And Position2 = "right") Then
+                        D1 = Round(DimPos2, 3) + D4
+                        D2 = Round(DimPos1, 3) + D4
+                    Else
+                        D2 = Round(DimPos2, 3) + D4
+                        D1 = Round(DimPos1, 3) + D4
+                    End If
+                ElseIf (Position1 = "upper" And Position2 = "left") Or (Position1 = "left" And Position2 = "upper") Then
+                    Orientation = "2" 'Upper Left
+                    OriU = Round(View.BoundProp(0) - View.BoundProp(0) - View.RefProp(0), 3)
+                    OriV = Round(View.BoundProp(3) - View.BoundProp(1) - View.RefProp(1), 3)
+                    If (Position1 = "upper" And Position2 = "left") Then
+                        D2 = Round(DimPos2, 3) + D4
+                        D1 = Round(DimPos1, 3) + D4
+                    Else
+                        D1 = Round(DimPos2, 3) + D4
+                        D2 = Round(DimPos1, 3) + D4
+                    End If
+                End If
+                Feature.FeatureName = "2-side Pocket"
+                Feature.MiscProp(0) = "２側ポケット"
+
+            Else ' blind slot cutted
+                Dim TempRad As New Double
+                Dim TempCent As New Point3d
+                For Each EntityTmp As Entity In GEntity
+                    If TypeOf EntityTmp Is Line Then
+                        TmpLine = New Line
+                        TmpLine = EntityTmp
+                        For Each LineBB As Line In View.BoundingBox
+                            If (((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) = 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2)) Or _
+                                ((PointOnline(TmpLine.StartPoint, LineBB.StartPoint, LineBB.EndPoint) <> 2 And _
+                                PointOnline(TmpLine.EndPoint, LineBB.StartPoint, LineBB.EndPoint) = 2))) And D2 = 0 Then
+                                D2 = Round(LineLength(TmpLine), 3)
+                                If LineBB = View.BoundingBox(0) Then
+                                    Orientation = "0" 'Lower Side
+                                    OriV = Round(((LineBB.StartPoint.Y + LineBB.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
+                                ElseIf LineBB = View.BoundingBox(1) Then
+                                    Orientation = "3" 'Right Side
+                                    OriU = Round(((LineBB.StartPoint.X + LineBB.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                                ElseIf LineBB = View.BoundingBox(2) Then
+                                    Orientation = "1" 'Upper Side
+                                    OriV = Round(((LineBB.StartPoint.Y + LineBB.EndPoint.Y) / 2) - View.BoundProp(1) - View.RefProp(1), 3)
+                                ElseIf LineBB = View.BoundingBox(3) Then
+                                    Orientation = "2" 'Left Side
+                                    OriU = Round(((LineBB.StartPoint.X + LineBB.EndPoint.X) / 2) - View.BoundProp(0) - View.RefProp(0), 3)
+                                End If
+                                Exit For
+                            End If
+                        Next
+                    ElseIf TypeOf EntityTmp Is Arc Then
+                        TmpArc = New Arc
+                        TmpArc = EntityTmp
+                        If TempRad = 0 Then
+                            TempRad = Round(TmpArc.Radius, 3)
+                            TempCent = TmpArc.Center
+                        End If
+                    End If
+                Next
+                If Orientation = "0" Or Orientation = "1" Then
+                    OriU = Round(TempCent.X - View.BoundProp(0) - View.RefProp(0), 3)
+                ElseIf Orientation = "1" Or Orientation = "2" Then
+                    OriV = Round(TempCent.Y - View.BoundProp(1) - View.RefProp(1), 3)
+                End If
+                D1 = 2 * TempRad
+                D2 = D2 + TempRad
+                Feature.FeatureName = "Blind Slot"
+                Feature.MiscProp(0) = "止まり溝"
+            End If
+            
         End If
 
         Feature.MiscProp(2) = Orientation
@@ -1105,6 +1334,17 @@ Public Class ViewProcessor
         Feature.OriginAndAddition(1) = TempCoordinateY
 
     End Sub
+
+    'fungsi melihat orientasi horizontal/vertikal garis
+    Private Function LineOrientation(ByVal LineTemp As Line)
+        If isequal(LineTemp.StartPoint.Y, LineTemp.EndPoint.Y) = True Then
+            Return 0
+        ElseIf isequal(LineTemp.StartPoint.X, LineTemp.EndPoint.X) = True Then
+            Return 1
+        Else
+            Return 2
+        End If
+    End Function
 
     Public Sub MultipleViewProcessor(ByVal ListView As List(Of ViewProp), ByVal ViewNum As Integer, ByRef UnIdentifiedFeature As List(Of OutputFormat), _
                                      ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer, ByRef IdentifiedFeature As List(Of OutputFormat), _

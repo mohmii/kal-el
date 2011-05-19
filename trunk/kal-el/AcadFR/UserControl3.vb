@@ -2145,14 +2145,18 @@ Public Class UserControl3
                             If Check2Database.CheckIfEntity(Entity, ManualStat) = True And Not (TypeOf (Entity) Is DBPoint) Then
                                 If TypeOf (Entity) Is Circle Then
                                     CircEntAdd.Add(Entity)
+                                    AllEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Line Then
                                     LineEntAdd.Add(Entity)
+                                    AllEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Arc Then
                                     ArcEntAdd.Add(Entity)
+                                    AllEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Polyline Then
                                     PLEntAdd.Add(Entity)
+                                    AllEntAdd.Add(Entity)
                                 End If
-                                AllEntAdd.Add(Entity)
+
                             End If
                         Next id
 
@@ -3314,41 +3318,81 @@ Public Class UserControl3
                     End If
                     ChangeStat = True
                 ElseIf FeatureText.Contains("３側ポケット") Then '3-side pocket
-                    If OriText = "0" Or OriText = "1" Then
-                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
-                            If TypeOf EntityTmp Is Line Then
-                                TmpLine = New Line
-                                TmpLine = EntityTmp
-                                If LineOrientation(TmpLine) = 0 Then
-                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
-                                ElseIf LineOrientation(TmpLine) = 1 Then
-                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
+                    If SelFeat(0).ListLoop(0).Count = 6 Then
+                        If OriText = "0" Or OriText = "1" Then
+                            For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                                If TypeOf EntityTmp Is Line Then
+                                    TmpLine = New Line
+                                    TmpLine = EntityTmp
+                                    If LineOrientation(TmpLine) = 0 Then
+                                        D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                    ElseIf LineOrientation(TmpLine) = 1 Then
+                                        D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                    End If
+                                ElseIf TypeOf EntityTmp Is Arc Then
+                                    TmpArc = New Arc
+                                    TmpArc = EntityTmp
+                                    D4Temp = Round(TmpArc.Radius, 3)
                                 End If
-                            ElseIf TypeOf EntityTmp Is Arc Then
-                                TmpArc = New Arc
-                                TmpArc = EntityTmp
-                                D4Temp = Round(TmpArc.Radius, 3)
-                            End If
-                        Next
-                    ElseIf OriText = "2" Or OriText = "3" Then
-                        For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
-                            If TypeOf EntityTmp Is Line Then
-                                TmpLine = New Line
-                                TmpLine = EntityTmp
-                                If LineOrientation(TmpLine) = 0 Then
-                                    D2Temp = Max(D2Temp, LineLength(TmpLine))
-                                ElseIf LineOrientation(TmpLine) = 1 Then
-                                    D1Temp = Max(D1Temp, LineLength(TmpLine))
+                            Next
+                        ElseIf OriText = "2" Or OriText = "3" Then
+                            For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                                If TypeOf EntityTmp Is Line Then
+                                    TmpLine = New Line
+                                    TmpLine = EntityTmp
+                                    If LineOrientation(TmpLine) = 0 Then
+                                        D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                    ElseIf LineOrientation(TmpLine) = 1 Then
+                                        D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                    End If
+                                ElseIf TypeOf EntityTmp Is Arc Then
+                                    TmpArc = New Arc
+                                    TmpArc = EntityTmp
+                                    D4Temp = Round(TmpArc.Radius, 3)
                                 End If
-                            ElseIf TypeOf EntityTmp Is Arc Then
-                                TmpArc = New Arc
-                                TmpArc = EntityTmp
-                                D4Temp = Round(TmpArc.Radius, 3)
-                            End If
-                        Next
+                            Next
+                        End If
+                        D2Temp = D2Temp + D4Temp
+                        ChangeStat = True
+                    Else
+                        If OriText = "0" Or OriText = "1" Then
+                            For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                                If TypeOf EntityTmp Is Line Then
+                                    TmpLine = New Line
+                                    TmpLine = EntityTmp
+                                    If LineOrientation(TmpLine) = 0 Then
+                                        D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                    ElseIf LineOrientation(TmpLine) = 1 Then
+                                        D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                    End If
+                                ElseIf TypeOf EntityTmp Is Arc Then
+                                    TmpArc = New Arc
+                                    TmpArc = EntityTmp
+                                    D4Temp = Round(TmpArc.Radius, 3)
+                                End If
+                            Next
+                        ElseIf OriText = "2" Or OriText = "3" Then
+                            For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                                If TypeOf EntityTmp Is Line Then
+                                    TmpLine = New Line
+                                    TmpLine = EntityTmp
+                                    If LineOrientation(TmpLine) = 0 Then
+                                        D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                    ElseIf LineOrientation(TmpLine) = 1 Then
+                                        D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                    End If
+                                ElseIf TypeOf EntityTmp Is Arc Then
+                                    TmpArc = New Arc
+                                    TmpArc = EntityTmp
+                                    D4Temp = Round(TmpArc.Radius, 3)
+                                End If
+                            Next
+                        End If
+                        D1Temp = D1Temp + (2 * D4Temp)
+                        D2Temp = D2Temp + D4Temp
+                        ChangeStat = True
                     End If
-                    D2Temp = D2Temp + D4Temp
-                    ChangeStat = True
+                    
                 ElseIf FeatureText.Contains("２側ポケット") Then '2-side pocket
                     If OriText = "0" Or OriText = "3" Then
                         For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
@@ -3412,6 +3456,43 @@ Public Class UserControl3
                     ChangeStat = True
                 ElseIf FeatureText.Contains("止まり溝") Then 'blind slot
                     Dim TempRad As New Double
+                    If SelFeat(0).ListLoop(0).Count = 4 Then
+                        If OriText = "0" Or OriText = "1" Then
+                            For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                                If TypeOf EntityTmp Is Line Then
+                                    TmpLine = New Line
+                                    TmpLine = EntityTmp
+                                    If LineOrientation(TmpLine) = 0 Then
+                                        D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                    ElseIf LineOrientation(TmpLine) = 1 Then
+                                        D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                    End If
+                                ElseIf TypeOf EntityTmp Is Arc Then
+                                    TmpArc = New Arc
+                                    TmpArc = EntityTmp
+                                    TempRad = Round(TmpArc.Radius, 3)
+                                End If
+                            Next
+                        ElseIf OriText = "2" Or OriText = "3" Then
+                            For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
+                                If TypeOf EntityTmp Is Line Then
+                                    TmpLine = New Line
+                                    TmpLine = EntityTmp
+                                    If LineOrientation(TmpLine) = 0 Then
+                                        D2Temp = Max(D2Temp, LineLength(TmpLine))
+                                    ElseIf LineOrientation(TmpLine) = 1 Then
+                                        D1Temp = Max(D1Temp, LineLength(TmpLine))
+                                    End If
+                                ElseIf TypeOf EntityTmp Is Arc Then
+                                    TmpArc = New Arc
+                                    TmpArc = EntityTmp
+                                    TempRad = Round(TmpArc.Radius, 3)
+                                End If
+                            Next
+                        End If
+                        D2Temp = D2Temp + TempRad
+                        ChangeStat = True
+                    End If
                     If OriText = "0" Or OriText = "1" Then
                         For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)
                             If TypeOf EntityTmp Is Line Then
@@ -3446,6 +3527,9 @@ Public Class UserControl3
                         Next
                     End If
                     D2Temp = D2Temp + TempRad
+                    If D1Temp = 0 Then
+                        D1Temp = 2 * TempRad
+                    End If
                     ChangeStat = True
                 End If
             End If
