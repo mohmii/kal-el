@@ -40,19 +40,19 @@ Public Class AppPreferencesForm
 
         If Me.PreProcess.Checked = True Then
             If Me.Tolerance.Value = 0 Then
-                Me.Tolerance.Value = 0.01
+                Me.Tolerance.Value = 0.1
             End If
 
             If Me.Schematic.Value = 0 Then
-                Me.Schematic.Value = 0.01
+                Me.Schematic.Value = 0.1
             End If
 
             If Me.HoleDiaTol.Value = 0 Then
-                Me.HoleDiaTol.Value = 0.01
+                Me.HoleDiaTol.Value = 0.1
             End If
 
             If Me.UnderholeDiaTol.Value = 0 Then
-                Me.UnderholeDiaTol.Value = 0.01
+                Me.UnderholeDiaTol.Value = 0.1
             End If
 
             AppPreferences.ToleranceValues = Me.Tolerance.Value
@@ -65,15 +65,15 @@ Public Class AppPreferencesForm
             adskClass.AppPreferences.HoleTolerance = Me.HoleDiaTol.Value
             adskClass.AppPreferences.UnderholeTolerance = Me.UnderholeDiaTol.Value
         Else
-            AppPreferences.ToleranceValues = 0.01
-            AppPreferences.SchematicSymbol = 0.01
-            AppPreferences.HoleTolerance = 0.01
-            AppPreferences.UnderholeTolerance = 0.01
+            AppPreferences.ToleranceValues = 0.1
+            AppPreferences.SchematicSymbol = 0.1
+            AppPreferences.HoleTolerance = 0.1
+            AppPreferences.UnderholeTolerance = 0.1
 
-            adskClass.AppPreferences.ToleranceValues = 0.01
-            adskClass.AppPreferences.SchematicSymbol = 0.01
-            adskClass.AppPreferences.HoleTolerance = 0.01
-            adskClass.AppPreferences.UnderholeTolerance = 0.01
+            adskClass.AppPreferences.ToleranceValues = 0.1
+            adskClass.AppPreferences.SchematicSymbol = 0.1
+            adskClass.AppPreferences.HoleTolerance = 0.1
+            adskClass.AppPreferences.UnderholeTolerance = 0.1
         End If
 
         AppPreferences.SetWorkSpaceDir()
@@ -99,6 +99,10 @@ Public Class AppPreferencesForm
     Private Sub PreProcess_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PreProcess.CheckStateChanged, RemoveEntities.CheckStateChanged
 
         If Me.PreProcess.CheckState = 1 Then
+            Me.Tolerance.Value = 0.1
+            Me.Schematic.Value = 0.1
+            Me.HoleDiaTol.Value = 0.1
+            Me.UnderholeDiaTol.Value = 0.5
             Me.Tolerance.Enabled = True
             Me.Schematic.Enabled = True
             Me.HoleDiaTol.Enabled = True
