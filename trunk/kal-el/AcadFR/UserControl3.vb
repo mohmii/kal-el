@@ -979,6 +979,7 @@ Public Class UserControl3
         End If
     End Sub
 
+
     Private Feature2Zoom As OutputFormat
 
     'for view zooming
@@ -1117,25 +1118,6 @@ Public Class UserControl3
         acedRestoreStatusBar()
     End Sub
 
-    'deleting process when delete command in context menu strip was being clicked
-    'Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteStripMenuItem1.Click
-
-    '    'delete the selected items in Identified Feature table
-    '    If Me.Label16.Text <> 0 Then
-    '        StartDeleting(Me.IdentifiedFeature)
-    '        Me.IdentifiedFeature.ClearSelection()
-    '        Me.Label16.Text = 0
-    '    End If
-
-    '    'delete the selected items in Unidentified Feature table
-    '    If Me.Label17.Text <> 0 Then
-    '        StartDeleting(Me.UnidentifiedFeature)
-    '        Me.UnidentifiedFeature.ClearSelection()
-    '        Me.Label17.Text = 0
-    '    End If
-
-    'End Sub
-
     Private RowIndex As List(Of Integer)
 
     Public Sub StartDeleting(ByVal Table2Check As System.Windows.Forms.DataGridView)
@@ -1180,6 +1162,80 @@ Public Class UserControl3
                     End If
                 End If
             End If
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
+    'machining on both size
+    Private Sub AddToOppositeSurfaceMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddToOppositeSurfaceMenuItem1.Click
+        If Me.Label16.Text <> "0" Then
+            If MsgBox("FR will create projection of selected features to opposite surface. Do you want to proceed？", MsgBoxStyle.YesNo, _
+                                          "AcadFR - Add To Opposite Surface") = MsgBoxResult.Yes Then
+                StartAddToOppositeSurface(Me.IdentifiedFeature)
+            End If
+        End If
+
+        If Me.Label17.Text <> "0" Then
+            If MsgBox("FR will create projection of selected features to opposite surface. Do you want to proceed？", MsgBoxStyle.YesNo, _
+                                          "AcadFR - Add To Opposite Surface") = MsgBoxResult.Yes Then
+                StartAddToOppositeSurface(Me.UnidentifiedFeature)
+            End If
+
+        End If
+    End Sub
+
+    'add to opposite surface
+    Private Sub StartAddToOppositeSurface(ByRef Table2Check As System.Windows.Forms.DataGridView)
+        Try
+
+        
+            Dim FeatureNeedToAdd As New List(Of OutputFormat)
+            Dim OppSurf As New ViewProp
+            Dim SurfaceIndex As New Integer
+            Dim FeatSurf As String
+            Dim i As New Integer
+            Dim j As New Integer
+            'Add copy to opposite surface
+            For Each Rows As System.Windows.Forms.DataGridViewRow In Table2Check.SelectedRows
+                'add the feature to the list of feature that need to be added
+                FeatureNeedToAdd.Add(Rows.Cells("Object").Value)
+
+                For Each GroupEntity As List(Of Entity) In FeatureNeedToAdd(j).ListLoop
+                    SelectionCommand.HiddenEntity.Add(GroupEntity(0))
+                Next
+                SelectionCommand.HiddenFeature.Add(FeatureNeedToAdd(j))
+                j = j + 1
+            Next
+            FeatSurf = FeatureNeedToAdd(0).SurfaceName
+            SelCom = New SelectionCommand
+
+            'taken from hidden view method
+            For Each Surface As ViewProp In SelectionCommand.ProjectionView
+                If Surface.ViewType.ToLower = FeatSurf.ToLower Then
+                    SurfaceIndex = i
+                    Exit For
+                End If
+                i = i + 1
+            Next
+            SelCom.SetTheBoundaryParameter(OppSurf, SelectionCommand.ProjectionView(SurfaceIndex))
+            SelCom.SetTheReferencePoint(OppSurf, SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint)
+            'change coordinate for double mirror
+            If SelectionCommand.ProjectionView(SurfaceIndex).DoubleMirrorStat = True Then
+                SelCom.SetRefPointDoubleMirror(OppSurf)
+            End If
+            OppSurf.ActRefPoint = SelectionCommand.ProjectionView(SurfaceIndex).ActRefPoint
+
+            OppSurf.GenerationStat = False
+
+            SelCom.RegisterToViewCollection(SelectionCommand.ProjectionView, OppSurf, FeatureNeedToAdd)
+
+            For Each SurfAdded As String In ComboBox2.Items
+                If SurfAdded.ToLower = OppSurf.ToString.ToLower Then
+                    adskClass.myPalette.ComboBox2.Items.Add(OppSurf.ViewType.ToUpper)
+                    Exit For
+                End If
+            Next
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -2257,7 +2313,7 @@ Public Class UserControl3
 
                             'add circle, line and arc entities
                             If Check2Database.CheckIfEntity(Entity, ManualStat) = True And Not (TypeOf (Entity) Is DBPoint) Then
-                                
+
                                 If TypeOf (Entity) Is Line Then
                                     LineEntAdd.Add(Entity)
                                 ElseIf TypeOf (Entity) Is Arc Then
@@ -2829,7 +2885,7 @@ Public Class UserControl3
     End Sub
 
     Private Sub ByEntityCham_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ByEntityCham.Click
-       Try
+        Try
             AcadConnection = New AcadConn
             Dim LineTmp As New Line
             Dim CorrectSelectionStat As Boolean = False
@@ -3392,7 +3448,7 @@ Public Class UserControl3
                         D2Temp = D2Temp + D4Temp
                         ChangeStat = True
                     End If
-                    
+
                 ElseIf FeatureText.Contains("２側ポケット") Then '2-side pocket
                     If OriText = "0" Or OriText = "3" Then
                         For Each EntityTmp As Entity In SelFeat(0).ListLoop(0)

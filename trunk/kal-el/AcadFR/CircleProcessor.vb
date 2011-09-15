@@ -48,6 +48,8 @@ Public Class CircleProcessor
                     Feature.OriginAndAddition(6) = 0
                     Feature.OriginAndAddition(7) = 0
                     ListLoopTemp = New List(Of List(Of Entity))
+                    LoopTemp = New List(Of Entity)
+                    LoopTemp.Add(circle)
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(circle) Then
@@ -84,6 +86,8 @@ Public Class CircleProcessor
                 Feature.OriginAndAddition(6) = CheckResult(6)
                 Feature.OriginAndAddition(7) = 0
                 ListLoopTemp = New List(Of List(Of Entity))
+                LoopTemp = New List(Of Entity)
+                LoopTemp.Add(result.FirstOrDefault)
                 ListLoopTemp.Add(LoopTemp)
                 Feature.ListLoop = ListLoopTemp
                 If setView.CBHidden = True And Check2Database.CheckBottomTap(result) Then
@@ -126,6 +130,8 @@ Public Class CircleProcessor
                     Feature.OriginAndAddition(6) = 0
                     Feature.OriginAndAddition(7) = 0
                     ListLoopTemp = New List(Of List(Of Entity))
+                    LoopTemp = New List(Of Entity)
+                    LoopTemp.Add(result.FirstOrDefault)
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
@@ -160,6 +166,8 @@ Public Class CircleProcessor
                     Feature.OriginAndAddition(6) = 0
                     Feature.OriginAndAddition(7) = 0
                     ListLoopTemp = New List(Of List(Of Entity))
+                    LoopTemp = New List(Of Entity)
+                    LoopTemp.Add(result.FirstOrDefault)
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
@@ -198,6 +206,8 @@ Public Class CircleProcessor
                     Feature.OriginAndAddition(6) = 0
                     Feature.OriginAndAddition(7) = 0
                     ListLoopTemp = New List(Of List(Of Entity))
+                    LoopTemp = New List(Of Entity)
+                    LoopTemp.Add(circle)
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If setView.CBHidden = True And Check2Database.CheckIfEntityHidden(circle) Then
@@ -253,6 +263,8 @@ Public Class CircleProcessor
                         Feature.OriginAndAddition(6) = 0
                         Feature.OriginAndAddition(7) = 0
                         ListLoopTemp = New List(Of List(Of Entity))
+                        LoopTemp = New List(Of Entity)
+                        LoopTemp.Add(circle)
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(circle) Then
@@ -292,6 +304,8 @@ Public Class CircleProcessor
                     Feature.OriginAndAddition(6) = CheckResult(6)
                     Feature.OriginAndAddition(7) = 0
                     ListLoopTemp = New List(Of List(Of Entity))
+                    LoopTemp = New List(Of Entity)
+                    LoopTemp.Add(result.FirstOrDefault)
                     ListLoopTemp.Add(LoopTemp)
                     Feature.ListLoop = ListLoopTemp
                     If Check2Database.CheckBottomTap(result) Then
@@ -337,6 +351,8 @@ Public Class CircleProcessor
                         Feature.OriginAndAddition(6) = 0
                         Feature.OriginAndAddition(7) = 0
                         ListLoopTemp = New List(Of List(Of Entity))
+                        LoopTemp = New List(Of Entity)
+                        LoopTemp.Add(result.FirstOrDefault)
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
@@ -374,6 +390,8 @@ Public Class CircleProcessor
                         Feature.OriginAndAddition(6) = 0
                         Feature.OriginAndAddition(7) = 0
                         ListLoopTemp = New List(Of List(Of Entity))
+                        LoopTemp = New List(Of Entity)
+                        LoopTemp.Add(result.FirstOrDefault)
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(result.FirstOrDefault) Then
@@ -415,6 +433,8 @@ Public Class CircleProcessor
                         Feature.OriginAndAddition(6) = 0
                         Feature.OriginAndAddition(7) = 0
                         ListLoopTemp = New List(Of List(Of Entity))
+                        LoopTemp = New List(Of Entity)
+                        LoopTemp.Add(circle)
                         ListLoopTemp.Add(LoopTemp)
                         Feature.ListLoop = ListLoopTemp
                         If Check2Database.CheckIfEntityHidden(circle) Then
