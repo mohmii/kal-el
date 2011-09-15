@@ -50,6 +50,7 @@ Partial Class UserControl3
         Me.ZoomByFeatureMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.HighlightStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.AddToOppositeSurfaceMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.KryptonHeaderGroup2 = New ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup
         Me.ButtonSpecHeaderGroup2 = New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
@@ -117,7 +118,6 @@ Partial Class UserControl3
         Me.PolyManual = New System.Windows.Forms.ToolStripMenuItem
         Me.ContextMenuAddUV = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ByPoint = New System.Windows.Forms.ToolStripMenuItem
-        Me.AddToOppositeSurfaceMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         CType(Me.KryptonHeaderGroup1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.KryptonHeaderGroup1.Panel, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.KryptonHeaderGroup1.Panel.SuspendLayout()
@@ -478,6 +478,12 @@ Partial Class UserControl3
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(206, 6)
         '
+        'AddToOppositeSurfaceMenuItem1
+        '
+        Me.AddToOppositeSurfaceMenuItem1.Name = "AddToOppositeSurfaceMenuItem1"
+        Me.AddToOppositeSurfaceMenuItem1.Size = New System.Drawing.Size(209, 22)
+        Me.AddToOppositeSurfaceMenuItem1.Text = "Add To Opposite Surface"
+        '
         'KryptonHeaderGroup2
         '
         Me.KryptonHeaderGroup2.ButtonSpecs.AddRange(New ComponentFactory.Krypton.Toolkit.ButtonSpecHeaderGroup() {Me.ButtonSpecHeaderGroup2})
@@ -520,7 +526,7 @@ Partial Class UserControl3
         Me.GroupBox4.Size = New System.Drawing.Size(331, 174)
         Me.GroupBox4.TabIndex = 0
         Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Feature Preview"
+        Me.GroupBox4.Text = "説明図"
         '
         'PictureBox1
         '
@@ -589,7 +595,7 @@ Partial Class UserControl3
         Me.AddChamfer.Name = "AddChamfer"
         Me.AddChamfer.Size = New System.Drawing.Size(40, 26)
         Me.AddChamfer.TabIndex = 14
-        Me.AddChamfer.Text = "Add Chamfer"
+        Me.AddChamfer.Text = "チャンファ幅追加"
         Me.ToolTip1.SetToolTip(Me.AddChamfer, "Add Chamfer")
         Me.AddChamfer.UseVisualStyleBackColor = True
         '
@@ -600,7 +606,7 @@ Partial Class UserControl3
         Me.AddUV.Name = "AddUV"
         Me.AddUV.Size = New System.Drawing.Size(35, 50)
         Me.AddUV.TabIndex = 14
-        Me.AddUV.Text = "Add U, V"
+        Me.AddUV.Text = "追加 U, V"
         Me.AddUV.UseVisualStyleBackColor = True
         '
         'AddW
@@ -610,7 +616,7 @@ Partial Class UserControl3
         Me.AddW.Name = "AddW"
         Me.AddW.Size = New System.Drawing.Size(68, 20)
         Me.AddW.TabIndex = 14
-        Me.AddW.Text = "Add W"
+        Me.AddW.Text = "追加 W"
         Me.ToolTip1.SetToolTip(Me.AddW, "Add W")
         Me.AddW.UseVisualStyleBackColor = True
         '
@@ -620,7 +626,7 @@ Partial Class UserControl3
         Me.AddD1.Name = "AddD1"
         Me.AddD1.Size = New System.Drawing.Size(68, 20)
         Me.AddD1.TabIndex = 14
-        Me.AddD1.Text = "Add D1"
+        Me.AddD1.Text = "追加 D1"
         Me.ToolTip1.SetToolTip(Me.AddD1, "Add D1")
         Me.AddD1.UseVisualStyleBackColor = True
         '
@@ -630,7 +636,7 @@ Partial Class UserControl3
         Me.AddD2.Name = "AddD2"
         Me.AddD2.Size = New System.Drawing.Size(68, 20)
         Me.AddD2.TabIndex = 14
-        Me.AddD2.Text = "Add D2"
+        Me.AddD2.Text = "追加 D2"
         Me.ToolTip1.SetToolTip(Me.AddD2, "Add D2")
         Me.AddD2.UseVisualStyleBackColor = True
         '
@@ -640,7 +646,7 @@ Partial Class UserControl3
         Me.AddD4.Name = "AddD4"
         Me.AddD4.Size = New System.Drawing.Size(68, 20)
         Me.AddD4.TabIndex = 14
-        Me.AddD4.Text = "Add D4"
+        Me.AddD4.Text = "追加 D4"
         Me.ToolTip1.SetToolTip(Me.AddD4, "Add D4")
         Me.AddD4.UseVisualStyleBackColor = True
         '
@@ -650,7 +656,7 @@ Partial Class UserControl3
         Me.AddD3.Name = "AddD3"
         Me.AddD3.Size = New System.Drawing.Size(68, 20)
         Me.AddD3.TabIndex = 14
-        Me.AddD3.Text = "Add D3"
+        Me.AddD3.Text = "追加 D3"
         Me.ToolTip1.SetToolTip(Me.AddD3, "Add D3")
         Me.AddD3.UseVisualStyleBackColor = True
         '
@@ -662,7 +668,7 @@ Partial Class UserControl3
         Me.Update1.Size = New System.Drawing.Size(31, 50)
         Me.Update1.TabIndex = 0
         Me.Update1.TabStop = False
-        Me.Update1.Text = "Update"
+        Me.Update1.Text = "変更"
         Me.ToolTip1.SetToolTip(Me.Update1, "Update")
         Me.Update1.UseVisualStyleBackColor = True
         '
@@ -673,9 +679,9 @@ Partial Class UserControl3
         Me.Label13.AutoSize = True
         Me.Label13.Location = New System.Drawing.Point(70, 290)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(34, 13)
+        Me.Label13.Size = New System.Drawing.Size(31, 13)
         Me.Label13.TabIndex = 0
-        Me.Label13.Text = "Angle"
+        Me.Label13.Text = "角度"
         '
         'Label3
         '
@@ -940,9 +946,9 @@ Partial Class UserControl3
         Me.Label8.AutoSize = True
         Me.Label8.Location = New System.Drawing.Point(11, 86)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(46, 13)
+        Me.Label8.Size = New System.Drawing.Size(51, 13)
         Me.Label8.TabIndex = 0
-        Me.Label8.Text = "Chamfer"
+        Me.Label8.Text = "面取り幅"
         '
         'Label7
         '
@@ -973,9 +979,9 @@ Partial Class UserControl3
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(11, 43)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(44, 13)
+        Me.Label5.Size = New System.Drawing.Size(43, 13)
         Me.Label5.TabIndex = 0
-        Me.Label5.Text = "Surface"
+        Me.Label5.Text = "設計面"
         '
         'Label4
         '
@@ -984,9 +990,9 @@ Partial Class UserControl3
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(11, 21)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(74, 13)
+        Me.Label4.Size = New System.Drawing.Size(43, 13)
         Me.Label4.TabIndex = 0
-        Me.Label4.Text = "Feature Name"
+        Me.Label4.Text = "形状名"
         '
         'version
         '
@@ -1141,12 +1147,6 @@ Partial Class UserControl3
         Me.ByPoint.Name = "ByPoint"
         Me.ByPoint.Size = New System.Drawing.Size(128, 22)
         Me.ByPoint.Text = "1点で指定"
-        '
-        'AddToOppositeSurfaceMenuItem1
-        '
-        Me.AddToOppositeSurfaceMenuItem1.Name = "AddToOppositeSurfaceMenuItem1"
-        Me.AddToOppositeSurfaceMenuItem1.Size = New System.Drawing.Size(209, 22)
-        Me.AddToOppositeSurfaceMenuItem1.Text = "Add To Opposite Surface"
         '
         'UserControl3
         '
