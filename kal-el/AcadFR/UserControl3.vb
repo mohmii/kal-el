@@ -1188,26 +1188,38 @@ Public Class UserControl3
     'add to opposite surface
     Private Sub StartAddToOppositeSurface(ByRef Table2Check As System.Windows.Forms.DataGridView)
         Try
-
-        
-            Dim FeatureNeedToAdd As New List(Of OutputFormat)
+            Dim ListFeatureNeedToAdd As New List(Of OutputFormat)
+            Dim FeatureNeedToAdd As OutputFormat
             Dim OppSurf As New ViewProp
             Dim SurfaceIndex As New Integer
             Dim FeatSurf As String
             Dim i As New Integer
             Dim j As New Integer
+            Dim WatchedFEat As New OutputFormat
+            WatchedFEat = SelectedIF(0)
+
             'Add copy to opposite surface
             For Each Rows As System.Windows.Forms.DataGridViewRow In Table2Check.SelectedRows
                 'add the feature to the list of feature that need to be added
-                FeatureNeedToAdd.Add(Rows.Cells("Object").Value)
+                FeatureNeedToAdd = New OutputFormat
+                If Me.Label16.Text <> "0" Then
+                    FeatureNeedToAdd = SelectionCommand.IdentifiedFeature(SelectionCommand.IdentifiedFeature.IndexOf(SelectedIF(j)))
+                    'FeatureNeedToAdd = SelectedIF(j)
+                ElseIf Me.Label17.Text <> "0" Then
+                    FeatureNeedToAdd = SelectionCommand.UnIdentifiedFeature(SelectionCommand.UnIdentifiedFeature.IndexOf(SelectedUF(j)))
+                    'FeatureNeedToAdd = SelectedUF(j)
+                End If
 
-                For Each GroupEntity As List(Of Entity) In FeatureNeedToAdd(j).ListLoop
+                'FeatureNeedToAdd = Rows.Cells("Object").Value
+                ListFeatureNeedToAdd.Add(FeatureNeedToAdd)
+
+                For Each GroupEntity As List(Of Entity) In ListFeatureNeedToAdd(j).ListLoop
                     SelectionCommand.HiddenEntity.Add(GroupEntity(0))
                 Next
-                SelectionCommand.HiddenFeature.Add(FeatureNeedToAdd(j))
+                SelectionCommand.HiddenFeature.Add(ListFeatureNeedToAdd(j))
                 j = j + 1
             Next
-            FeatSurf = FeatureNeedToAdd(0).SurfaceName
+            FeatSurf = ListFeatureNeedToAdd(0).SurfaceName
             SelCom = New SelectionCommand
 
             'taken from hidden view method
@@ -1228,14 +1240,19 @@ Public Class UserControl3
 
             OppSurf.GenerationStat = False
 
-            SelCom.RegisterToViewCollection(SelectionCommand.ProjectionView, OppSurf, FeatureNeedToAdd)
+            SelCom.RegisterToViewCollection(SelectionCommand.ProjectionView, OppSurf, ListFeatureNeedToAdd)
 
+            Dim ViewStat As New Boolean
             For Each SurfAdded As String In ComboBox2.Items
-                If SurfAdded.ToLower = OppSurf.ToString.ToLower Then
-                    adskClass.myPalette.ComboBox2.Items.Add(OppSurf.ViewType.ToUpper)
+                If SurfAdded.ToLower = OppSurf.ViewType.ToLower Then
+                    ViewStat = True
                     Exit For
                 End If
             Next
+            If ViewStat = True Then
+                adskClass.myPalette.ComboBox2.Items.Add(OppSurf.ViewType.ToUpper)
+            End If
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
