@@ -1170,15 +1170,15 @@ Public Class UserControl3
     'machining on both size
     Private Sub AddToOppositeSurfaceMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddToOppositeSurfaceMenuItem1.Click
         If Me.Label16.Text <> "0" Then
-            If MsgBox("FR will create projection of selected features to opposite surface. Do you want to proceed？", MsgBoxStyle.YesNo, _
-                                          "AcadFR - Add To Opposite Surface") = MsgBoxResult.Yes Then
+            If MsgBox("選んだ形状を反対側の面に作成。　続けますか？", MsgBoxStyle.YesNo, _
+                                          "AcadFR - 反対側の面に追加") = MsgBoxResult.Yes Then
                 StartAddToOppositeSurface(Me.IdentifiedFeature)
             End If
         End If
 
         If Me.Label17.Text <> "0" Then
-            If MsgBox("FR will create projection of selected features to opposite surface. Do you want to proceed？", MsgBoxStyle.YesNo, _
-                                          "AcadFR - Add To Opposite Surface") = MsgBoxResult.Yes Then
+            If MsgBox("選んだ形状を反対側の面に作成。　続けますか？", MsgBoxStyle.YesNo, _
+                                          "AcadFR - 反対側の面に追加") = MsgBoxResult.Yes Then
                 StartAddToOppositeSurface(Me.UnidentifiedFeature)
             End If
 
@@ -1195,8 +1195,6 @@ Public Class UserControl3
             Dim FeatSurf As String
             Dim i As New Integer
             Dim j As New Integer
-            Dim WatchedFEat As New OutputFormat
-            WatchedFEat = SelectedIF(0)
 
             'Add copy to opposite surface
             For Each Rows As System.Windows.Forms.DataGridViewRow In Table2Check.SelectedRows
@@ -1309,7 +1307,7 @@ Public Class UserControl3
                     Exit For
                 End If
             Next
-            If ViewStat = True Then
+            If ViewStat = False Then
                 adskClass.myPalette.ComboBox2.Items.Add(OppSurf.ViewType.ToUpper)
             End If
 
