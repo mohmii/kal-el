@@ -1169,24 +1169,18 @@ Public Class UserControl3
 
     'machining on both size
     Private Sub AddToOppositeSurfaceMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddToOppositeSurfaceMenuItem1.Click
+        Dim MsgBoxOpp As New AddToOppositeMsg
         If Me.Label16.Text <> "0" Then
-            If MsgBox("選んだ形状を反対側の面に作成。　続けますか？", MsgBoxStyle.YesNo, _
-                                          "AcadFR - 反対側の面に追加") = MsgBoxResult.Yes Then
-                StartAddToOppositeSurface(Me.IdentifiedFeature)
-            End If
+            MsgBoxOpp.ShowDialog()
         End If
 
         If Me.Label17.Text <> "0" Then
-            If MsgBox("選んだ形状を反対側の面に作成。　続けますか？", MsgBoxStyle.YesNo, _
-                                          "AcadFR - 反対側の面に追加") = MsgBoxResult.Yes Then
-                StartAddToOppositeSurface(Me.UnidentifiedFeature)
-            End If
-
+            MsgBoxOpp.ShowDialog()
         End If
     End Sub
 
     'add to opposite surface
-    Private Sub StartAddToOppositeSurface(ByRef Table2Check As System.Windows.Forms.DataGridView)
+    Public Sub StartAddToOppositeSurface(ByRef Table2Check As System.Windows.Forms.DataGridView)
         Try
             Dim ListFeatureNeedToAdd As New List(Of OutputFormat)
             Dim FeatureNeedToAdd As OutputFormat
