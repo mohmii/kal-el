@@ -394,8 +394,8 @@ Public Class SchematicPresetting
 
                     'zoom entity
                     zoom = Application.AcadApplication
-                    Dim Min() As Double = New Double() {Entity.GeomExtents.MinPoint.X - 100, Entity.GeomExtents.MinPoint.Y - 100, 0}
-                    Dim Max() As Double = New Double() {Entity.GeomExtents.MaxPoint.X + 100, Entity.GeomExtents.MaxPoint.Y + 100, 0}
+                    Dim Min() As Double = New Double() {Entity.GeometricExtents.MinPoint.X - 100, Entity.GeometricExtents.MinPoint.Y - 100, 0}
+                    Dim Max() As Double = New Double() {Entity.GeometricExtents.MaxPoint.X + 100, Entity.GeometricExtents.MaxPoint.Y + 100, 0}
                     zoom.ZoomWindow(Min, Max)
 
                     'save the changed entity id
