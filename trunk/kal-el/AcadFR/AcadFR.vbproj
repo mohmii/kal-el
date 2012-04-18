@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5C651A09-D391-4DF7-8F06-5A9825424E50}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -38,12 +38,12 @@
   <ItemGroup>
     <Reference Include="acdbmgd, Version=16.2.54.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\AutoCAD 2006\acdbmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2012 - English\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd, Version=16.2.54.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\AutoCAD 2006\acmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2012 - English\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Toolkit, Version=2.8.5.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
@@ -86,6 +86,12 @@
       <DependentUpon>AddManualSurface.vb</DependentUpon>
     </Compile>
     <Compile Include="AddManualSurface.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddToOppositeMsg.Designer.vb">
+      <DependentUpon>AddToOppositeMsg.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AddToOppositeMsg.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AppPreferences.vb" />
@@ -135,6 +141,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GenerateFL.vb" />
+    <Compile Include="ProgressForm.Designer.vb">
+      <DependentUpon>ProgressForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SchematicPresetting.Designer.vb">
       <DependentUpon>SchematicPresetting.vb</DependentUpon>
     </Compile>
@@ -197,6 +209,9 @@
       <DependentUpon>AddManualSurface.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddToOppositeMsg.resx">
+      <DependentUpon>AddToOppositeMsg.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AppPreferencesForm.resx">
       <DependentUpon>AppPreferencesForm.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -212,6 +227,9 @@
     <EmbeddedResource Include="ProductSize.resx">
       <DependentUpon>ProductSize.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressForm.resx">
+      <DependentUpon>ProgressForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SchematicPresetting.resx">
       <DependentUpon>SchematicPresetting.vb</DependentUpon>
@@ -256,9 +274,17 @@
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AutoCAD">
-      <Guid>{1EFD8E85-7F3B-48E6-9341-3C8B2F60136B}</Guid>
+      <Guid>{D32C213D-6096-40EF-A216-89A3A6FB82F7}</Guid>
       <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>

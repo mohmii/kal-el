@@ -492,28 +492,28 @@ Public Class UserControl3
     End Sub
 
     Private Sub ZoomFeature(ByVal EntityList As List(Of Entity))
-        Dim MinX As Double = EntityList(0).GeomExtents.MinPoint.X
-        Dim MinY As Double = EntityList(0).GeomExtents.MinPoint.Y
-        Dim MaxX As Double = EntityList(0).GeomExtents.MaxPoint.X
-        Dim MaxY As Double = EntityList(0).GeomExtents.MaxPoint.Y
+        Dim MinX As Double = EntityList(0).GeometricExtents.MinPoint.X
+        Dim MinY As Double = EntityList(0).GeometricExtents.MinPoint.Y
+        Dim MaxX As Double = EntityList(0).GeometricExtents.MaxPoint.X
+        Dim MaxY As Double = EntityList(0).GeometricExtents.MaxPoint.Y
 
         For Each EntityTemp As Entity In EntityList
             'search the bounding box maximum points
-            If MaxX < EntityTemp.GeomExtents.MaxPoint.X Then
-                MaxX = Round(EntityTemp.GeomExtents.MaxPoint.X, 5)
+            If MaxX < EntityTemp.GeometricExtents.MaxPoint.X Then
+                MaxX = Round(EntityTemp.GeometricExtents.MaxPoint.X, 5)
             End If
 
-            If MaxY < EntityTemp.GeomExtents.MaxPoint.Y Then
-                MaxY = Round(EntityTemp.GeomExtents.MaxPoint.Y, 5)
+            If MaxY < EntityTemp.GeometricExtents.MaxPoint.Y Then
+                MaxY = Round(EntityTemp.GeometricExtents.MaxPoint.Y, 5)
             End If
 
             'search the bounding box minimum points
-            If EntityTemp.GeomExtents.MinPoint.X < MinX Then
-                MinX = Round(EntityTemp.GeomExtents.MinPoint.X, 5)
+            If EntityTemp.GeometricExtents.MinPoint.X < MinX Then
+                MinX = Round(EntityTemp.GeometricExtents.MinPoint.X, 5)
             End If
 
-            If EntityTemp.GeomExtents.MinPoint.Y < MinY Then
-                MinY = Round(EntityTemp.GeomExtents.MinPoint.Y, 5)
+            If EntityTemp.GeometricExtents.MinPoint.Y < MinY Then
+                MinY = Round(EntityTemp.GeometricExtents.MinPoint.Y, 5)
             End If
         Next
 
