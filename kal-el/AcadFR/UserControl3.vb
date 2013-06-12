@@ -145,7 +145,7 @@ Public Class UserControl3
                             'Process.Start(AppPreferences.WSDir + Path.DirectorySeparatorChar + "frcad2pcad.txt")
                             Process.Start(SaveDialog.FileName)
 
-                            acedSetStatusBarProgressMeter("Deleting", 0, FeatureNeedToRemoved.Count)
+                            'acedSetStatusBarProgressMeter("Deleting", 0, FeatureNeedToRemoved.Count)
                             Dim i As Integer
 
                             'delete the feature that already being checked and saved
@@ -155,12 +155,12 @@ Public Class UserControl3
                                     'add the progress bar
                                     i = i + 1
                                     'System.Threading.Thread.Sleep(1)
-                                    acedSetStatusBarProgressMeterPos(i)
+                                    'acedSetStatusBarProgressMeterPos(i)
 
                                 Next
                             End If
 
-                            acedRestoreStatusBar()
+                            'acedRestoreStatusBar()
                             FeatureNeedToRemoved.Clear()
 
                         Else
@@ -175,7 +175,7 @@ Public Class UserControl3
             Else
                 MsgBox("保存作業が出来ません。認識済みの形状が一つも表に入っていません。", MsgBoxStyle.Exclamation)
             End If
-            
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
@@ -558,7 +558,7 @@ Public Class UserControl3
                     If res.Status = PromptStatus.OK Then
                         SS = res.Value
                         tempIdArray = SS.GetObjectIds()
-                        
+
                         For Each Idtemp In tempIdArray
                             Dim Ent As Entity = CType(AcadConnection.myT.GetObject(Idtemp, OpenMode.ForWrite), Entity)
 
@@ -1091,7 +1091,7 @@ Public Class UserControl3
         Dim ed As Editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor
 
         'initiate the progress bar
-        acedSetStatusBarProgressMeter("Highlighting", 0, Table2Check.Rows.Count)
+        'acedSetStatusBarProgressMeter("Highlighting", 0, Table2Check.Rows.Count)
         Dim i As Integer
 
         'higlighting process
@@ -1110,12 +1110,12 @@ Public Class UserControl3
             'add the progress bar
             i = i + 1
             'System.Threading.Thread.Sleep(1)
-            acedSetStatusBarProgressMeterPos(i)
+            'acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
 
         Next
 
-        acedRestoreStatusBar()
+        'acedRestoreStatusBar()
     End Sub
 
     Private RowIndex As List(Of Integer)
@@ -1840,16 +1840,16 @@ Public Class UserControl3
 
     '<CommandMethod("PB")> _
     Private Sub ProgressBar()
-        acedSetStatusBarProgressMeter("Testing", 0, 100)
+        'acedSetStatusBarProgressMeter("Testing", 0, 100)
 
         For i As Integer = 0 To 100
             For j As Integer = 0 To 10
                 System.Threading.Thread.Sleep(1)
-                acedSetStatusBarProgressMeterPos(i)
+                'acedSetStatusBarProgressMeterPos(i)
                 System.Windows.Forms.Application.DoEvents()
             Next
         Next
-        acedRestoreStatusBar()
+        'acedRestoreStatusBar()
     End Sub
 
     'Single View Logic

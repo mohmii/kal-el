@@ -318,7 +318,7 @@ Public Class MillingProcessor
         RootPathPoint = New Point3d
 
         'initiate the progress bar
-        'UserControl3.acedSetStatusBarProgressMeter("Loop Finding", 0, UnAdjacentPoints.Count)
+        'UserControl3.'acedSetStatusBarProgressMeter("Loop Finding", 0, UnAdjacentPoints.Count)
         ProgBar = New ProgressForm
         ProgBar.Text = "ミリング形状処理中" 'Processing Milling Fatures
         ProgBar.ProgressBar1.Maximum = UnAdjacentPoints.Count
@@ -344,11 +344,11 @@ Public Class MillingProcessor
             ProgBar.Label1.Text = Round(((i / UnAdjacentPoints.Count) * 100), 0).ToString
 
             'System.Threading.Thread.Sleep(1)
-            'UserControl3.acedSetStatusBarProgressMeterPos(i)
+            'UserControl3.''acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
 
-        UserControl3.acedRestoreStatusBar()
+        'UserControl3.acedRestoreStatusBar()
         ProgBar.Close()
         ProgBar.Dispose()
     End Sub
