@@ -13,7 +13,7 @@ Public Class AddToOppositeMsg
         End If
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Yes
-        Me.Close()
+        Me.close()
     End Sub
 
     Private Sub Delete_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Delete_Button.Click
