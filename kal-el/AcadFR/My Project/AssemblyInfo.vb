@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("LSP ITB")> 
 <Assembly: AssemblyProduct("AcadFR")> 
-<Assembly: AssemblyCopyright("Copyright © LSP ITB 2010")> 
+<Assembly: AssemblyCopyright("Copyright © LSP ITB 2013")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 <Assembly: ComVisible(False)> 
@@ -32,5 +32,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 '<Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.3.0.25")> 
+<Assembly: AssemblyVersion("2008.0.1.1")> 
 '<Assembly: AssemblyFileVersion("1.0.0.0")> 
