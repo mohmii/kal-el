@@ -18,7 +18,7 @@ Public Class ViewProcessor
     Public Overloads Sub SingleViewProcessor(ByVal View As ViewProp, ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer)
 
         'initiate the progress bar
-        UserControl3.acedSetStatusBarProgressMeter("Milling Features", 0, View.GroupLoop.Count)
+        'UserControl3.acedSetStatusBarProgressMeter("Milling Features", 0, View.GroupLoop.Count)
         ProgBar = New ProgressForm
         ProgBar.Text = "ミリング形状処理中" 'Processing Milling Fatures
         ProgBar.ProgressBar1.Maximum = View.GroupLoop.Count
@@ -106,7 +106,7 @@ Public Class ViewProcessor
             ProgBar.Label1.Text = Round(((i / View.GroupLoop.Count) * 100), 0).ToString
 
             'System.Threading.Thread.Sleep(1)
-            UserControl3.acedSetStatusBarProgressMeterPos(i)
+            'UserControl3.acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
 
@@ -1359,7 +1359,7 @@ Public Class ViewProcessor
         Dim ArcTmp, ArcTmp2 As Arc
 
         'initiate the progress bar
-        UserControl3.acedSetStatusBarProgressMeter("Get Features", 0, ListView(ViewNum).GroupLoop.Count)
+        'UserControl3.acedSetStatusBarProgressMeter("Get Features", 0, ListView(ViewNum).GroupLoop.Count)
         Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In ListView(ViewNum).GroupLoop
@@ -3453,7 +3453,7 @@ Public Class ViewProcessor
             'add the progress bar
             i = i + 1
             'System.Threading.Thread.Sleep(1)
-            UserControl3.acedSetStatusBarProgressMeterPos(i)
+            'UserControl3.acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
         UserControl3.acedRestoreStatusBar()
