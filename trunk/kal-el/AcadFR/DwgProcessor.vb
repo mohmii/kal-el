@@ -89,9 +89,9 @@ Public Class DwgProcessor
 
                 SelectSinglePoints(AllPoints, AllSinglePoints)
 
-                'UserControl3.acedSetStatusBarProgressMeter("Line Processor", 0, AllSinglePoints.Count)
+                'UserControl3.'acedSetStatusBarProgressMeter("Line Processor", 0, AllSinglePoints.Count)
                 ProgBar.ProgressBar1.Maximum = AllSinglePoints.Count
-                
+
                 If ProgBarStat = False Then
                     ProgBar.Show()
                     ProgBarStat = True
@@ -168,13 +168,13 @@ Public Class DwgProcessor
                     iLoadBar = iLoadBar + 1
 
                     'System.Threading.Thread.Sleep(1)
-                    'UserControl3.acedSetStatusBarProgressMeterPos(iLoadBar)
+                    'UserControl3.''acedSetStatusBarProgressMeterPos(iLoadBar)
                     System.Windows.Forms.Application.DoEvents()
                 Next
                 ProgBar.ProgressBar1.Value = AllSinglePoints.Count
                 ProgBar.Label1.Text = "100"
                 System.Windows.Forms.Application.DoEvents()
-                UserControl3.acedRestoreStatusBar()
+                'UserControl3.acedRestoreStatusBar()
 
                 'membuang dan menambah jika ada entitas yang di-split serta mengedit 
                 If PointStatus = True Then

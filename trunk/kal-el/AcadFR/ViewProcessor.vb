@@ -18,7 +18,7 @@ Public Class ViewProcessor
     Public Overloads Sub SingleViewProcessor(ByVal View As ViewProp, ByRef UnIdentifiedFeature As List(Of OutputFormat), ByRef TmpUnidentifiedFeature As List(Of OutputFormat), ByRef UnIdentifiedCounter As Integer)
 
         'initiate the progress bar
-        'UserControl3.acedSetStatusBarProgressMeter("Milling Features", 0, View.GroupLoop.Count)
+        'UserControl3.'acedSetStatusBarProgressMeter("Milling Features", 0, View.GroupLoop.Count)
         ProgBar = New ProgressForm
         ProgBar.Text = "ミリング形状処理中" 'Processing Milling Fatures
         ProgBar.ProgressBar1.Maximum = View.GroupLoop.Count
@@ -64,7 +64,7 @@ Public Class ViewProcessor
                     'set the feature property
                     Feature.FeatureName = "Mill Candidate"
                     Feature.MiscProp(0) = "ミリング形状を選ぶ"
-                    
+
                     If Feature.HiddenLineCount > 0 And setView.CBHidden = True Then
                         'Feature.MiscProp(1) = SearchOppositeSurf(View.ViewType)
                         'adskClass.myPalette.AddHiddenView(Feature.MiscProp(1))
@@ -78,7 +78,7 @@ Public Class ViewProcessor
                         AddToTable(Feature, adskClass.myPalette.UFList, adskClass.myPalette.UnidentifiedFeature)
                     End If
 
-                    
+
                 Else
                     If Not Feature.FeatureName = "" Then
                         If Feature.HiddenLineCount > 0 And setView.CBHidden = True Then
@@ -98,7 +98,7 @@ Public Class ViewProcessor
                 'set the current feature to current view
                 RegisterToView(Feature)
             End If
-            
+
 
             'add the progress bar
             i = i + 1
@@ -106,11 +106,11 @@ Public Class ViewProcessor
             ProgBar.Label1.Text = Round(((i / View.GroupLoop.Count) * 100), 0).ToString
 
             'System.Threading.Thread.Sleep(1)
-            'UserControl3.acedSetStatusBarProgressMeterPos(i)
+            'UserControl3.''acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
 
-        UserControl3.acedRestoreStatusBar()
+        'UserControl3.acedRestoreStatusBar()
         ProgBar.Close()
         ProgBar.Dispose()
     End Sub
@@ -1263,7 +1263,7 @@ Public Class ViewProcessor
                 Feature.FeatureName = "Blind Slot"
                 Feature.MiscProp(0) = "止まり溝"
             End If
-            
+
         End If
 
         Feature.MiscProp(2) = Orientation
@@ -1359,7 +1359,7 @@ Public Class ViewProcessor
         Dim ArcTmp, ArcTmp2 As Arc
 
         'initiate the progress bar
-        'UserControl3.acedSetStatusBarProgressMeter("Get Features", 0, ListView(ViewNum).GroupLoop.Count)
+        'UserControl3.'acedSetStatusBarProgressMeter("Get Features", 0, ListView(ViewNum).GroupLoop.Count)
         Dim i As Integer
 
         For Each GroupEntity As List(Of Entity) In ListView(ViewNum).GroupLoop
@@ -3453,10 +3453,10 @@ Public Class ViewProcessor
             'add the progress bar
             i = i + 1
             'System.Threading.Thread.Sleep(1)
-            'UserControl3.acedSetStatusBarProgressMeterPos(i)
+            'UserControl3.''acedSetStatusBarProgressMeterPos(i)
             System.Windows.Forms.Application.DoEvents()
         Next
-        UserControl3.acedRestoreStatusBar()
+        'UserControl3.acedRestoreStatusBar()
     End Sub
 
 
