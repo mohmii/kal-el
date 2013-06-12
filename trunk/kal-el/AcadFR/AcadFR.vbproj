@@ -36,24 +36,20 @@
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="acdbmgd, Version=16.2.54.0, Culture=neutral">
+    <Reference Include="acdbmgd, Version=17.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2012 - English\acdbmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\AutoCAD 2008\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="acmgd, Version=16.2.54.0, Culture=neutral">
+    <Reference Include="acmgd, Version=17.1.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\Autodesk\AutoCAD 2012 - English\acmgd.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\AutoCAD 2008\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Toolkit, Version=2.8.5.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Release\ComponentFactory.Krypton.Toolkit.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="FR, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Release\FR.dll</HintPath>
+    <Reference Include="FR, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -274,7 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AutoCAD">
-      <Guid>{D32C213D-6096-40EF-A216-89A3A6FB82F7}</Guid>
+      <Guid>{851A4561-F4EC-4631-9B0C-E7DC407512C9}</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
